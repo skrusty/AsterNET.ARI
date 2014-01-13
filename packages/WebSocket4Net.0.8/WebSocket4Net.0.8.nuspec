@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>WebSocket4Net</id>
+    <version>0.8</version>
+    <title>WebSocket4Net</title>
+    <authors>Kerry Jiang</authors>
+    <owners>Kerry Jiang</owners>
+    <licenseUrl>http://files.cnblogs.com/jzywh/Apache.xml</licenseUrl>
+    <projectUrl>http://websocket4net.codeplex.com/</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>WebSocket4Net is a .NET websocket client implemtation. It originates from SuperWebSocket WebSocket Client. For better developing of the websocket client, it was separated from SuperWebSocket and was renamed to WebSocket4Net.</description>
+    <releaseNotes />
+    <copyright />
+    <language />
+    <tags>WebSocket WebSocket4Net SuperWebSocket</tags>
+  </metadata>
+</package>

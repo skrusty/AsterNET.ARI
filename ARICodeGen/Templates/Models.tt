@@ -1,0 +1,209 @@
+﻿<#@ template debug="false" hostspecific="True" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Data" #>
+<#@ assembly name="System.linq" #>
+<#@ assembly name="System.Data.Linq" #>
+<#@ assembly name="$(ProjectDir)bin\Debug\ARICodeGen.exe" #>
+<#@ assembly name="$(ProjectDir)bin\Debug\Newtonsoft.Json.dll" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Data.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="Newtonsoft.Json.Linq" #>
+<#@ import namespace="Newtonsoft.Json" #>
+<#@ import namespace="Newtonsoft" #>
+<#@ import namespace="ARICodeGen" #>
+<#@ output extension=".cs" #>
+<#@ include file="TemplateFileManagerV2.1.ttinclude" #>
+<#
+var manager = TemplateFileManager.Create(this);
+var files = new List<string>() { 
+	@"D:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Bridges.json",
+	@"D:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Channels.json",
+	@"D:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Asterisk.json",
+	@"D:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Events.json",
+	@"D:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Applications.json",
+	@"D:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Endpoints.json",
+	@"D:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\DeviceStates.json",
+	@"D:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Playbacks.json",
+	@"D:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Sounds.json",
+	@"D:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Recordings.json"
+};
+var events = new List<string>();
+#>
+
+<#	
+foreach (var file in files)
+{
+	var subtypes = new Dictionary<string, List<string>>();
+
+	using (StreamReader reader = File.OpenText(Host.ResolvePath(file)))
+	{
+		var o = (Newtonsoft.Json.Linq.JObject)JToken.ReadFrom(new JsonTextReader(reader));
+		var models = o["models"];
+
+        foreach (var item in models.Values())
+        {
+			// if class exists in subtypes, extend
+			var inherit = subtypes.Where(x => x.Value.Contains(item.SelectToken("id").Value<string>())).SingleOrDefault().Key;
+			var className = item.SelectToken("id").Value<string>();
+			if(inherit == "Event")
+			{
+				className += "Event";
+				events.Add(className);
+            }
+
+			// create new file
+			manager.StartNewFile(className + ".cs");
+#>
+using System;
+using System.Collections.Generic;
+
+namespace AsterNET.ARI.Models
+{
+	/// <summary>
+	/// <#= item.SelectToken("description", false) !=null ? item.SelectToken("description").Value<string>().Replace("\n", " ") : "no desciption" #>
+	/// </summary>
+	public class <#= className #> <#= !string.IsNullOrEmpty(inherit) ? string.Format(" : {0}", inherit) : "" #>
+	{
+<# 
+			foreach (var prop in item.SelectToken("properties"))
+			{
+				var jProp = ((JProperty)prop);
+
+#>
+		/// <summary>
+		/// <#= prop.First().SelectToken("description", false) !=null ? prop.First().SelectToken("description", false).Value<string>().Replace("\n", " ") : "no description provided" #>
+		/// </summary>
+		public <#= ARICodeGen.SwaggerHelper.TypeConvert(prop.First().SelectToken("type").Value<string>()) #> <#= ARICodeGen.SwaggerHelper.GetSafeName(jProp.Name) #> { get; set; }
+
+<#
+			}
+			// check for subtypes
+			try {
+				foreach (JValue prop in item.SelectToken("subTypes"))
+				{
+	
+					if(!subtypes.ContainsKey(item.SelectToken("id").Value<string>())) {
+						subtypes.Add(item.SelectToken("id").Value<string>(), new List<string>()); 
+					}
+					subtypes[item.SelectToken("id").Value<string>()].Add(prop.ToString());
+				}
+			}
+			catch{}
+#>
+	}
+}
+<#
+		}
+
+
+		// Actions
+		var apis = o["apis"];
+		var filename = System.IO.Path.GetFileNameWithoutExtension(file);
+		var actionClassName = filename + "Actions";
+		manager.StartNewFile(actionClassName + ".cs");
+#>
+using System;
+using System.Collections.Generic;
+using AsterNET.ARI.Models;
+
+namespace AsterNET.ARI.Actions
+{
+	
+	public class <#= actionClassName #>
+	{
+
+<#
+		// Get each operation
+		foreach (var item in apis)
+		{
+			var operations = item.SelectToken("operations");
+			var methodName = operations.First().SelectToken("nickname").Value<string>();
+			var description = operations.First().SelectToken("summary").Value<string>();
+			var httpMethod = operations.First().SelectToken("httpMethod").Value<string>();
+			var path = item.SelectToken("path").Value<string>();
+			var responseType = ARICodeGen.SwaggerHelper.TypeConvert(operations.First().SelectToken("responseClass").Value<string>());
+#>
+		/// <summary>
+		/// <#= description ?? "no description provided" #>
+		/// </summary>
+		public <#= responseType #> <#= methodName #>()
+		{
+			string httpMethod = "<#= httpMethod #>";
+			string path = "<#= path #>";
+
+			var client = new RestClient
+		}
+
+<# 
+		}
+#>
+	}
+}
+
+<#
+	} 
+}
+	manager.StartNewFile("ARIClient.cs");
+#>
+
+using System;
+using System.Collections.Generic;
+using AsterNET.ARI.Models;
+
+namespace AsterNET.ARI
+{
+<#
+	foreach (var evt in events)
+    {
+#>
+	public delegate void <#= evt + "Handler"#>(object sender, <#= evt #> e);
+<#
+    }
+#>
+
+	/// <summary>
+	/// 
+	/// </summary>
+	public partial class ARIClient
+	{
+<#
+	System.Diagnostics.Debug.WriteLine("event count " + events.Count);
+    foreach (var evt in events)
+    {
+#>
+		public event <#= evt + "Handler"#> On<#= evt #>;
+<#
+    }
+#>
+		private Dictionary<string, MessageHandler> _messageHandlers = new Dictionary<string, MessageHandler>();
+		
+		private void FireEvent(string eventName, object eventArgs)
+		{
+		
+			switch(eventName) 
+			{
+<#int i = 1;
+	foreach (var evt in events)
+    {
+		
+#>			
+			
+				case "<#= evt.Replace("Event", "") #>":
+					if(On<#= evt #> != null)
+						On<#= evt #>.Method.Invoke(this, new object[] {this, eventArgs});
+					break;
+<#
+		i++;
+    }
+#>
+			}
+		}
+	}
+}
+<#
+
+manager.Process();
+#>
