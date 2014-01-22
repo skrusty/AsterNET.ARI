@@ -1,4 +1,4 @@
-﻿<#@ template debug="false" hostspecific="True" language="C#" #>
+﻿<#@ template debug="true" hostspecific="True" language="C#" #>
 <#@ assembly name="System.Core" #>
 <#@ assembly name="System.Data" #>
 <#@ assembly name="System.linq" #>
@@ -14,9 +14,11 @@
 <#@ import namespace="Newtonsoft.Json" #>
 <#@ import namespace="Newtonsoft" #>
 <#@ import namespace="ARICodeGen" #>
+<#@ import namespace="System.Diagnostics" #>
 <#@ output extension=".cs" #>
 <#@ include file="TemplateFileManagerV2.1.ttinclude" #>
 <#
+// System.Diagnostics.Debugger.Launch();
 var manager = TemplateFileManager.Create(this);
 var files = new List<string>() { 
 	@"D:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Bridges.json",
@@ -103,40 +105,117 @@ namespace AsterNET.ARI.Models
 		var apis = o["apis"];
 		var filename = System.IO.Path.GetFileNameWithoutExtension(file);
 		var actionClassName = filename + "Actions";
+		
 		manager.StartNewFile(actionClassName + ".cs");
 #>
 using System;
 using System.Collections.Generic;
 using AsterNET.ARI.Models;
+using AsterNET.ARI;
+using RestSharp;
 
 namespace AsterNET.ARI.Actions
 {
 	
-	public class <#= actionClassName #>
+	public class <#= actionClassName #> : ARIBaseAction
 	{
+
+		public <#= actionClassName #>(StasisEndpoint endPoint)
+			: base(endPoint)
+		{}
 
 <#
 		// Get each operation
 		foreach (var item in apis)
 		{
-			var operations = item.SelectToken("operations");
-			var methodName = operations.First().SelectToken("nickname").Value<string>();
-			var description = operations.First().SelectToken("summary").Value<string>();
-			var httpMethod = operations.First().SelectToken("httpMethod").Value<string>();
 			var path = item.SelectToken("path").Value<string>();
-			var responseType = ARICodeGen.SwaggerHelper.TypeConvert(operations.First().SelectToken("responseClass").Value<string>());
+			var operations = item.SelectToken("operations");
+			
+			foreach(var op in operations) 
+			{
+				
+				var methodName = op.SelectToken("nickname").Value<string>();
+				var description = op.SelectToken("summary").Value<string>();
+				var httpMethod = op.SelectToken("httpMethod").Value<string>();
+			
+				var responseType = ARICodeGen.SwaggerHelper.TypeConvert(op.SelectToken("responseClass").Value<string>());
+
+				var parameters = string.Empty;
+			
+				try {
+					foreach(var param in op.SelectToken("parameters")) {
+						parameters += string.Format("{2}{1} {0}", param.SelectToken("name").Value<string>(), ARICodeGen.SwaggerHelper.TypeConvert(param.SelectToken("dataType").Value<string>()), parameters.Length > 0 ? ", " : "");
+					}
+				}catch(Exception ex){
+					Trace.WriteLine(ex.ToString());
+				}
+
 #>
 		/// <summary>
 		/// <#= description ?? "no description provided" #>
 		/// </summary>
-		public <#= responseType #> <#= methodName #>()
+<# 
+				try {
+					foreach(var param in op.SelectToken("parameters")) {
+#>
+		/// <param name="<#= param.SelectToken("name").Value<string>() #>"><#= param.SelectToken("description").Value<string>() #></param>
+<#
+					}
+                }catch{}
+#>
+		public <#= responseType #> <#= ARICodeGen.SwaggerHelper.GetSafeName(methodName) #>(<#= parameters #>)
 		{
-			string httpMethod = "<#= httpMethod #>";
 			string path = "<#= path #>";
+			var request = GetNewRequest(path, Method.<#= httpMethod.ToUpper() #>);
+<# 
+			try {
+				foreach(var param in op.SelectToken("parameters")) {
+					if(param.SelectToken("paramType").Value<string>() == "path"){
+#>
+			request.AddUrlSegment("<#= param.SelectToken("name").Value<string>() #>", <#= param.SelectToken("name").Value<string>() #>);
+<# 
+					}else{
+#>
+			request.AddParameter("<#= param.SelectToken("name").Value<string>() #>", <#= param.SelectToken("name").Value<string>() #>, ParameterType.QueryString);
+<#
+					}
 
-			var client = new RestClient
+				}
+			}catch(Exception ex){
+					Trace.WriteLine(ex.ToString());
+			}
+			if(responseType == "void") {
+#>
+			var response = Client.Execute(request);
 		}
+<#			}else{#>
 
+			var response = Client.Execute<<#= responseType #>>(request);
+
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return response.Data;
+
+			switch((int)response.StatusCode)
+            {
+<#  
+			try {
+				foreach(var errorCode in op.SelectToken("errorResponses")) {
+#>
+				case <#= errorCode.SelectToken("code").Value<string>() #>:
+					throw new ARIException("<#= errorCode.SelectToken("reason").Value<string>() #>");
+					break;
+<#  
+				}
+			}catch{}
+        
+#>
+				default:
+					// Unknown server response
+					throw new ARIException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
+            }
+		}
+<#			} #>
+<#		} // end of for on operations #>
 <# 
 		}
 #>
@@ -163,11 +242,12 @@ namespace AsterNET.ARI
 <#
     }
 #>
+	public delegate void UnhandledEventHandler(object sender, AsterNET.ARI.Models.Event eventMessage);
 
 	/// <summary>
 	/// 
 	/// </summary>
-	public partial class ARIClient
+	public partial class BaseARIClient_1_0_0
 	{
 <#
 	System.Diagnostics.Debug.WriteLine("event count " + events.Count);
@@ -178,9 +258,9 @@ namespace AsterNET.ARI
 <#
     }
 #>
-		private Dictionary<string, MessageHandler> _messageHandlers = new Dictionary<string, MessageHandler>();
+		public event UnhandledEventHandler OnUnhandledEvent;		
 		
-		private void FireEvent(string eventName, object eventArgs)
+		protected void FireEvent(string eventName, object eventArgs)
 		{
 		
 			switch(eventName) 
@@ -199,6 +279,10 @@ namespace AsterNET.ARI
 		i++;
     }
 #>
+				default:
+					if(OnUnhandledEvent!=null)
+						OnUnhandledEvent.Method.Invoke(this, new object[] {this, eventArgs});
+					break;
 			}
 		}
 	}

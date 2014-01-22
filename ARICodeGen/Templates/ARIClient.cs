@@ -30,11 +30,12 @@ namespace AsterNET.ARI
 	public delegate void DialEventHandler(object sender, DialEvent e);
 	public delegate void StasisEndEventHandler(object sender, StasisEndEvent e);
 	public delegate void StasisStartEventHandler(object sender, StasisStartEvent e);
+	public delegate void UnhandledEventHandler(object sender, AsterNET.ARI.Models.Event eventMessage);
 
 	/// <summary>
 	/// 
 	/// </summary>
-	public partial class ARIClient
+	public partial class BaseARIClient_1_0_0
 	{
 		public event DeviceStateChangedEventHandler OnDeviceStateChangedEvent;
 		public event PlaybackStartedEventHandler OnPlaybackStartedEvent;
@@ -61,9 +62,9 @@ namespace AsterNET.ARI
 		public event DialEventHandler OnDialEvent;
 		public event StasisEndEventHandler OnStasisEndEvent;
 		public event StasisStartEventHandler OnStasisStartEvent;
-		private Dictionary<string, MessageHandler> _messageHandlers = new Dictionary<string, MessageHandler>();
+		public event UnhandledEventHandler OnUnhandledEvent;		
 		
-		private void FireEvent(string eventName, object eventArgs)
+		protected void FireEvent(string eventName, object eventArgs)
 		{
 		
 			switch(eventName) 
@@ -217,6 +218,10 @@ namespace AsterNET.ARI
 				case "StasisStart":
 					if(OnStasisStartEvent != null)
 						OnStasisStartEvent.Method.Invoke(this, new object[] {this, eventArgs});
+					break;
+				default:
+					if(OnUnhandledEvent!=null)
+						OnUnhandledEvent.Method.Invoke(this, new object[] {this, eventArgs});
 					break;
 			}
 		}

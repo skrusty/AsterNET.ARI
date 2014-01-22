@@ -7,37 +7,58 @@ using Newtonsoft.Json.Linq;
 using System.IO;
 using Newtonsoft.Json;
 using AsterNET.ARI;
+using AsterNET.ARI.Actions;
 using RestSharp;
 
 namespace ARICodeGen
 {
 
     /*
-     *  Hierachie
-     *      
+     *  This project is simply here for testing the output of the codegen. 
+     *  Any sample or demo application code will be moved into the AsterNET.ARI.TestApplication project.
      */
     class Program
     {
-       
+        public static ARIClient client;
+        public static StasisEndpoint endPoint;
         static void Main(string[] args)
         {
-            ARIClient c = new ARIClient();
-            c.OnStasisStartEvent += c_OnStasisStartEvent;
-            c.OnStasisEndEvent += c_OnStasisEndEvent;
+            endPoint = new StasisEndpoint("192.168.3.16", 8088, "username", "test");
 
-            c.Connect("192.168.1.80:8088", "username", "test", "hello");
+            // Create a message client to receive events on
+            client = endPoint.GetStasisClient("hello");
+
+            client.OnStasisStartEvent += c_OnStasisStartEvent;
+            client.OnStasisEndEvent += c_OnStasisEndEvent;
+            client.OnChannelDtmfReceivedEvent += client_OnChannelDtmfReceivedEvent;
+
+            client.Connect();
 
             Console.ReadKey();
         }
 
+        static void client_OnChannelDtmfReceivedEvent(object sender, AsterNET.ARI.Models.ChannelDtmfReceivedEvent e)
+        {
+            Console.WriteLine("DTMF received from channel: {0}, Digit: {1}, Duration: ", e.Channel.Id, e.Digit, e.Duration_ms.ToString());
+        }
+
         static void c_OnStasisEndEvent(object sender, AsterNET.ARI.Models.StasisEndEvent e)
         {
-            Console.WriteLine("Stasis Start Event: {0}, {1}", e.Application, e.Application);
+            Console.WriteLine("Stasis End Event: {0}, {1}", e.Application, e.Application);
         }
 
         static void c_OnStasisStartEvent(object sender, AsterNET.ARI.Models.StasisStartEvent e)
         {
-            Console.WriteLine("Stasis End Event: {0}, {1}", e.Application, e.Application);
+            Console.WriteLine("Stasis Start Event: {0}, {1}", e.Application, e.Application);
+            // Answer the channel
+            endPoint.Channels.Answer(e.Channel.Id);
+
+            // Play an announcement
+            // Non-Blocking, so will instantly fall through into the next command
+            endPoint.Channels.Play(e.Channel.Id, "sound:demo-congrats", "en", 0, 0);
+
+            // Hangup
+            // endPoint.Channels.Hangup(e.Channel.Id, "normal");
         }
     }
 

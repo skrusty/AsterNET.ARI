@@ -11,27 +11,43 @@ namespace AsterNET.ARI
     /// <summary>
     /// 
     /// </summary>
-    public partial class ARIClient
+    public class ARIClient : BaseARIClient_1_0_0
     {
         private WebSocket _client;
+        private StasisEndpoint EndPoint;
+        private string Application;
 
-        public ARIClient()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="endPoint"></param>
+        /// <param name="application"></param>
+        public ARIClient(StasisEndpoint endPoint, string application)
         {
-            
+            EndPoint = endPoint;
+            Application = application;
         }
-        public void Connect(string uri, string username, string password, string application)
+
+        #region Public Methods
+        public void Connect()
         {
+            try
+            {
+                _client = new WebSocket(string.Format("ws://{0}:{3}/ari/events?app={1}&api_key={2}",
+                    EndPoint.Host, Application, string.Format("{0}:{1}", EndPoint.Username, EndPoint.Password), EndPoint.Port.ToString()));
 
-            _client = new WebSocket(string.Format("ws://{0}/ari/events?app={1}&api_key={2}",
-                uri, application, string.Format("{0}:{1}", username, password)));
+                _client.MessageReceived += _client_MessageReceived;
+                _client.Opened += _client_Opened;
+                _client.Error += _client_Error;
+                _client.DataReceived += _client_DataReceived;
+                _client.Closed += _client_Closed;
 
-            _client.MessageReceived += _client_MessageReceived;
-            _client.Opened += _client_Opened;
-            _client.Error += _client_Error;
-            _client.DataReceived += _client_DataReceived;
-            _client.Closed += _client_Closed;
-
-            _client.Open();
+                _client.Open();
+            }
+            catch (Exception ex)
+            {
+                throw new ARIException(ex.Message);
+            }
         }
 
         public void Disconnect()
@@ -42,21 +58,23 @@ namespace AsterNET.ARI
         public bool Connected
         {
             get { return _client.State == WebSocketState.Open; }
-        }
+        } 
+        #endregion
 
+        #region SocketEvents
         private void _client_Closed(object sender, EventArgs e)
         {
-            
+
         }
 
         private void _client_DataReceived(object sender, DataReceivedEventArgs e)
         {
-            
+
         }
 
         private void _client_Error(object sender, SuperSocket.ClientEngine.ErrorEventArgs e)
         {
-            
+
         }
 
         private void _client_Opened(object sender, EventArgs e)
@@ -69,16 +87,14 @@ namespace AsterNET.ARI
             // load the message
             var jsonMsg = (Newtonsoft.Json.Linq.JObject)JToken.Parse(e.Message);
             var eventName = jsonMsg.SelectToken("type").Value<string>();
-            var eventArgs = JsonConvert.DeserializeObject(value: e.Message, type: Type.GetType("AsterNET.ARI.Models." + eventName + "Event"));
-
-            FireEvent(eventName, eventArgs);
-        }
+            var type = Type.GetType("AsterNET.ARI.Models." + eventName + "Event");
+            if (type != null)
+                FireEvent(eventName, JsonConvert.DeserializeObject(value: e.Message, type: type));
+            else
+                FireEvent(eventName, JsonConvert.DeserializeObject(value: e.Message, type: typeof(AsterNET.ARI.Models.Event)));
+        } 
+        #endregion
         
     }
 
-    public class MessageHandler
-    {
-        public string EventName;
-        public Type EventClass;
-    }
 }
