@@ -23,23 +23,31 @@ namespace ARICodeGen
         public static StasisEndpoint endPoint;
         static void Main(string[] args)
         {
-            endPoint = new StasisEndpoint("192.168.3.16", 8088, "username", "test");
+            try
+            {
+                endPoint = new StasisEndpoint("192.168.3.16", 8088, "username", "test");
 
-            // Create a message client to receive events on
-            client = endPoint.GetStasisClient("hello");
+                // Create a message client to receive events on
+                client = endPoint.GetStasisClient("hello");
 
-            client.OnStasisStartEvent += c_OnStasisStartEvent;
-            client.OnStasisEndEvent += c_OnStasisEndEvent;
-            client.OnChannelDtmfReceivedEvent += client_OnChannelDtmfReceivedEvent;
+                client.OnStasisStartEvent += c_OnStasisStartEvent;
+                client.OnStasisEndEvent += c_OnStasisEndEvent;
+                client.OnChannelDtmfReceivedEvent += client_OnChannelDtmfReceivedEvent;
 
-            client.Connect();
+                client.Connect();
 
-            Console.ReadKey();
+                Console.ReadKey();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                Console.ReadKey();
+            }
         }
 
         static void client_OnChannelDtmfReceivedEvent(object sender, AsterNET.ARI.Models.ChannelDtmfReceivedEvent e)
         {
-            Console.WriteLine("DTMF received from channel: {0}, Digit: {1}, Duration: ", e.Channel.Id, e.Digit, e.Duration_ms.ToString());
+            Console.WriteLine("DTMF received from channel: {0}, Digit: {1}, Duration: {2}", e.Channel.Id, e.Digit, e.Duration_ms.ToString());
         }
 
         static void c_OnStasisEndEvent(object sender, AsterNET.ARI.Models.StasisEndEvent e)
@@ -55,10 +63,11 @@ namespace ARICodeGen
 
             // Play an announcement
             // Non-Blocking, so will instantly fall through into the next command
-            endPoint.Channels.Play(e.Channel.Id, "sound:demo-congrats", "en", 0, 0);
+            // Added Wait method which listens for a Finished event for the returned playback id
+            endPoint.Channels.Play(e.Channel.Id, "sound:demo-congrats", "en", 0, 0).Wait((ARIClient)sender);
 
             // Hangup
-            // endPoint.Channels.Hangup(e.Channel.Id, "normal");
+            endPoint.Channels.Hangup(e.Channel.Id, "normal");
         }
     }
 

@@ -57,6 +57,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StasisEndpoint.cs" />
+    <Compile Include="SyncHelper.cs" />
     <Compile Include="Templates\Application.cs">
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>

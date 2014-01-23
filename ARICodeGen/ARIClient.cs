@@ -17,6 +17,10 @@ namespace AsterNET.ARI
         private StasisEndpoint EndPoint;
         private string Application;
 
+        private delegate void ARIEventHandler(object sender, Event e);
+
+        private event ARIEventHandler internalEvent;
+
         /// <summary>
         /// 
         /// </summary>
@@ -26,6 +30,13 @@ namespace AsterNET.ARI
         {
             EndPoint = endPoint;
             Application = application;
+
+            this.internalEvent += ARIClient_internalEvent;
+        }
+
+        private void ARIClient_internalEvent(object sender, Event e)
+        {
+            FireEvent(e.Type, e);
         }
 
         #region Public Methods
@@ -84,15 +95,35 @@ namespace AsterNET.ARI
 
         private void _client_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
+#if DEBUG
+            System.Diagnostics.Debug.WriteLine(e.Message);
+#endif
             // load the message
             var jsonMsg = (Newtonsoft.Json.Linq.JObject)JToken.Parse(e.Message);
             var eventName = jsonMsg.SelectToken("type").Value<string>();
             var type = Type.GetType("AsterNET.ARI.Models." + eventName + "Event");
             if (type != null)
-                FireEvent(eventName, JsonConvert.DeserializeObject(value: e.Message, type: type));
+
+                internalEvent.BeginInvoke(this, (Event)JsonConvert.DeserializeObject(value: e.Message, type: type), new AsyncCallback(eventComplete), null);
             else
-                FireEvent(eventName, JsonConvert.DeserializeObject(value: e.Message, type: typeof(AsterNET.ARI.Models.Event)));
-        } 
+                internalEvent.BeginInvoke(this, (Event)JsonConvert.DeserializeObject(value: e.Message, type: typeof(AsterNET.ARI.Models.Event)), new AsyncCallback(eventComplete), null);
+        }
+
+        private void eventComplete(IAsyncResult result)
+        {
+            var ar = (System.Runtime.Remoting.Messaging.AsyncResult)result;
+            var invokedMethod = (ARIEventHandler)ar.AsyncDelegate;
+
+            try
+            {
+                invokedMethod.EndInvoke(result);
+            }
+            catch
+            {
+                // Handle any exceptions that were thrown by the invoked method
+                Console.WriteLine("An event listener went kaboom!");
+            }
+        }
         #endregion
         
     }

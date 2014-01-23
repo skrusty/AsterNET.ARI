@@ -273,7 +273,7 @@ namespace AsterNET.ARI
 			
 				case "<#= evt.Replace("Event", "") #>":
 					if(On<#= evt #> != null)
-						On<#= evt #>.Method.Invoke(this, new object[] {this, eventArgs});
+						On<#= evt #>(this, (<#= evt #>)eventArgs);
 					break;
 <#
 		i++;
@@ -281,7 +281,7 @@ namespace AsterNET.ARI
 #>
 				default:
 					if(OnUnhandledEvent!=null)
-						OnUnhandledEvent.Method.Invoke(this, new object[] {this, eventArgs});
+						OnUnhandledEvent(this, (Event)eventArgs);
 					break;
 			}
 		}
