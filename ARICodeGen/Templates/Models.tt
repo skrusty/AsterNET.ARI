@@ -42,6 +42,11 @@ foreach (var file in files)
 
 	using (StreamReader reader = File.OpenText(Host.ResolvePath(file)))
 	{
+#>
+<#
+		//
+		// Start Model Output
+		//
 		var o = (Newtonsoft.Json.Linq.JObject)JToken.ReadFrom(new JsonTextReader(reader));
 		var models = o["models"];
 
@@ -99,9 +104,12 @@ namespace AsterNET.ARI.Models
 }
 <#
 		}
+#>
+<#
 
-
-		// Actions
+		//
+		// Start Actions Output
+		//
 		var apis = o["apis"];
 		var filename = System.IO.Path.GetFileNameWithoutExtension(file);
 		var actionClassName = filename + "Actions";
@@ -144,6 +152,7 @@ namespace AsterNET.ARI.Actions
 			
 				try {
 					foreach(var param in op.SelectToken("parameters")) {
+						// string defaultValue = param.SelectToken("defalutValue").Value<string>()
 						parameters += string.Format("{2}{1} {0}", param.SelectToken("name").Value<string>(), ARICodeGen.SwaggerHelper.TypeConvert(param.SelectToken("dataType").Value<string>()), parameters.Length > 0 ? ", " : "");
 					}
 				}catch(Exception ex){
@@ -215,9 +224,12 @@ namespace AsterNET.ARI.Actions
             }
 		}
 <#			} #>
-<#		} // end of for on operations #>
-<# 
-		}
+<#		} 
+		
+	}
+	//
+	// end of for on operations 
+	//
 #>
 	}
 }

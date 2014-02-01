@@ -1,0 +1,5 @@
+01.02.2014		Skrusty
+	Added	Changelog
+	Added	AsterNET.ARI classlib now contains the output of CodeGen
+	Added	New example to AsterNET.ARI.TestApplication, based on the example for ari-py (https://github.com/asterisk/ari-py/blob/master/examples/example.py)
+	Added	Started samples to show how to use AsterNET.ARI in real-world examples (yet to add anything of interest)
