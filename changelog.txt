@@ -1,3 +1,6 @@
+03.02.2014		Skrusty
+	Added	Simple bridge example project
+
 01.02.2014		Skrusty
 	Added	Changelog
 	Added	AsterNET.ARI classlib now contains the output of CodeGen
