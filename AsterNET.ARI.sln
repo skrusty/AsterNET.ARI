@@ -20,6 +20,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		changelog.txt = changelog.txt
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsterNET.ARI.SimpleBridge", "AsterNET.ARI.SimpleBridge\AsterNET.ARI.SimpleBridge.csproj", "{4E7F6185-4433-4C75-96A6-8859411577CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample-RecordAndPlayback", "Sample-RecordAndPlayback\Sample-RecordAndPlayback.csproj", "{F8C2150F-7D48-4E30-AE9A-E2354E5A536D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,12 +46,22 @@ Global
 		{BD04EEB4-0475-4D2F-ADA9-76E4F55BB5BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD04EEB4-0475-4D2F-ADA9-76E4F55BB5BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD04EEB4-0475-4D2F-ADA9-76E4F55BB5BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E7F6185-4433-4C75-96A6-8859411577CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E7F6185-4433-4C75-96A6-8859411577CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E7F6185-4433-4C75-96A6-8859411577CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E7F6185-4433-4C75-96A6-8859411577CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8C2150F-7D48-4E30-AE9A-E2354E5A536D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8C2150F-7D48-4E30-AE9A-E2354E5A536D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8C2150F-7D48-4E30-AE9A-E2354E5A536D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8C2150F-7D48-4E30-AE9A-E2354E5A536D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{BD04EEB4-0475-4D2F-ADA9-76E4F55BB5BB} = {FBB847F2-AC1C-47DD-B5F7-37C160743F53}
+		{4E7F6185-4433-4C75-96A6-8859411577CC} = {FBB847F2-AC1C-47DD-B5F7-37C160743F53}
+		{F8C2150F-7D48-4E30-AE9A-E2354E5A536D} = {FBB847F2-AC1C-47DD-B5F7-37C160743F53}
 		{9A6809EF-E0C7-4552-98FA-2D75A33CCFE3} = {8F66D9D2-6558-48CB-BAC7-9D5D5F820008}
 	EndGlobalSection
 EndGlobal
