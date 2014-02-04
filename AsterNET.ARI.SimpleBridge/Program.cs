@@ -7,12 +7,7 @@
  */
 
 using AsterNET.ARI.Models;
-using AsterNET.ARI;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AsterNET.ARI.SimpleBridge
 {
@@ -27,7 +22,7 @@ namespace AsterNET.ARI.SimpleBridge
         {
             try
             {
-                endPoint = new StasisEndpoint("192.168.1.83", 8088, "username", "test");
+                endPoint = new StasisEndpoint("192.168.3.16", 8088, "username", "test");
 
                 // Create a message client to receive events on
                 client = endPoint.GetStasisClient("bridge_test");
@@ -60,6 +55,18 @@ namespace AsterNET.ARI.SimpleBridge
                             break;
                         case "2":
                             endPoint.Bridges.StartMoh(SimpleBridge.Id, "default");
+                            break;
+                        case "3":
+                            // Mute all channels on bridge
+                            var bridgeMute = endPoint.Bridges.Get(SimpleBridge.Id);
+                            foreach (var chan in bridgeMute.Channels)
+                                endPoint.Channels.Mute(chan, "in");
+                            break;
+                        case "4":
+                            // Unmute all channels on bridge
+                            var bridgeUnmute = endPoint.Bridges.Get(SimpleBridge.Id);
+                            foreach (var chan in bridgeUnmute.Channels)
+                                endPoint.Channels.Unmute(chan, "in");
                             break;
                     }
                 }

@@ -1,5 +1,6 @@
 04.02.2014		Skrusty
 	Added	Sample-RecordAndPlayback example to demonstrate recoding and playback on ARI
+	Added	Simple caller mute to bridge sample (3 to mute, 4 to unmute all channels)
 
 03.02.2014		Skrusty
 	Added	Simple bridge example project
