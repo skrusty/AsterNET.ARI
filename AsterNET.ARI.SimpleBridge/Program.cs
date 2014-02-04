@@ -1,9 +1,18 @@
 ﻿/*
-    
-    exten => 7002,1,Noop()
-    same => n,Stasis(bridge_test)
-    same => n,hangup()
- 
+ * SimpleBridge AsterNET.ARI Bridge Sample
+ * Copyright Ben Merrills (ben at mersontech co uk), all rights reserved.
+ * https://asternetari.codeplex.com/
+ * https://asternetari.codeplex.com/license
+ * 
+ * No Warranty. The Software is provided "as is" without warranty of any kind, either express or implied, 
+ * including without limitation any implied warranties of condition, uninterrupted use, merchantability, 
+ * fitness for a particular purpose, or non-infringement.
+ * 
+ * Extensions.conf exmaple setup
+ *   exten => 7002,1,Noop()
+ *   same => n,Stasis(bridge_test)
+ *   same => n,hangup()
+ *
  */
 
 using AsterNET.ARI.Models;
@@ -15,8 +24,9 @@ namespace AsterNET.ARI.SimpleBridge
     {
         public static ARIClient client;
         public static StasisEndpoint endPoint;
-
         public static Bridge SimpleBridge;
+
+        private const string AppName = "bridge_test";
 
         static void Main(string[] args)
         {
@@ -25,7 +35,7 @@ namespace AsterNET.ARI.SimpleBridge
                 endPoint = new StasisEndpoint("192.168.3.16", 8088, "username", "test");
 
                 // Create a message client to receive events on
-                client = endPoint.GetStasisClient("bridge_test");
+                client = endPoint.GetStasisClient(AppName);
 
                 client.OnStasisStartEvent += c_OnStasisStartEvent;
                 client.OnStasisEndEvent += c_OnStasisEndEvent;
@@ -36,7 +46,7 @@ namespace AsterNET.ARI.SimpleBridge
                 SimpleBridge = endPoint.Bridges.Create("mixing", Guid.NewGuid().ToString());
 
                 // subscribe to bridge events
-                endPoint.Applications.Subscribe("bridge_test", "bridge:" + SimpleBridge.Id);
+                endPoint.Applications.Subscribe(AppName, "bridge:" + SimpleBridge.Id);
 
                 // start MOH on bridge
                 endPoint.Bridges.StartMoh(SimpleBridge.Id, "default");

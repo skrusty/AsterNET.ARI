@@ -1,16 +1,22 @@
 ﻿/*
-    exten => 7003,1,Noop()
-    same => n,Stasis(playrec_test)
-    same => n,hangup()
+ * RecordPlayback AsterNET.ARI Audio Sample
+ * Copyright Ben Merrills (ben at mersontech co uk), all rights reserved.
+ * https://asternetari.codeplex.com/
+ * https://asternetari.codeplex.com/license
+ * 
+ * No Warranty. The Software is provided "as is" without warranty of any kind, either express or implied, 
+ * including without limitation any implied warranties of condition, uninterrupted use, merchantability, 
+ * fitness for a particular purpose, or non-infringement.
+ * 
+ * Extensions.conf exmaple setup
+ *   exten => 7003,1,Noop()
+ *   same => n,Stasis(playrec_test)
+ *   same => n,hangup()
  */
 
 using AsterNET.ARI;
 using AsterNET.ARI.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Sample_RecordAndPlayback
 {
@@ -45,7 +51,7 @@ namespace Sample_RecordAndPlayback
         {
             try
             {
-                endPoint = new StasisEndpoint("ip-address", 8088, "username", "password");
+                endPoint = new StasisEndpoint("ipaddress", 8088, "username", "password");
 
                 // Create a message client to receive events on
                 client = endPoint.GetStasisClient("playrec_test");

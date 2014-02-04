@@ -1,6 +1,17 @@
 04.02.2014		Skrusty
 	Added	Sample-RecordAndPlayback example to demonstrate recoding and playback on ARI
 	Added	Simple caller mute to bridge sample (3 to mute, 4 to unmute all channels)
+	Added	New SimpleConf samples project. This is a rough implementation of a conference system written in AsterNET.ARI. There is currently
+			very little error checking and is only for demonstration and testing purposes. However please feel free to add to it and point out any
+			silly errors or mistakes.
+
+			Currently not all the conference states work, and it's only the most basic functionality currently implemented. However it does what it 
+			should, it lets multple people talk! Gives announcements for on join and leave events, allows callers to mute themselves, and unmute. :)
+
+			Currently known issues: 
+			1. Sometimes on second caller joining, DTMF stops working
+			2. Announcements for Join and Leaver overlap the name of the caller
+			3. Sometimes the recording stops before the caller says anything, might be silence detection being too short
 
 03.02.2014		Skrusty
 	Added	Simple bridge example project
