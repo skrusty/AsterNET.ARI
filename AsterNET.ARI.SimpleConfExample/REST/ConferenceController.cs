@@ -13,7 +13,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web.Http;
+using System.Web.Http.Cors;
+using Microsoft.Owin.Cors;
 
 namespace AsterNET.ARI.SimpleConfExample.REST
 {
@@ -24,6 +27,7 @@ namespace AsterNET.ARI.SimpleConfExample.REST
      * 
      */
 
+    [EnableCors(origins: "http://localhost:9000", headers: "*", methods: "*")]
     public class ConferenceController : ApiController
     {
         [HttpGet]

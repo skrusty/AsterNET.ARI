@@ -25,6 +25,7 @@ namespace AsterNET.ARI.SimpleConfExample.REST
         {
             // Configure Web API for self-host. 
             var config = new HttpConfiguration();
+
             //config.Routes.MapHttpRoute(
             //    name: "DefaultApi",
             //    routeTemplate: "api/{controller}/{id}",
@@ -70,7 +71,6 @@ namespace AsterNET.ARI.SimpleConfExample.REST
                 defaults: new { action = "Delete" },
                 constraints: new { httpMethod = new HttpMethodConstraint(HttpMethod.Delete) }
             );
-
             appBuilder.UseWebApi(config);
         }
     } 
