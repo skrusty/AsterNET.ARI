@@ -11,7 +11,7 @@
  * Extensions.conf exmaple setup
  * 
  *   exten => 7001,1,Noop()
- *   same => n,Stasis(miniconf,test)
+ *   same => n,Stasis(simpleconf,test)
  *   same => n,hangup()
  *   
  */
@@ -21,20 +21,21 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using AsterNET.ARI.Models;
+using AsterNET.ARI.SimpleConfExample.REST;
+using Microsoft.Owin.Hosting;
 
 namespace AsterNET.ARI.SimpleConfExample
 {
     public class AppConfig
     {
-        public const string AppName = "miniconf";
+        public const string AppName = "simpleconf";
+        public const string RestAddress = "http://localhost:9000/"; 
     }
 
     internal class Program
     {
         public static ARIClient Client;
         public static StasisEndpoint EndPoint;
-        public static List<Conference> Conferences;
-
 
         private static void Main(string[] args)
         {
@@ -45,28 +46,24 @@ namespace AsterNET.ARI.SimpleConfExample
                 // Create a message client to receive events on
                 Client = EndPoint.GetStasisClient(AppConfig.AppName);
 
-                Conferences = new List<Conference>
-                {
-                    new Conference(EndPoint, Client, Guid.NewGuid(), "test")
-                };
 
+                Conference.Conferences.Add(new Conference(EndPoint, Client, Guid.NewGuid(), "test"));
+                
                 Client.OnStasisStartEvent += c_OnStasisStartEvent;
                 Client.OnStasisEndEvent += c_OnStasisEndEvent;
 
                 Client.Connect();
 
-                Conferences.ForEach(x =>
-                {
-                    if (!x.StartConference())
-                        Debug.Print("Failed to start {0}.", x.ConferenceName);
-                });
+                // Start REST
+                WebApp.Start<Startup>(url: AppConfig.RestAddress);
 
+                // Wait
                 Console.ReadKey();
 
                 // TODO: Destroy all the conferences and their bridges!
                 // 
-                Conferences.ForEach(x => x.DestroyConference());
-                Conferences = null;
+                Conference.Conferences.ForEach(x => x.DestroyConference());
+                Conference.Conferences = null;
             }
             catch (Exception ex)
             {
@@ -81,10 +78,10 @@ namespace AsterNET.ARI.SimpleConfExample
         {
             if (e.Application != AppConfig.AppName) return;
 
-            var conf = Conferences.SingleOrDefault(x => x.ConferenceUsers.Any(c => c.Channel.Id == e.Channel.Id));
+            var conf = Conference.Conferences.SingleOrDefault(x => x.ConferenceUsers.Any(c => c.Channel.Id == e.Channel.Id));
             if (conf == null) return;
 
-            conf.RemoveUser(e.Channel);
+            conf.RemoveUser(e.Channel.Id);
         }
 
         private static void c_OnStasisStartEvent(object sender, StasisStartEvent e)
@@ -93,7 +90,7 @@ namespace AsterNET.ARI.SimpleConfExample
             if (e.Args.Count == 0) return;
 
             var confId = e.Args[0];
-            var conf = Conferences.SingleOrDefault(x => x.ConferenceName == confId);
+            var conf = Conference.Conferences.SingleOrDefault(x => x.ConferenceName == confId);
             if (conf == null) return;
 
             if (!conf.AddUser(e.Channel))

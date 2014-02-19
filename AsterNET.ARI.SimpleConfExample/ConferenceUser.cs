@@ -1,5 +1,5 @@
 /*
- * MiniConf AsterNET.ARI Conference Sample
+ * SimpleConf AsterNET.ARI Conference Sample
  * Copyright Ben Merrills (ben at mersontech co uk), all rights reserved.
  * https://asternetari.codeplex.com/
  * https://asternetari.codeplex.com/license

@@ -1,3 +1,8 @@
+19.02.2014		Skrusty
+	Added	Improved bridge management on SimpleConf
+	Added	WebAPI Rest interface for controlling conferences (Play, Record, MOH Start/Stop, Kick, Add etc)
+	Tidy	Seperated out the code a bit to make it easier to read and more managable
+
 15.02.2014		Skrusty
 	Tidy	Cleaned up code, seperated out the main classes into seperate files
 
