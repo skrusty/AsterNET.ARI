@@ -41,7 +41,7 @@ namespace AsterNET.ARI.SimpleConfExample
         {
             try
             {
-                EndPoint = new StasisEndpoint("192.168.3.16", 8088, "username", "test");
+                EndPoint = new StasisEndpoint("192.168.1.75", 8088, "username", "test");
 
                 // Create a message client to receive events on
                 Client = EndPoint.GetStasisClient(AppConfig.AppName);

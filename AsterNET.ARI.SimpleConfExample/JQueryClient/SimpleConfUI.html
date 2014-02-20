@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>ToDo API Client Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js"></script>
+    <script src="simpleconfcontroller.js"></script>
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-inner">
+            <a class="brand" href="#">SimpleConf Demo UI</a>
+        </div>
+    </div>
+    <div id="main" class="container">
+
+        <table class="table table-striped">
+            <tr><td style="width: 1px;"></td><td><b>Conference</b></td><td><b>Options</b></td></tr>
+            <!-- ko foreach: confs -->
+            <tr>
+                <td>
+                    
+                </td>
+                <td><p><b data-bind="text: ConferenceName"></b></p><p data-bind="text: ConferenceId"></p></td>
+                <td>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            Action <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a data-bind="click: $parent.muteConf">Mute</a></li>
+                            <li><a data-bind="click: $parent.unmuteConf">Unmute</a></li>
+                            <li><a data-bind="click: $parent.startMoh">Start MOH</a></li>
+                            <li><a data-bind="click: $parent.stopMoh">Stop MOH</a></li>
+                            <li class="divider"></li>
+                            <li><a data-bind="click: $parent.destroy">Destroy</a></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            <!-- /ko -->
+        </table>
+        <!--<button data-bind="click: beginAdd" class="btn">Add Task</button>-->
+
+    </div>
+</body>
+</html>
