@@ -87,17 +87,28 @@ namespace AsterNET.ARI.SimpleConfExample
         private static void c_OnStasisStartEvent(object sender, StasisStartEvent e)
         {
             if (e.Application != AppConfig.AppName) return;
-            if (e.Args.Count == 0) return;
+            var failed = true;
+            if (e.Args.Count == 0)
+                EndPoint.Channels.SetChannelVar(e.Channel.Id, "CONFEXIT", "NOTFOUND");
 
             var confId = e.Args[0];
             var conf = Conference.Conferences.SingleOrDefault(x => x.ConferenceName == confId);
-            if (conf == null) return;
+            if (conf == null)
+                EndPoint.Channels.SetChannelVar(e.Channel.Id, "CONFEXIT", "NOTFOUND");
+            else
+                if (!conf.AddUser(e.Channel))
+                    EndPoint.Channels.SetChannelVar(e.Channel.Id, "CONFEXIT", "CANTJOIN");
+                else
+                {
+                    Debug.Print("Added channel {0} to {1}", e.Channel.Id, confId);
+                    failed = false;
+                }
 
-            if (!conf.AddUser(e.Channel))
-                EndPoint.Channels.ContinueInDialplan(e.Channel.Id, e.Channel.Dialplan.Context, e.Channel.Dialplan.Exten,
-                    (int) e.Channel.Dialplan.Priority++);
-
-            Debug.Print("Added channel {0} to {1}", e.Channel.Id, confId);
+            if(failed)
+                EndPoint.Channels.ContinueInDialplan(e.Channel.Id,
+                    e.Channel.Dialplan.Context,
+                    e.Channel.Dialplan.Exten,
+                    (int)e.Channel.Dialplan.Priority++);
         }
 
         #endregion
