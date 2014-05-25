@@ -1,4 +1,8 @@
-﻿using System;
+﻿/*
+	AsterNET ARI Framework
+	Automatically generated file @ 25/05/2014 20:39:48
+*/
+using System;
 using System.Collections.Generic;
 using AsterNET.ARI.Models;
 using AsterNET.ARI;

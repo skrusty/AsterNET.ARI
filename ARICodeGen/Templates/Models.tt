@@ -64,6 +64,10 @@ foreach (var file in files)
 			// create new file
 			manager.StartNewFile(className + ".cs");
 #>
+/*
+	AsterNET ARI Framework
+	Automatically generated file @ <#= DateTime.Now.ToString() #>
+*/
 using System;
 using System.Collections.Generic;
 
@@ -116,6 +120,10 @@ namespace AsterNET.ARI.Models
 		
 		manager.StartNewFile(actionClassName + ".cs");
 #>
+/*
+	AsterNET ARI Framework
+	Automatically generated file @ <#= DateTime.Now.ToString() #>
+*/
 using System;
 using System.Collections.Generic;
 using AsterNET.ARI.Models;
@@ -239,7 +247,10 @@ namespace AsterNET.ARI.Actions
 }
 	manager.StartNewFile("ARIClient.cs");
 #>
-
+/*
+	AsterNET ARI Framework
+	Automatically generated file @ <#= DateTime.Now.ToString() #>
+*/
 using System;
 using System.Collections.Generic;
 using AsterNET.ARI.Models;

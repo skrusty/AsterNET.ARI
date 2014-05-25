@@ -1,3 +1,7 @@
+25.05.2014		Skrusty
+	Updated	Updated ARI for swagger definitions and output for Asterisk 12.3.0-rc1
+			Includes fixes for playback containing target_uri (channel/bridge)
+
 19.02.2014		Skrusty
 	Added	Improved bridge management on SimpleConf
 	Added	WebAPI Rest interface for controlling conferences (Play, Record, MOH Start/Stop, Kick, Add etc)

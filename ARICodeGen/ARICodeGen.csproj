@@ -264,6 +264,7 @@
     <None Include="Data\Events.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Data\mailboxes.json" />
     <None Include="Data\Playbacks.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
