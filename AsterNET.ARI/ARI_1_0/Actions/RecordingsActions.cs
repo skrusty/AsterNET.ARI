@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 25/05/2014 20:39:48
+	Automatically generated file @ 26/05/2014 13:34:17
 */
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace AsterNET.ARI.Actions
 		{}
 
 		/// <summary>
-		/// List recordings that are complete.
+		/// List recordings that are complete.. 
 		/// </summary>
 		public List<StoredRecording> ListStored()
 		{
@@ -39,7 +39,7 @@ namespace AsterNET.ARI.Actions
             }
 		}
 		/// <summary>
-		/// Get a stored recording's details.
+		/// Get a stored recording's details.. 
 		/// </summary>
 		/// <param name="recordingName">The name of the recording</param>
 		public StoredRecording GetStored(string recordingName)
@@ -64,7 +64,7 @@ namespace AsterNET.ARI.Actions
             }
 		}
 		/// <summary>
-		/// Delete a stored recording.
+		/// Delete a stored recording.. 
 		/// </summary>
 		/// <param name="recordingName">The name of the recording</param>
 		public void DeleteStored(string recordingName)
@@ -75,7 +75,7 @@ namespace AsterNET.ARI.Actions
 			var response = Client.Execute(request);
 		}
 		/// <summary>
-		/// List live recordings.
+		/// List live recordings.. 
 		/// </summary>
 		/// <param name="recordingName">The name of the recording</param>
 		public LiveRecording GetLive(string recordingName)
@@ -100,7 +100,7 @@ namespace AsterNET.ARI.Actions
             }
 		}
 		/// <summary>
-		/// Stop a live recording and discard it.
+		/// Stop a live recording and discard it.. 
 		/// </summary>
 		/// <param name="recordingName">The name of the recording</param>
 		public void Cancel(string recordingName)
@@ -111,7 +111,7 @@ namespace AsterNET.ARI.Actions
 			var response = Client.Execute(request);
 		}
 		/// <summary>
-		/// Stop a live recording and store it.
+		/// Stop a live recording and store it.. 
 		/// </summary>
 		/// <param name="recordingName">The name of the recording</param>
 		public void Stop(string recordingName)
@@ -122,7 +122,7 @@ namespace AsterNET.ARI.Actions
 			var response = Client.Execute(request);
 		}
 		/// <summary>
-		/// Pause a live recording.
+		/// Pause a live recording.. Pausing a recording suspends silence detection, which will be restarted when the recording is unpaused. Paused time is not included in the accounting for maxDurationSeconds.
 		/// </summary>
 		/// <param name="recordingName">The name of the recording</param>
 		public void Pause(string recordingName)
@@ -133,7 +133,7 @@ namespace AsterNET.ARI.Actions
 			var response = Client.Execute(request);
 		}
 		/// <summary>
-		/// Unpause a live recording.
+		/// Unpause a live recording.. 
 		/// </summary>
 		/// <param name="recordingName">The name of the recording</param>
 		public void Unpause(string recordingName)
@@ -144,7 +144,7 @@ namespace AsterNET.ARI.Actions
 			var response = Client.Execute(request);
 		}
 		/// <summary>
-		/// Mute a live recording.
+		/// Mute a live recording.. Muting a recording suspends silence detection, which will be restarted when the recording is unmuted.
 		/// </summary>
 		/// <param name="recordingName">The name of the recording</param>
 		public void Mute(string recordingName)
@@ -155,7 +155,7 @@ namespace AsterNET.ARI.Actions
 			var response = Client.Execute(request);
 		}
 		/// <summary>
-		/// Unmute a live recording.
+		/// Unmute a live recording.. 
 		/// </summary>
 		/// <param name="recordingName">The name of the recording</param>
 		public void Unmute(string recordingName)

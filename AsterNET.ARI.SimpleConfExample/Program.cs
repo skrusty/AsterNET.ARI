@@ -16,13 +16,12 @@
  *   
  */
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using AsterNET.ARI.Models;
 using AsterNET.ARI.SimpleConfExample.REST;
 using Microsoft.Owin.Hosting;
+using System;
+using System.Diagnostics;
+using System.Linq;
 
 namespace AsterNET.ARI.SimpleConfExample
 {
@@ -35,19 +34,16 @@ namespace AsterNET.ARI.SimpleConfExample
     internal class Program
     {
         public static ARIClient Client;
-        public static StasisEndpoint EndPoint;
 
         private static void Main(string[] args)
         {
             try
             {
-                EndPoint = new StasisEndpoint("192.168.1.75", 8088, "username", "test");
-
                 // Create a message client to receive events on
-                Client = EndPoint.GetStasisClient(AppConfig.AppName);
+                Client = new ARIClient(new StasisEndpoint("192.168.1.75", 8088, "username", "test"), AppConfig.AppName);
 
 
-                Conference.Conferences.Add(new Conference(EndPoint, Client, Guid.NewGuid(), "test"));
+                Conference.Conferences.Add(new Conference(Client, Guid.NewGuid(), "test"));
                 
                 Client.OnStasisStartEvent += c_OnStasisStartEvent;
                 Client.OnStasisEndEvent += c_OnStasisEndEvent;
@@ -60,8 +56,7 @@ namespace AsterNET.ARI.SimpleConfExample
                 // Wait
                 Console.ReadKey();
 
-                // TODO: Destroy all the conferences and their bridges!
-                // 
+                // Destroy all the conferences and their bridges
                 Conference.Conferences.ForEach(x => x.DestroyConference());
                 Conference.Conferences = null;
             }
@@ -89,15 +84,15 @@ namespace AsterNET.ARI.SimpleConfExample
             if (e.Application != AppConfig.AppName) return;
             var failed = true;
             if (e.Args.Count == 0)
-                EndPoint.Channels.SetChannelVar(e.Channel.Id, "CONFEXIT", "NOTFOUND");
+                Client.Channels.SetChannelVar(e.Channel.Id, "CONFEXIT", "NOTFOUND");
 
             var confId = e.Args[0];
             var conf = Conference.Conferences.SingleOrDefault(x => x.ConferenceName == confId);
             if (conf == null)
-                EndPoint.Channels.SetChannelVar(e.Channel.Id, "CONFEXIT", "NOTFOUND");
+                Client.Channels.SetChannelVar(e.Channel.Id, "CONFEXIT", "NOTFOUND");
             else
                 if (!conf.AddUser(e.Channel))
-                    EndPoint.Channels.SetChannelVar(e.Channel.Id, "CONFEXIT", "CANTJOIN");
+                    Client.Channels.SetChannelVar(e.Channel.Id, "CONFEXIT", "CANTJOIN");
                 else
                 {
                     Debug.Print("Added channel {0} to {1}", e.Channel.Id, confId);
@@ -105,7 +100,7 @@ namespace AsterNET.ARI.SimpleConfExample
                 }
 
             if(failed)
-                EndPoint.Channels.ContinueInDialplan(e.Channel.Id,
+                Client.Channels.ContinueInDialplan(e.Channel.Id,
                     e.Channel.Dialplan.Context,
                     e.Channel.Dialplan.Exten,
                     (int)e.Channel.Dialplan.Priority++);

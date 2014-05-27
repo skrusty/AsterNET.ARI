@@ -1,9 +1,10 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 25/05/2014 20:39:48
+	Automatically generated file @ 27/05/2014 20:58:04
 */
 using System;
 using System.Collections.Generic;
+using AsterNET.ARI.Actions;
 
 namespace AsterNET.ARI.Models
 {
@@ -12,6 +13,18 @@ namespace AsterNET.ARI.Models
 	/// </summary>
 	public class DialEvent  : Event
 	{
+
+		/// <summary>
+		///
+		/// </summary>
+		// public EventsActions Event { get; set; }
+
+
+		/// <summary>
+		/// Channel that the caller has been forwarded to.
+		/// </summary>
+		public Channel Forwarded { get; set; }
+
 		/// <summary>
 		/// The calling channel.
 		/// </summary>
@@ -26,11 +39,6 @@ namespace AsterNET.ARI.Models
 		/// Forwarding target requested by the original dialed channel.
 		/// </summary>
 		public string Forward { get; set; }
-
-		/// <summary>
-		/// Channel that the caller has been forwarded to.
-		/// </summary>
-		public Channel Forwarded { get; set; }
 
 		/// <summary>
 		/// The dial string for calling the peer channel.

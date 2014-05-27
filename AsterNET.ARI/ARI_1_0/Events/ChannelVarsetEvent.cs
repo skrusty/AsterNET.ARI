@@ -1,9 +1,10 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 25/05/2014 20:39:48
+	Automatically generated file @ 26/05/2014 13:34:17
 */
 using System;
 using System.Collections.Generic;
+using AsterNET.ARI.Actions;
 
 namespace AsterNET.ARI.Models
 {
@@ -12,6 +13,18 @@ namespace AsterNET.ARI.Models
 	/// </summary>
 	public class ChannelVarsetEvent  : Event
 	{
+
+		/// <summary>
+		///
+		/// </summary>
+		// public EventsActions Event { get; set; }
+
+
+		/// <summary>
+		/// The channel on which the variable was set.  If missing, the variable is a global variable.
+		/// </summary>
+		public Channel Channel { get; set; }
+
 		/// <summary>
 		/// The variable that changed.
 		/// </summary>
@@ -21,11 +34,6 @@ namespace AsterNET.ARI.Models
 		/// The new value of the variable.
 		/// </summary>
 		public string Value { get; set; }
-
-		/// <summary>
-		/// The channel on which the variable was set.  If missing, the variable is a global variable.
-		/// </summary>
-		public Channel Channel { get; set; }
 
 	}
 }

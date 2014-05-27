@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 25/05/2014 20:39:48
+	Automatically generated file @ 26/05/2014 13:34:17
 */
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace AsterNET.ARI.Actions
 		{}
 
 		/// <summary>
-		/// List all applications.
+		/// List all applications.. 
 		/// </summary>
 		public List<Application> List()
 		{
@@ -39,7 +39,7 @@ namespace AsterNET.ARI.Actions
             }
 		}
 		/// <summary>
-		/// Get details of an application.
+		/// Get details of an application.. 
 		/// </summary>
 		/// <param name="applicationName">Application's name</param>
 		public Application Get(string applicationName)
@@ -64,7 +64,7 @@ namespace AsterNET.ARI.Actions
             }
 		}
 		/// <summary>
-		/// Subscribe an application to a event source.
+		/// Subscribe an application to a event source.. Returns the state of the application after the subscriptions have changed
 		/// </summary>
 		/// <param name="applicationName">Application's name</param>
 		/// <param name="eventSource">URI for event source (channel:{channelId}, bridge:{bridgeId}, endpoint:{tech}/{resource}, deviceState:{deviceName}</param>
@@ -97,7 +97,7 @@ namespace AsterNET.ARI.Actions
             }
 		}
 		/// <summary>
-		/// Unsubscribe an application from an event source.
+		/// Unsubscribe an application from an event source.. Returns the state of the application after the subscriptions have changed
 		/// </summary>
 		/// <param name="applicationName">Application's name</param>
 		/// <param name="eventSource">URI for event source (channel:{channelId}, bridge:{bridgeId}, endpoint:{tech}/{resource}, deviceState:{deviceName}</param>

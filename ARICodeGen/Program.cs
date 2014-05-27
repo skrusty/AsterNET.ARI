@@ -20,15 +20,12 @@ namespace ARICodeGen
     class Program
     {
         public static ARIClient client;
-        public static StasisEndpoint endPoint;
         static void Main(string[] args)
         {
             try
             {
-                endPoint = new StasisEndpoint("192.168.1.67", 8088, "username", "test");
-                client = endPoint.GetStasisClient("hello");
+                client = new ARIClient(new StasisEndpoint("192.168.1.67", 8088, "username", "test"), "test");
                 
-
                 client.Connect();
 
                 Console.ReadKey();
@@ -52,6 +49,8 @@ namespace ARICodeGen
                 return "DateTime";
             if (inputType.ToLower() == "boolean")
                 return "bool";
+            if (inputType.ToLower() == "containers")
+                return "List<KeyValuePair<string, string>>";
             return inputType;
         }
 

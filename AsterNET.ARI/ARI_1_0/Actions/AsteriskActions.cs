@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 25/05/2014 20:39:48
+	Automatically generated file @ 26/05/2014 13:34:17
 */
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace AsterNET.ARI.Actions
 		{}
 
 		/// <summary>
-		/// Gets Asterisk system information.
+		/// Gets Asterisk system information.. 
 		/// </summary>
 		/// <param name="only">Filter information returned</param>
 		public AsteriskInfo GetInfo(string only)
@@ -41,7 +41,7 @@ namespace AsterNET.ARI.Actions
             }
 		}
 		/// <summary>
-		/// Get the value of a global variable.
+		/// Get the value of a global variable.. 
 		/// </summary>
 		/// <param name="variable">The variable to get</param>
 		public Variable GetGlobalVar(string variable)
@@ -66,7 +66,7 @@ namespace AsterNET.ARI.Actions
             }
 		}
 		/// <summary>
-		/// Set the value of a global variable.
+		/// Set the value of a global variable.. 
 		/// </summary>
 		/// <param name="variable">The variable to set</param>
 		/// <param name="value">The value to set the variable to</param>

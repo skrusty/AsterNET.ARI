@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 25/05/2014 20:39:48
+	Automatically generated file @ 27/05/2014 20:58:04
 */
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace AsterNET.ARI.Actions
 		{}
 
 		/// <summary>
-		/// List all active bridges in Asterisk.
+		/// List all active bridges in Asterisk.. 
 		/// </summary>
 		public List<Bridge> List()
 		{
@@ -39,15 +39,17 @@ namespace AsterNET.ARI.Actions
             }
 		}
 		/// <summary>
-		/// Create a new bridge.
+		/// Create a new bridge.. This bridge persists until it has been shut down, or Asterisk has been shut down.
 		/// </summary>
-		/// <param name="type">Type of bridge to create.</param>
+		/// <param name="type">Comma separated list of bridge type attributes (mixing, holding, dtmf_events, proxy_media).</param>
+		/// <param name="bridgeId">Unique ID to give to the bridge being created.</param>
 		/// <param name="name">Name to give to the bridge being created.</param>
-		public Bridge Create(string type, string name)
+		public Bridge Create(string type, string bridgeId, string name)
 		{
 			string path = "/bridges";
 			var request = GetNewRequest(path, Method.POST);
 			request.AddParameter("type", type, ParameterType.QueryString);
+			request.AddParameter("bridgeId", bridgeId, ParameterType.QueryString);
 			request.AddParameter("name", name, ParameterType.QueryString);
 
 			var response = Client.Execute<Bridge>(request);
@@ -63,7 +65,33 @@ namespace AsterNET.ARI.Actions
             }
 		}
 		/// <summary>
-		/// Get bridge details.
+		/// Create a new bridge or updates an existing one.. This bridge persists until it has been shut down, or Asterisk has been shut down.
+		/// </summary>
+		/// <param name="type">Comma separated list of bridge type attributes (mixing, holding, dtmf_events, proxy_media) to set.</param>
+		/// <param name="bridgeId">Unique ID to give to the bridge being created.</param>
+		/// <param name="name">Set the name of the bridge.</param>
+		public Bridge Create_or_update_with_id(string type, string bridgeId, string name)
+		{
+			string path = "/bridges/{bridgeId}";
+			var request = GetNewRequest(path, Method.POST);
+			request.AddParameter("type", type, ParameterType.QueryString);
+			request.AddUrlSegment("bridgeId", bridgeId);
+			request.AddParameter("name", name, ParameterType.QueryString);
+
+			var response = Client.Execute<Bridge>(request);
+
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return response.Data;
+
+			switch((int)response.StatusCode)
+            {
+				default:
+					// Unknown server response
+					throw new ARIException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
+            }
+		}
+		/// <summary>
+		/// Get bridge details.. 
 		/// </summary>
 		/// <param name="bridgeId">Bridge's id</param>
 		public Bridge Get(string bridgeId)
@@ -88,7 +116,7 @@ namespace AsterNET.ARI.Actions
             }
 		}
 		/// <summary>
-		/// Shut down a bridge.
+		/// Shut down a bridge.. If any channels are in this bridge, they will be removed and resume whatever they were doing beforehand.
 		/// </summary>
 		/// <param name="bridgeId">Bridge's id</param>
 		public void Destroy(string bridgeId)
@@ -99,7 +127,7 @@ namespace AsterNET.ARI.Actions
 			var response = Client.Execute(request);
 		}
 		/// <summary>
-		/// Add a channel to a bridge.
+		/// Add a channel to a bridge.. 
 		/// </summary>
 		/// <param name="bridgeId">Bridge's id</param>
 		/// <param name="channel">Ids of channels to add to bridge</param>
@@ -114,7 +142,7 @@ namespace AsterNET.ARI.Actions
 			var response = Client.Execute(request);
 		}
 		/// <summary>
-		/// Remove a channel from a bridge.
+		/// Remove a channel from a bridge.. 
 		/// </summary>
 		/// <param name="bridgeId">Bridge's id</param>
 		/// <param name="channel">Ids of channels to remove from bridge</param>
@@ -127,7 +155,7 @@ namespace AsterNET.ARI.Actions
 			var response = Client.Execute(request);
 		}
 		/// <summary>
-		/// Play music on hold to a bridge or change the MOH class that is playing.
+		/// Play music on hold to a bridge or change the MOH class that is playing.. 
 		/// </summary>
 		/// <param name="bridgeId">Bridge's id</param>
 		/// <param name="mohClass">Channel's id</param>
@@ -140,7 +168,7 @@ namespace AsterNET.ARI.Actions
 			var response = Client.Execute(request);
 		}
 		/// <summary>
-		/// Stop playing music on hold to a bridge.
+		/// Stop playing music on hold to a bridge.. This will only stop music on hold being played via POST bridges/{bridgeId}/moh.
 		/// </summary>
 		/// <param name="bridgeId">Bridge's id</param>
 		public void StopMoh(string bridgeId)
@@ -151,18 +179,58 @@ namespace AsterNET.ARI.Actions
 			var response = Client.Execute(request);
 		}
 		/// <summary>
-		/// Start playback of media on a bridge.
+		/// Start playback of media on a bridge.. The media URI may be any of a number of URI's. Currently sound:, recording:, number:, digits:, characters:, and tone: URI's are supported. This operation creates a playback resource that can be used to control the playback of media (pause, rewind, fast forward, etc.)
 		/// </summary>
 		/// <param name="bridgeId">Bridge's id</param>
 		/// <param name="media">Media's URI to play.</param>
 		/// <param name="lang">For sounds, selects language for sound.</param>
 		/// <param name="offsetms">Number of media to skip before playing.</param>
 		/// <param name="skipms">Number of milliseconds to skip for forward/reverse operations.</param>
-		public Playback Play(string bridgeId, string media, string lang, int offsetms, int skipms)
+		/// <param name="playbackId">Playback Id.</param>
+		public Playback Play(string bridgeId, string media, string lang, int offsetms, int skipms, string playbackId)
 		{
 			string path = "/bridges/{bridgeId}/play";
 			var request = GetNewRequest(path, Method.POST);
 			request.AddUrlSegment("bridgeId", bridgeId);
+			request.AddParameter("media", media, ParameterType.QueryString);
+			request.AddParameter("lang", lang, ParameterType.QueryString);
+			request.AddParameter("offsetms", offsetms, ParameterType.QueryString);
+			request.AddParameter("skipms", skipms, ParameterType.QueryString);
+			request.AddParameter("playbackId", playbackId, ParameterType.QueryString);
+
+			var response = Client.Execute<Playback>(request);
+
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return response.Data;
+
+			switch((int)response.StatusCode)
+            {
+				case 404:
+					throw new ARIException("Bridge not found");
+					break;
+				case 409:
+					throw new ARIException("Bridge not in a Stasis application");
+					break;
+				default:
+					// Unknown server response
+					throw new ARIException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
+            }
+		}
+		/// <summary>
+		/// Start playback of media on a bridge.. The media URI may be any of a number of URI's. Currently sound: and recording: URI's are supported. This operation creates a playback resource that can be used to control the playback of media (pause, rewind, fast forward, etc.)
+		/// </summary>
+		/// <param name="bridgeId">Bridge's id</param>
+		/// <param name="playbackId">Playback ID.</param>
+		/// <param name="media">Media's URI to play.</param>
+		/// <param name="lang">For sounds, selects language for sound.</param>
+		/// <param name="offsetms">Number of media to skip before playing.</param>
+		/// <param name="skipms">Number of milliseconds to skip for forward/reverse operations.</param>
+		public Playback PlayWithId(string bridgeId, string playbackId, string media, string lang, int offsetms, int skipms)
+		{
+			string path = "/bridges/{bridgeId}/play/{playbackId}";
+			var request = GetNewRequest(path, Method.POST);
+			request.AddUrlSegment("bridgeId", bridgeId);
+			request.AddUrlSegment("playbackId", playbackId);
 			request.AddParameter("media", media, ParameterType.QueryString);
 			request.AddParameter("lang", lang, ParameterType.QueryString);
 			request.AddParameter("offsetms", offsetms, ParameterType.QueryString);
@@ -187,7 +255,7 @@ namespace AsterNET.ARI.Actions
             }
 		}
 		/// <summary>
-		/// Start a recording.
+		/// Start a recording.. This records the mixed audio from all channels participating in this bridge.
 		/// </summary>
 		/// <param name="bridgeId">Bridge's id</param>
 		/// <param name="name">Recording's filename</param>

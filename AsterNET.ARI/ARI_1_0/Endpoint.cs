@@ -1,9 +1,10 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 25/05/2014 20:39:48
+	Automatically generated file @ 26/05/2014 13:34:17
 */
 using System;
 using System.Collections.Generic;
+using AsterNET.ARI.Actions;
 
 namespace AsterNET.ARI.Models
 {
@@ -12,20 +13,27 @@ namespace AsterNET.ARI.Models
 	/// </summary>
 	public class Endpoint 
 	{
+
+		/// <summary>
+		///
+		/// </summary>
+		// public EndpointsActions Endpoint { get; set; }
+
+
 		/// <summary>
 		/// Technology of the endpoint
 		/// </summary>
 		public string Technology { get; set; }
 
 		/// <summary>
-		/// Identifier of the endpoint, specific to the given technology.
-		/// </summary>
-		public string Resource { get; set; }
-
-		/// <summary>
 		/// Endpoint's state
 		/// </summary>
 		public string State { get; set; }
+
+		/// <summary>
+		/// Identifier of the endpoint, specific to the given technology.
+		/// </summary>
+		public string Resource { get; set; }
 
 		/// <summary>
 		/// Id's of channels associated with this endpoint

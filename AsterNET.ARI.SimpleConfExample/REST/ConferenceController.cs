@@ -126,7 +126,7 @@ namespace AsterNET.ARI.SimpleConfExample.REST
         [HttpPost]
         public Conference Post(string name)
         {
-            var conf = new Conference(Program.EndPoint, Program.Client, Guid.NewGuid(), name);
+            var conf = new Conference(Program.Client, Guid.NewGuid(), name);
             Conference.Conferences.Add(conf);
 
             return conf;

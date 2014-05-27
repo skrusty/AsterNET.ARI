@@ -79,6 +79,12 @@
     <Compile Include="Templates\Bridge.cs">
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
+    <Compile Include="Templates\BridgeAttendedTransferEvent.cs">
+      <DependentUpon>Models.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\BridgeBlindTransferEvent.cs">
+      <DependentUpon>Models.tt</DependentUpon>
+    </Compile>
     <Compile Include="Templates\BridgeCreatedEvent.cs">
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
@@ -243,37 +249,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Data\Applications.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Data\Asterisk.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Data\Bridges.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Data\Channels.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Data\DeviceStates.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Data\Endpoints.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Data\Events.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <None Include="Data\applications.json" />
+    <None Include="Data\asterisk.json" />
+    <None Include="Data\bridges.json" />
+    <None Include="Data\channels.json" />
+    <None Include="Data\deviceStates.json" />
+    <None Include="Data\endpoints.json" />
+    <None Include="Data\events.json" />
     <None Include="Data\mailboxes.json" />
-    <None Include="Data\Playbacks.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Data\Recordings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Data\Sounds.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <None Include="Data\playbacks.json" />
+    <None Include="Data\recordings.json" />
+    <None Include="Data\sounds.json" />
     <None Include="packages.config" />
     <None Include="Templates\Models.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

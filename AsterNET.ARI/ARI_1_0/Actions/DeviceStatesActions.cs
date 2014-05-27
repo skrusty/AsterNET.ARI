@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 25/05/2014 20:39:48
+	Automatically generated file @ 26/05/2014 13:34:17
 */
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace AsterNET.ARI.Actions
 		{}
 
 		/// <summary>
-		/// List all ARI controlled device states.
+		/// List all ARI controlled device states.. 
 		/// </summary>
 		public List<DeviceState> List()
 		{
@@ -39,7 +39,7 @@ namespace AsterNET.ARI.Actions
             }
 		}
 		/// <summary>
-		/// Retrieve the current state of a device.
+		/// Retrieve the current state of a device.. 
 		/// </summary>
 		/// <param name="deviceName">Name of the device</param>
 		public DeviceState Get(string deviceName)
@@ -61,7 +61,7 @@ namespace AsterNET.ARI.Actions
             }
 		}
 		/// <summary>
-		/// Change the state of a device controlled by ARI. (Note - implicitly creates the device state).
+		/// Change the state of a device controlled by ARI. (Note - implicitly creates the device state).. 
 		/// </summary>
 		/// <param name="deviceName">Name of the device</param>
 		/// <param name="deviceState">Device state value</param>
@@ -74,7 +74,7 @@ namespace AsterNET.ARI.Actions
 			var response = Client.Execute(request);
 		}
 		/// <summary>
-		/// Destroy a device-state controlled by ARI.
+		/// Destroy a device-state controlled by ARI.. 
 		/// </summary>
 		/// <param name="deviceName">Name of the device</param>
 		public void Delete(string deviceName)

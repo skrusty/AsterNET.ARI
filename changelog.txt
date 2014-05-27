@@ -1,3 +1,14 @@
+27.05.2014		Skrusty
+	New		Rebuilt class structure from CodeGen with 12.3.0-rc1 swagger definitions
+	Updated	Class layout for ARIClient, ARIClient is now root class for AsterNET.ARI structure
+			and now takes an instance of StasisEndpoint for connection details only
+	Updated	ARIClient now contains properties for each ARI Rest Endpoint (Channels, Bridges etc)
+	Updated	SimpleConf updated for new class layout
+	Updated	SimpleBridge updated for new class layout
+	Updated SimpleConf updated for new class layout
+	Added	Support for 'containers' key/value pairs
+
+
 25.05.2014		Skrusty
 	Updated	Updated ARI for swagger definitions and output for Asterisk 12.3.0-rc1
 			Includes fixes for playback containing target_uri (channel/bridge)

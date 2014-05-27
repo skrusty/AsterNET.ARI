@@ -1,9 +1,10 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 25/05/2014 20:39:48
+	Automatically generated file @ 27/05/2014 20:58:04
 */
 using System;
 using System.Collections.Generic;
+using AsterNET.ARI.Actions;
 
 namespace AsterNET.ARI.Models
 {
@@ -12,15 +13,22 @@ namespace AsterNET.ARI.Models
 	/// </summary>
 	public class StoredRecording 
 	{
+
 		/// <summary>
-		/// no description provided
+		///
 		/// </summary>
-		public string Name { get; set; }
+		// public RecordingsActions Recording { get; set; }
+
 
 		/// <summary>
 		/// no description provided
 		/// </summary>
 		public string Format { get; set; }
+
+		/// <summary>
+		/// no description provided
+		/// </summary>
+		public string Name { get; set; }
 
 	}
 }

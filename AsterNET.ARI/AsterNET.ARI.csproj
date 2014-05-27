@@ -51,13 +51,15 @@
     <Compile Include="ARIBaseAction.cs" />
     <Compile Include="ARIClient.cs" />
     <Compile Include="ARIException.cs" />
-    <Compile Include="ARI_1_0\Actions\Application.cs" />
+    <Compile Include="ARI_1_0\Application.cs" />
     <Compile Include="ARI_1_0\Events\ApplicationReplacedEvent.cs" />
     <Compile Include="ARI_1_0\Actions\ApplicationsActions.cs" />
     <Compile Include="ARI_1_0\ARIClient.cs" />
     <Compile Include="ARI_1_0\Actions\AsteriskActions.cs" />
     <Compile Include="ARI_1_0\AsteriskInfo.cs" />
     <Compile Include="ARI_1_0\Bridge.cs" />
+    <Compile Include="ARI_1_0\Events\BridgeAttendedTransferEvent.cs" />
+    <Compile Include="ARI_1_0\Events\BridgeBlindTransferEvent.cs" />
     <Compile Include="ARI_1_0\Events\BridgeCreatedEvent.cs" />
     <Compile Include="ARI_1_0\Events\BridgeDestroyedEvent.cs" />
     <Compile Include="ARI_1_0\Events\BridgeMergedEvent.cs" />

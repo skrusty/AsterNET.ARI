@@ -10,6 +10,7 @@
  *   
  */
 
+using System;
 using System.Diagnostics;
 using AsterNET.ARI.Models;
 
@@ -34,9 +35,9 @@ namespace AsterNET.ARI.SimpleConfExample
     {
         #region Private Properties
 
-        private readonly StasisEndpoint _endPoint;
-        private ConferenceUserState _state;
+        private readonly ARIClient _client;
         private Conference _conference;
+        private ConferenceUserState _state;
 
         #endregion
 
@@ -61,17 +62,17 @@ namespace AsterNET.ARI.SimpleConfExample
 
         #endregion
 
-        public ConferenceUser(Conference conf, Channel chan, StasisEndpoint ep, ConferenceUserType type)
+        public ConferenceUser(Conference conf, Channel chan, ARIClient client, ConferenceUserType type)
         {
             _conference = conf;
             Channel = chan;
-            _endPoint = ep;
+            _client = client;
             Type = type;
 
             // Initial State
             State = ConferenceUserState.AskForName;
             // Get user to speak name
-            CurrentPlaybackId = _endPoint.Channels.Play(Channel.Id, "sound:vm-rec-name", "en", 0, 0).Id;
+            CurrentPlaybackId = _client.Channels.Play(Channel.Id, "sound:vm-rec-name", "en", 0, 0, Guid.NewGuid().ToString()).Id;
             RecordName();
         }
 
@@ -81,7 +82,8 @@ namespace AsterNET.ARI.SimpleConfExample
         {
             State = ConferenceUserState.RecordingName;
             CurrentRecodingId =
-                _endPoint.Channels.Record(Channel.Id, string.Format("conftemp-{0}", Channel.Id), "wav", 6, 1, "overwrite",
+                _client.Channels.Record(Channel.Id, string.Format("conftemp-{0}", Channel.Id), "wav", 6, 1,
+                    "overwrite",
                     true, "#").Name;
         }
 
@@ -92,13 +94,13 @@ namespace AsterNET.ARI.SimpleConfExample
             {
                 case "1":
                     // Mute
-                    _endPoint.Channels.Mute(Channel.Id, "in");
-                    _endPoint.Channels.Play(Channel.Id, "sound:conf-muted", "en", 0, 0);
+                    _client.Channels.Mute(Channel.Id, "in");
+                    _client.Channels.Play(Channel.Id, "sound:conf-muted", "en", 0, 0, Guid.NewGuid().ToString());
                     break;
                 case "2":
                     // Unmute
-                    _endPoint.Channels.Unmute(Channel.Id, "in");
-                    _endPoint.Channels.Play(Channel.Id, "sound:conf-unmuted", "en", 0, 0);
+                    _client.Channels.Unmute(Channel.Id, "in");
+                    _client.Channels.Play(Channel.Id, "sound:conf-unmuted", "en", 0, 0, Guid.NewGuid().ToString());
                     break;
                 case "3":
                     // ?

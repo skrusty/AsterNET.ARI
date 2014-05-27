@@ -67,7 +67,7 @@ namespace AsterNET.ARI.SimpleConfExample.REST
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApiDelete",
-                routeTemplate: "api/{controller}/",
+                routeTemplate: "api/{controller}/{id}",
                 defaults: new { action = "Delete" },
                 constraints: new { httpMethod = new HttpMethodConstraint(HttpMethod.Delete) }
             );

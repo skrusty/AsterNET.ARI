@@ -1,9 +1,10 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 25/05/2014 20:39:48
+	Automatically generated file @ 27/05/2014 20:58:04
 */
 using System;
 using System.Collections.Generic;
+using AsterNET.ARI.Actions;
 
 namespace AsterNET.ARI.Models
 {
@@ -12,6 +13,23 @@ namespace AsterNET.ARI.Models
 	/// </summary>
 	public class Application 
 	{
+
+		/// <summary>
+		///
+		/// </summary>
+		// public ApplicationsActions Application { get; set; }
+
+
+		/// <summary>
+		/// {tech}/{resource} for endpoints subscribed to.
+		/// </summary>
+		public List<string> Endpoint_ids { get; set; }
+
+		/// <summary>
+		/// Id's for bridges subscribed to.
+		/// </summary>
+		public List<string> Bridge_ids { get; set; }
+
 		/// <summary>
 		/// Name of this application
 		/// </summary>
@@ -21,16 +39,6 @@ namespace AsterNET.ARI.Models
 		/// Id's for channels subscribed to.
 		/// </summary>
 		public List<string> Channel_ids { get; set; }
-
-		/// <summary>
-		/// Id's for bridges subscribed to.
-		/// </summary>
-		public List<string> Bridge_ids { get; set; }
-
-		/// <summary>
-		/// {tech}/{resource} for endpoints subscribed to.
-		/// </summary>
-		public List<string> Endpoint_ids { get; set; }
 
 		/// <summary>
 		/// Names of the devices subscribed to.

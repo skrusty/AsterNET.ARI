@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 25/05/2014 20:39:48
+	Automatically generated file @ 27/05/2014 20:58:04
 */
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace AsterNET.ARI.Actions
 		{}
 
 		/// <summary>
-		/// WebSocket connection for events.
+		/// WebSocket connection for events.. 
 		/// </summary>
 		/// <param name="app">Applications to subscribe to.</param>
 		public Message EventWebsocket(string app)
@@ -39,6 +39,23 @@ namespace AsterNET.ARI.Actions
 					// Unknown server response
 					throw new ARIException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
             }
+		}
+		/// <summary>
+		/// Generate a user event.. 
+		/// </summary>
+		/// <param name="eventName">Event name</param>
+		/// <param name="application">The name of the application that will receive this event</param>
+		/// <param name="source">URI for event source (channel:{channelId}, bridge:{bridgeId}, endpoint:{tech}/{resource}, deviceState:{deviceName}</param>
+		/// <param name="variables">custom key/value pairs added to the user event</param>
+		public void UserEvent(string eventName, string application, string source, List<KeyValuePair<string, string>> variables)
+		{
+			string path = "/events/user/{eventName}";
+			var request = GetNewRequest(path, Method.POST);
+			request.AddUrlSegment("eventName", eventName);
+			request.AddParameter("application", application, ParameterType.QueryString);
+			request.AddParameter("source", source, ParameterType.QueryString);
+			request.AddParameter("variables", variables, ParameterType.QueryString);
+			var response = Client.Execute(request);
 		}
 	}
 }

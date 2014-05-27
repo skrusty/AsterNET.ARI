@@ -52,7 +52,7 @@
 
     self.destroy = function (conf) {
         var muteUri = conf.Uri;
-        self.ajax(muteUri, 'delete');
+        self.ajax(muteUri, 'DELETE');
     };
 }
 

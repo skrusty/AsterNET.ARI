@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 25/05/2014 20:39:48
+	Automatically generated file @ 27/05/2014 20:58:04
 */
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace AsterNET.ARI.Actions
 		{}
 
 		/// <summary>
-		/// List all endpoints.
+		/// List all endpoints.. 
 		/// </summary>
 		public List<Endpoint> List()
 		{
@@ -39,7 +39,7 @@ namespace AsterNET.ARI.Actions
             }
 		}
 		/// <summary>
-		/// List available endoints for a given endpoint technology.
+		/// List available endoints for a given endpoint technology.. 
 		/// </summary>
 		/// <param name="tech">Technology of the endpoints (sip,iax2,...)</param>
 		public List<Endpoint> ListByTech(string tech)
@@ -64,7 +64,7 @@ namespace AsterNET.ARI.Actions
             }
 		}
 		/// <summary>
-		/// Details for an endpoint.
+		/// Details for an endpoint.. 
 		/// </summary>
 		/// <param name="tech">Technology of the endpoint</param>
 		/// <param name="resource">ID of the endpoint</param>

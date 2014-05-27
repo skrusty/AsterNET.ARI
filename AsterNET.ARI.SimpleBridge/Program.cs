@@ -22,8 +22,7 @@ namespace AsterNET.ARI.SimpleBridge
 {
     class Program
     {
-        public static ARIClient client;
-        public static StasisEndpoint endPoint;
+        public static ARIClient Client;
         public static Bridge SimpleBridge;
 
         private const string AppName = "bridge_test";
@@ -32,26 +31,24 @@ namespace AsterNET.ARI.SimpleBridge
         {
             try
             {
-                endPoint = new StasisEndpoint("192.168.3.16", 8088, "username", "test");
-
                 // Create a message client to receive events on
-                client = endPoint.GetStasisClient(AppName);
+                Client = new ARIClient(new StasisEndpoint("192.168.3.16", 8088, "username", "test"), AppName);
 
-                client.OnStasisStartEvent += c_OnStasisStartEvent;
-                client.OnStasisEndEvent += c_OnStasisEndEvent;
+                Client.OnStasisStartEvent += c_OnStasisStartEvent;
+                Client.OnStasisEndEvent += c_OnStasisEndEvent;
 
-                client.Connect();
+                Client.Connect();
 
                 // Create simple bridge
-                SimpleBridge = endPoint.Bridges.Create("mixing", Guid.NewGuid().ToString());
+                SimpleBridge = Client.Bridges.Create("mixing", Guid.NewGuid().ToString(), AppName);
 
                 // subscribe to bridge events
-                endPoint.Applications.Subscribe(AppName, "bridge:" + SimpleBridge.Id);
+                Client.Applications.Subscribe(AppName, "bridge:" + SimpleBridge.Id);
 
                 // start MOH on bridge
-                endPoint.Bridges.StartMoh(SimpleBridge.Id, "default");
+                Client.Bridges.StartMoh(SimpleBridge.Id, "default");
 
-                bool done = false;
+                var done = false;
                 while (!done)
                 {
                     var lastKey = Console.ReadKey();
@@ -61,28 +58,28 @@ namespace AsterNET.ARI.SimpleBridge
                             done = true;
                             break;
                         case "1":
-                            endPoint.Bridges.StopMoh(SimpleBridge.Id);
+                            Client.Bridges.StopMoh(SimpleBridge.Id);
                             break;
                         case "2":
-                            endPoint.Bridges.StartMoh(SimpleBridge.Id, "default");
+                            Client.Bridges.StartMoh(SimpleBridge.Id, "default");
                             break;
                         case "3":
                             // Mute all channels on bridge
-                            var bridgeMute = endPoint.Bridges.Get(SimpleBridge.Id);
+                            var bridgeMute = Client.Bridges.Get(SimpleBridge.Id);
                             foreach (var chan in bridgeMute.Channels)
-                                endPoint.Channels.Mute(chan, "in");
+                                Client.Channels.Mute(chan, "in");
                             break;
                         case "4":
                             // Unmute all channels on bridge
-                            var bridgeUnmute = endPoint.Bridges.Get(SimpleBridge.Id);
+                            var bridgeUnmute = Client.Bridges.Get(SimpleBridge.Id);
                             foreach (var chan in bridgeUnmute.Channels)
-                                endPoint.Channels.Unmute(chan, "in");
+                                Client.Channels.Unmute(chan, "in");
                             break;
                     }
                 }
 
-                endPoint.Bridges.Destroy(SimpleBridge.Id);
-                client.Disconnect();
+                Client.Bridges.Destroy(SimpleBridge.Id);
+                Client.Disconnect();
             }
             catch (Exception ex)
             {
@@ -94,19 +91,19 @@ namespace AsterNET.ARI.SimpleBridge
         static void c_OnStasisEndEvent(object sender, AsterNET.ARI.Models.StasisEndEvent e)
         {
             // remove from bridge
-            endPoint.Bridges.RemoveChannel(SimpleBridge.Id, e.Channel.Id);
+            Client.Bridges.RemoveChannel(SimpleBridge.Id, e.Channel.Id);
 
             // hangup
-            endPoint.Channels.Hangup(e.Channel.Id, "normal");
+            Client.Channels.Hangup(e.Channel.Id, "normal");
         }
 
         static void c_OnStasisStartEvent(object sender, AsterNET.ARI.Models.StasisStartEvent e)
         {
             // answer channel
-            endPoint.Channels.Answer(e.Channel.Id);
+            Client.Channels.Answer(e.Channel.Id);
 
             // add to bridge
-            endPoint.Bridges.AddChannel(SimpleBridge.Id, e.Channel.Id, "member");
+            Client.Bridges.AddChannel(SimpleBridge.Id, e.Channel.Id, "member");
         }
     }
 }

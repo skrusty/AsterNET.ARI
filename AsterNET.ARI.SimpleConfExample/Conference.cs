@@ -13,15 +13,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Text;
 using AsterNET.ARI.Models;
-using AsterNET.ARI.SimpleConfExample.Helpers;
 
 namespace AsterNET.ARI.SimpleConfExample
 {
-
     public enum ConferenceState
     {
         Destroyed = -1, // Conference no longer valid
@@ -35,14 +31,12 @@ namespace AsterNET.ARI.SimpleConfExample
 
     public class Conference
     {
-
         public static List<Conference> Conferences = new List<Conference>();
 
         #region Private Properties
 
-        private readonly StasisEndpoint _endPoint;
-        private ConferenceState _state;
         private ARIClient _client;
+        private ConferenceState _state;
 
         #endregion
 
@@ -66,9 +60,8 @@ namespace AsterNET.ARI.SimpleConfExample
 
         #endregion
 
-        public Conference(StasisEndpoint e, ARIClient c, Guid id, string name)
+        public Conference( ARIClient c, Guid id, string name)
         {
-            _endPoint = e;
             _client = c;
             Id = id;
             ConferenceName = name;
@@ -96,26 +89,26 @@ namespace AsterNET.ARI.SimpleConfExample
 
             confUser.State = ConferenceUserState.JoinConf;
             // Join the chanel to the bridge
-            _endPoint.Bridges.AddChannel(Confbridge.Id, confUser.Channel.Id, "ConfUser");
+            _client.Bridges.AddChannel(Confbridge.Id, confUser.Channel.Id, "ConfUser");
         }
 
         private void c_OnChannelLeftBridgeEvent(object sender, ChannelLeftBridgeEvent e)
         {
             // left conf
             // play announcement
-            _endPoint.Bridges.Play(Confbridge.Id, "recording:" + string.Format("conftemp-{0}", e.Channel.Id), "en", 0, 0);
-            _endPoint.Bridges.Play(Confbridge.Id, "sound:conf-hasleft", "en", 0, 0);
+            _client.Bridges.Play(Confbridge.Id, "recording:" + string.Format("conftemp-{0}", e.Channel.Id), "en", 0, 0, Guid.NewGuid().ToString());
+            _client.Bridges.Play(Confbridge.Id, "sound:conf-hasleft", "en", 0, 0, Guid.NewGuid().ToString());
 
             // If only 1 person left, then play MOH
             // TODO: Make it here so if the admin has left, and admin count = 0, then also play MOH
             if (ConferenceUsers.Count() <= 1)
-                _endPoint.Bridges.StartMoh(Confbridge.Id, "default");
-            
+                _client.Bridges.StartMoh(Confbridge.Id, "default");
+
             // If empty, destroy the conference
-            if(!ConferenceUsers.Any())
+            if (!ConferenceUsers.Any())
                 DestroyConference();
 
-            _endPoint.Recordings.DeleteStored(string.Format("conftemp-{0}-{1}", ConferenceName, e.Channel));
+            _client.Recordings.DeleteStored(string.Format("conftemp-{0}", e.Channel));
         }
 
         private void c_OnBridgeDestroyedEvent(object sender, BridgeDestroyedEvent e)
@@ -126,7 +119,7 @@ namespace AsterNET.ARI.SimpleConfExample
 
         private void c_OnChannelEnteredBridgeEvent(object sender, ChannelEnteredBridgeEvent e)
         {
-            var confUser = ConferenceUsers.SingleOrDefault(x => x.Channel.Id == e.Channel.Id);
+            ConferenceUser confUser = ConferenceUsers.SingleOrDefault(x => x.Channel.Id == e.Channel.Id);
             if (confUser == null) return;
 
             confUser.State = ConferenceUserState.InConf;
@@ -134,19 +127,19 @@ namespace AsterNET.ARI.SimpleConfExample
             if (ConferenceUsers.Count(x => x.State == ConferenceUserState.InConf) > 1) // are we the only ones here
             {
                 // stop moh
-                _endPoint.Bridges.StopMoh(Confbridge.Id);
+                _client.Bridges.StopMoh(Confbridge.Id);
 
                 // change state
                 State = ConferenceState.Ready;
 
                 // announce new user
-                _endPoint.Bridges.Play(Confbridge.Id, "recording:" + confUser.CurrentRecodingId, "en", 0, 0);
-                _endPoint.Bridges.Play(Confbridge.Id, "sound:conf-hasjoin", "en", 0, 0);
+                _client.Bridges.Play(Confbridge.Id, "recording:" + confUser.CurrentRecodingId, "en", 0, 0, Guid.NewGuid().ToString());
+                _client.Bridges.Play(Confbridge.Id, "sound:conf-hasjoin", "en", 0, 0, Guid.NewGuid().ToString());
             }
             else
             {
                 // only caller in conf
-                _endPoint.Channels.Play(e.Channel.Id, "sound:conf-onlyperson", "en", 0, 0);
+                _client.Channels.Play(e.Channel.Id, "sound:conf-onlyperson", "en", 0, 0, Guid.NewGuid().ToString());
             }
         }
 
@@ -161,7 +154,7 @@ namespace AsterNET.ARI.SimpleConfExample
 
         private void c_OnChannelDtmfReceivedEvent(object sender, ChannelDtmfReceivedEvent e)
         {
-            var confUser = ConferenceUsers.SingleOrDefault(x => x.Channel.Id == e.Channel.Id);
+            ConferenceUser confUser = ConferenceUsers.SingleOrDefault(x => x.Channel.Id == e.Channel.Id);
             if (confUser == null) return;
 
             // Pass digit to conference user
@@ -180,7 +173,7 @@ namespace AsterNET.ARI.SimpleConfExample
 
             // Create the conference bridge
             Debug.Print("Requesting new bridge {0} for {1}", Id, ConferenceName);
-            var bridge = _endPoint.Bridges.Create("mixing", Id.ToString());
+            Bridge bridge = _client.Bridges.Create("mixing", Id.ToString(), ConferenceName);
 
             if (bridge == null)
             {
@@ -189,10 +182,10 @@ namespace AsterNET.ARI.SimpleConfExample
 
 
             Debug.Print("Subscribing to events on bridge {0} for {1}", Id, ConferenceName);
-            _endPoint.Applications.Subscribe(AppConfig.AppName, "bridge:" + bridge.Id);
+            _client.Applications.Subscribe(AppConfig.AppName, "bridge:" + bridge.Id);
 
             // Start MOH on conf bridge
-            _endPoint.Bridges.StartMoh(bridge.Id, "default");
+            _client.Bridges.StartMoh(bridge.Id, "default");
 
             // Default state is ReadyWaiting until MOH is turned off
             State = ConferenceState.ReadyWaiting;
@@ -217,10 +210,10 @@ namespace AsterNET.ARI.SimpleConfExample
             if (State < ConferenceState.Ready) return false;
 
             // Answer channel
-            _endPoint.Channels.Answer(c.Id);
+            _client.Channels.Answer(c.Id);
 
             // Add conference user to collection
-            ConferenceUsers.Add(new ConferenceUser(this, c, _endPoint, ConferenceUserType.Normal));
+            ConferenceUsers.Add(new ConferenceUser(this, c, _client, ConferenceUserType.Normal));
 
             return true;
         }
@@ -228,49 +221,49 @@ namespace AsterNET.ARI.SimpleConfExample
         public void RemoveUser(string channelId)
         {
             // Remove the channel from the bridge
-            var confUser = ConferenceUsers.SingleOrDefault(x => x.Channel.Id == channelId);
+            ConferenceUser confUser = ConferenceUsers.SingleOrDefault(x => x.Channel.Id == channelId);
             if (confUser == null) return;
 
-            _endPoint.Bridges.RemoveChannel(Confbridge.Id, channelId);
+            _client.Bridges.RemoveChannel(Confbridge.Id, channelId);
             ConferenceUsers.Remove(confUser);
         }
 
         public void PlayFile(string fileName)
         {
-            _endPoint.Bridges.Play(Confbridge.Id, string.Format("sound:{0}", fileName), "en", 0, 0);
+            _client.Bridges.Play(Confbridge.Id, string.Format("sound:{0}", fileName), "en", 0, 0, Guid.NewGuid().ToString());
         }
 
         public void StartRecording(string fileName)
         {
-            _endPoint.Bridges.Record(Confbridge.Id, fileName, "wav", 0, 0, "fail", false, "none");
+            _client.Bridges.Record(Confbridge.Id, fileName, "wav", 0, 0, "fail", false, "none");
         }
 
         public void StopRecording(string fileName)
         {
-            _endPoint.Recordings.Stop(fileName);
+            _client.Recordings.Stop(fileName);
         }
 
         public void MuteConference()
         {
             // TODO: Implement filter here to allow mute of non-admins etc
-            foreach (var user in ConferenceUsers)
-                _endPoint.Channels.Mute(user.Channel.Id, "in");
+            foreach (ConferenceUser user in ConferenceUsers)
+                _client.Channels.Mute(user.Channel.Id, "in");
         }
 
         public void UnMuteConference()
         {
-            foreach (var user in ConferenceUsers)
-                _endPoint.Channels.Unmute(user.Channel.Id, "in");
+            foreach (ConferenceUser user in ConferenceUsers)
+                _client.Channels.Unmute(user.Channel.Id, "in");
         }
 
         public void StartMOH(string mohClass)
         {
-            _endPoint.Bridges.StartMoh(Confbridge.Id, mohClass);
+            _client.Bridges.StartMoh(Confbridge.Id, mohClass);
         }
 
         public void StopMOH()
         {
-            _endPoint.Bridges.StopMoh(Confbridge.Id);
+            _client.Bridges.StopMoh(Confbridge.Id);
         }
 
         public void DestroyConference()
@@ -278,8 +271,8 @@ namespace AsterNET.ARI.SimpleConfExample
             State = ConferenceState.Destroying;
 
             ConferenceUsers.ForEach(x => RemoveUser(x.Channel.Id));
-            if(Confbridge!=null)
-                _endPoint.Bridges.Destroy(Confbridge.Id);
+            if (Confbridge != null)
+                _client.Bridges.Destroy(Confbridge.Id);
             Confbridge = null;
 
             State = ConferenceState.Destroyed;

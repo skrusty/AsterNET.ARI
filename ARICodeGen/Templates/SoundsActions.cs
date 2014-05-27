@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 25/05/2014 20:39:48
+	Automatically generated file @ 27/05/2014 20:58:04
 */
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace AsterNET.ARI.Actions
 		{}
 
 		/// <summary>
-		/// List all sounds.
+		/// List all sounds.. 
 		/// </summary>
 		/// <param name="lang">Lookup sound for a specific language.</param>
 		/// <param name="format">Lookup sound in a specific format.</param>
@@ -43,7 +43,7 @@ namespace AsterNET.ARI.Actions
             }
 		}
 		/// <summary>
-		/// Get a sound's details.
+		/// Get a sound's details.. 
 		/// </summary>
 		/// <param name="soundId">Sound's id</param>
 		public Sound Get(string soundId)

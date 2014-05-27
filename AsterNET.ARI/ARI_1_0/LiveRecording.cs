@@ -1,9 +1,10 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 25/05/2014 20:39:48
+	Automatically generated file @ 26/05/2014 13:34:17
 */
 using System;
 using System.Collections.Generic;
+using AsterNET.ARI.Actions;
 
 namespace AsterNET.ARI.Models
 {
@@ -12,15 +13,12 @@ namespace AsterNET.ARI.Models
 	/// </summary>
 	public class LiveRecording 
 	{
-		/// <summary>
-		/// Base name for the recording
-		/// </summary>
-		public string Name { get; set; }
 
 		/// <summary>
-		/// no description provided
+		///
 		/// </summary>
-		public string Format { get; set; }
+		// public RecordingsActions Recording { get; set; }
+
 
 		/// <summary>
 		/// no description provided
@@ -28,9 +26,24 @@ namespace AsterNET.ARI.Models
 		public string State { get; set; }
 
 		/// <summary>
+		/// no description provided
+		/// </summary>
+		public string Format { get; set; }
+
+		/// <summary>
 		/// Cause for recording failure if failed
 		/// </summary>
 		public string Cause { get; set; }
+
+		/// <summary>
+		/// Base name for the recording
+		/// </summary>
+		public string Name { get; set; }
+
+		/// <summary>
+		/// URI for the channel or bridge being recorded
+		/// </summary>
+		public string Target_uri { get; set; }
 
 	}
 }

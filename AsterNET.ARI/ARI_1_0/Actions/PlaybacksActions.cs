@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 25/05/2014 20:39:48
+	Automatically generated file @ 26/05/2014 13:34:17
 */
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace AsterNET.ARI.Actions
 		{}
 
 		/// <summary>
-		/// Get a playback's details.
+		/// Get a playback's details.. 
 		/// </summary>
 		/// <param name="playbackId">Playback's id</param>
 		public Playback Get(string playbackId)
@@ -44,7 +44,7 @@ namespace AsterNET.ARI.Actions
             }
 		}
 		/// <summary>
-		/// Stop a playback.
+		/// Stop a playback.. 
 		/// </summary>
 		/// <param name="playbackId">Playback's id</param>
 		public void Stop(string playbackId)
@@ -55,7 +55,7 @@ namespace AsterNET.ARI.Actions
 			var response = Client.Execute(request);
 		}
 		/// <summary>
-		/// Control a playback.
+		/// Control a playback.. 
 		/// </summary>
 		/// <param name="playbackId">Playback's id</param>
 		/// <param name="operation">Operation to perform on the playback.</param>

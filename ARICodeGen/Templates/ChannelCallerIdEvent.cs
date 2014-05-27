@@ -1,9 +1,10 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 25/05/2014 20:39:48
+	Automatically generated file @ 27/05/2014 20:58:03
 */
 using System;
 using System.Collections.Generic;
+using AsterNET.ARI.Actions;
 
 namespace AsterNET.ARI.Models
 {
@@ -12,15 +13,22 @@ namespace AsterNET.ARI.Models
 	/// </summary>
 	public class ChannelCallerIdEvent  : Event
 	{
+
 		/// <summary>
-		/// The integer representation of the Caller Presentation value.
+		///
 		/// </summary>
-		public int Caller_presentation { get; set; }
+		// public EventsActions Event { get; set; }
+
 
 		/// <summary>
 		/// The text representation of the Caller Presentation value.
 		/// </summary>
 		public string Caller_presentation_txt { get; set; }
+
+		/// <summary>
+		/// The integer representation of the Caller Presentation value.
+		/// </summary>
+		public int Caller_presentation { get; set; }
 
 		/// <summary>
 		/// The channel that changed Caller ID.

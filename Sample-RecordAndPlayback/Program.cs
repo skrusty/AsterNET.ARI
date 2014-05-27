@@ -54,7 +54,7 @@ namespace Sample_RecordAndPlayback
                 endPoint = new StasisEndpoint("ipaddress", 8088, "username", "password");
 
                 // Create a message client to receive events on
-                client = endPoint.GetStasisClient("playrec_test");
+                client = new ARIClient(endPoint, "playrec_test");
 
                 client.OnStasisStartEvent += c_OnStasisStartEvent;
                 client.OnStasisEndEvent += c_OnStasisEndEvent;
@@ -85,17 +85,17 @@ namespace Sample_RecordAndPlayback
 
         static void GetRecording(Channel c)
         {
-            var playback = endPoint.Channels.Play(c.Id, "sound:vm-rec-name", "en", 0, 0).Id;
+            var playback = client.Channels.Play(c.Id, "sound:vm-rec-name", "en", 0, 0, Guid.NewGuid().ToString()).Id;
             recording = new RecordingToChannel()
             {
-                Recording = endPoint.Channels.Record(c.Id, "temp-recording", "wav", 6, 1, "overwrite", true, "#"),
+                Recording = client.Channels.Record(c.Id, "temp-recording", "wav", 6, 1, "overwrite", true, "#"),
                 Channel = c
             };
         }
 
         static void PlaybackRecording(Channel c)
         {
-            var repeat = endPoint.Channels.Play(c.Id, "recording:temp-recording", "en", 0, 0).Id;
+            var repeat = client.Channels.Play(c.Id, "recording:temp-recording", "en", 0, 0, Guid.NewGuid().ToString()).Id;
         }
 
         static void client_OnRecordingFinishedEvent(object sender, AsterNET.ARI.Models.RecordingFinishedEvent e)
@@ -110,16 +110,16 @@ namespace Sample_RecordAndPlayback
         static void c_OnStasisEndEvent(object sender, AsterNET.ARI.Models.StasisEndEvent e)
         {
             // Delete recording
-            endPoint.Recordings.DeleteStored("temp-recording");
+            client.Recordings.DeleteStored("temp-recording");
 
             // hangup
-            endPoint.Channels.Hangup(e.Channel.Id, "normal");
+            client.Channels.Hangup(e.Channel.Id, "normal");
         }
 
         static void c_OnStasisStartEvent(object sender, AsterNET.ARI.Models.StasisStartEvent e)
         {
             // answer channel
-            endPoint.Channels.Answer(e.Channel.Id);
+            client.Channels.Answer(e.Channel.Id);
 
             GetRecording(e.Channel);
         }

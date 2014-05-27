@@ -1,9 +1,8 @@
-﻿using AsterNET.ARI.Models;
+﻿using AsterNET.ARI.Actions;
+using AsterNET.ARI.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Reflection;
 using WebSocket4Net;
 
 namespace AsterNET.ARI
@@ -21,6 +20,19 @@ namespace AsterNET.ARI
 
         private event ARIEventHandler internalEvent;
 
+        #region Public Properties
+        public AsteriskActions Asterisk { get; set; }
+        public ApplicationsActions Applications { get; set; }
+        public BridgesActions Bridges { get; set; }
+        public ChannelsActions Channels { get; set; }
+        public DeviceStatesActions DeviceStates { get; set; }
+        public EndpointsActions Endpoints { get; set; }
+        public EventsActions Events { get; set; }
+        public PlaybacksActions Playbacks { get; set; }
+        public RecordingsActions Recordings { get; set; }
+        public SoundsActions Sounds { get; set; }
+        #endregion
+
         /// <summary>
         /// 
         /// </summary>
@@ -30,6 +42,16 @@ namespace AsterNET.ARI
         {
             EndPoint = endPoint;
             Application = application;
+
+            Asterisk = new AsteriskActions(EndPoint);
+            Applications = new ApplicationsActions(EndPoint);
+            Bridges = new BridgesActions(EndPoint);
+            Channels = new ChannelsActions(EndPoint);
+            Endpoints = new EndpointsActions(EndPoint);
+            Events = new EventsActions(EndPoint);
+            Playbacks = new PlaybacksActions(EndPoint);
+            Recordings = new RecordingsActions(EndPoint);
+            Sounds = new SoundsActions(EndPoint);
 
             this.internalEvent += ARIClient_internalEvent;
         }

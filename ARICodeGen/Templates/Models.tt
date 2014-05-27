@@ -21,10 +21,10 @@
 // System.Diagnostics.Debugger.Launch();
 var manager = TemplateFileManager.Create(this);
 var files = new List<string>() { 
+	@"D:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Events.json",
 	@"D:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Bridges.json",
 	@"D:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Channels.json",
 	@"D:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Asterisk.json",
-	@"D:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Events.json",
 	@"D:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Applications.json",
 	@"D:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Endpoints.json",
 	@"D:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\DeviceStates.json",
@@ -39,6 +39,8 @@ var events = new List<string>();
 foreach (var file in files)
 {
 	var subtypes = new Dictionary<string, List<string>>();
+	var filename = System.IO.Path.GetFileNameWithoutExtension(file);
+	var actionClassName = filename + "Actions";
 
 	using (StreamReader reader = File.OpenText(Host.ResolvePath(file)))
 	{
@@ -49,6 +51,24 @@ foreach (var file in files)
 		//
 		var o = (Newtonsoft.Json.Linq.JObject)JToken.ReadFrom(new JsonTextReader(reader));
 		var models = o["models"];
+
+		// check for subtypes
+		foreach(var item in models.Values()) {
+
+			
+			try {
+				foreach (JValue prop in item.SelectToken("subTypes"))
+				{
+	
+					if(!subtypes.ContainsKey(item.SelectToken("id").Value<string>())) {
+						subtypes.Add(item.SelectToken("id").Value<string>(), new List<string>()); 
+					}
+					subtypes[item.SelectToken("id").Value<string>()].Add(prop.ToString());
+				}
+			}
+			catch{}
+
+        }
 
         foreach (var item in models.Values())
         {
@@ -70,6 +90,7 @@ foreach (var file in files)
 */
 using System;
 using System.Collections.Generic;
+using AsterNET.ARI.Actions;
 
 namespace AsterNET.ARI.Models
 {
@@ -78,6 +99,13 @@ namespace AsterNET.ARI.Models
 	/// </summary>
 	public class <#= className #> <#= !string.IsNullOrEmpty(inherit) ? string.Format(" : {0}", inherit) : "" #>
 	{
+
+		/// <summary>
+		///
+		/// </summary>
+		// public <#= actionClassName #> <#= filename.Substring(0, filename.Length -1) #> { get; set; }
+
+
 <# 
 			foreach (var prop in item.SelectToken("properties"))
 			{
@@ -92,7 +120,7 @@ namespace AsterNET.ARI.Models
 <#
 			}
 			// check for subtypes
-			try {
+			/*try {
 				foreach (JValue prop in item.SelectToken("subTypes"))
 				{
 	
@@ -102,7 +130,7 @@ namespace AsterNET.ARI.Models
 					subtypes[item.SelectToken("id").Value<string>()].Add(prop.ToString());
 				}
 			}
-			catch{}
+			catch{}*/
 #>
 	}
 }
@@ -115,8 +143,8 @@ namespace AsterNET.ARI.Models
 		// Start Actions Output
 		//
 		var apis = o["apis"];
-		var filename = System.IO.Path.GetFileNameWithoutExtension(file);
-		var actionClassName = filename + "Actions";
+		
+		
 		
 		manager.StartNewFile(actionClassName + ".cs");
 #>
@@ -151,7 +179,7 @@ namespace AsterNET.ARI.Actions
 			{
 				
 				var methodName = op.SelectToken("nickname").Value<string>();
-				var description = op.SelectToken("summary").Value<string>();
+				var description = string.Format("{0}. {1}", op.SelectToken("summary").Value<string>(), op.SelectToken("notes") == null ? "" : op.SelectToken("notes").Value<string>());
 				var httpMethod = op.SelectToken("httpMethod").Value<string>();
 			
 				var responseType = ARICodeGen.SwaggerHelper.TypeConvert(op.SelectToken("responseClass").Value<string>());

@@ -14,17 +14,6 @@ namespace AsterNET.ARI
         public string Username { get; set; }
         public string Password { get; set; }
 
-        public AsteriskActions Asterisk {get;set;}
-        public ApplicationsActions Applications {get;set;}
-        public BridgesActions Bridges {get;set;}
-        public ChannelsActions Channels {get;set;}
-        public DeviceStatesActions DeviceStates {get;set;}
-        public EndpointsActions Endpoints {get;set;}
-        public EventsActions Events {get;set;}
-        public PlaybacksActions Playbacks {get;set;}
-        public RecordingsActions Recordings {get;set;}
-        public SoundsActions Sounds {get;set;}
-
         public string ARIEndPoint
         {
             get
@@ -45,22 +34,6 @@ namespace AsterNET.ARI
             this.Port = port;
             this.Username = username;
             this.Password = password;
-
-            Asterisk = new AsteriskActions(this);
-            Applications = new ApplicationsActions(this);
-            Bridges = new BridgesActions(this);
-            Channels = new ChannelsActions(this);
-            Endpoints = new EndpointsActions(this);
-            Events = new EventsActions(this);
-            Playbacks = new PlaybacksActions(this);
-            Recordings = new RecordingsActions(this);
-            Sounds = new SoundsActions(this);
         }
-
-        public ARIClient GetStasisClient(string application)
-        {
-            return new ARIClient(this, application);
-        }
-
     }
 }
