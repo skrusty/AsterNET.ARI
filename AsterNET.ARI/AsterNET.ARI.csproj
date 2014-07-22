@@ -77,6 +77,8 @@
     <Compile Include="ARI_1_0\Events\ChannelLeftBridgeEvent.cs" />
     <Compile Include="ARI_1_0\Actions\ChannelsActions.cs" />
     <Compile Include="ARI_1_0\Events\ChannelStateChangeEvent.cs" />
+    <Compile Include="ARI_1_0\Events\ChannelTalkingFinishedEvent.cs" />
+    <Compile Include="ARI_1_0\Events\ChannelTalkingStartedEvent.cs" />
     <Compile Include="ARI_1_0\Events\ChannelUsereventEvent.cs" />
     <Compile Include="ARI_1_0\Events\ChannelVarsetEvent.cs" />
     <Compile Include="ARI_1_0\ConfigInfo.cs" />

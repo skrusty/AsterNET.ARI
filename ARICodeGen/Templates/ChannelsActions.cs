@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 27/05/2014 20:58:04
+	Automatically generated file @ 22/07/2014 19:01:01
 */
 using System;
 using System.Collections.Generic;
@@ -49,7 +49,7 @@ namespace AsterNET.ARI.Actions
 		/// <param name="appArgs">The application arguments to pass to the Stasis application.</param>
 		/// <param name="callerId">CallerID to use when dialing the endpoint or extension.</param>
 		/// <param name="timeout">Timeout (in seconds) before giving up dialing, or -1 for no timeout.</param>
-		/// <param name="variables">The 'variables' key in the body object holds variable key/value pairs to set on the channel on creation. Other keys in the body object are interpreted as query parameters. Ex. { 'endpoint': 'SIP/Alice', 'variables': { 'CALLERID(name)': 'Alice' } }</param>
+		/// <param name="variables">The "variables" key in the body object holds variable key/value pairs to set on the channel on creation. Other keys in the body object are interpreted as query parameters. Ex. { "endpoint": "SIP/Alice", "variables": { "CALLERID(name)": "Alice" } }</param>
 		/// <param name="channelId">The unique id to assign the channel on creation.</param>
 		/// <param name="otherChannelId">The unique id to assign the second channel when using local channels.</param>
 		public Channel Originate(string endpoint, string extension, string context, long priority, string app, string appArgs, string callerId, int timeout, List<KeyValuePair<string, string>> variables, string channelId, string otherChannelId)
@@ -120,7 +120,7 @@ namespace AsterNET.ARI.Actions
 		/// <param name="appArgs">The application arguments to pass to the Stasis application.</param>
 		/// <param name="callerId">CallerID to use when dialing the endpoint or extension.</param>
 		/// <param name="timeout">Timeout (in seconds) before giving up dialing, or -1 for no timeout.</param>
-		/// <param name="variables">The 'variables' key in the body object holds variable key/value pairs to set on the channel on creation. Other keys in the body object are interpreted as query parameters. Ex. { 'endpoint': 'SIP/Alice', 'variables': { 'CALLERID(name)': 'Alice' } }</param>
+		/// <param name="variables">The "variables" key in the body object holds variable key/value pairs to set on the channel on creation. Other keys in the body object are interpreted as query parameters. Ex. { "endpoint": "SIP/Alice", "variables": { "CALLERID(name)": "Alice" } }</param>
 		/// <param name="otherChannelId">The unique id to assign the second channel when using local channels.</param>
 		public Channel OriginateWithId(string channelId, string endpoint, string extension, string context, long priority, string app, string appArgs, string callerId, int timeout, List<KeyValuePair<string, string>> variables, string otherChannelId)
 		{

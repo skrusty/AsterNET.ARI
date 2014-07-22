@@ -9,9 +9,9 @@ using AsterNET.ARI.Actions;
 namespace AsterNET.ARI.Models
 {
 	/// <summary>
-	/// Base type for asynchronous events from Asterisk.
+	/// Talking is no longer detected on the channel.
 	/// </summary>
-	public class Event  : Message
+	public class ChannelTalkingFinishedEvent  : Event
 	{
 
 		/// <summary>
@@ -21,14 +21,14 @@ namespace AsterNET.ARI.Models
 
 
 		/// <summary>
-		/// Name of the application receiving the event.
+		/// The length of time, in milliseconds, that talking was detected on the channel
 		/// </summary>
-		public string Application { get; set; }
+		public int Duration { get; set; }
 
 		/// <summary>
-		/// Time at which this event was created.
+		/// The channel on which talking completed.
 		/// </summary>
-		public DateTime Timestamp { get; set; }
+		public Channel Channel { get; set; }
 
 	}
 }

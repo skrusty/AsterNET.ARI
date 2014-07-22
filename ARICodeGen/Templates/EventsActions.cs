@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 27/05/2014 20:58:04
+	Automatically generated file @ 22/07/2014 19:01:01
 */
 using System;
 using System.Collections.Generic;
@@ -46,7 +46,7 @@ namespace AsterNET.ARI.Actions
 		/// <param name="eventName">Event name</param>
 		/// <param name="application">The name of the application that will receive this event</param>
 		/// <param name="source">URI for event source (channel:{channelId}, bridge:{bridgeId}, endpoint:{tech}/{resource}, deviceState:{deviceName}</param>
-		/// <param name="variables">custom key/value pairs added to the user event</param>
+		/// <param name="variables">The "variables" key in the body object holds custom key/value pairs to add to the user event. Ex. { "variables": { "key": "value" } }</param>
 		public void UserEvent(string eventName, string application, string source, List<KeyValuePair<string, string>> variables)
 		{
 			string path = "/events/user/{eventName}";

@@ -9,9 +9,9 @@ using AsterNET.ARI.Actions;
 namespace AsterNET.ARI.Models
 {
 	/// <summary>
-	/// Base type for asynchronous events from Asterisk.
+	/// Talking was detected on the channel.
 	/// </summary>
-	public class Event  : Message
+	public class ChannelTalkingStartedEvent  : Event
 	{
 
 		/// <summary>
@@ -21,14 +21,9 @@ namespace AsterNET.ARI.Models
 
 
 		/// <summary>
-		/// Name of the application receiving the event.
+		/// The channel on which talking started.
 		/// </summary>
-		public string Application { get; set; }
-
-		/// <summary>
-		/// Time at which this event was created.
-		/// </summary>
-		public DateTime Timestamp { get; set; }
+		public Channel Channel { get; set; }
 
 	}
 }

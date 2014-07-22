@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 27/05/2014 20:58:04
+	Automatically generated file @ 22/07/2014 19:01:02
 */
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,9 @@ namespace AsterNET.ARI
 	public delegate void ChannelLeftBridgeEventHandler(object sender, ChannelLeftBridgeEvent e);
 	public delegate void ChannelDestroyedEventHandler(object sender, ChannelDestroyedEvent e);
 	public delegate void DeviceStateChangedEventHandler(object sender, DeviceStateChangedEvent e);
+	public delegate void ChannelTalkingFinishedEventHandler(object sender, ChannelTalkingFinishedEvent e);
 	public delegate void PlaybackStartedEventHandler(object sender, PlaybackStartedEvent e);
+	public delegate void ChannelTalkingStartedEventHandler(object sender, ChannelTalkingStartedEvent e);
 	public delegate void RecordingFailedEventHandler(object sender, RecordingFailedEvent e);
 	public delegate void BridgeMergedEventHandler(object sender, BridgeMergedEvent e);
 	public delegate void RecordingFinishedEventHandler(object sender, RecordingFinishedEvent e);
@@ -53,7 +55,9 @@ namespace AsterNET.ARI
 		public event ChannelLeftBridgeEventHandler OnChannelLeftBridgeEvent;
 		public event ChannelDestroyedEventHandler OnChannelDestroyedEvent;
 		public event DeviceStateChangedEventHandler OnDeviceStateChangedEvent;
+		public event ChannelTalkingFinishedEventHandler OnChannelTalkingFinishedEvent;
 		public event PlaybackStartedEventHandler OnPlaybackStartedEvent;
+		public event ChannelTalkingStartedEventHandler OnChannelTalkingStartedEvent;
 		public event RecordingFailedEventHandler OnRecordingFailedEvent;
 		public event BridgeMergedEventHandler OnBridgeMergedEvent;
 		public event RecordingFinishedEventHandler OnRecordingFinishedEvent;
@@ -144,9 +148,21 @@ namespace AsterNET.ARI
 					break;
 			
 			
+				case "ChannelTalkingFinished":
+					if(OnChannelTalkingFinishedEvent != null)
+						OnChannelTalkingFinishedEvent(this, (ChannelTalkingFinishedEvent)eventArgs);
+					break;
+			
+			
 				case "PlaybackStarted":
 					if(OnPlaybackStartedEvent != null)
 						OnPlaybackStartedEvent(this, (PlaybackStartedEvent)eventArgs);
+					break;
+			
+			
+				case "ChannelTalkingStarted":
+					if(OnChannelTalkingStartedEvent != null)
+						OnChannelTalkingStartedEvent(this, (ChannelTalkingStartedEvent)eventArgs);
 					break;
 			
 			

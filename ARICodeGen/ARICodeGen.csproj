@@ -136,6 +136,12 @@
     <Compile Include="Templates\ChannelStateChangeEvent.cs">
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
+    <Compile Include="Templates\ChannelTalkingFinishedEvent.cs">
+      <DependentUpon>Models.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\ChannelTalkingStartedEvent.cs">
+      <DependentUpon>Models.tt</DependentUpon>
+    </Compile>
     <Compile Include="Templates\ChannelUsereventEvent.cs">
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>

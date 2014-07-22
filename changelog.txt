@@ -1,3 +1,8 @@
+22.07.2014		Skrusty
+	New		Rebuilt class structure from CodeGen with 12.4.0 swagger definitions
+	Added	Support for Talk Detection events in 12.4.0
+
+
 27.05.2014		Skrusty
 	New		Rebuilt class structure from CodeGen with 12.3.0-rc1 swagger definitions
 	Updated	Class layout for ARIClient, ARIClient is now root class for AsterNET.ARI structure

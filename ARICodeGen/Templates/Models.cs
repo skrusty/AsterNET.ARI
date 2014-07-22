@@ -48,7 +48,9 @@
 // AsterNET.ARI\ARICodeGen\Templates\RecordingFinishedEvent.cs
 // AsterNET.ARI\ARICodeGen\Templates\BridgeMergedEvent.cs
 // AsterNET.ARI\ARICodeGen\Templates\RecordingFailedEvent.cs
+// AsterNET.ARI\ARICodeGen\Templates\ChannelTalkingStartedEvent.cs
 // AsterNET.ARI\ARICodeGen\Templates\PlaybackStartedEvent.cs
+// AsterNET.ARI\ARICodeGen\Templates\ChannelTalkingFinishedEvent.cs
 // AsterNET.ARI\ARICodeGen\Templates\Event.cs
 // AsterNET.ARI\ARICodeGen\Templates\DeviceStateChangedEvent.cs
 // AsterNET.ARI\ARICodeGen\Templates\ChannelDestroyedEvent.cs
