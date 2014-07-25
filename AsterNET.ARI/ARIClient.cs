@@ -113,7 +113,7 @@ namespace AsterNET.ARI
 
         private void _client_Error(object sender, SuperSocket.ClientEngine.ErrorEventArgs e)
         {
-
+            throw e.Exception;
         }
 
         private void _client_Opened(object sender, EventArgs e)

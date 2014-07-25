@@ -74,7 +74,23 @@ namespace AsterNET.ARI.SimpleConfExample
             c.OnChannelLeftBridgeEvent += c_OnChannelLeftBridgeEvent;
             c.OnRecordingFinishedEvent += c_OnRecordingFinishedEvent;
 
+            // Added support for talk detection
+            c.OnChannelTalkingStartedEvent += c_OnChannelTalkingStartedEvent;
+            c.OnChannelTalkingFinishedEvent += c_OnChannelTalkingFinishedEvent;
+
             Debug.Print("Added Conference {0}", ConferenceName);
+        }
+
+        void c_OnChannelTalkingFinishedEvent(object sender, ChannelTalkingFinishedEvent e)
+        {
+            ConferenceUser confUser = ConferenceUsers.SingleOrDefault(x => x.Channel.Id == e.Channel.Id);
+            Console.WriteLine("{0} Finished talking in conference {1}, lasted {2} milliseconds", e.Channel.Id, this.ConferenceName, e.Duration);
+        }
+
+        void c_OnChannelTalkingStartedEvent(object sender, ChannelTalkingStartedEvent e)
+        {
+            ConferenceUser confUser = ConferenceUsers.SingleOrDefault(x => x.Channel.Id == e.Channel.Id);
+            Console.WriteLine("{0} Started to talk in conference {1}", e.Channel.Id, this.ConferenceName);
         }
 
         #region ARI Events
@@ -211,6 +227,9 @@ namespace AsterNET.ARI.SimpleConfExample
 
             // Answer channel
             _client.Channels.Answer(c.Id);
+
+            // Turn on talk detection on this channel
+            _client.Channels.SetChannelVar(c.Id, "TALK_DETECT(set)", "");
 
             // Add conference user to collection
             ConferenceUsers.Add(new ConferenceUser(this, c, _client, ConferenceUserType.Normal));

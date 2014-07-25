@@ -40,8 +40,7 @@ namespace AsterNET.ARI.SimpleConfExample
             try
             {
                 // Create a message client to receive events on
-                Client = new ARIClient(new StasisEndpoint("192.168.1.75", 8088, "username", "test"), AppConfig.AppName);
-
+                Client = new ARIClient(new StasisEndpoint("127.0.0.1", 8088, "username", "test"), AppConfig.AppName);                
 
                 Conference.Conferences.Add(new Conference(Client, Guid.NewGuid(), "test"));
                 
@@ -52,6 +51,7 @@ namespace AsterNET.ARI.SimpleConfExample
 
                 // Start REST
                 WebApp.Start<Startup>(url: AppConfig.RestAddress);
+                Console.WriteLine("Loaded... waiting for connections");
 
                 // Wait
                 Console.ReadKey();

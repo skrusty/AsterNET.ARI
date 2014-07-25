@@ -1,3 +1,7 @@
+25.07.2014		Skrusty
+	Updated	SimpleConf application to tap into new Talker detection in Asterisk 12.4.0
+	Added	Exception throw to WebSocket exception handler
+
 22.07.2014		Skrusty
 	New		Rebuilt class structure from CodeGen with 12.4.0 swagger definitions
 	Added	Support for Talk Detection events in 12.4.0
