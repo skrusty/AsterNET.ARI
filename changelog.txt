@@ -1,4 +1,4 @@
-25.07.2014		Skrusty
+06.11.2014		Skrusty
 	Added support to codegen for required params
 	Added support for path,query,body,header,form params 
 	Fixed issue reported by Claudiu by fixing the codegen and not the generated classes
