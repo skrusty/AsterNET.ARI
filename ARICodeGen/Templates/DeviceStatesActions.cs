@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 22/07/2014 19:01:02
+	Automatically generated file @ 06/11/2014 10:21:07
 */
 using System;
 using System.Collections.Generic;
@@ -46,7 +46,8 @@ namespace AsterNET.ARI.Actions
 		{
 			string path = "/deviceStates/{deviceName}";
 			var request = GetNewRequest(path, Method.GET);
-			request.AddUrlSegment("deviceName", deviceName);
+			if(deviceName != null)
+				request.AddUrlSegment("deviceName", deviceName);
 
 			var response = Client.Execute<DeviceState>(request);
 
@@ -69,8 +70,10 @@ namespace AsterNET.ARI.Actions
 		{
 			string path = "/deviceStates/{deviceName}";
 			var request = GetNewRequest(path, Method.PUT);
-			request.AddUrlSegment("deviceName", deviceName);
-			request.AddParameter("deviceState", deviceState, ParameterType.QueryString);
+			if(deviceName != null)
+				request.AddUrlSegment("deviceName", deviceName);
+			if(deviceState != null)
+				request.AddParameter("deviceState", deviceState, ParameterType.QueryString);
 			var response = Client.Execute(request);
 		}
 		/// <summary>
@@ -81,7 +84,8 @@ namespace AsterNET.ARI.Actions
 		{
 			string path = "/deviceStates/{deviceName}";
 			var request = GetNewRequest(path, Method.DELETE);
-			request.AddUrlSegment("deviceName", deviceName);
+			if(deviceName != null)
+				request.AddUrlSegment("deviceName", deviceName);
 			var response = Client.Execute(request);
 		}
 	}

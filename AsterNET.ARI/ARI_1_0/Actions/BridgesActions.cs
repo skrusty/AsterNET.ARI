@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 22/07/2014 19:01:01
+	Automatically generated file @ 06/11/2014 10:21:07
 */
 using System;
 using System.Collections.Generic;
@@ -44,13 +44,16 @@ namespace AsterNET.ARI.Actions
 		/// <param name="type">Comma separated list of bridge type attributes (mixing, holding, dtmf_events, proxy_media).</param>
 		/// <param name="bridgeId">Unique ID to give to the bridge being created.</param>
 		/// <param name="name">Name to give to the bridge being created.</param>
-		public Bridge Create(string type, string bridgeId, string name)
+		public Bridge Create(string type = null, string bridgeId = null, string name = null)
 		{
 			string path = "/bridges";
 			var request = GetNewRequest(path, Method.POST);
-			request.AddParameter("type", type, ParameterType.QueryString);
-			request.AddParameter("bridgeId", bridgeId, ParameterType.QueryString);
-			request.AddParameter("name", name, ParameterType.QueryString);
+			if(type != null)
+				request.AddParameter("type", type, ParameterType.QueryString);
+			if(bridgeId != null)
+				request.AddParameter("bridgeId", bridgeId, ParameterType.QueryString);
+			if(name != null)
+				request.AddParameter("name", name, ParameterType.QueryString);
 
 			var response = Client.Execute<Bridge>(request);
 
@@ -70,13 +73,16 @@ namespace AsterNET.ARI.Actions
 		/// <param name="type">Comma separated list of bridge type attributes (mixing, holding, dtmf_events, proxy_media) to set.</param>
 		/// <param name="bridgeId">Unique ID to give to the bridge being created.</param>
 		/// <param name="name">Set the name of the bridge.</param>
-		public Bridge Create_or_update_with_id(string type, string bridgeId, string name)
+		public Bridge Create_or_update_with_id(string bridgeId, string type = null, string name = null)
 		{
 			string path = "/bridges/{bridgeId}";
 			var request = GetNewRequest(path, Method.POST);
-			request.AddParameter("type", type, ParameterType.QueryString);
-			request.AddUrlSegment("bridgeId", bridgeId);
-			request.AddParameter("name", name, ParameterType.QueryString);
+			if(type != null)
+				request.AddParameter("type", type, ParameterType.QueryString);
+			if(bridgeId != null)
+				request.AddUrlSegment("bridgeId", bridgeId);
+			if(name != null)
+				request.AddParameter("name", name, ParameterType.QueryString);
 
 			var response = Client.Execute<Bridge>(request);
 
@@ -98,7 +104,8 @@ namespace AsterNET.ARI.Actions
 		{
 			string path = "/bridges/{bridgeId}";
 			var request = GetNewRequest(path, Method.GET);
-			request.AddUrlSegment("bridgeId", bridgeId);
+			if(bridgeId != null)
+				request.AddUrlSegment("bridgeId", bridgeId);
 
 			var response = Client.Execute<Bridge>(request);
 
@@ -123,7 +130,8 @@ namespace AsterNET.ARI.Actions
 		{
 			string path = "/bridges/{bridgeId}";
 			var request = GetNewRequest(path, Method.DELETE);
-			request.AddUrlSegment("bridgeId", bridgeId);
+			if(bridgeId != null)
+				request.AddUrlSegment("bridgeId", bridgeId);
 			var response = Client.Execute(request);
 		}
 		/// <summary>
@@ -132,13 +140,16 @@ namespace AsterNET.ARI.Actions
 		/// <param name="bridgeId">Bridge's id</param>
 		/// <param name="channel">Ids of channels to add to bridge</param>
 		/// <param name="role">Channel's role in the bridge</param>
-		public void AddChannel(string bridgeId, string channel, string role)
+		public void AddChannel(string bridgeId, string channel, string role = null)
 		{
 			string path = "/bridges/{bridgeId}/addChannel";
 			var request = GetNewRequest(path, Method.POST);
-			request.AddUrlSegment("bridgeId", bridgeId);
-			request.AddParameter("channel", channel, ParameterType.QueryString);
-			request.AddParameter("role", role, ParameterType.QueryString);
+			if(bridgeId != null)
+				request.AddUrlSegment("bridgeId", bridgeId);
+			if(channel != null)
+				request.AddParameter("channel", channel, ParameterType.QueryString);
+			if(role != null)
+				request.AddParameter("role", role, ParameterType.QueryString);
 			var response = Client.Execute(request);
 		}
 		/// <summary>
@@ -150,8 +161,10 @@ namespace AsterNET.ARI.Actions
 		{
 			string path = "/bridges/{bridgeId}/removeChannel";
 			var request = GetNewRequest(path, Method.POST);
-			request.AddUrlSegment("bridgeId", bridgeId);
-			request.AddParameter("channel", channel, ParameterType.QueryString);
+			if(bridgeId != null)
+				request.AddUrlSegment("bridgeId", bridgeId);
+			if(channel != null)
+				request.AddParameter("channel", channel, ParameterType.QueryString);
 			var response = Client.Execute(request);
 		}
 		/// <summary>
@@ -159,12 +172,14 @@ namespace AsterNET.ARI.Actions
 		/// </summary>
 		/// <param name="bridgeId">Bridge's id</param>
 		/// <param name="mohClass">Channel's id</param>
-		public void StartMoh(string bridgeId, string mohClass)
+		public void StartMoh(string bridgeId, string mohClass = null)
 		{
 			string path = "/bridges/{bridgeId}/moh";
 			var request = GetNewRequest(path, Method.POST);
-			request.AddUrlSegment("bridgeId", bridgeId);
-			request.AddParameter("mohClass", mohClass, ParameterType.QueryString);
+			if(bridgeId != null)
+				request.AddUrlSegment("bridgeId", bridgeId);
+			if(mohClass != null)
+				request.AddParameter("mohClass", mohClass, ParameterType.QueryString);
 			var response = Client.Execute(request);
 		}
 		/// <summary>
@@ -175,7 +190,8 @@ namespace AsterNET.ARI.Actions
 		{
 			string path = "/bridges/{bridgeId}/moh";
 			var request = GetNewRequest(path, Method.DELETE);
-			request.AddUrlSegment("bridgeId", bridgeId);
+			if(bridgeId != null)
+				request.AddUrlSegment("bridgeId", bridgeId);
 			var response = Client.Execute(request);
 		}
 		/// <summary>
@@ -187,16 +203,22 @@ namespace AsterNET.ARI.Actions
 		/// <param name="offsetms">Number of media to skip before playing.</param>
 		/// <param name="skipms">Number of milliseconds to skip for forward/reverse operations.</param>
 		/// <param name="playbackId">Playback Id.</param>
-		public Playback Play(string bridgeId, string media, string lang, int offsetms, int skipms, string playbackId)
+		public Playback Play(string bridgeId, string media, string lang = null, int? offsetms = null, int? skipms = null, string playbackId = null)
 		{
 			string path = "/bridges/{bridgeId}/play";
 			var request = GetNewRequest(path, Method.POST);
-			request.AddUrlSegment("bridgeId", bridgeId);
-			request.AddParameter("media", media, ParameterType.QueryString);
-			request.AddParameter("lang", lang, ParameterType.QueryString);
-			request.AddParameter("offsetms", offsetms, ParameterType.QueryString);
-			request.AddParameter("skipms", skipms, ParameterType.QueryString);
-			request.AddParameter("playbackId", playbackId, ParameterType.QueryString);
+			if(bridgeId != null)
+				request.AddUrlSegment("bridgeId", bridgeId);
+			if(media != null)
+				request.AddParameter("media", media, ParameterType.QueryString);
+			if(lang != null)
+				request.AddParameter("lang", lang, ParameterType.QueryString);
+			if(offsetms != null)
+				request.AddParameter("offsetms", offsetms, ParameterType.QueryString);
+			if(skipms != null)
+				request.AddParameter("skipms", skipms, ParameterType.QueryString);
+			if(playbackId != null)
+				request.AddParameter("playbackId", playbackId, ParameterType.QueryString);
 
 			var response = Client.Execute<Playback>(request);
 
@@ -225,16 +247,22 @@ namespace AsterNET.ARI.Actions
 		/// <param name="lang">For sounds, selects language for sound.</param>
 		/// <param name="offsetms">Number of media to skip before playing.</param>
 		/// <param name="skipms">Number of milliseconds to skip for forward/reverse operations.</param>
-		public Playback PlayWithId(string bridgeId, string playbackId, string media, string lang, int offsetms, int skipms)
+		public Playback PlayWithId(string bridgeId, string playbackId, string media, string lang = null, int? offsetms = null, int? skipms = null)
 		{
 			string path = "/bridges/{bridgeId}/play/{playbackId}";
 			var request = GetNewRequest(path, Method.POST);
-			request.AddUrlSegment("bridgeId", bridgeId);
-			request.AddUrlSegment("playbackId", playbackId);
-			request.AddParameter("media", media, ParameterType.QueryString);
-			request.AddParameter("lang", lang, ParameterType.QueryString);
-			request.AddParameter("offsetms", offsetms, ParameterType.QueryString);
-			request.AddParameter("skipms", skipms, ParameterType.QueryString);
+			if(bridgeId != null)
+				request.AddUrlSegment("bridgeId", bridgeId);
+			if(playbackId != null)
+				request.AddUrlSegment("playbackId", playbackId);
+			if(media != null)
+				request.AddParameter("media", media, ParameterType.QueryString);
+			if(lang != null)
+				request.AddParameter("lang", lang, ParameterType.QueryString);
+			if(offsetms != null)
+				request.AddParameter("offsetms", offsetms, ParameterType.QueryString);
+			if(skipms != null)
+				request.AddParameter("skipms", skipms, ParameterType.QueryString);
 
 			var response = Client.Execute<Playback>(request);
 
@@ -265,18 +293,26 @@ namespace AsterNET.ARI.Actions
 		/// <param name="ifExists">Action to take if a recording with the same name already exists.</param>
 		/// <param name="beep">Play beep when recording begins</param>
 		/// <param name="terminateOn">DTMF input to terminate recording.</param>
-		public LiveRecording Record(string bridgeId, string name, string format, int maxDurationSeconds, int maxSilenceSeconds, string ifExists, bool beep, string terminateOn)
+		public LiveRecording Record(string bridgeId, string name, string format, int? maxDurationSeconds = null, int? maxSilenceSeconds = null, string ifExists = null, bool? beep = null, string terminateOn = null)
 		{
 			string path = "/bridges/{bridgeId}/record";
 			var request = GetNewRequest(path, Method.POST);
-			request.AddUrlSegment("bridgeId", bridgeId);
-			request.AddParameter("name", name, ParameterType.QueryString);
-			request.AddParameter("format", format, ParameterType.QueryString);
-			request.AddParameter("maxDurationSeconds", maxDurationSeconds, ParameterType.QueryString);
-			request.AddParameter("maxSilenceSeconds", maxSilenceSeconds, ParameterType.QueryString);
-			request.AddParameter("ifExists", ifExists, ParameterType.QueryString);
-			request.AddParameter("beep", beep, ParameterType.QueryString);
-			request.AddParameter("terminateOn", terminateOn, ParameterType.QueryString);
+			if(bridgeId != null)
+				request.AddUrlSegment("bridgeId", bridgeId);
+			if(name != null)
+				request.AddParameter("name", name, ParameterType.QueryString);
+			if(format != null)
+				request.AddParameter("format", format, ParameterType.QueryString);
+			if(maxDurationSeconds != null)
+				request.AddParameter("maxDurationSeconds", maxDurationSeconds, ParameterType.QueryString);
+			if(maxSilenceSeconds != null)
+				request.AddParameter("maxSilenceSeconds", maxSilenceSeconds, ParameterType.QueryString);
+			if(ifExists != null)
+				request.AddParameter("ifExists", ifExists, ParameterType.QueryString);
+			if(beep != null)
+				request.AddParameter("beep", beep, ParameterType.QueryString);
+			if(terminateOn != null)
+				request.AddParameter("terminateOn", terminateOn, ParameterType.QueryString);
 
 			var response = Client.Execute<LiveRecording>(request);
 

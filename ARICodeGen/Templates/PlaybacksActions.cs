@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 22/07/2014 19:01:02
+	Automatically generated file @ 06/11/2014 10:21:07
 */
 using System;
 using System.Collections.Generic;
@@ -26,7 +26,8 @@ namespace AsterNET.ARI.Actions
 		{
 			string path = "/playbacks/{playbackId}";
 			var request = GetNewRequest(path, Method.GET);
-			request.AddUrlSegment("playbackId", playbackId);
+			if(playbackId != null)
+				request.AddUrlSegment("playbackId", playbackId);
 
 			var response = Client.Execute<Playback>(request);
 
@@ -51,7 +52,8 @@ namespace AsterNET.ARI.Actions
 		{
 			string path = "/playbacks/{playbackId}";
 			var request = GetNewRequest(path, Method.DELETE);
-			request.AddUrlSegment("playbackId", playbackId);
+			if(playbackId != null)
+				request.AddUrlSegment("playbackId", playbackId);
 			var response = Client.Execute(request);
 		}
 		/// <summary>
@@ -63,8 +65,10 @@ namespace AsterNET.ARI.Actions
 		{
 			string path = "/playbacks/{playbackId}/control";
 			var request = GetNewRequest(path, Method.POST);
-			request.AddUrlSegment("playbackId", playbackId);
-			request.AddParameter("operation", operation, ParameterType.QueryString);
+			if(playbackId != null)
+				request.AddUrlSegment("playbackId", playbackId);
+			if(operation != null)
+				request.AddParameter("operation", operation, ParameterType.QueryString);
 			var response = Client.Execute(request);
 		}
 	}

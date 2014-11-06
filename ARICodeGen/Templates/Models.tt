@@ -21,16 +21,16 @@
 // System.Diagnostics.Debugger.Launch();
 var manager = TemplateFileManager.Create(this);
 var files = new List<string>() { 
-	@"D:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Events.json",
-	@"D:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Bridges.json",
-	@"D:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Channels.json",
-	@"D:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Asterisk.json",
-	@"D:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Applications.json",
-	@"D:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Endpoints.json",
-	@"D:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\DeviceStates.json",
-	@"D:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Playbacks.json",
-	@"D:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Sounds.json",
-	@"D:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Recordings.json"
+	@"E:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Events.json",
+	@"E:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Bridges.json",
+	@"E:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Channels.json",
+	@"E:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Asterisk.json",
+	@"E:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Applications.json",
+	@"E:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Endpoints.json",
+	@"E:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\DeviceStates.json",
+	@"E:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Playbacks.json",
+	@"E:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Sounds.json",
+	@"E:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Recordings.json"
 };
 var events = new List<string>();
 #>
@@ -187,9 +187,27 @@ namespace AsterNET.ARI.Actions
 				var parameters = string.Empty;
 			
 				try {
-					foreach(var param in op.SelectToken("parameters")) {
+					var allParams = op.SelectToken("parameters").ToList();
+					try {
+						allParams = allParams.OrderByDescending(x => x.SelectToken("required").Value<bool>()).ToList();
+					}catch{}
+
+					foreach(var param in allParams) {
+						// Get Param Type
+						var paramType = ARICodeGen.SwaggerHelper.TypeConvert(param.SelectToken("dataType").Value<string>());
 						// string defaultValue = param.SelectToken("defalutValue").Value<string>()
-						parameters += string.Format("{2}{1} {0}", param.SelectToken("name").Value<string>(), ARICodeGen.SwaggerHelper.TypeConvert(param.SelectToken("dataType").Value<string>()), parameters.Length > 0 ? ", " : "");
+						var optionalString = "";
+						if(param.SelectToken("required") != null && !param.SelectToken("required").Value<bool>()){
+							if(paramType == "int" || paramType == "bool" || paramType == "long")
+								paramType = paramType + "?";
+							
+							optionalString = " = null";
+						}
+						parameters += string.Format("{2}{1} {0}{3}", 
+							param.SelectToken("name").Value<string>(), 
+							paramType, 
+							parameters.Length > 0 ? ", " : "", 
+							optionalString);
 					}
 				}catch(Exception ex){
 					Trace.WriteLine(ex.ToString());
@@ -215,15 +233,34 @@ namespace AsterNET.ARI.Actions
 <# 
 			try {
 				foreach(var param in op.SelectToken("parameters")) {
+					var paramType = ARICodeGen.SwaggerHelper.TypeConvert(param.SelectToken("dataType").Value<string>());
+					// Perform null check in code
+#>
+			if(<#= param.SelectToken("name").Value<string>() #> != null)
+<#
 					if(param.SelectToken("paramType").Value<string>() == "path"){
 #>
-			request.AddUrlSegment("<#= param.SelectToken("name").Value<string>() #>", <#= param.SelectToken("name").Value<string>() #>);
+				request.AddUrlSegment("<#= param.SelectToken("name").Value<string>() #>", <#= param.SelectToken("name").Value<string>() #>);
 <# 
-					}else{
+					}else if(param.SelectToken("paramType").Value<string>() == "query"){
 #>
-			request.AddParameter("<#= param.SelectToken("name").Value<string>() #>", <#= param.SelectToken("name").Value<string>() #>, ParameterType.QueryString);
+				request.AddParameter("<#= param.SelectToken("name").Value<string>() #>", <#= param.SelectToken("name").Value<string>() #>, ParameterType.QueryString);
+<#
+					}else if(param.SelectToken("paramType").Value<string>() == "body"){
+#>
+				request.AddParameter("<#= param.SelectToken("name").Value<string>() #>", <#= param.SelectToken("name").Value<string>() #>, ParameterType.RequestBody);
+<#
+					}else if(param.SelectToken("paramType").Value<string>() == "header"){
+#>
+				request.AddParameter("<#= param.SelectToken("name").Value<string>() #>", <#= param.SelectToken("name").Value<string>() #>, ParameterType.HttpHeader);
+<#
+					}else if(param.SelectToken("paramType").Value<string>() == "form"){
+#>
+				request.AddParameter("<#= param.SelectToken("name").Value<string>() #>", <#= param.SelectToken("name").Value<string>() #>, ParameterType.HttpHeader);
 <#
 					}
+
+
 
 				}
 			}catch(Exception ex){

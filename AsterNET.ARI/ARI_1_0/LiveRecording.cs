@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 22/07/2014 19:01:02
+	Automatically generated file @ 06/11/2014 10:02:06
 */
 using System;
 using System.Collections.Generic;

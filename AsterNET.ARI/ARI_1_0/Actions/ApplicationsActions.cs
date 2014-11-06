@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 22/07/2014 19:01:02
+	Automatically generated file @ 06/11/2014 10:21:07
 */
 using System;
 using System.Collections.Generic;
@@ -46,7 +46,8 @@ namespace AsterNET.ARI.Actions
 		{
 			string path = "/applications/{applicationName}";
 			var request = GetNewRequest(path, Method.GET);
-			request.AddUrlSegment("applicationName", applicationName);
+			if(applicationName != null)
+				request.AddUrlSegment("applicationName", applicationName);
 
 			var response = Client.Execute<Application>(request);
 
@@ -72,8 +73,10 @@ namespace AsterNET.ARI.Actions
 		{
 			string path = "/applications/{applicationName}/subscription";
 			var request = GetNewRequest(path, Method.POST);
-			request.AddUrlSegment("applicationName", applicationName);
-			request.AddParameter("eventSource", eventSource, ParameterType.QueryString);
+			if(applicationName != null)
+				request.AddUrlSegment("applicationName", applicationName);
+			if(eventSource != null)
+				request.AddParameter("eventSource", eventSource, ParameterType.QueryString);
 
 			var response = Client.Execute<Application>(request);
 
@@ -105,8 +108,10 @@ namespace AsterNET.ARI.Actions
 		{
 			string path = "/applications/{applicationName}/subscription";
 			var request = GetNewRequest(path, Method.DELETE);
-			request.AddUrlSegment("applicationName", applicationName);
-			request.AddParameter("eventSource", eventSource, ParameterType.QueryString);
+			if(applicationName != null)
+				request.AddUrlSegment("applicationName", applicationName);
+			if(eventSource != null)
+				request.AddParameter("eventSource", eventSource, ParameterType.QueryString);
 
 			var response = Client.Execute<Application>(request);
 

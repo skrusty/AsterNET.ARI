@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 22/07/2014 19:01:02
+	Automatically generated file @ 06/11/2014 10:21:07
 */
 using System;
 using System.Collections.Generic;
@@ -46,7 +46,8 @@ namespace AsterNET.ARI.Actions
 		{
 			string path = "/recordings/stored/{recordingName}";
 			var request = GetNewRequest(path, Method.GET);
-			request.AddUrlSegment("recordingName", recordingName);
+			if(recordingName != null)
+				request.AddUrlSegment("recordingName", recordingName);
 
 			var response = Client.Execute<StoredRecording>(request);
 
@@ -71,7 +72,8 @@ namespace AsterNET.ARI.Actions
 		{
 			string path = "/recordings/stored/{recordingName}";
 			var request = GetNewRequest(path, Method.DELETE);
-			request.AddUrlSegment("recordingName", recordingName);
+			if(recordingName != null)
+				request.AddUrlSegment("recordingName", recordingName);
 			var response = Client.Execute(request);
 		}
 		/// <summary>
@@ -82,7 +84,8 @@ namespace AsterNET.ARI.Actions
 		{
 			string path = "/recordings/live/{recordingName}";
 			var request = GetNewRequest(path, Method.GET);
-			request.AddUrlSegment("recordingName", recordingName);
+			if(recordingName != null)
+				request.AddUrlSegment("recordingName", recordingName);
 
 			var response = Client.Execute<LiveRecording>(request);
 
@@ -107,7 +110,8 @@ namespace AsterNET.ARI.Actions
 		{
 			string path = "/recordings/live/{recordingName}";
 			var request = GetNewRequest(path, Method.DELETE);
-			request.AddUrlSegment("recordingName", recordingName);
+			if(recordingName != null)
+				request.AddUrlSegment("recordingName", recordingName);
 			var response = Client.Execute(request);
 		}
 		/// <summary>
@@ -118,7 +122,8 @@ namespace AsterNET.ARI.Actions
 		{
 			string path = "/recordings/live/{recordingName}/stop";
 			var request = GetNewRequest(path, Method.POST);
-			request.AddUrlSegment("recordingName", recordingName);
+			if(recordingName != null)
+				request.AddUrlSegment("recordingName", recordingName);
 			var response = Client.Execute(request);
 		}
 		/// <summary>
@@ -129,7 +134,8 @@ namespace AsterNET.ARI.Actions
 		{
 			string path = "/recordings/live/{recordingName}/pause";
 			var request = GetNewRequest(path, Method.POST);
-			request.AddUrlSegment("recordingName", recordingName);
+			if(recordingName != null)
+				request.AddUrlSegment("recordingName", recordingName);
 			var response = Client.Execute(request);
 		}
 		/// <summary>
@@ -140,7 +146,8 @@ namespace AsterNET.ARI.Actions
 		{
 			string path = "/recordings/live/{recordingName}/pause";
 			var request = GetNewRequest(path, Method.DELETE);
-			request.AddUrlSegment("recordingName", recordingName);
+			if(recordingName != null)
+				request.AddUrlSegment("recordingName", recordingName);
 			var response = Client.Execute(request);
 		}
 		/// <summary>
@@ -151,7 +158,8 @@ namespace AsterNET.ARI.Actions
 		{
 			string path = "/recordings/live/{recordingName}/mute";
 			var request = GetNewRequest(path, Method.POST);
-			request.AddUrlSegment("recordingName", recordingName);
+			if(recordingName != null)
+				request.AddUrlSegment("recordingName", recordingName);
 			var response = Client.Execute(request);
 		}
 		/// <summary>
@@ -162,7 +170,8 @@ namespace AsterNET.ARI.Actions
 		{
 			string path = "/recordings/live/{recordingName}/mute";
 			var request = GetNewRequest(path, Method.DELETE);
-			request.AddUrlSegment("recordingName", recordingName);
+			if(recordingName != null)
+				request.AddUrlSegment("recordingName", recordingName);
 			var response = Client.Execute(request);
 		}
 	}

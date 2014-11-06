@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 22/07/2014 19:01:01
+	Automatically generated file @ 06/11/2014 10:21:07
 */
 using System;
 using System.Collections.Generic;
@@ -26,7 +26,8 @@ namespace AsterNET.ARI.Actions
 		{
 			string path = "/events";
 			var request = GetNewRequest(path, Method.GET);
-			request.AddParameter("app", app, ParameterType.QueryString);
+			if(app != null)
+				request.AddParameter("app", app, ParameterType.QueryString);
 
 			var response = Client.Execute<Message>(request);
 
@@ -47,14 +48,18 @@ namespace AsterNET.ARI.Actions
 		/// <param name="application">The name of the application that will receive this event</param>
 		/// <param name="source">URI for event source (channel:{channelId}, bridge:{bridgeId}, endpoint:{tech}/{resource}, deviceState:{deviceName}</param>
 		/// <param name="variables">The "variables" key in the body object holds custom key/value pairs to add to the user event. Ex. { "variables": { "key": "value" } }</param>
-		public void UserEvent(string eventName, string application, string source, List<KeyValuePair<string, string>> variables)
+		public void UserEvent(string eventName, string application, string source = null, List<KeyValuePair<string, string>> variables = null)
 		{
 			string path = "/events/user/{eventName}";
 			var request = GetNewRequest(path, Method.POST);
-			request.AddUrlSegment("eventName", eventName);
-			request.AddParameter("application", application, ParameterType.QueryString);
-			request.AddParameter("source", source, ParameterType.QueryString);
-			request.AddParameter("variables", variables, ParameterType.QueryString);
+			if(eventName != null)
+				request.AddUrlSegment("eventName", eventName);
+			if(application != null)
+				request.AddParameter("application", application, ParameterType.QueryString);
+			if(source != null)
+				request.AddParameter("source", source, ParameterType.QueryString);
+			if(variables != null)
+				request.AddParameter("variables", variables, ParameterType.RequestBody);
 			var response = Client.Execute(request);
 		}
 	}

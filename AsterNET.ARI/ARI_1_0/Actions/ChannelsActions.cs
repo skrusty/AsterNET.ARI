@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 22/07/2014 19:01:01
+	Automatically generated file @ 06/11/2014 10:21:07
 */
 using System;
 using System.Collections.Generic;
@@ -52,21 +52,32 @@ namespace AsterNET.ARI.Actions
 		/// <param name="variables">The "variables" key in the body object holds variable key/value pairs to set on the channel on creation. Other keys in the body object are interpreted as query parameters. Ex. { "endpoint": "SIP/Alice", "variables": { "CALLERID(name)": "Alice" } }</param>
 		/// <param name="channelId">The unique id to assign the channel on creation.</param>
 		/// <param name="otherChannelId">The unique id to assign the second channel when using local channels.</param>
-		public Channel Originate(string endpoint, string extension, string context, long priority, string app, string appArgs, string callerId, int timeout, List<KeyValuePair<string, string>> variables, string channelId, string otherChannelId)
+		public Channel Originate(string endpoint, string extension = null, string context = null, long? priority = null, string app = null, string appArgs = null, string callerId = null, int? timeout = null, List<KeyValuePair<string, string>> variables = null, string channelId = null, string otherChannelId = null)
 		{
 			string path = "/channels";
 			var request = GetNewRequest(path, Method.POST);
-			request.AddParameter("endpoint", endpoint, ParameterType.QueryString);
-			request.AddParameter("extension", extension, ParameterType.QueryString);
-			request.AddParameter("context", context, ParameterType.QueryString);
-			request.AddParameter("priority", priority, ParameterType.QueryString);
-			request.AddParameter("app", app, ParameterType.QueryString);
-			request.AddParameter("appArgs", appArgs, ParameterType.QueryString);
-			request.AddParameter("callerId", callerId, ParameterType.QueryString);
-			request.AddParameter("timeout", timeout, ParameterType.QueryString);
-			request.AddParameter("variables", variables, ParameterType.QueryString);
-			request.AddParameter("channelId", channelId, ParameterType.QueryString);
-			request.AddParameter("otherChannelId", otherChannelId, ParameterType.QueryString);
+			if(endpoint != null)
+				request.AddParameter("endpoint", endpoint, ParameterType.QueryString);
+			if(extension != null)
+				request.AddParameter("extension", extension, ParameterType.QueryString);
+			if(context != null)
+				request.AddParameter("context", context, ParameterType.QueryString);
+			if(priority != null)
+				request.AddParameter("priority", priority, ParameterType.QueryString);
+			if(app != null)
+				request.AddParameter("app", app, ParameterType.QueryString);
+			if(appArgs != null)
+				request.AddParameter("appArgs", appArgs, ParameterType.QueryString);
+			if(callerId != null)
+				request.AddParameter("callerId", callerId, ParameterType.QueryString);
+			if(timeout != null)
+				request.AddParameter("timeout", timeout, ParameterType.QueryString);
+			if(variables != null)
+				request.AddParameter("variables", variables, ParameterType.RequestBody);
+			if(channelId != null)
+				request.AddParameter("channelId", channelId, ParameterType.QueryString);
+			if(otherChannelId != null)
+				request.AddParameter("otherChannelId", otherChannelId, ParameterType.QueryString);
 
 			var response = Client.Execute<Channel>(request);
 
@@ -91,7 +102,8 @@ namespace AsterNET.ARI.Actions
 		{
 			string path = "/channels/{channelId}";
 			var request = GetNewRequest(path, Method.GET);
-			request.AddUrlSegment("channelId", channelId);
+			if(channelId != null)
+				request.AddUrlSegment("channelId", channelId);
 
 			var response = Client.Execute<Channel>(request);
 
@@ -122,21 +134,32 @@ namespace AsterNET.ARI.Actions
 		/// <param name="timeout">Timeout (in seconds) before giving up dialing, or -1 for no timeout.</param>
 		/// <param name="variables">The "variables" key in the body object holds variable key/value pairs to set on the channel on creation. Other keys in the body object are interpreted as query parameters. Ex. { "endpoint": "SIP/Alice", "variables": { "CALLERID(name)": "Alice" } }</param>
 		/// <param name="otherChannelId">The unique id to assign the second channel when using local channels.</param>
-		public Channel OriginateWithId(string channelId, string endpoint, string extension, string context, long priority, string app, string appArgs, string callerId, int timeout, List<KeyValuePair<string, string>> variables, string otherChannelId)
+		public Channel OriginateWithId(string channelId, string endpoint, string extension = null, string context = null, long? priority = null, string app = null, string appArgs = null, string callerId = null, int? timeout = null, List<KeyValuePair<string, string>> variables = null, string otherChannelId = null)
 		{
 			string path = "/channels/{channelId}";
 			var request = GetNewRequest(path, Method.POST);
-			request.AddUrlSegment("channelId", channelId);
-			request.AddParameter("endpoint", endpoint, ParameterType.QueryString);
-			request.AddParameter("extension", extension, ParameterType.QueryString);
-			request.AddParameter("context", context, ParameterType.QueryString);
-			request.AddParameter("priority", priority, ParameterType.QueryString);
-			request.AddParameter("app", app, ParameterType.QueryString);
-			request.AddParameter("appArgs", appArgs, ParameterType.QueryString);
-			request.AddParameter("callerId", callerId, ParameterType.QueryString);
-			request.AddParameter("timeout", timeout, ParameterType.QueryString);
-			request.AddParameter("variables", variables, ParameterType.QueryString);
-			request.AddParameter("otherChannelId", otherChannelId, ParameterType.QueryString);
+			if(channelId != null)
+				request.AddUrlSegment("channelId", channelId);
+			if(endpoint != null)
+				request.AddParameter("endpoint", endpoint, ParameterType.QueryString);
+			if(extension != null)
+				request.AddParameter("extension", extension, ParameterType.QueryString);
+			if(context != null)
+				request.AddParameter("context", context, ParameterType.QueryString);
+			if(priority != null)
+				request.AddParameter("priority", priority, ParameterType.QueryString);
+			if(app != null)
+				request.AddParameter("app", app, ParameterType.QueryString);
+			if(appArgs != null)
+				request.AddParameter("appArgs", appArgs, ParameterType.QueryString);
+			if(callerId != null)
+				request.AddParameter("callerId", callerId, ParameterType.QueryString);
+			if(timeout != null)
+				request.AddParameter("timeout", timeout, ParameterType.QueryString);
+			if(variables != null)
+				request.AddParameter("variables", variables, ParameterType.RequestBody);
+			if(otherChannelId != null)
+				request.AddParameter("otherChannelId", otherChannelId, ParameterType.QueryString);
 
 			var response = Client.Execute<Channel>(request);
 
@@ -158,12 +181,14 @@ namespace AsterNET.ARI.Actions
 		/// </summary>
 		/// <param name="channelId">Channel's id</param>
 		/// <param name="reason">Reason for hanging up the channel</param>
-		public void Hangup(string channelId, string reason)
+		public void Hangup(string channelId, string reason = null)
 		{
 			string path = "/channels/{channelId}";
 			var request = GetNewRequest(path, Method.DELETE);
-			request.AddUrlSegment("channelId", channelId);
-			request.AddParameter("reason", reason, ParameterType.QueryString);
+			if(channelId != null)
+				request.AddUrlSegment("channelId", channelId);
+			if(reason != null)
+				request.AddParameter("reason", reason, ParameterType.QueryString);
 			var response = Client.Execute(request);
 		}
 		/// <summary>
@@ -173,14 +198,18 @@ namespace AsterNET.ARI.Actions
 		/// <param name="context">The context to continue to.</param>
 		/// <param name="extension">The extension to continue to.</param>
 		/// <param name="priority">The priority to continue to.</param>
-		public void ContinueInDialplan(string channelId, string context, string extension, int priority)
+		public void ContinueInDialplan(string channelId, string context = null, string extension = null, int? priority = null)
 		{
 			string path = "/channels/{channelId}/continue";
 			var request = GetNewRequest(path, Method.POST);
-			request.AddUrlSegment("channelId", channelId);
-			request.AddParameter("context", context, ParameterType.QueryString);
-			request.AddParameter("extension", extension, ParameterType.QueryString);
-			request.AddParameter("priority", priority, ParameterType.QueryString);
+			if(channelId != null)
+				request.AddUrlSegment("channelId", channelId);
+			if(context != null)
+				request.AddParameter("context", context, ParameterType.QueryString);
+			if(extension != null)
+				request.AddParameter("extension", extension, ParameterType.QueryString);
+			if(priority != null)
+				request.AddParameter("priority", priority, ParameterType.QueryString);
 			var response = Client.Execute(request);
 		}
 		/// <summary>
@@ -191,7 +220,8 @@ namespace AsterNET.ARI.Actions
 		{
 			string path = "/channels/{channelId}/answer";
 			var request = GetNewRequest(path, Method.POST);
-			request.AddUrlSegment("channelId", channelId);
+			if(channelId != null)
+				request.AddUrlSegment("channelId", channelId);
 			var response = Client.Execute(request);
 		}
 		/// <summary>
@@ -202,7 +232,8 @@ namespace AsterNET.ARI.Actions
 		{
 			string path = "/channels/{channelId}/ring";
 			var request = GetNewRequest(path, Method.POST);
-			request.AddUrlSegment("channelId", channelId);
+			if(channelId != null)
+				request.AddUrlSegment("channelId", channelId);
 			var response = Client.Execute(request);
 		}
 		/// <summary>
@@ -213,7 +244,8 @@ namespace AsterNET.ARI.Actions
 		{
 			string path = "/channels/{channelId}/ring";
 			var request = GetNewRequest(path, Method.DELETE);
-			request.AddUrlSegment("channelId", channelId);
+			if(channelId != null)
+				request.AddUrlSegment("channelId", channelId);
 			var response = Client.Execute(request);
 		}
 		/// <summary>
@@ -225,16 +257,22 @@ namespace AsterNET.ARI.Actions
 		/// <param name="between">Amount of time in between DTMF digits (specified in milliseconds).</param>
 		/// <param name="duration">Length of each DTMF digit (specified in milliseconds).</param>
 		/// <param name="after">Amount of time to wait after DTMF digits (specified in milliseconds) end.</param>
-		public void SendDTMF(string channelId, string dtmf, int before, int between, int duration, int after)
+		public void SendDTMF(string channelId, string dtmf = null, int? before = null, int? between = null, int? duration = null, int? after = null)
 		{
 			string path = "/channels/{channelId}/dtmf";
 			var request = GetNewRequest(path, Method.POST);
-			request.AddUrlSegment("channelId", channelId);
-			request.AddParameter("dtmf", dtmf, ParameterType.QueryString);
-			request.AddParameter("before", before, ParameterType.QueryString);
-			request.AddParameter("between", between, ParameterType.QueryString);
-			request.AddParameter("duration", duration, ParameterType.QueryString);
-			request.AddParameter("after", after, ParameterType.QueryString);
+			if(channelId != null)
+				request.AddUrlSegment("channelId", channelId);
+			if(dtmf != null)
+				request.AddParameter("dtmf", dtmf, ParameterType.QueryString);
+			if(before != null)
+				request.AddParameter("before", before, ParameterType.QueryString);
+			if(between != null)
+				request.AddParameter("between", between, ParameterType.QueryString);
+			if(duration != null)
+				request.AddParameter("duration", duration, ParameterType.QueryString);
+			if(after != null)
+				request.AddParameter("after", after, ParameterType.QueryString);
 			var response = Client.Execute(request);
 		}
 		/// <summary>
@@ -242,12 +280,14 @@ namespace AsterNET.ARI.Actions
 		/// </summary>
 		/// <param name="channelId">Channel's id</param>
 		/// <param name="direction">Direction in which to mute audio</param>
-		public void Mute(string channelId, string direction)
+		public void Mute(string channelId, string direction = null)
 		{
 			string path = "/channels/{channelId}/mute";
 			var request = GetNewRequest(path, Method.POST);
-			request.AddUrlSegment("channelId", channelId);
-			request.AddParameter("direction", direction, ParameterType.QueryString);
+			if(channelId != null)
+				request.AddUrlSegment("channelId", channelId);
+			if(direction != null)
+				request.AddParameter("direction", direction, ParameterType.QueryString);
 			var response = Client.Execute(request);
 		}
 		/// <summary>
@@ -255,12 +295,14 @@ namespace AsterNET.ARI.Actions
 		/// </summary>
 		/// <param name="channelId">Channel's id</param>
 		/// <param name="direction">Direction in which to unmute audio</param>
-		public void Unmute(string channelId, string direction)
+		public void Unmute(string channelId, string direction = null)
 		{
 			string path = "/channels/{channelId}/mute";
 			var request = GetNewRequest(path, Method.DELETE);
-			request.AddUrlSegment("channelId", channelId);
-			request.AddParameter("direction", direction, ParameterType.QueryString);
+			if(channelId != null)
+				request.AddUrlSegment("channelId", channelId);
+			if(direction != null)
+				request.AddParameter("direction", direction, ParameterType.QueryString);
 			var response = Client.Execute(request);
 		}
 		/// <summary>
@@ -271,7 +313,8 @@ namespace AsterNET.ARI.Actions
 		{
 			string path = "/channels/{channelId}/hold";
 			var request = GetNewRequest(path, Method.POST);
-			request.AddUrlSegment("channelId", channelId);
+			if(channelId != null)
+				request.AddUrlSegment("channelId", channelId);
 			var response = Client.Execute(request);
 		}
 		/// <summary>
@@ -282,7 +325,8 @@ namespace AsterNET.ARI.Actions
 		{
 			string path = "/channels/{channelId}/hold";
 			var request = GetNewRequest(path, Method.DELETE);
-			request.AddUrlSegment("channelId", channelId);
+			if(channelId != null)
+				request.AddUrlSegment("channelId", channelId);
 			var response = Client.Execute(request);
 		}
 		/// <summary>
@@ -290,12 +334,14 @@ namespace AsterNET.ARI.Actions
 		/// </summary>
 		/// <param name="channelId">Channel's id</param>
 		/// <param name="mohClass">Music on hold class to use</param>
-		public void StartMoh(string channelId, string mohClass)
+		public void StartMoh(string channelId, string mohClass = null)
 		{
 			string path = "/channels/{channelId}/moh";
 			var request = GetNewRequest(path, Method.POST);
-			request.AddUrlSegment("channelId", channelId);
-			request.AddParameter("mohClass", mohClass, ParameterType.QueryString);
+			if(channelId != null)
+				request.AddUrlSegment("channelId", channelId);
+			if(mohClass != null)
+				request.AddParameter("mohClass", mohClass, ParameterType.QueryString);
 			var response = Client.Execute(request);
 		}
 		/// <summary>
@@ -306,7 +352,8 @@ namespace AsterNET.ARI.Actions
 		{
 			string path = "/channels/{channelId}/moh";
 			var request = GetNewRequest(path, Method.DELETE);
-			request.AddUrlSegment("channelId", channelId);
+			if(channelId != null)
+				request.AddUrlSegment("channelId", channelId);
 			var response = Client.Execute(request);
 		}
 		/// <summary>
@@ -317,7 +364,8 @@ namespace AsterNET.ARI.Actions
 		{
 			string path = "/channels/{channelId}/silence";
 			var request = GetNewRequest(path, Method.POST);
-			request.AddUrlSegment("channelId", channelId);
+			if(channelId != null)
+				request.AddUrlSegment("channelId", channelId);
 			var response = Client.Execute(request);
 		}
 		/// <summary>
@@ -328,7 +376,8 @@ namespace AsterNET.ARI.Actions
 		{
 			string path = "/channels/{channelId}/silence";
 			var request = GetNewRequest(path, Method.DELETE);
-			request.AddUrlSegment("channelId", channelId);
+			if(channelId != null)
+				request.AddUrlSegment("channelId", channelId);
 			var response = Client.Execute(request);
 		}
 		/// <summary>
@@ -340,16 +389,22 @@ namespace AsterNET.ARI.Actions
 		/// <param name="offsetms">Number of media to skip before playing.</param>
 		/// <param name="skipms">Number of milliseconds to skip for forward/reverse operations.</param>
 		/// <param name="playbackId">Playback ID.</param>
-		public Playback Play(string channelId, string media, string lang, int offsetms, int skipms, string playbackId)
+		public Playback Play(string channelId, string media, string lang = null, int? offsetms = null, int? skipms = null, string playbackId = null)
 		{
 			string path = "/channels/{channelId}/play";
 			var request = GetNewRequest(path, Method.POST);
-			request.AddUrlSegment("channelId", channelId);
-			request.AddParameter("media", media, ParameterType.QueryString);
-			request.AddParameter("lang", lang, ParameterType.QueryString);
-			request.AddParameter("offsetms", offsetms, ParameterType.QueryString);
-			request.AddParameter("skipms", skipms, ParameterType.QueryString);
-			request.AddParameter("playbackId", playbackId, ParameterType.QueryString);
+			if(channelId != null)
+				request.AddUrlSegment("channelId", channelId);
+			if(media != null)
+				request.AddParameter("media", media, ParameterType.QueryString);
+			if(lang != null)
+				request.AddParameter("lang", lang, ParameterType.QueryString);
+			if(offsetms != null)
+				request.AddParameter("offsetms", offsetms, ParameterType.QueryString);
+			if(skipms != null)
+				request.AddParameter("skipms", skipms, ParameterType.QueryString);
+			if(playbackId != null)
+				request.AddParameter("playbackId", playbackId, ParameterType.QueryString);
 
 			var response = Client.Execute<Playback>(request);
 
@@ -378,16 +433,22 @@ namespace AsterNET.ARI.Actions
 		/// <param name="lang">For sounds, selects language for sound.</param>
 		/// <param name="offsetms">Number of media to skip before playing.</param>
 		/// <param name="skipms">Number of milliseconds to skip for forward/reverse operations.</param>
-		public Playback PlayWithId(string channelId, string playbackId, string media, string lang, int offsetms, int skipms)
+		public Playback PlayWithId(string channelId, string playbackId, string media, string lang = null, int? offsetms = null, int? skipms = null)
 		{
 			string path = "/channels/{channelId}/play/{playbackId}";
 			var request = GetNewRequest(path, Method.POST);
-			request.AddUrlSegment("channelId", channelId);
-			request.AddUrlSegment("playbackId", playbackId);
-			request.AddParameter("media", media, ParameterType.QueryString);
-			request.AddParameter("lang", lang, ParameterType.QueryString);
-			request.AddParameter("offsetms", offsetms, ParameterType.QueryString);
-			request.AddParameter("skipms", skipms, ParameterType.QueryString);
+			if(channelId != null)
+				request.AddUrlSegment("channelId", channelId);
+			if(playbackId != null)
+				request.AddUrlSegment("playbackId", playbackId);
+			if(media != null)
+				request.AddParameter("media", media, ParameterType.QueryString);
+			if(lang != null)
+				request.AddParameter("lang", lang, ParameterType.QueryString);
+			if(offsetms != null)
+				request.AddParameter("offsetms", offsetms, ParameterType.QueryString);
+			if(skipms != null)
+				request.AddParameter("skipms", skipms, ParameterType.QueryString);
 
 			var response = Client.Execute<Playback>(request);
 
@@ -418,18 +479,26 @@ namespace AsterNET.ARI.Actions
 		/// <param name="ifExists">Action to take if a recording with the same name already exists.</param>
 		/// <param name="beep">Play beep when recording begins</param>
 		/// <param name="terminateOn">DTMF input to terminate recording</param>
-		public LiveRecording Record(string channelId, string name, string format, int maxDurationSeconds, int maxSilenceSeconds, string ifExists, bool beep, string terminateOn)
+		public LiveRecording Record(string channelId, string name, string format, int? maxDurationSeconds = null, int? maxSilenceSeconds = null, string ifExists = null, bool? beep = null, string terminateOn = null)
 		{
 			string path = "/channels/{channelId}/record";
 			var request = GetNewRequest(path, Method.POST);
-			request.AddUrlSegment("channelId", channelId);
-			request.AddParameter("name", name, ParameterType.QueryString);
-			request.AddParameter("format", format, ParameterType.QueryString);
-			request.AddParameter("maxDurationSeconds", maxDurationSeconds, ParameterType.QueryString);
-			request.AddParameter("maxSilenceSeconds", maxSilenceSeconds, ParameterType.QueryString);
-			request.AddParameter("ifExists", ifExists, ParameterType.QueryString);
-			request.AddParameter("beep", beep, ParameterType.QueryString);
-			request.AddParameter("terminateOn", terminateOn, ParameterType.QueryString);
+			if(channelId != null)
+				request.AddUrlSegment("channelId", channelId);
+			if(name != null)
+				request.AddParameter("name", name, ParameterType.QueryString);
+			if(format != null)
+				request.AddParameter("format", format, ParameterType.QueryString);
+			if(maxDurationSeconds != null)
+				request.AddParameter("maxDurationSeconds", maxDurationSeconds, ParameterType.QueryString);
+			if(maxSilenceSeconds != null)
+				request.AddParameter("maxSilenceSeconds", maxSilenceSeconds, ParameterType.QueryString);
+			if(ifExists != null)
+				request.AddParameter("ifExists", ifExists, ParameterType.QueryString);
+			if(beep != null)
+				request.AddParameter("beep", beep, ParameterType.QueryString);
+			if(terminateOn != null)
+				request.AddParameter("terminateOn", terminateOn, ParameterType.QueryString);
 
 			var response = Client.Execute<LiveRecording>(request);
 
@@ -464,8 +533,10 @@ namespace AsterNET.ARI.Actions
 		{
 			string path = "/channels/{channelId}/variable";
 			var request = GetNewRequest(path, Method.GET);
-			request.AddUrlSegment("channelId", channelId);
-			request.AddParameter("variable", variable, ParameterType.QueryString);
+			if(channelId != null)
+				request.AddUrlSegment("channelId", channelId);
+			if(variable != null)
+				request.AddParameter("variable", variable, ParameterType.QueryString);
 
 			var response = Client.Execute<Variable>(request);
 
@@ -494,13 +565,16 @@ namespace AsterNET.ARI.Actions
 		/// <param name="channelId">Channel's id</param>
 		/// <param name="variable">The channel variable or function to set</param>
 		/// <param name="value">The value to set the variable to</param>
-		public void SetChannelVar(string channelId, string variable, string value)
+		public void SetChannelVar(string channelId, string variable, string value = null)
 		{
 			string path = "/channels/{channelId}/variable";
 			var request = GetNewRequest(path, Method.POST);
-			request.AddUrlSegment("channelId", channelId);
-			request.AddParameter("variable", variable, ParameterType.QueryString);
-			request.AddParameter("value", value, ParameterType.QueryString);
+			if(channelId != null)
+				request.AddUrlSegment("channelId", channelId);
+			if(variable != null)
+				request.AddParameter("variable", variable, ParameterType.QueryString);
+			if(value != null)
+				request.AddParameter("value", value, ParameterType.QueryString);
 			var response = Client.Execute(request);
 		}
 		/// <summary>
@@ -512,16 +586,22 @@ namespace AsterNET.ARI.Actions
 		/// <param name="app">Application the snooping channel is placed into</param>
 		/// <param name="appArgs">The application arguments to pass to the Stasis application</param>
 		/// <param name="snoopId">Unique ID to assign to snooping channel</param>
-		public Channel SnoopChannel(string channelId, string spy, string whisper, string app, string appArgs, string snoopId)
+		public Channel SnoopChannel(string channelId, string app, string spy = null, string whisper = null, string appArgs = null, string snoopId = null)
 		{
 			string path = "/channels/{channelId}/snoop";
 			var request = GetNewRequest(path, Method.POST);
-			request.AddUrlSegment("channelId", channelId);
-			request.AddParameter("spy", spy, ParameterType.QueryString);
-			request.AddParameter("whisper", whisper, ParameterType.QueryString);
-			request.AddParameter("app", app, ParameterType.QueryString);
-			request.AddParameter("appArgs", appArgs, ParameterType.QueryString);
-			request.AddParameter("snoopId", snoopId, ParameterType.QueryString);
+			if(channelId != null)
+				request.AddUrlSegment("channelId", channelId);
+			if(spy != null)
+				request.AddParameter("spy", spy, ParameterType.QueryString);
+			if(whisper != null)
+				request.AddParameter("whisper", whisper, ParameterType.QueryString);
+			if(app != null)
+				request.AddParameter("app", app, ParameterType.QueryString);
+			if(appArgs != null)
+				request.AddParameter("appArgs", appArgs, ParameterType.QueryString);
+			if(snoopId != null)
+				request.AddParameter("snoopId", snoopId, ParameterType.QueryString);
 
 			var response = Client.Execute<Channel>(request);
 
@@ -550,16 +630,22 @@ namespace AsterNET.ARI.Actions
 		/// <param name="whisper">Direction of audio to whisper into</param>
 		/// <param name="app">Application the snooping channel is placed into</param>
 		/// <param name="appArgs">The application arguments to pass to the Stasis application</param>
-		public Channel SnoopChannelWithId(string channelId, string snoopId, string spy, string whisper, string app, string appArgs)
+		public Channel SnoopChannelWithId(string channelId, string snoopId, string app, string spy = null, string whisper = null, string appArgs = null)
 		{
 			string path = "/channels/{channelId}/snoop/{snoopId}";
 			var request = GetNewRequest(path, Method.POST);
-			request.AddUrlSegment("channelId", channelId);
-			request.AddUrlSegment("snoopId", snoopId);
-			request.AddParameter("spy", spy, ParameterType.QueryString);
-			request.AddParameter("whisper", whisper, ParameterType.QueryString);
-			request.AddParameter("app", app, ParameterType.QueryString);
-			request.AddParameter("appArgs", appArgs, ParameterType.QueryString);
+			if(channelId != null)
+				request.AddUrlSegment("channelId", channelId);
+			if(snoopId != null)
+				request.AddUrlSegment("snoopId", snoopId);
+			if(spy != null)
+				request.AddParameter("spy", spy, ParameterType.QueryString);
+			if(whisper != null)
+				request.AddParameter("whisper", whisper, ParameterType.QueryString);
+			if(app != null)
+				request.AddParameter("app", app, ParameterType.QueryString);
+			if(appArgs != null)
+				request.AddParameter("appArgs", appArgs, ParameterType.QueryString);
 
 			var response = Client.Execute<Channel>(request);
 

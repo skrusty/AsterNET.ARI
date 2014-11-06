@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 22/07/2014 19:01:02
+	Automatically generated file @ 06/11/2014 10:21:07
 */
 using System;
 using System.Collections.Generic;
@@ -23,12 +23,14 @@ namespace AsterNET.ARI.Actions
 		/// </summary>
 		/// <param name="lang">Lookup sound for a specific language.</param>
 		/// <param name="format">Lookup sound in a specific format.</param>
-		public List<Sound> List(string lang, string format)
+		public List<Sound> List(string lang = null, string format = null)
 		{
 			string path = "/sounds";
 			var request = GetNewRequest(path, Method.GET);
-			request.AddParameter("lang", lang, ParameterType.QueryString);
-			request.AddParameter("format", format, ParameterType.QueryString);
+			if(lang != null)
+				request.AddParameter("lang", lang, ParameterType.QueryString);
+			if(format != null)
+				request.AddParameter("format", format, ParameterType.QueryString);
 
 			var response = Client.Execute<List<Sound>>(request);
 
@@ -50,7 +52,8 @@ namespace AsterNET.ARI.Actions
 		{
 			string path = "/sounds/{soundId}";
 			var request = GetNewRequest(path, Method.GET);
-			request.AddUrlSegment("soundId", soundId);
+			if(soundId != null)
+				request.AddUrlSegment("soundId", soundId);
 
 			var response = Client.Execute<Sound>(request);
 

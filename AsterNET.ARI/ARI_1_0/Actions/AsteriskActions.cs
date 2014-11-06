@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 22/07/2014 19:01:02
+	Automatically generated file @ 06/11/2014 10:21:07
 */
 using System;
 using System.Collections.Generic;
@@ -22,11 +22,12 @@ namespace AsterNET.ARI.Actions
 		/// Gets Asterisk system information.. 
 		/// </summary>
 		/// <param name="only">Filter information returned</param>
-		public AsteriskInfo GetInfo(string only)
+		public AsteriskInfo GetInfo(string only = null)
 		{
 			string path = "/asterisk/info";
 			var request = GetNewRequest(path, Method.GET);
-			request.AddParameter("only", only, ParameterType.QueryString);
+			if(only != null)
+				request.AddParameter("only", only, ParameterType.QueryString);
 
 			var response = Client.Execute<AsteriskInfo>(request);
 
@@ -48,7 +49,8 @@ namespace AsterNET.ARI.Actions
 		{
 			string path = "/asterisk/variable";
 			var request = GetNewRequest(path, Method.GET);
-			request.AddParameter("variable", variable, ParameterType.QueryString);
+			if(variable != null)
+				request.AddParameter("variable", variable, ParameterType.QueryString);
 
 			var response = Client.Execute<Variable>(request);
 
@@ -70,12 +72,14 @@ namespace AsterNET.ARI.Actions
 		/// </summary>
 		/// <param name="variable">The variable to set</param>
 		/// <param name="value">The value to set the variable to</param>
-		public void SetGlobalVar(string variable, string value)
+		public void SetGlobalVar(string variable, string value = null)
 		{
 			string path = "/asterisk/variable";
 			var request = GetNewRequest(path, Method.POST);
-			request.AddParameter("variable", variable, ParameterType.QueryString);
-			request.AddParameter("value", value, ParameterType.QueryString);
+			if(variable != null)
+				request.AddParameter("variable", variable, ParameterType.QueryString);
+			if(value != null)
+				request.AddParameter("value", value, ParameterType.QueryString);
 			var response = Client.Execute(request);
 		}
 	}

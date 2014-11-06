@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 22/07/2014 19:01:02
+	Automatically generated file @ 06/11/2014 10:21:07
 */
 using System;
 using System.Collections.Generic;
@@ -46,7 +46,8 @@ namespace AsterNET.ARI.Actions
 		{
 			string path = "/endpoints/{tech}";
 			var request = GetNewRequest(path, Method.GET);
-			request.AddUrlSegment("tech", tech);
+			if(tech != null)
+				request.AddUrlSegment("tech", tech);
 
 			var response = Client.Execute<List<Endpoint>>(request);
 
@@ -72,8 +73,10 @@ namespace AsterNET.ARI.Actions
 		{
 			string path = "/endpoints/{tech}/{resource}";
 			var request = GetNewRequest(path, Method.GET);
-			request.AddUrlSegment("tech", tech);
-			request.AddUrlSegment("resource", resource);
+			if(tech != null)
+				request.AddUrlSegment("tech", tech);
+			if(resource != null)
+				request.AddUrlSegment("resource", resource);
 
 			var response = Client.Execute<Endpoint>(request);
 
