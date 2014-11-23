@@ -4,12 +4,11 @@ AsterNET.ARI
 AsterNET.ARI is an incubation project and addition to the AsterNET framework for .NET. It allows you to develop against Stasis ARI for Asterisk using the .NET framework.
 
 ### Current Development
-we'll soon be ready to move from Alpha to Beta! So, what's in and working: -
-* Code Gen for Stasis ARI Events
-* Code Gen for Stasis ARI Models
-* Stasis Events
- * Events hooked up and deserialized to objects
-* ARI Actions
+We'll soon be ready to move from Alpha to Beta! So, what's in and working: -
+* Support for ARI Events
+* Support for ARI Actions
+* Support for ARI Models
+* Events hooked up and deserialized to objects
 * Compatible up to Asterisk 12.5 (13 coming soon)
 
 
