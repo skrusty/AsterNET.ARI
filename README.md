@@ -3,6 +3,13 @@ AsterNET.ARI
 
 AsterNET.ARI is an incubation project and addition to the AsterNET framework for .NET. It allows you to develop against Stasis ARI for Asterisk using the .NET framework.
 
+### Where to get AsterNET.ARI
+**Nuget** http://www.nuget.org/packages/AsterNET.ARI/
+```
+PM> Install-Package AsterNET.ARI
+```
+**Releases** https://github.com/skrusty/AsterNET.ARI/releases
+
 ### Current Development
 We'll soon be ready to move from Alpha to Beta! So, what's in and working: -
 * Support for ARI Events
