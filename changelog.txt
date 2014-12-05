@@ -1,3 +1,7 @@
+05.12.2014		Skrusty
+	Added support for auto reconnecting to asterisk in the event of unexpected disconnection (Socket Exception) or asterisk closing our connection
+	Added event for connection state changed on ARIClient
+
 06.11.2014		Skrusty
 	Added support to codegen for required params
 	Added support for path,query,body,header,form params 

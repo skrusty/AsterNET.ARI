@@ -1,4 +1,7 @@
-﻿using AsterNET.ARI.Actions;
+﻿using System.Net.Sockets;
+using System.Runtime.InteropServices;
+using System.Threading;
+using AsterNET.ARI.Actions;
 using AsterNET.ARI.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -15,12 +18,19 @@ namespace AsterNET.ARI
         private WebSocket _client;
         private readonly StasisEndpoint _endPoint;
         private readonly string _application;
+        private WebSocketState _lastKnownState;
+        private bool _autoReconnect;
+        private TimeSpan _autoReconnectDelay;
 
         private delegate void ARIEventHandler(object sender, Event e);
-
         private event ARIEventHandler InternalEvent;
 
         #region Public Properties
+
+        public delegate void ConnectionStateChangedHandler(object sender);
+
+        public event ConnectionStateChangedHandler OnConnectionStateChanged;
+
         public AsteriskActions Asterisk { get; set; }
         public ApplicationsActions Applications { get; set; }
         public BridgesActions Bridges { get; set; }
@@ -65,11 +75,24 @@ namespace AsterNET.ARI
             FireEvent(e.Type, e);
         }
 
+        private void Reconnect()
+        {
+            if (_autoReconnect && _client.State != WebSocketState.Open)
+            {
+                if(_autoReconnectDelay!=TimeSpan.Zero)
+                    Thread.Sleep(_autoReconnectDelay);
+                Connect();
+            }
+        }
+
         #endregion
 
         #region Public Methods
-        public void Connect()
+        public void Connect(bool autoReconnect = true, int autoReconnectDelay = 5)
         {
+            _autoReconnect = autoReconnect;
+            _autoReconnectDelay = TimeSpan.FromSeconds(autoReconnectDelay);
+
             try
             {
                 _client = new WebSocket(string.Format("ws://{0}:{3}/ari/events?app={1}&api_key={2}",
@@ -91,6 +114,7 @@ namespace AsterNET.ARI
 
         public void Disconnect()
         {
+            _autoReconnect = false;
             _client.Close();
         }
 
@@ -103,7 +127,8 @@ namespace AsterNET.ARI
         #region SocketEvents
         private void _client_Closed(object sender, EventArgs e)
         {
-
+            RaiseOnConnectionStateChanged();
+            Reconnect();
         }
 
         private void _client_DataReceived(object sender, DataReceivedEventArgs e)
@@ -113,12 +138,13 @@ namespace AsterNET.ARI
 
         private void _client_Error(object sender, SuperSocket.ClientEngine.ErrorEventArgs e)
         {
-            throw e.Exception;
+            if(e.Exception is SocketException)
+                Reconnect();
         }
 
         private void _client_Opened(object sender, EventArgs e)
         {
-
+            RaiseOnConnectionStateChanged();
         }
 
         private void _client_MessageReceived(object sender, MessageReceivedEventArgs e)
@@ -127,14 +153,13 @@ namespace AsterNET.ARI
             System.Diagnostics.Debug.WriteLine(e.Message);
 #endif
             // load the message
-            var jsonMsg = (Newtonsoft.Json.Linq.JObject)JToken.Parse(e.Message);
+            var jsonMsg = (JObject)JToken.Parse(e.Message);
             var eventName = jsonMsg.SelectToken("type").Value<string>();
             var type = Type.GetType("AsterNET.ARI.Models." + eventName + "Event");
             if (type != null)
-
-                InternalEvent.BeginInvoke(this, (Event)JsonConvert.DeserializeObject(value: e.Message, type: type), new AsyncCallback(eventComplete), null);
+                InternalEvent.BeginInvoke(this, (Event)JsonConvert.DeserializeObject(value: e.Message, type: type), eventComplete, null);
             else
-                InternalEvent.BeginInvoke(this, (Event)JsonConvert.DeserializeObject(value: e.Message, type: typeof(AsterNET.ARI.Models.Event)), new AsyncCallback(eventComplete), null);
+                InternalEvent.BeginInvoke(this, (Event)JsonConvert.DeserializeObject(value: e.Message, type: typeof(Event)), eventComplete, null);
         }
 
         private void eventComplete(IAsyncResult result)
@@ -153,6 +178,15 @@ namespace AsterNET.ARI
             }
         }
         #endregion
+
+        protected virtual void RaiseOnConnectionStateChanged()
+        {
+            if (_client.State == _lastKnownState) return;
+
+            _lastKnownState = _client.State;
+            var handler = OnConnectionStateChanged;
+            if (handler != null) handler(this);
+        }
 
     }
 
