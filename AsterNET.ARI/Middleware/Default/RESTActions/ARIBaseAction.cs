@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using RestSharp;
+﻿using RestSharp;
 
 namespace AsterNET.ARI
 {
     public class ARIBaseAction
     {
         protected RestClient Client;
-        private StasisEndpoint Endpoint;
+        private StasisEndpoint _endpoint;
 
         public ARIBaseAction(StasisEndpoint endPoint)
         {
-            this.Client = new RestClient(endPoint.ARIEndPoint);
-            this.Client.Authenticator = new HttpBasicAuthenticator(endPoint.Username, endPoint.Password);
-            this.Endpoint = endPoint;
+            Client = new RestClient(endPoint.ARIEndPoint)
+            {
+                Authenticator = new HttpBasicAuthenticator(endPoint.Username, endPoint.Password)
+            };
+            _endpoint = endPoint;
         }
 
         /// <summary>
@@ -25,7 +22,7 @@ namespace AsterNET.ARI
         /// <returns></returns>
         protected RestRequest GetNewRequest(string requestString, Method method)
         {
-            RestRequest rtn = new RestRequest(requestString, method);
+            var rtn = new RestRequest(requestString, method);
             return rtn;
         }
 

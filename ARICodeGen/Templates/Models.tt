@@ -139,13 +139,99 @@ namespace AsterNET.ARI.Models
 #>
 <#
 
+		var apis = o["apis"];
+		
+		//
+		// Generate Action Interface
+		//
+		
+		manager.StartNewFile("I" + actionClassName + ".cs");
+
+#>
+/*
+	AsterNET ARI Framework
+	Automatically generated file @ <#= DateTime.Now.ToString() #>
+*/
+using System;
+using System.Collections.Generic;
+using AsterNET.ARI.Models;
+using AsterNET.ARI;
+
+namespace AsterNET.ARI.Actions
+{
+	
+	public interface I<#= actionClassName #>
+	{
+<#
+
+		foreach (var item in apis)
+		{
+			var path = item.SelectToken("path").Value<string>();
+			var operations = item.SelectToken("operations");
+			
+			foreach(var op in operations) 
+			{
+				
+				var methodName = op.SelectToken("nickname").Value<string>();
+				var description = string.Format("{0}. {1}", op.SelectToken("summary").Value<string>(), op.SelectToken("notes") == null ? "" : op.SelectToken("notes").Value<string>());
+				var httpMethod = op.SelectToken("httpMethod").Value<string>();
+			
+				var responseType = ARICodeGen.SwaggerHelper.TypeConvert(op.SelectToken("responseClass").Value<string>());
+
+				var parameters = string.Empty;
+			
+				try {
+					var allParams = op.SelectToken("parameters").ToList();
+					try {
+						allParams = allParams.OrderByDescending(x => x.SelectToken("required").Value<bool>()).ToList();
+					}catch{}
+
+					foreach(var param in allParams) {
+						// Get Param Type
+						var paramType = ARICodeGen.SwaggerHelper.TypeConvert(param.SelectToken("dataType").Value<string>());
+						// string defaultValue = param.SelectToken("defalutValue").Value<string>()
+						var optionalString = "";
+						if(param.SelectToken("required") != null && !param.SelectToken("required").Value<bool>()){
+							if(paramType == "int" || paramType == "bool" || paramType == "long")
+								paramType = paramType + "?";
+							
+							optionalString = " = null";
+						}
+						parameters += string.Format("{2}{1} {0}{3}", 
+							param.SelectToken("name").Value<string>(), 
+							paramType, 
+							parameters.Length > 0 ? ", " : "", 
+							optionalString);
+					}
+				}catch(Exception ex){
+					Trace.WriteLine(ex.ToString());
+				}
+
+#>
+		/// <summary>
+		/// <#= description ?? "no description provided" #>
+		/// </summary>
+<# 
+				try {
+					foreach(var param in op.SelectToken("parameters")) {
+#>
+		/// <param name="<#= param.SelectToken("name").Value<string>() #>"><#= param.SelectToken("description").Value<string>() #></param>
+<#
+					}
+                }catch{}
+#>
+		<#= responseType #> <#= ARICodeGen.SwaggerHelper.GetSafeName(methodName) #>(<#= parameters #>);
+<#			}
+		}
+#>
+	}
+}
+<#
+
 		//
 		// Start Actions Output
 		//
-		var apis = o["apis"];
-		
-		
-		
+
 		manager.StartNewFile(actionClassName + ".cs");
 #>
 /*
@@ -161,7 +247,7 @@ using RestSharp;
 namespace AsterNET.ARI.Actions
 {
 	
-	public class <#= actionClassName #> : ARIBaseAction
+	public class <#= actionClassName #> : ARIBaseAction, I<#= actionClassName #>
 	{
 
 		public <#= actionClassName #>(StasisEndpoint endPoint)

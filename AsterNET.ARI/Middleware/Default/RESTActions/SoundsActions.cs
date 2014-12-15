@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 06/11/2014 10:21:07
+	Automatically generated file @ 08/12/2014 20:34:10
 */
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ using RestSharp;
 namespace AsterNET.ARI.Actions
 {
 	
-	public class SoundsActions : ARIBaseAction
+	public class SoundsActions : ARIBaseAction, ISoundsActions
 	{
 
 		public SoundsActions(StasisEndpoint endPoint)

@@ -10,7 +10,7 @@ namespace AsterNET.ARI.TestApplication
             try
             {
                 client = new ARIClient(
-                    new StasisEndpoint("192.168.3.19", 8088, "test", "test"), 
+                    new StasisEndpoint("192.168.3.201", 8088, "test", "test"), 
                     "HelloWorld");
                 client.OnStasisStartEvent += c_OnStasisStartEvent;
                 client.OnChannelDtmfReceivedEvent += client_OnChannelDtmfReceivedEvent;
