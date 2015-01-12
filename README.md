@@ -37,6 +37,8 @@ coming soon
 * [Simple Bridge Example](https://github.com/skrusty/AsterNET.ARI/blob/master/AsterNET.ARI.SimpleBridge/Program.cs) - demonstrates how to create a bridge, play MOH on it and add and remove channels from the bridge.
 * [Record and Playback](https://github.com/skrusty/AsterNET.ARI/blob/master/Sample-RecordAndPlayback/Program.cs) - Demonstrates how to record and playback on a channel.
 * [Simple Conference Example](https://github.com/skrusty/AsterNET.ARI/blob/master/AsterNET.ARI.SimpleBridge/Program.cs) Sample Conference application using ARI.
+* [ari-examples](https://github.com/asterisk/ari-examples)
+ARI Samples managed by the Asterisk ARI Team (asternet.ari examples end with .cs)
 
 ### Blog
 You can read about AsterNET.ARI and the original AsterNET framework on my blog: www.xdev.net or follow me on twitter (@benjmerrills) to get involved.
