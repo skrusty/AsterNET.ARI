@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Net.Sockets;
+using SuperSocket.ClientEngine;
 using WebSocket4Net;
 
 namespace AsterNET.ARI.Middleware.Default
 {
     public class WebSocketEventProducer : IEventProducer
     {
-        private readonly StasisEndpoint _connectionInfo;
         private readonly string _application;
+        private readonly StasisEndpoint _connectionInfo;
         private WebSocket _client;
         private WebSocketState _lastKnownState;
 
@@ -15,14 +16,17 @@ namespace AsterNET.ARI.Middleware.Default
         public event EventHandler OnConnectionStateChanged;
 
         #region Constructor
+
         public WebSocketEventProducer(StasisEndpoint connectionInfo, string application)
         {
             _connectionInfo = connectionInfo;
             _application = application;
-        } 
+        }
+
         #endregion
 
         #region Public Properties
+
         public ConnectionState State
         {
             get { return _client.State == WebSocketState.Open ? ConnectionState.Open : ConnectionState.Closed; }
@@ -31,12 +35,19 @@ namespace AsterNET.ARI.Middleware.Default
         #endregion
 
         #region Public Methods
+
+        public bool Connected
+        {
+            get { return _client.State == WebSocketState.Open; }
+        }
+
         public void Connect()
         {
             try
             {
                 _client = new WebSocket(string.Format("ws://{0}:{3}/ari/events?app={1}&api_key={2}",
-                    _connectionInfo.Host, _application, string.Format("{0}:{1}", _connectionInfo.Username, _connectionInfo.Password), _connectionInfo.Port.ToString()));
+                    _connectionInfo.Host, _application,
+                    string.Format("{0}:{1}", _connectionInfo.Username, _connectionInfo.Password), _connectionInfo.Port));
 
                 _client.MessageReceived += _client_MessageReceived;
                 _client.Opened += _client_Opened;
@@ -48,7 +59,7 @@ namespace AsterNET.ARI.Middleware.Default
             }
             catch (Exception ex)
             {
-                throw new ARIException(ex.Message);
+                throw new AriException(ex.Message);
             }
         }
 
@@ -58,13 +69,10 @@ namespace AsterNET.ARI.Middleware.Default
             _client.Close();
         }
 
-        public bool Connected
-        {
-            get { return _client.State == WebSocketState.Open; }
-        }
         #endregion
 
         #region SocketEvents
+
         private void _client_Closed(object sender, EventArgs e)
         {
             RaiseOnConnectionStateChanged();
@@ -72,10 +80,9 @@ namespace AsterNET.ARI.Middleware.Default
 
         private void _client_DataReceived(object sender, DataReceivedEventArgs e)
         {
-
         }
 
-        private void _client_Error(object sender, SuperSocket.ClientEngine.ErrorEventArgs e)
+        private void _client_Error(object sender, ErrorEventArgs e)
         {
             if (e.Exception is SocketException)
                 RaiseOnConnectionStateChanged();
@@ -90,16 +97,17 @@ namespace AsterNET.ARI.Middleware.Default
         {
             // Raise Event
             var handler = OnMessageReceived;
-            if (handler != null) handler(this, new MessageEventArgs()
-            {
-                Message = e.Message
-            });
+            if (handler != null)
+                handler(this, new MessageEventArgs
+                {
+                    Message = e.Message
+                });
         }
 
-       
         #endregion
 
         #region Private Methods
+
         protected virtual void RaiseOnConnectionStateChanged()
         {
             if (_client.State == _lastKnownState) return;

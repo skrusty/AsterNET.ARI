@@ -33,14 +33,14 @@ namespace AsterNET.ARI.SimpleConfExample
 
     internal class Program
     {
-        public static ARIClient Client;
+        public static AriClient Client;
 
         private static void Main(string[] args)
         {
             try
             {
                 // Create a message client to receive events on
-                Client = new ARIClient(new StasisEndpoint("127.0.0.1", 8088, "username", "test"), AppConfig.AppName);                
+                Client = new AriClient(new StasisEndpoint("127.0.0.1", 8088, "username", "test"), AppConfig.AppName);                
 
                 Conference.Conferences.Add(new Conference(Client, Guid.NewGuid(), "test"));
                 

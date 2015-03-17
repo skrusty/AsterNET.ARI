@@ -35,7 +35,7 @@ namespace AsterNET.ARI.SimpleConfExample
 
         #region Private Properties
 
-        private ARIClient _client;
+        private AriClient _client;
         private ConferenceState _state;
 
         #endregion
@@ -60,7 +60,7 @@ namespace AsterNET.ARI.SimpleConfExample
 
         #endregion
 
-        public Conference( ARIClient c, Guid id, string name)
+        public Conference( AriClient c, Guid id, string name)
         {
             _client = c;
             Id = id;

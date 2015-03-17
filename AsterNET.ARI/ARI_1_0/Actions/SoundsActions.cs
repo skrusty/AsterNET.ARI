@@ -1,12 +1,12 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 08/12/2014 20:34:10
+	Automatically generated file @ 17/03/2015 15:48:04
 */
 using System;
 using System.Collections.Generic;
+using AsterNET.ARI.Middleware;
 using AsterNET.ARI.Models;
 using AsterNET.ARI;
-using RestSharp;
 
 namespace AsterNET.ARI.Actions
 {
@@ -14,8 +14,8 @@ namespace AsterNET.ARI.Actions
 	public class SoundsActions : ARIBaseAction, ISoundsActions
 	{
 
-		public SoundsActions(StasisEndpoint endPoint)
-			: base(endPoint)
+		public SoundsActions(IActionConsumer consumer)
+			: base(consumer)
 		{}
 
 		/// <summary>
@@ -26,13 +26,13 @@ namespace AsterNET.ARI.Actions
 		public List<Sound> List(string lang = null, string format = null)
 		{
 			string path = "/sounds";
-			var request = GetNewRequest(path, Method.GET);
+			var request = GetNewRequest(path, HttpMethod.GET);
 			if(lang != null)
 				request.AddParameter("lang", lang, ParameterType.QueryString);
 			if(format != null)
 				request.AddParameter("format", format, ParameterType.QueryString);
 
-			var response = Client.Execute<List<Sound>>(request);
+			var response = Execute<List<Sound>>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -41,7 +41,7 @@ namespace AsterNET.ARI.Actions
             {
 				default:
 					// Unknown server response
-					throw new ARIException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
             }
 		}
 		/// <summary>
@@ -51,11 +51,11 @@ namespace AsterNET.ARI.Actions
 		public Sound Get(string soundId)
 		{
 			string path = "/sounds/{soundId}";
-			var request = GetNewRequest(path, Method.GET);
+			var request = GetNewRequest(path, HttpMethod.GET);
 			if(soundId != null)
 				request.AddUrlSegment("soundId", soundId);
 
-			var response = Client.Execute<Sound>(request);
+			var response = Execute<Sound>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -64,7 +64,7 @@ namespace AsterNET.ARI.Actions
             {
 				default:
 					// Unknown server response
-					throw new ARIException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
             }
 		}
 	}

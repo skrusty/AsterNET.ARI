@@ -1,12 +1,12 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 08/12/2014 20:34:10
+	Automatically generated file @ 17/03/2015 15:48:04
 */
 using System;
 using System.Collections.Generic;
+using AsterNET.ARI.Middleware;
 using AsterNET.ARI.Models;
 using AsterNET.ARI;
-using RestSharp;
 
 namespace AsterNET.ARI.Actions
 {
@@ -14,8 +14,8 @@ namespace AsterNET.ARI.Actions
 	public class BridgesActions : ARIBaseAction, IBridgesActions
 	{
 
-		public BridgesActions(StasisEndpoint endPoint)
-			: base(endPoint)
+		public BridgesActions(IActionConsumer consumer)
+			: base(consumer)
 		{}
 
 		/// <summary>
@@ -24,9 +24,9 @@ namespace AsterNET.ARI.Actions
 		public List<Bridge> List()
 		{
 			string path = "/bridges";
-			var request = GetNewRequest(path, Method.GET);
+			var request = GetNewRequest(path, HttpMethod.GET);
 
-			var response = Client.Execute<List<Bridge>>(request);
+			var response = Execute<List<Bridge>>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -35,7 +35,7 @@ namespace AsterNET.ARI.Actions
             {
 				default:
 					// Unknown server response
-					throw new ARIException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
             }
 		}
 		/// <summary>
@@ -47,7 +47,7 @@ namespace AsterNET.ARI.Actions
 		public Bridge Create(string type = null, string bridgeId = null, string name = null)
 		{
 			string path = "/bridges";
-			var request = GetNewRequest(path, Method.POST);
+			var request = GetNewRequest(path, HttpMethod.POST);
 			if(type != null)
 				request.AddParameter("type", type, ParameterType.QueryString);
 			if(bridgeId != null)
@@ -55,7 +55,7 @@ namespace AsterNET.ARI.Actions
 			if(name != null)
 				request.AddParameter("name", name, ParameterType.QueryString);
 
-			var response = Client.Execute<Bridge>(request);
+			var response = Execute<Bridge>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -64,7 +64,7 @@ namespace AsterNET.ARI.Actions
             {
 				default:
 					// Unknown server response
-					throw new ARIException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
             }
 		}
 		/// <summary>
@@ -76,7 +76,7 @@ namespace AsterNET.ARI.Actions
 		public Bridge Create_or_update_with_id(string bridgeId, string type = null, string name = null)
 		{
 			string path = "/bridges/{bridgeId}";
-			var request = GetNewRequest(path, Method.POST);
+			var request = GetNewRequest(path, HttpMethod.POST);
 			if(type != null)
 				request.AddParameter("type", type, ParameterType.QueryString);
 			if(bridgeId != null)
@@ -84,7 +84,7 @@ namespace AsterNET.ARI.Actions
 			if(name != null)
 				request.AddParameter("name", name, ParameterType.QueryString);
 
-			var response = Client.Execute<Bridge>(request);
+			var response = Execute<Bridge>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -93,7 +93,7 @@ namespace AsterNET.ARI.Actions
             {
 				default:
 					// Unknown server response
-					throw new ARIException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
             }
 		}
 		/// <summary>
@@ -103,11 +103,11 @@ namespace AsterNET.ARI.Actions
 		public Bridge Get(string bridgeId)
 		{
 			string path = "/bridges/{bridgeId}";
-			var request = GetNewRequest(path, Method.GET);
+			var request = GetNewRequest(path, HttpMethod.GET);
 			if(bridgeId != null)
 				request.AddUrlSegment("bridgeId", bridgeId);
 
-			var response = Client.Execute<Bridge>(request);
+			var response = Execute<Bridge>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -115,11 +115,11 @@ namespace AsterNET.ARI.Actions
 			switch((int)response.StatusCode)
             {
 				case 404:
-					throw new ARIException("Bridge not found");
+					throw new AriException("Bridge not found");
 					break;
 				default:
 					// Unknown server response
-					throw new ARIException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
             }
 		}
 		/// <summary>
@@ -129,10 +129,10 @@ namespace AsterNET.ARI.Actions
 		public void Destroy(string bridgeId)
 		{
 			string path = "/bridges/{bridgeId}";
-			var request = GetNewRequest(path, Method.DELETE);
+			var request = GetNewRequest(path, HttpMethod.DELETE);
 			if(bridgeId != null)
 				request.AddUrlSegment("bridgeId", bridgeId);
-			var response = Client.Execute(request);
+			var response = Execute(request);
 		}
 		/// <summary>
 		/// Add a channel to a bridge.. 
@@ -143,14 +143,14 @@ namespace AsterNET.ARI.Actions
 		public void AddChannel(string bridgeId, string channel, string role = null)
 		{
 			string path = "/bridges/{bridgeId}/addChannel";
-			var request = GetNewRequest(path, Method.POST);
+			var request = GetNewRequest(path, HttpMethod.POST);
 			if(bridgeId != null)
 				request.AddUrlSegment("bridgeId", bridgeId);
 			if(channel != null)
 				request.AddParameter("channel", channel, ParameterType.QueryString);
 			if(role != null)
 				request.AddParameter("role", role, ParameterType.QueryString);
-			var response = Client.Execute(request);
+			var response = Execute(request);
 		}
 		/// <summary>
 		/// Remove a channel from a bridge.. 
@@ -160,12 +160,12 @@ namespace AsterNET.ARI.Actions
 		public void RemoveChannel(string bridgeId, string channel)
 		{
 			string path = "/bridges/{bridgeId}/removeChannel";
-			var request = GetNewRequest(path, Method.POST);
+			var request = GetNewRequest(path, HttpMethod.POST);
 			if(bridgeId != null)
 				request.AddUrlSegment("bridgeId", bridgeId);
 			if(channel != null)
 				request.AddParameter("channel", channel, ParameterType.QueryString);
-			var response = Client.Execute(request);
+			var response = Execute(request);
 		}
 		/// <summary>
 		/// Play music on hold to a bridge or change the MOH class that is playing.. 
@@ -175,12 +175,12 @@ namespace AsterNET.ARI.Actions
 		public void StartMoh(string bridgeId, string mohClass = null)
 		{
 			string path = "/bridges/{bridgeId}/moh";
-			var request = GetNewRequest(path, Method.POST);
+			var request = GetNewRequest(path, HttpMethod.POST);
 			if(bridgeId != null)
 				request.AddUrlSegment("bridgeId", bridgeId);
 			if(mohClass != null)
 				request.AddParameter("mohClass", mohClass, ParameterType.QueryString);
-			var response = Client.Execute(request);
+			var response = Execute(request);
 		}
 		/// <summary>
 		/// Stop playing music on hold to a bridge.. This will only stop music on hold being played via POST bridges/{bridgeId}/moh.
@@ -189,10 +189,10 @@ namespace AsterNET.ARI.Actions
 		public void StopMoh(string bridgeId)
 		{
 			string path = "/bridges/{bridgeId}/moh";
-			var request = GetNewRequest(path, Method.DELETE);
+			var request = GetNewRequest(path, HttpMethod.DELETE);
 			if(bridgeId != null)
 				request.AddUrlSegment("bridgeId", bridgeId);
-			var response = Client.Execute(request);
+			var response = Execute(request);
 		}
 		/// <summary>
 		/// Start playback of media on a bridge.. The media URI may be any of a number of URI's. Currently sound:, recording:, number:, digits:, characters:, and tone: URI's are supported. This operation creates a playback resource that can be used to control the playback of media (pause, rewind, fast forward, etc.)
@@ -206,7 +206,7 @@ namespace AsterNET.ARI.Actions
 		public Playback Play(string bridgeId, string media, string lang = null, int? offsetms = null, int? skipms = null, string playbackId = null)
 		{
 			string path = "/bridges/{bridgeId}/play";
-			var request = GetNewRequest(path, Method.POST);
+			var request = GetNewRequest(path, HttpMethod.POST);
 			if(bridgeId != null)
 				request.AddUrlSegment("bridgeId", bridgeId);
 			if(media != null)
@@ -220,7 +220,7 @@ namespace AsterNET.ARI.Actions
 			if(playbackId != null)
 				request.AddParameter("playbackId", playbackId, ParameterType.QueryString);
 
-			var response = Client.Execute<Playback>(request);
+			var response = Execute<Playback>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -228,14 +228,14 @@ namespace AsterNET.ARI.Actions
 			switch((int)response.StatusCode)
             {
 				case 404:
-					throw new ARIException("Bridge not found");
+					throw new AriException("Bridge not found");
 					break;
 				case 409:
-					throw new ARIException("Bridge not in a Stasis application");
+					throw new AriException("Bridge not in a Stasis application");
 					break;
 				default:
 					// Unknown server response
-					throw new ARIException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
             }
 		}
 		/// <summary>
@@ -250,7 +250,7 @@ namespace AsterNET.ARI.Actions
 		public Playback PlayWithId(string bridgeId, string playbackId, string media, string lang = null, int? offsetms = null, int? skipms = null)
 		{
 			string path = "/bridges/{bridgeId}/play/{playbackId}";
-			var request = GetNewRequest(path, Method.POST);
+			var request = GetNewRequest(path, HttpMethod.POST);
 			if(bridgeId != null)
 				request.AddUrlSegment("bridgeId", bridgeId);
 			if(playbackId != null)
@@ -264,7 +264,7 @@ namespace AsterNET.ARI.Actions
 			if(skipms != null)
 				request.AddParameter("skipms", skipms, ParameterType.QueryString);
 
-			var response = Client.Execute<Playback>(request);
+			var response = Execute<Playback>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -272,14 +272,14 @@ namespace AsterNET.ARI.Actions
 			switch((int)response.StatusCode)
             {
 				case 404:
-					throw new ARIException("Bridge not found");
+					throw new AriException("Bridge not found");
 					break;
 				case 409:
-					throw new ARIException("Bridge not in a Stasis application");
+					throw new AriException("Bridge not in a Stasis application");
 					break;
 				default:
 					// Unknown server response
-					throw new ARIException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
             }
 		}
 		/// <summary>
@@ -296,7 +296,7 @@ namespace AsterNET.ARI.Actions
 		public LiveRecording Record(string bridgeId, string name, string format, int? maxDurationSeconds = null, int? maxSilenceSeconds = null, string ifExists = null, bool? beep = null, string terminateOn = null)
 		{
 			string path = "/bridges/{bridgeId}/record";
-			var request = GetNewRequest(path, Method.POST);
+			var request = GetNewRequest(path, HttpMethod.POST);
 			if(bridgeId != null)
 				request.AddUrlSegment("bridgeId", bridgeId);
 			if(name != null)
@@ -314,7 +314,7 @@ namespace AsterNET.ARI.Actions
 			if(terminateOn != null)
 				request.AddParameter("terminateOn", terminateOn, ParameterType.QueryString);
 
-			var response = Client.Execute<LiveRecording>(request);
+			var response = Execute<LiveRecording>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -322,20 +322,20 @@ namespace AsterNET.ARI.Actions
 			switch((int)response.StatusCode)
             {
 				case 400:
-					throw new ARIException("Invalid parameters");
+					throw new AriException("Invalid parameters");
 					break;
 				case 404:
-					throw new ARIException("Bridge not found");
+					throw new AriException("Bridge not found");
 					break;
 				case 409:
-					throw new ARIException("Bridge is not in a Stasis application; A recording with the same name already exists on the system and can not be overwritten because it is in progress or ifExists=fail");
+					throw new AriException("Bridge is not in a Stasis application; A recording with the same name already exists on the system and can not be overwritten because it is in progress or ifExists=fail");
 					break;
 				case 422:
-					throw new ARIException("The format specified is unknown on this system");
+					throw new AriException("The format specified is unknown on this system");
 					break;
 				default:
 					// Unknown server response
-					throw new ARIException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
             }
 		}
 	}

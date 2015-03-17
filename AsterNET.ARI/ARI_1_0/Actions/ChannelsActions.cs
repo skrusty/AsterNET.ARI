@@ -1,12 +1,12 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 08/12/2014 20:34:10
+	Automatically generated file @ 17/03/2015 15:48:04
 */
 using System;
 using System.Collections.Generic;
+using AsterNET.ARI.Middleware;
 using AsterNET.ARI.Models;
 using AsterNET.ARI;
-using RestSharp;
 
 namespace AsterNET.ARI.Actions
 {
@@ -14,8 +14,8 @@ namespace AsterNET.ARI.Actions
 	public class ChannelsActions : ARIBaseAction, IChannelsActions
 	{
 
-		public ChannelsActions(StasisEndpoint endPoint)
-			: base(endPoint)
+		public ChannelsActions(IActionConsumer consumer)
+			: base(consumer)
 		{}
 
 		/// <summary>
@@ -24,9 +24,9 @@ namespace AsterNET.ARI.Actions
 		public List<Channel> List()
 		{
 			string path = "/channels";
-			var request = GetNewRequest(path, Method.GET);
+			var request = GetNewRequest(path, HttpMethod.GET);
 
-			var response = Client.Execute<List<Channel>>(request);
+			var response = Execute<List<Channel>>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -35,7 +35,7 @@ namespace AsterNET.ARI.Actions
             {
 				default:
 					// Unknown server response
-					throw new ARIException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
             }
 		}
 		/// <summary>
@@ -55,7 +55,7 @@ namespace AsterNET.ARI.Actions
 		public Channel Originate(string endpoint, string extension = null, string context = null, long? priority = null, string app = null, string appArgs = null, string callerId = null, int? timeout = null, List<KeyValuePair<string, string>> variables = null, string channelId = null, string otherChannelId = null)
 		{
 			string path = "/channels";
-			var request = GetNewRequest(path, Method.POST);
+			var request = GetNewRequest(path, HttpMethod.POST);
 			if(endpoint != null)
 				request.AddParameter("endpoint", endpoint, ParameterType.QueryString);
 			if(extension != null)
@@ -79,7 +79,7 @@ namespace AsterNET.ARI.Actions
 			if(otherChannelId != null)
 				request.AddParameter("otherChannelId", otherChannelId, ParameterType.QueryString);
 
-			var response = Client.Execute<Channel>(request);
+			var response = Execute<Channel>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -87,11 +87,11 @@ namespace AsterNET.ARI.Actions
 			switch((int)response.StatusCode)
             {
 				case 400:
-					throw new ARIException("Invalid parameters for originating a channel.");
+					throw new AriException("Invalid parameters for originating a channel.");
 					break;
 				default:
 					// Unknown server response
-					throw new ARIException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
             }
 		}
 		/// <summary>
@@ -101,11 +101,11 @@ namespace AsterNET.ARI.Actions
 		public Channel Get(string channelId)
 		{
 			string path = "/channels/{channelId}";
-			var request = GetNewRequest(path, Method.GET);
+			var request = GetNewRequest(path, HttpMethod.GET);
 			if(channelId != null)
 				request.AddUrlSegment("channelId", channelId);
 
-			var response = Client.Execute<Channel>(request);
+			var response = Execute<Channel>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -113,11 +113,11 @@ namespace AsterNET.ARI.Actions
 			switch((int)response.StatusCode)
             {
 				case 404:
-					throw new ARIException("Channel not found");
+					throw new AriException("Channel not found");
 					break;
 				default:
 					// Unknown server response
-					throw new ARIException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
             }
 		}
 		/// <summary>
@@ -137,7 +137,7 @@ namespace AsterNET.ARI.Actions
 		public Channel OriginateWithId(string channelId, string endpoint, string extension = null, string context = null, long? priority = null, string app = null, string appArgs = null, string callerId = null, int? timeout = null, List<KeyValuePair<string, string>> variables = null, string otherChannelId = null)
 		{
 			string path = "/channels/{channelId}";
-			var request = GetNewRequest(path, Method.POST);
+			var request = GetNewRequest(path, HttpMethod.POST);
 			if(channelId != null)
 				request.AddUrlSegment("channelId", channelId);
 			if(endpoint != null)
@@ -161,7 +161,7 @@ namespace AsterNET.ARI.Actions
 			if(otherChannelId != null)
 				request.AddParameter("otherChannelId", otherChannelId, ParameterType.QueryString);
 
-			var response = Client.Execute<Channel>(request);
+			var response = Execute<Channel>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -169,11 +169,11 @@ namespace AsterNET.ARI.Actions
 			switch((int)response.StatusCode)
             {
 				case 400:
-					throw new ARIException("Invalid parameters for originating a channel.");
+					throw new AriException("Invalid parameters for originating a channel.");
 					break;
 				default:
 					// Unknown server response
-					throw new ARIException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
             }
 		}
 		/// <summary>
@@ -184,12 +184,12 @@ namespace AsterNET.ARI.Actions
 		public void Hangup(string channelId, string reason = null)
 		{
 			string path = "/channels/{channelId}";
-			var request = GetNewRequest(path, Method.DELETE);
+			var request = GetNewRequest(path, HttpMethod.DELETE);
 			if(channelId != null)
 				request.AddUrlSegment("channelId", channelId);
 			if(reason != null)
 				request.AddParameter("reason", reason, ParameterType.QueryString);
-			var response = Client.Execute(request);
+			var response = Execute(request);
 		}
 		/// <summary>
 		/// Exit application; continue execution in the dialplan.. 
@@ -201,7 +201,7 @@ namespace AsterNET.ARI.Actions
 		public void ContinueInDialplan(string channelId, string context = null, string extension = null, int? priority = null)
 		{
 			string path = "/channels/{channelId}/continue";
-			var request = GetNewRequest(path, Method.POST);
+			var request = GetNewRequest(path, HttpMethod.POST);
 			if(channelId != null)
 				request.AddUrlSegment("channelId", channelId);
 			if(context != null)
@@ -210,7 +210,7 @@ namespace AsterNET.ARI.Actions
 				request.AddParameter("extension", extension, ParameterType.QueryString);
 			if(priority != null)
 				request.AddParameter("priority", priority, ParameterType.QueryString);
-			var response = Client.Execute(request);
+			var response = Execute(request);
 		}
 		/// <summary>
 		/// Answer a channel.. 
@@ -219,10 +219,10 @@ namespace AsterNET.ARI.Actions
 		public void Answer(string channelId)
 		{
 			string path = "/channels/{channelId}/answer";
-			var request = GetNewRequest(path, Method.POST);
+			var request = GetNewRequest(path, HttpMethod.POST);
 			if(channelId != null)
 				request.AddUrlSegment("channelId", channelId);
-			var response = Client.Execute(request);
+			var response = Execute(request);
 		}
 		/// <summary>
 		/// Indicate ringing to a channel.. 
@@ -231,10 +231,10 @@ namespace AsterNET.ARI.Actions
 		public void Ring(string channelId)
 		{
 			string path = "/channels/{channelId}/ring";
-			var request = GetNewRequest(path, Method.POST);
+			var request = GetNewRequest(path, HttpMethod.POST);
 			if(channelId != null)
 				request.AddUrlSegment("channelId", channelId);
-			var response = Client.Execute(request);
+			var response = Execute(request);
 		}
 		/// <summary>
 		/// Stop ringing indication on a channel if locally generated.. 
@@ -243,10 +243,10 @@ namespace AsterNET.ARI.Actions
 		public void RingStop(string channelId)
 		{
 			string path = "/channels/{channelId}/ring";
-			var request = GetNewRequest(path, Method.DELETE);
+			var request = GetNewRequest(path, HttpMethod.DELETE);
 			if(channelId != null)
 				request.AddUrlSegment("channelId", channelId);
-			var response = Client.Execute(request);
+			var response = Execute(request);
 		}
 		/// <summary>
 		/// Send provided DTMF to a given channel.. 
@@ -260,7 +260,7 @@ namespace AsterNET.ARI.Actions
 		public void SendDTMF(string channelId, string dtmf = null, int? before = null, int? between = null, int? duration = null, int? after = null)
 		{
 			string path = "/channels/{channelId}/dtmf";
-			var request = GetNewRequest(path, Method.POST);
+			var request = GetNewRequest(path, HttpMethod.POST);
 			if(channelId != null)
 				request.AddUrlSegment("channelId", channelId);
 			if(dtmf != null)
@@ -273,7 +273,7 @@ namespace AsterNET.ARI.Actions
 				request.AddParameter("duration", duration, ParameterType.QueryString);
 			if(after != null)
 				request.AddParameter("after", after, ParameterType.QueryString);
-			var response = Client.Execute(request);
+			var response = Execute(request);
 		}
 		/// <summary>
 		/// Mute a channel.. 
@@ -283,12 +283,12 @@ namespace AsterNET.ARI.Actions
 		public void Mute(string channelId, string direction = null)
 		{
 			string path = "/channels/{channelId}/mute";
-			var request = GetNewRequest(path, Method.POST);
+			var request = GetNewRequest(path, HttpMethod.POST);
 			if(channelId != null)
 				request.AddUrlSegment("channelId", channelId);
 			if(direction != null)
 				request.AddParameter("direction", direction, ParameterType.QueryString);
-			var response = Client.Execute(request);
+			var response = Execute(request);
 		}
 		/// <summary>
 		/// Unmute a channel.. 
@@ -298,12 +298,12 @@ namespace AsterNET.ARI.Actions
 		public void Unmute(string channelId, string direction = null)
 		{
 			string path = "/channels/{channelId}/mute";
-			var request = GetNewRequest(path, Method.DELETE);
+			var request = GetNewRequest(path, HttpMethod.DELETE);
 			if(channelId != null)
 				request.AddUrlSegment("channelId", channelId);
 			if(direction != null)
 				request.AddParameter("direction", direction, ParameterType.QueryString);
-			var response = Client.Execute(request);
+			var response = Execute(request);
 		}
 		/// <summary>
 		/// Hold a channel.. 
@@ -312,10 +312,10 @@ namespace AsterNET.ARI.Actions
 		public void Hold(string channelId)
 		{
 			string path = "/channels/{channelId}/hold";
-			var request = GetNewRequest(path, Method.POST);
+			var request = GetNewRequest(path, HttpMethod.POST);
 			if(channelId != null)
 				request.AddUrlSegment("channelId", channelId);
-			var response = Client.Execute(request);
+			var response = Execute(request);
 		}
 		/// <summary>
 		/// Remove a channel from hold.. 
@@ -324,10 +324,10 @@ namespace AsterNET.ARI.Actions
 		public void Unhold(string channelId)
 		{
 			string path = "/channels/{channelId}/hold";
-			var request = GetNewRequest(path, Method.DELETE);
+			var request = GetNewRequest(path, HttpMethod.DELETE);
 			if(channelId != null)
 				request.AddUrlSegment("channelId", channelId);
-			var response = Client.Execute(request);
+			var response = Execute(request);
 		}
 		/// <summary>
 		/// Play music on hold to a channel.. Using media operations such as /play on a channel playing MOH in this manner will suspend MOH without resuming automatically. If continuing music on hold is desired, the stasis application must reinitiate music on hold.
@@ -337,12 +337,12 @@ namespace AsterNET.ARI.Actions
 		public void StartMoh(string channelId, string mohClass = null)
 		{
 			string path = "/channels/{channelId}/moh";
-			var request = GetNewRequest(path, Method.POST);
+			var request = GetNewRequest(path, HttpMethod.POST);
 			if(channelId != null)
 				request.AddUrlSegment("channelId", channelId);
 			if(mohClass != null)
 				request.AddParameter("mohClass", mohClass, ParameterType.QueryString);
-			var response = Client.Execute(request);
+			var response = Execute(request);
 		}
 		/// <summary>
 		/// Stop playing music on hold to a channel.. 
@@ -351,10 +351,10 @@ namespace AsterNET.ARI.Actions
 		public void StopMoh(string channelId)
 		{
 			string path = "/channels/{channelId}/moh";
-			var request = GetNewRequest(path, Method.DELETE);
+			var request = GetNewRequest(path, HttpMethod.DELETE);
 			if(channelId != null)
 				request.AddUrlSegment("channelId", channelId);
-			var response = Client.Execute(request);
+			var response = Execute(request);
 		}
 		/// <summary>
 		/// Play silence to a channel.. Using media operations such as /play on a channel playing silence in this manner will suspend silence without resuming automatically.
@@ -363,10 +363,10 @@ namespace AsterNET.ARI.Actions
 		public void StartSilence(string channelId)
 		{
 			string path = "/channels/{channelId}/silence";
-			var request = GetNewRequest(path, Method.POST);
+			var request = GetNewRequest(path, HttpMethod.POST);
 			if(channelId != null)
 				request.AddUrlSegment("channelId", channelId);
-			var response = Client.Execute(request);
+			var response = Execute(request);
 		}
 		/// <summary>
 		/// Stop playing silence to a channel.. 
@@ -375,10 +375,10 @@ namespace AsterNET.ARI.Actions
 		public void StopSilence(string channelId)
 		{
 			string path = "/channels/{channelId}/silence";
-			var request = GetNewRequest(path, Method.DELETE);
+			var request = GetNewRequest(path, HttpMethod.DELETE);
 			if(channelId != null)
 				request.AddUrlSegment("channelId", channelId);
-			var response = Client.Execute(request);
+			var response = Execute(request);
 		}
 		/// <summary>
 		/// Start playback of media.. The media URI may be any of a number of URI's. Currently sound:, recording:, number:, digits:, characters:, and tone: URI's are supported. This operation creates a playback resource that can be used to control the playback of media (pause, rewind, fast forward, etc.)
@@ -392,7 +392,7 @@ namespace AsterNET.ARI.Actions
 		public Playback Play(string channelId, string media, string lang = null, int? offsetms = null, int? skipms = null, string playbackId = null)
 		{
 			string path = "/channels/{channelId}/play";
-			var request = GetNewRequest(path, Method.POST);
+			var request = GetNewRequest(path, HttpMethod.POST);
 			if(channelId != null)
 				request.AddUrlSegment("channelId", channelId);
 			if(media != null)
@@ -406,7 +406,7 @@ namespace AsterNET.ARI.Actions
 			if(playbackId != null)
 				request.AddParameter("playbackId", playbackId, ParameterType.QueryString);
 
-			var response = Client.Execute<Playback>(request);
+			var response = Execute<Playback>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -414,14 +414,14 @@ namespace AsterNET.ARI.Actions
 			switch((int)response.StatusCode)
             {
 				case 404:
-					throw new ARIException("Channel not found");
+					throw new AriException("Channel not found");
 					break;
 				case 409:
-					throw new ARIException("Channel not in a Stasis application");
+					throw new AriException("Channel not in a Stasis application");
 					break;
 				default:
 					// Unknown server response
-					throw new ARIException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
             }
 		}
 		/// <summary>
@@ -436,7 +436,7 @@ namespace AsterNET.ARI.Actions
 		public Playback PlayWithId(string channelId, string playbackId, string media, string lang = null, int? offsetms = null, int? skipms = null)
 		{
 			string path = "/channels/{channelId}/play/{playbackId}";
-			var request = GetNewRequest(path, Method.POST);
+			var request = GetNewRequest(path, HttpMethod.POST);
 			if(channelId != null)
 				request.AddUrlSegment("channelId", channelId);
 			if(playbackId != null)
@@ -450,7 +450,7 @@ namespace AsterNET.ARI.Actions
 			if(skipms != null)
 				request.AddParameter("skipms", skipms, ParameterType.QueryString);
 
-			var response = Client.Execute<Playback>(request);
+			var response = Execute<Playback>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -458,14 +458,14 @@ namespace AsterNET.ARI.Actions
 			switch((int)response.StatusCode)
             {
 				case 404:
-					throw new ARIException("Channel not found");
+					throw new AriException("Channel not found");
 					break;
 				case 409:
-					throw new ARIException("Channel not in a Stasis application");
+					throw new AriException("Channel not in a Stasis application");
 					break;
 				default:
 					// Unknown server response
-					throw new ARIException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
             }
 		}
 		/// <summary>
@@ -482,7 +482,7 @@ namespace AsterNET.ARI.Actions
 		public LiveRecording Record(string channelId, string name, string format, int? maxDurationSeconds = null, int? maxSilenceSeconds = null, string ifExists = null, bool? beep = null, string terminateOn = null)
 		{
 			string path = "/channels/{channelId}/record";
-			var request = GetNewRequest(path, Method.POST);
+			var request = GetNewRequest(path, HttpMethod.POST);
 			if(channelId != null)
 				request.AddUrlSegment("channelId", channelId);
 			if(name != null)
@@ -500,7 +500,7 @@ namespace AsterNET.ARI.Actions
 			if(terminateOn != null)
 				request.AddParameter("terminateOn", terminateOn, ParameterType.QueryString);
 
-			var response = Client.Execute<LiveRecording>(request);
+			var response = Execute<LiveRecording>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -508,20 +508,20 @@ namespace AsterNET.ARI.Actions
 			switch((int)response.StatusCode)
             {
 				case 400:
-					throw new ARIException("Invalid parameters");
+					throw new AriException("Invalid parameters");
 					break;
 				case 404:
-					throw new ARIException("Channel not found");
+					throw new AriException("Channel not found");
 					break;
 				case 409:
-					throw new ARIException("Channel is not in a Stasis application; the channel is currently bridged with other hcannels; A recording with the same name already exists on the system and can not be overwritten because it is in progress or ifExists=fail");
+					throw new AriException("Channel is not in a Stasis application; the channel is currently bridged with other hcannels; A recording with the same name already exists on the system and can not be overwritten because it is in progress or ifExists=fail");
 					break;
 				case 422:
-					throw new ARIException("The format specified is unknown on this system");
+					throw new AriException("The format specified is unknown on this system");
 					break;
 				default:
 					// Unknown server response
-					throw new ARIException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
             }
 		}
 		/// <summary>
@@ -532,13 +532,13 @@ namespace AsterNET.ARI.Actions
 		public Variable GetChannelVar(string channelId, string variable)
 		{
 			string path = "/channels/{channelId}/variable";
-			var request = GetNewRequest(path, Method.GET);
+			var request = GetNewRequest(path, HttpMethod.GET);
 			if(channelId != null)
 				request.AddUrlSegment("channelId", channelId);
 			if(variable != null)
 				request.AddParameter("variable", variable, ParameterType.QueryString);
 
-			var response = Client.Execute<Variable>(request);
+			var response = Execute<Variable>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -546,17 +546,17 @@ namespace AsterNET.ARI.Actions
 			switch((int)response.StatusCode)
             {
 				case 400:
-					throw new ARIException("Missing variable parameter.");
+					throw new AriException("Missing variable parameter.");
 					break;
 				case 404:
-					throw new ARIException("Channel not found");
+					throw new AriException("Channel not found");
 					break;
 				case 409:
-					throw new ARIException("Channel not in a Stasis application");
+					throw new AriException("Channel not in a Stasis application");
 					break;
 				default:
 					// Unknown server response
-					throw new ARIException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
             }
 		}
 		/// <summary>
@@ -568,14 +568,14 @@ namespace AsterNET.ARI.Actions
 		public void SetChannelVar(string channelId, string variable, string value = null)
 		{
 			string path = "/channels/{channelId}/variable";
-			var request = GetNewRequest(path, Method.POST);
+			var request = GetNewRequest(path, HttpMethod.POST);
 			if(channelId != null)
 				request.AddUrlSegment("channelId", channelId);
 			if(variable != null)
 				request.AddParameter("variable", variable, ParameterType.QueryString);
 			if(value != null)
 				request.AddParameter("value", value, ParameterType.QueryString);
-			var response = Client.Execute(request);
+			var response = Execute(request);
 		}
 		/// <summary>
 		/// Start snooping.. Snoop (spy/whisper) on a specific channel.
@@ -589,7 +589,7 @@ namespace AsterNET.ARI.Actions
 		public Channel SnoopChannel(string channelId, string app, string spy = null, string whisper = null, string appArgs = null, string snoopId = null)
 		{
 			string path = "/channels/{channelId}/snoop";
-			var request = GetNewRequest(path, Method.POST);
+			var request = GetNewRequest(path, HttpMethod.POST);
 			if(channelId != null)
 				request.AddUrlSegment("channelId", channelId);
 			if(spy != null)
@@ -603,7 +603,7 @@ namespace AsterNET.ARI.Actions
 			if(snoopId != null)
 				request.AddParameter("snoopId", snoopId, ParameterType.QueryString);
 
-			var response = Client.Execute<Channel>(request);
+			var response = Execute<Channel>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -611,14 +611,14 @@ namespace AsterNET.ARI.Actions
 			switch((int)response.StatusCode)
             {
 				case 400:
-					throw new ARIException("Invalid parameters");
+					throw new AriException("Invalid parameters");
 					break;
 				case 404:
-					throw new ARIException("Channel not found");
+					throw new AriException("Channel not found");
 					break;
 				default:
 					// Unknown server response
-					throw new ARIException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
             }
 		}
 		/// <summary>
@@ -633,7 +633,7 @@ namespace AsterNET.ARI.Actions
 		public Channel SnoopChannelWithId(string channelId, string snoopId, string app, string spy = null, string whisper = null, string appArgs = null)
 		{
 			string path = "/channels/{channelId}/snoop/{snoopId}";
-			var request = GetNewRequest(path, Method.POST);
+			var request = GetNewRequest(path, HttpMethod.POST);
 			if(channelId != null)
 				request.AddUrlSegment("channelId", channelId);
 			if(snoopId != null)
@@ -647,7 +647,7 @@ namespace AsterNET.ARI.Actions
 			if(appArgs != null)
 				request.AddParameter("appArgs", appArgs, ParameterType.QueryString);
 
-			var response = Client.Execute<Channel>(request);
+			var response = Execute<Channel>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -655,14 +655,14 @@ namespace AsterNET.ARI.Actions
 			switch((int)response.StatusCode)
             {
 				case 400:
-					throw new ARIException("Invalid parameters");
+					throw new AriException("Invalid parameters");
 					break;
 				case 404:
-					throw new ARIException("Channel not found");
+					throw new AriException("Channel not found");
 					break;
 				default:
 					// Unknown server response
-					throw new ARIException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
             }
 		}
 	}

@@ -1,18 +1,22 @@
-﻿using AsterNET.ARI.Actions;
-
-namespace AsterNET.ARI.Middleware
+﻿namespace AsterNET.ARI.Middleware
 {
+
+    public enum HttpMethod
+    {
+        GET,
+        POST,
+        PUT,
+        DELETE,
+        HEAD,
+        OPTIONS,
+        PATCH,
+        MERGE
+    }
+
     public interface IActionConsumer
     {
-        IAsteriskActions Asterisk { get; set; }
-        IApplicationsActions Applications { get; set; }
-        IBridgesActions Bridges { get; set; }
-        IChannelsActions Channels { get; set; }
-        IDeviceStatesActions DeviceStates { get; set; }
-        IEndpointsActions Endpoints { get; set; }
-        IEventsActions Events { get; set; }
-        IPlaybacksActions Playbacks { get; set; }
-        IRecordingsActions Recordings { get; set; }
-        ISoundsActions Sounds { get; set; }
+        IRestCommand GetRestCommand(HttpMethod method, string path);
+        IRestCommandResult<T> ProcessRestCommand<T>(IRestCommand command) where T : new();
+        IRestCommandResult ProcessRestCommand(IRestCommand command);
     }
 }

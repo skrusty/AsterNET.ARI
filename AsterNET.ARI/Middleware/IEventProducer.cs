@@ -15,12 +15,11 @@ namespace AsterNET.ARI.Middleware
 
     public interface IEventProducer
     {
+        ConnectionState State { get; }
         event EventHandler<MessageEventArgs> OnMessageReceived;
         event EventHandler OnConnectionStateChanged;
 
         void Connect();
         void Disconnect();
-
-        ConnectionState State { get; }
     }
 }

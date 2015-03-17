@@ -1,34 +1,43 @@
-﻿using AsterNET.ARI.Actions;
+﻿using System;
 
 namespace AsterNET.ARI.Middleware.Default
 {
-    public class RESTActionConsumer : IActionConsumer
+    public class RestActionConsumer : IActionConsumer
     {
-        public RESTActionConsumer(StasisEndpoint connectionInfo)
+        private readonly StasisEndpoint _connectionInfo;
+
+        public RestActionConsumer(StasisEndpoint connectionInfo)
         {
-            Asterisk = new AsteriskActions(connectionInfo);
-            Applications = new ApplicationsActions(connectionInfo);
-            Bridges = new BridgesActions(connectionInfo);
-            Channels = new ChannelsActions(connectionInfo);
-            DeviceStates = new DeviceStatesActions(connectionInfo);
-            Endpoints = new EndpointsActions(connectionInfo);
-            Events = new EventsActions(connectionInfo);
-            Playbacks = new PlaybacksActions(connectionInfo);
-            Recordings = new RecordingsActions(connectionInfo);
-            Sounds = new SoundsActions(connectionInfo);
+            _connectionInfo = connectionInfo;
         }
 
-        #region Public Properties
-        public IAsteriskActions Asterisk { get; set; }
-        public IApplicationsActions Applications { get; set; }
-        public IBridgesActions Bridges { get; set; }
-        public IChannelsActions Channels { get; set; }
-        public IDeviceStatesActions DeviceStates { get; set; }
-        public IEndpointsActions Endpoints { get; set; }
-        public IEventsActions Events { get; set; }
-        public IPlaybacksActions Playbacks { get; set; }
-        public IRecordingsActions Recordings { get; set; }
-        public ISoundsActions Sounds { get; set; } 
-        #endregion
+        public IRestCommand GetRestCommand(HttpMethod method, string path)
+        {
+            return new Command(_connectionInfo, path)
+            {
+                UniqueId = Guid.NewGuid().ToString(),
+                Method = method.ToString()
+            };
+        }
+
+        public IRestCommandResult<T> ProcessRestCommand<T>(IRestCommand command) where T : new()
+        {
+            var cmd = (Command) command;
+            var result = cmd.Client.Execute<T>(cmd.Request);
+
+            var rtn = new CommandResult<T> {StatusCode = result.StatusCode, Data = result.Data};
+
+            return rtn;
+        }
+
+        public IRestCommandResult ProcessRestCommand(IRestCommand command)
+        {
+            var cmd = (Command) command;
+            var result = cmd.Client.Execute(cmd.Request);
+
+            var rtn = new CommandResult {StatusCode = result.StatusCode};
+
+            return rtn;
+        }
     }
 }
