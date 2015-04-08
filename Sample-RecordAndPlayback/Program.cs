@@ -36,7 +36,7 @@ namespace Sample_RecordAndPlayback
 
     class Program
     {
-        public static AriActionClient actionClient;
+        public static AriClient actionClient;
         public static StasisEndpoint endPoint;
 
         public static RecordingToChannel recording;
@@ -54,7 +54,7 @@ namespace Sample_RecordAndPlayback
                 endPoint = new StasisEndpoint("ipaddress", 8088, "username", "password");
 
                 // Create a message actionClient to receive events on
-                actionClient = new AriActionClient(endPoint, "playrec_test");
+                actionClient = new AriClient(endPoint, "playrec_test");
 
                 actionClient.OnStasisStartEvent += c_OnStasisStartEvent;
                 actionClient.OnStasisEndEvent += c_OnStasisEndEvent;

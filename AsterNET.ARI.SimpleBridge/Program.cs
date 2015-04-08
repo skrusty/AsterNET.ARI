@@ -22,7 +22,7 @@ namespace AsterNET.ARI.SimpleBridge
 {
     class Program
     {
-        public static AriActionClient ActionClient;
+        public static AriClient ActionClient;
         public static Bridge SimpleBridge;
 
         private const string AppName = "bridge_test";
@@ -32,7 +32,7 @@ namespace AsterNET.ARI.SimpleBridge
             try
             {
                 // Create a message actionClient to receive events on
-                ActionClient = new AriActionClient(new StasisEndpoint("192.168.3.16", 8088, "username", "test"), AppName);
+                ActionClient = new AriClient(new StasisEndpoint("192.168.3.16", 8088, "username", "test"), AppName);
 
                 ActionClient.OnStasisStartEvent += c_OnStasisStartEvent;
                 ActionClient.OnStasisEndEvent += c_OnStasisEndEvent;
