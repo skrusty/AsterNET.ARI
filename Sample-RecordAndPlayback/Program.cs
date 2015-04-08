@@ -36,7 +36,7 @@ namespace Sample_RecordAndPlayback
 
     class Program
     {
-        public static ARIClient client;
+        public static AriClient actionClient;
         public static StasisEndpoint endPoint;
 
         public static RecordingToChannel recording;
@@ -53,14 +53,14 @@ namespace Sample_RecordAndPlayback
             {
                 endPoint = new StasisEndpoint("ipaddress", 8088, "username", "password");
 
-                // Create a message client to receive events on
-                client = new ARIClient(endPoint, "playrec_test");
+                // Create a message actionClient to receive events on
+                actionClient = new AriClient(endPoint, "playrec_test");
 
-                client.OnStasisStartEvent += c_OnStasisStartEvent;
-                client.OnStasisEndEvent += c_OnStasisEndEvent;
-                client.OnRecordingFinishedEvent += client_OnRecordingFinishedEvent;
+                actionClient.OnStasisStartEvent += c_OnStasisStartEvent;
+                actionClient.OnStasisEndEvent += c_OnStasisEndEvent;
+                actionClient.OnRecordingFinishedEvent += ActionClientOnRecordingFinishedEvent;
 
-                client.Connect();
+                actionClient.Connect();
 
                 bool done = false;
                 while (!done)
@@ -74,7 +74,7 @@ namespace Sample_RecordAndPlayback
                     }
                 }
 
-                client.Disconnect();
+                actionClient.Disconnect();
             }
             catch (Exception ex)
             {
@@ -85,20 +85,20 @@ namespace Sample_RecordAndPlayback
 
         static void GetRecording(Channel c)
         {
-            var playback = client.Channels.Play(c.Id, "sound:vm-rec-name", "en", 0, 0, Guid.NewGuid().ToString()).Id;
+            var playback = actionClient.Channels.Play(c.Id, "sound:vm-rec-name", "en", 0, 0, Guid.NewGuid().ToString()).Id;
             recording = new RecordingToChannel()
             {
-                Recording = client.Channels.Record(c.Id, "temp-recording", "wav", 6, 1, "overwrite", true, "#"),
+                Recording = actionClient.Channels.Record(c.Id, "temp-recording", "wav", 6, 1, "overwrite", true, "#"),
                 Channel = c
             };
         }
 
         static void PlaybackRecording(Channel c)
         {
-            var repeat = client.Channels.Play(c.Id, "recording:temp-recording", "en", 0, 0, Guid.NewGuid().ToString()).Id;
+            var repeat = actionClient.Channels.Play(c.Id, "recording:temp-recording", "en", 0, 0, Guid.NewGuid().ToString()).Id;
         }
 
-        static void client_OnRecordingFinishedEvent(object sender, AsterNET.ARI.Models.RecordingFinishedEvent e)
+        static void ActionClientOnRecordingFinishedEvent(object sender, AsterNET.ARI.Models.RecordingFinishedEvent e)
         {
             if (e.Recording.Name != recording.Recording.Name) return;
 
@@ -110,16 +110,16 @@ namespace Sample_RecordAndPlayback
         static void c_OnStasisEndEvent(object sender, AsterNET.ARI.Models.StasisEndEvent e)
         {
             // Delete recording
-            client.Recordings.DeleteStored("temp-recording");
+            actionClient.Recordings.DeleteStored("temp-recording");
 
             // hangup
-            client.Channels.Hangup(e.Channel.Id, "normal");
+            actionClient.Channels.Hangup(e.Channel.Id, "normal");
         }
 
         static void c_OnStasisStartEvent(object sender, AsterNET.ARI.Models.StasisStartEvent e)
         {
             // answer channel
-            client.Channels.Answer(e.Channel.Id);
+            actionClient.Channels.Answer(e.Channel.Id);
 
             GetRecording(e.Channel);
         }

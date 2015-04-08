@@ -1,171 +1,167 @@
-﻿using System.Net.Sockets;
-using System.Runtime.InteropServices;
+﻿using System;
+using System.Diagnostics;
+using System.Runtime.Remoting.Messaging;
 using System.Threading;
 using AsterNET.ARI.Actions;
+using AsterNET.ARI.Middleware;
+using AsterNET.ARI.Middleware.Default;
 using AsterNET.ARI.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
-using WebSocket4Net;
 
 namespace AsterNET.ARI
 {
     /// <summary>
-    /// 
     /// </summary>
-    public class ARIClient : BaseARIClient_1_0_0
+    public class AriClient : IAriClient
     {
-        private WebSocket _client;
-        private readonly StasisEndpoint _endPoint;
-        private readonly string _application;
-        private WebSocketState _lastKnownState;
+        public delegate void ConnectionStateChangedHandler(object sender);
+
+        #region Events
+
+        public event ChannelCallerIdEventHandler OnChannelCallerIdEvent;
+        public event ChannelDtmfReceivedEventHandler OnChannelDtmfReceivedEvent;
+        public event BridgeCreatedEventHandler OnBridgeCreatedEvent;
+        public event ChannelCreatedEventHandler OnChannelCreatedEvent;
+        public event ApplicationReplacedEventHandler OnApplicationReplacedEvent;
+        public event ChannelStateChangeEventHandler OnChannelStateChangeEvent;
+        public event PlaybackFinishedEventHandler OnPlaybackFinishedEvent;
+        public event RecordingStartedEventHandler OnRecordingStartedEvent;
+        public event ChannelLeftBridgeEventHandler OnChannelLeftBridgeEvent;
+        public event ChannelDestroyedEventHandler OnChannelDestroyedEvent;
+        public event DeviceStateChangedEventHandler OnDeviceStateChangedEvent;
+        public event ChannelTalkingFinishedEventHandler OnChannelTalkingFinishedEvent;
+        public event PlaybackStartedEventHandler OnPlaybackStartedEvent;
+        public event ChannelTalkingStartedEventHandler OnChannelTalkingStartedEvent;
+        public event RecordingFailedEventHandler OnRecordingFailedEvent;
+        public event BridgeMergedEventHandler OnBridgeMergedEvent;
+        public event RecordingFinishedEventHandler OnRecordingFinishedEvent;
+        public event BridgeAttendedTransferEventHandler OnBridgeAttendedTransferEvent;
+        public event ChannelEnteredBridgeEventHandler OnChannelEnteredBridgeEvent;
+        public event BridgeDestroyedEventHandler OnBridgeDestroyedEvent;
+        public event BridgeBlindTransferEventHandler OnBridgeBlindTransferEvent;
+        public event ChannelUsereventEventHandler OnChannelUsereventEvent;
+        public event ChannelDialplanEventHandler OnChannelDialplanEvent;
+        public event ChannelHangupRequestEventHandler OnChannelHangupRequestEvent;
+        public event ChannelVarsetEventHandler OnChannelVarsetEvent;
+        public event EndpointStateChangeEventHandler OnEndpointStateChangeEvent;
+        public event DialEventHandler OnDialEvent;
+        public event StasisEndEventHandler OnStasisEndEvent;
+        public event StasisStartEventHandler OnStasisStartEvent;
+        public event UnhandledEventHandler OnUnhandledEvent;
+        public event ConnectionStateChangedHandler OnConnectionStateChanged;
+
+        #endregion       
+
+        #region Private Fields
+
+        private readonly IActionConsumer _actionConsumer;
+        private readonly IEventProducer _eventProducer;
+
         private bool _autoReconnect;
         private TimeSpan _autoReconnectDelay;
+        private ConnectionState _lastKnownState;
 
-        private delegate void ARIEventHandler(object sender, Event e);
-        private event ARIEventHandler InternalEvent;
+        private event AriEventHandler InternalEvent;
+
+        private delegate void AriEventHandler(IAriClient sender, Event e);
+
+        #endregion
 
         #region Public Properties
 
-        public delegate void ConnectionStateChangedHandler(object sender);
+        public IAsteriskActions Asterisk { get; set; }
+        public IApplicationsActions Applications { get; set; }
+        public IBridgesActions Bridges { get; set; }
+        public IChannelsActions Channels { get; set; }
+        public IDeviceStatesActions DeviceStates { get; set; }
+        public IEndpointsActions Endpoints { get; set; }
+        public IEventsActions Events { get; set; }
+        public IPlaybacksActions Playbacks { get; set; }
+        public IRecordingsActions Recordings { get; set; }
+        public ISoundsActions Sounds { get; set; }
 
-        public event ConnectionStateChangedHandler OnConnectionStateChanged;
-
-        public AsteriskActions Asterisk { get; set; }
-        public ApplicationsActions Applications { get; set; }
-        public BridgesActions Bridges { get; set; }
-        public ChannelsActions Channels { get; set; }
-        public DeviceStatesActions DeviceStates { get; set; }
-        public EndpointsActions Endpoints { get; set; }
-        public EventsActions Events { get; set; }
-        public PlaybacksActions Playbacks { get; set; }
-        public RecordingsActions Recordings { get; set; }
-        public SoundsActions Sounds { get; set; }
         #endregion
 
         #region Constructor
+
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="endPoint"></param>
         /// <param name="application"></param>
-        public ARIClient(StasisEndpoint endPoint, string application)
+        public AriClient(StasisEndpoint endPoint, string application)
         {
-            _endPoint = endPoint;
-            _application = application;
+            // Use Default Middleware
+            _eventProducer = new WebSocketEventProducer(endPoint, application);
+            _actionConsumer = new RestActionConsumer(endPoint);
 
-            Asterisk = new AsteriskActions(_endPoint);
-            Applications = new ApplicationsActions(_endPoint);
-            Bridges = new BridgesActions(_endPoint);
-            Channels = new ChannelsActions(_endPoint);
-            Endpoints = new EndpointsActions(_endPoint);
-            Events = new EventsActions(_endPoint);
-            Playbacks = new PlaybacksActions(_endPoint);
-            Recordings = new RecordingsActions(_endPoint);
-            Sounds = new SoundsActions(_endPoint);
+            Init();
+        }
 
-            this.InternalEvent += ARIClient_internalEvent;
+        public AriClient(IActionConsumer actionConsumer, IEventProducer eventProducer, string application)
+        {
+            _actionConsumer = actionConsumer;
+            _eventProducer = eventProducer;
+
+            Init();
         }
 
         #endregion
 
         #region Internal Methods
-        private void ARIClient_internalEvent(object sender, Event e)
+
+        internal void Init()
         {
-            FireEvent(e.Type, e);
+            // Setup Action Properties
+            Asterisk = new AsteriskActions(_actionConsumer);
+            Applications = new ApplicationsActions(_actionConsumer);
+            Bridges = new BridgesActions(_actionConsumer);
+            Channels = new ChannelsActions(_actionConsumer);
+            DeviceStates = new DeviceStatesActions(_actionConsumer);
+            Endpoints = new EndpointsActions(_actionConsumer);
+            Events = new EventsActions(_actionConsumer);
+            Playbacks = new PlaybacksActions(_actionConsumer);
+            Recordings = new RecordingsActions(_actionConsumer);
+            Sounds = new SoundsActions(_actionConsumer);
+
+            // Setup Event Handlers
+            InternalEvent += ARIClient_internalEvent;
+            _eventProducer.OnMessageReceived += _eventProducer_OnMessageReceived;
+            _eventProducer.OnConnectionStateChanged += _eventProducer_OnConnectionStateChanged;
         }
 
-        private void Reconnect()
+        private void _eventProducer_OnConnectionStateChanged(object sender, EventArgs e)
         {
-            if (_autoReconnect && _client.State != WebSocketState.Open)
-            {
-                if(_autoReconnectDelay!=TimeSpan.Zero)
-                    Thread.Sleep(_autoReconnectDelay);
-                Connect();
-            }
-        }
-
-        #endregion
-
-        #region Public Methods
-        public void Connect(bool autoReconnect = true, int autoReconnectDelay = 5)
-        {
-            _autoReconnect = autoReconnect;
-            _autoReconnectDelay = TimeSpan.FromSeconds(autoReconnectDelay);
-
-            try
-            {
-                _client = new WebSocket(string.Format("ws://{0}:{3}/ari/events?app={1}&api_key={2}",
-                    _endPoint.Host, _application, string.Format("{0}:{1}", _endPoint.Username, _endPoint.Password), _endPoint.Port.ToString()));
-
-                _client.MessageReceived += _client_MessageReceived;
-                _client.Opened += _client_Opened;
-                _client.Error += _client_Error;
-                _client.DataReceived += _client_DataReceived;
-                _client.Closed += _client_Closed;
-
-                _client.Open();
-            }
-            catch (Exception ex)
-            {
-                throw new ARIException(ex.Message);
-            }
-        }
-
-        public void Disconnect()
-        {
-            _autoReconnect = false;
-            _client.Close();
-        }
-
-        public bool Connected
-        {
-            get { return _client.State == WebSocketState.Open; }
-        }
-        #endregion
-
-        #region SocketEvents
-        private void _client_Closed(object sender, EventArgs e)
-        {
-            RaiseOnConnectionStateChanged();
-            Reconnect();
-        }
-
-        private void _client_DataReceived(object sender, DataReceivedEventArgs e)
-        {
-
-        }
-
-        private void _client_Error(object sender, SuperSocket.ClientEngine.ErrorEventArgs e)
-        {
-            if(e.Exception is SocketException)
+            if (_eventProducer.State != ConnectionState.Open)
                 Reconnect();
         }
 
-        private void _client_Opened(object sender, EventArgs e)
-        {
-            RaiseOnConnectionStateChanged();
-        }
-
-        private void _client_MessageReceived(object sender, MessageReceivedEventArgs e)
+        private void _eventProducer_OnMessageReceived(object sender, MessageEventArgs e)
         {
 #if DEBUG
-            System.Diagnostics.Debug.WriteLine(e.Message);
+            Debug.WriteLine(e.Message);
 #endif
             // load the message
-            var jsonMsg = (JObject)JToken.Parse(e.Message);
+            var jsonMsg = (JObject) JToken.Parse(e.Message);
             var eventName = jsonMsg.SelectToken("type").Value<string>();
             var type = Type.GetType("AsterNET.ARI.Models." + eventName + "Event");
             if (type != null)
-                InternalEvent.BeginInvoke(this, (Event)JsonConvert.DeserializeObject(value: e.Message, type: type), eventComplete, null);
+                InternalEvent.BeginInvoke(this, (Event) JsonConvert.DeserializeObject(e.Message, type), eventComplete,
+                    null);
             else
-                InternalEvent.BeginInvoke(this, (Event)JsonConvert.DeserializeObject(value: e.Message, type: typeof(Event)), eventComplete, null);
+                InternalEvent.BeginInvoke(this, (Event) JsonConvert.DeserializeObject(e.Message, typeof (Event)),
+                    eventComplete, null);
+        }
+
+        private void ARIClient_internalEvent(IAriClient sender, Event e)
+        {
+            FireEvent(e.Type, e, sender);
         }
 
         private void eventComplete(IAsyncResult result)
         {
-            var ar = (System.Runtime.Remoting.Messaging.AsyncResult)result;
-            var invokedMethod = (ARIEventHandler)ar.AsyncDelegate;
+            var ar = (AsyncResult) result;
+            var invokedMethod = (AriEventHandler) ar.AsyncDelegate;
 
             try
             {
@@ -177,17 +173,229 @@ namespace AsterNET.ARI
                 Console.WriteLine("An event listener went kaboom!");
             }
         }
-        #endregion
+
+        private void Reconnect()
+        {
+            if (_autoReconnect && _eventProducer.State != ConnectionState.Open)
+            {
+                if (_autoReconnectDelay != TimeSpan.Zero)
+                    Thread.Sleep(_autoReconnectDelay);
+                Connect();
+            }
+        }
+
+        protected void FireEvent(string eventName, object eventArgs, IAriClient sender)
+        {
+            switch (eventName)
+            {
+                case "ChannelCallerId":
+                    if (OnChannelCallerIdEvent != null)
+                        OnChannelCallerIdEvent(sender, (ChannelCallerIdEvent) eventArgs);
+                    break;
+
+
+                case "ChannelDtmfReceived":
+                    if (OnChannelDtmfReceivedEvent != null)
+                        OnChannelDtmfReceivedEvent(sender, (ChannelDtmfReceivedEvent) eventArgs);
+                    break;
+
+
+                case "BridgeCreated":
+                    if (OnBridgeCreatedEvent != null)
+                        OnBridgeCreatedEvent(sender, (BridgeCreatedEvent) eventArgs);
+                    break;
+
+
+                case "ChannelCreated":
+                    if (OnChannelCreatedEvent != null)
+                        OnChannelCreatedEvent(sender, (ChannelCreatedEvent) eventArgs);
+                    break;
+
+
+                case "ApplicationReplaced":
+                    if (OnApplicationReplacedEvent != null)
+                        OnApplicationReplacedEvent(sender, (ApplicationReplacedEvent) eventArgs);
+                    break;
+
+
+                case "ChannelStateChange":
+                    if (OnChannelStateChangeEvent != null)
+                        OnChannelStateChangeEvent(sender, (ChannelStateChangeEvent) eventArgs);
+                    break;
+
+
+                case "PlaybackFinished":
+                    if (OnPlaybackFinishedEvent != null)
+                        OnPlaybackFinishedEvent(sender, (PlaybackFinishedEvent) eventArgs);
+                    break;
+
+
+                case "RecordingStarted":
+                    if (OnRecordingStartedEvent != null)
+                        OnRecordingStartedEvent(sender, (RecordingStartedEvent) eventArgs);
+                    break;
+
+
+                case "ChannelLeftBridge":
+                    if (OnChannelLeftBridgeEvent != null)
+                        OnChannelLeftBridgeEvent(sender, (ChannelLeftBridgeEvent) eventArgs);
+                    break;
+
+
+                case "ChannelDestroyed":
+                    if (OnChannelDestroyedEvent != null)
+                        OnChannelDestroyedEvent(sender, (ChannelDestroyedEvent) eventArgs);
+                    break;
+
+
+                case "DeviceStateChanged":
+                    if (OnDeviceStateChangedEvent != null)
+                        OnDeviceStateChangedEvent(sender, (DeviceStateChangedEvent) eventArgs);
+                    break;
+
+
+                case "ChannelTalkingFinished":
+                    if (OnChannelTalkingFinishedEvent != null)
+                        OnChannelTalkingFinishedEvent(sender, (ChannelTalkingFinishedEvent) eventArgs);
+                    break;
+
+
+                case "PlaybackStarted":
+                    if (OnPlaybackStartedEvent != null)
+                        OnPlaybackStartedEvent(sender, (PlaybackStartedEvent) eventArgs);
+                    break;
+
+
+                case "ChannelTalkingStarted":
+                    if (OnChannelTalkingStartedEvent != null)
+                        OnChannelTalkingStartedEvent(sender, (ChannelTalkingStartedEvent) eventArgs);
+                    break;
+
+
+                case "RecordingFailed":
+                    if (OnRecordingFailedEvent != null)
+                        OnRecordingFailedEvent(sender, (RecordingFailedEvent) eventArgs);
+                    break;
+
+
+                case "BridgeMerged":
+                    if (OnBridgeMergedEvent != null)
+                        OnBridgeMergedEvent(sender, (BridgeMergedEvent) eventArgs);
+                    break;
+
+
+                case "RecordingFinished":
+                    if (OnRecordingFinishedEvent != null)
+                        OnRecordingFinishedEvent(sender, (RecordingFinishedEvent) eventArgs);
+                    break;
+
+
+                case "BridgeAttendedTransfer":
+                    if (OnBridgeAttendedTransferEvent != null)
+                        OnBridgeAttendedTransferEvent(sender, (BridgeAttendedTransferEvent) eventArgs);
+                    break;
+
+
+                case "ChannelEnteredBridge":
+                    if (OnChannelEnteredBridgeEvent != null)
+                        OnChannelEnteredBridgeEvent(sender, (ChannelEnteredBridgeEvent) eventArgs);
+                    break;
+
+
+                case "BridgeDestroyed":
+                    if (OnBridgeDestroyedEvent != null)
+                        OnBridgeDestroyedEvent(sender, (BridgeDestroyedEvent) eventArgs);
+                    break;
+
+
+                case "BridgeBlindTransfer":
+                    if (OnBridgeBlindTransferEvent != null)
+                        OnBridgeBlindTransferEvent(sender, (BridgeBlindTransferEvent) eventArgs);
+                    break;
+
+
+                case "ChannelUserevent":
+                    if (OnChannelUsereventEvent != null)
+                        OnChannelUsereventEvent(sender, (ChannelUsereventEvent) eventArgs);
+                    break;
+
+
+                case "ChannelDialplan":
+                    if (OnChannelDialplanEvent != null)
+                        OnChannelDialplanEvent(sender, (ChannelDialplanEvent) eventArgs);
+                    break;
+
+
+                case "ChannelHangupRequest":
+                    if (OnChannelHangupRequestEvent != null)
+                        OnChannelHangupRequestEvent(sender, (ChannelHangupRequestEvent) eventArgs);
+                    break;
+
+
+                case "ChannelVarset":
+                    if (OnChannelVarsetEvent != null)
+                        OnChannelVarsetEvent(sender, (ChannelVarsetEvent) eventArgs);
+                    break;
+
+
+                case "EndpointStateChange":
+                    if (OnEndpointStateChangeEvent != null)
+                        OnEndpointStateChangeEvent(sender, (EndpointStateChangeEvent) eventArgs);
+                    break;
+
+
+                case "Dial":
+                    if (OnDialEvent != null)
+                        OnDialEvent(sender, (DialEvent) eventArgs);
+                    break;
+
+
+                case "StasisEnd":
+                    if (OnStasisEndEvent != null)
+                        OnStasisEndEvent(sender, (StasisEndEvent) eventArgs);
+                    break;
+
+
+                case "StasisStart":
+                    if (OnStasisStartEvent != null)
+                        OnStasisStartEvent(sender, (StasisStartEvent) eventArgs);
+                    break;
+                default:
+                    if (OnUnhandledEvent != null)
+                        OnUnhandledEvent(this, (Event) eventArgs);
+                    break;
+            }
+        }
 
         protected virtual void RaiseOnConnectionStateChanged()
         {
-            if (_client.State == _lastKnownState) return;
+            if (_eventProducer.State == _lastKnownState) return;
 
-            _lastKnownState = _client.State;
+            _lastKnownState = _eventProducer.State;
             var handler = OnConnectionStateChanged;
             if (handler != null) handler(this);
         }
 
-    }
+        #endregion
 
+        #region Public Methods
+
+        public bool Connected
+        {
+            get { return _eventProducer.State == ConnectionState.Open; }
+        }
+
+        public void Connect(bool autoReconnect = true, int autoReconnectDelay = 5)
+        {
+            _eventProducer.Connect();
+        }
+
+        public void Disconnect()
+        {
+            _autoReconnect = false;
+            _eventProducer.Disconnect();
+        }
+
+        #endregion
+    }
 }

@@ -21,16 +21,16 @@
 // System.Diagnostics.Debugger.Launch();
 var manager = TemplateFileManager.Create(this);
 var files = new List<string>() { 
-	@"E:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Events.json",
-	@"E:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Bridges.json",
-	@"E:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Channels.json",
-	@"E:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Asterisk.json",
-	@"E:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Applications.json",
-	@"E:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Endpoints.json",
-	@"E:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\DeviceStates.json",
-	@"E:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Playbacks.json",
-	@"E:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Sounds.json",
-	@"E:\Projects\Codeplex\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Recordings.json"
+	@"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Events.json",
+	@"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Bridges.json",
+	@"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Channels.json",
+	@"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Asterisk.json",
+	@"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Applications.json",
+	@"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Endpoints.json",
+	@"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\DeviceStates.json",
+	@"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Playbacks.json",
+	@"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Sounds.json",
+	@"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Recordings.json"
 };
 var events = new List<string>();
 #>
@@ -139,14 +139,14 @@ namespace AsterNET.ARI.Models
 #>
 <#
 
-		//
-		// Start Actions Output
-		//
 		var apis = o["apis"];
 		
+		//
+		// Generate Action Interface
+		//
 		
-		
-		manager.StartNewFile(actionClassName + ".cs");
+		manager.StartNewFile("I" + actionClassName + ".cs");
+
 #>
 /*
 	AsterNET ARI Framework
@@ -156,16 +156,102 @@ using System;
 using System.Collections.Generic;
 using AsterNET.ARI.Models;
 using AsterNET.ARI;
-using RestSharp;
 
 namespace AsterNET.ARI.Actions
 {
 	
-	public class <#= actionClassName #> : ARIBaseAction
+	public interface I<#= actionClassName #>
+	{
+<#
+
+		foreach (var item in apis)
+		{
+			var path = item.SelectToken("path").Value<string>();
+			var operations = item.SelectToken("operations");
+			
+			foreach(var op in operations) 
+			{
+				
+				var methodName = op.SelectToken("nickname").Value<string>();
+				var description = string.Format("{0}. {1}", op.SelectToken("summary").Value<string>(), op.SelectToken("notes") == null ? "" : op.SelectToken("notes").Value<string>());
+				var httpMethod = op.SelectToken("httpMethod").Value<string>();
+			
+				var responseType = ARICodeGen.SwaggerHelper.TypeConvert(op.SelectToken("responseClass").Value<string>());
+
+				var parameters = string.Empty;
+			
+				try {
+					var allParams = op.SelectToken("parameters").ToList();
+					try {
+						allParams = allParams.OrderByDescending(x => x.SelectToken("required").Value<bool>()).ToList();
+					}catch{}
+
+					foreach(var param in allParams) {
+						// Get Param Type
+						var paramType = ARICodeGen.SwaggerHelper.TypeConvert(param.SelectToken("dataType").Value<string>());
+						// string defaultValue = param.SelectToken("defalutValue").Value<string>()
+						var optionalString = "";
+						if(param.SelectToken("required") != null && !param.SelectToken("required").Value<bool>()){
+							if(paramType == "int" || paramType == "bool" || paramType == "long")
+								paramType = paramType + "?";
+							
+							optionalString = " = null";
+						}
+						parameters += string.Format("{2}{1} {0}{3}", 
+							param.SelectToken("name").Value<string>(), 
+							paramType, 
+							parameters.Length > 0 ? ", " : "", 
+							optionalString);
+					}
+				}catch(Exception ex){
+					Trace.WriteLine(ex.ToString());
+				}
+
+#>
+		/// <summary>
+		/// <#= description ?? "no description provided" #>
+		/// </summary>
+<# 
+				try {
+					foreach(var param in op.SelectToken("parameters")) {
+#>
+		/// <param name="<#= param.SelectToken("name").Value<string>() #>"><#= param.SelectToken("description").Value<string>() #></param>
+<#
+					}
+                }catch{}
+#>
+		<#= responseType #> <#= ARICodeGen.SwaggerHelper.GetSafeName(methodName) #>(<#= parameters #>);
+<#			}
+		}
+#>
+	}
+}
+<#
+
+		//
+		// Start Actions Output
+		//
+
+		manager.StartNewFile(actionClassName + ".cs");
+#>
+/*
+	AsterNET ARI Framework
+	Automatically generated file @ <#= DateTime.Now.ToString() #>
+*/
+using System;
+using System.Collections.Generic;
+using AsterNET.ARI.Middleware;
+using AsterNET.ARI.Models;
+using AsterNET.ARI;
+
+namespace AsterNET.ARI.Actions
+{
+	
+	public class <#= actionClassName #> : ARIBaseAction, I<#= actionClassName #>
 	{
 
-		public <#= actionClassName #>(StasisEndpoint endPoint)
-			: base(endPoint)
+		public <#= actionClassName #>(IActionConsumer consumer)
+			: base(consumer)
 		{}
 
 <#
@@ -229,7 +315,7 @@ namespace AsterNET.ARI.Actions
 		public <#= responseType #> <#= ARICodeGen.SwaggerHelper.GetSafeName(methodName) #>(<#= parameters #>)
 		{
 			string path = "<#= path #>";
-			var request = GetNewRequest(path, Method.<#= httpMethod.ToUpper() #>);
+			var request = GetNewRequest(path, HttpMethod.<#= httpMethod.ToUpper() #>);
 <# 
 			try {
 				foreach(var param in op.SelectToken("parameters")) {
@@ -268,11 +354,11 @@ namespace AsterNET.ARI.Actions
 			}
 			if(responseType == "void") {
 #>
-			var response = Client.Execute(request);
+			var response = Execute(request);
 		}
 <#			}else{#>
 
-			var response = Client.Execute<<#= responseType #>>(request);
+			var response = Execute<<#= responseType #>>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -284,7 +370,7 @@ namespace AsterNET.ARI.Actions
 				foreach(var errorCode in op.SelectToken("errorResponses")) {
 #>
 				case <#= errorCode.SelectToken("code").Value<string>() #>:
-					throw new ARIException("<#= errorCode.SelectToken("reason").Value<string>() #>");
+					throw new AriException("<#= errorCode.SelectToken("reason").Value<string>() #>");
 					break;
 <#  
 				}
@@ -293,7 +379,7 @@ namespace AsterNET.ARI.Actions
 #>
 				default:
 					// Unknown server response
-					throw new ARIException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
             }
 		}
 <#			} #>
@@ -326,29 +412,35 @@ namespace AsterNET.ARI
 	foreach (var evt in events)
     {
 #>
-	public delegate void <#= evt + "Handler"#>(object sender, <#= evt #> e);
+	public delegate void <#= evt + "Handler"#>(IAriClient sender, <#= evt #> e);
 <#
     }
 #>
 	public delegate void UnhandledEventHandler(object sender, AsterNET.ARI.Models.Event eventMessage);
 
-	/// <summary>
-	/// 
-	/// </summary>
-	public partial class BaseARIClient_1_0_0
+
+	public interface IAriEventClient
 	{
 <#
 	System.Diagnostics.Debug.WriteLine("event count " + events.Count);
     foreach (var evt in events)
     {
 #>
-		public event <#= evt + "Handler"#> On<#= evt #>;
+		event <#= evt + "Handler"#> On<#= evt #>;
 <#
     }
 #>
-		public event UnhandledEventHandler OnUnhandledEvent;		
+		event UnhandledEventHandler OnUnhandledEvent;
+	}
+
+
+	/// <summary>
+	/// 
+	/// </summary>
+	public partial class BaseARIClient
+	{
 		
-		protected void FireEvent(string eventName, object eventArgs)
+		protected void FireEvent(string eventName, object eventArgs, object sender)
 		{
 		
 			switch(eventName) 
@@ -361,7 +453,7 @@ namespace AsterNET.ARI
 			
 				case "<#= evt.Replace("Event", "") #>":
 					if(On<#= evt #> != null)
-						On<#= evt #>(this, (<#= evt #>)eventArgs);
+						On<#= evt #>(sender, (<#= evt #>)eventArgs);
 					break;
 <#
 		i++;

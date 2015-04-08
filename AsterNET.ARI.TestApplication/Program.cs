@@ -1,22 +1,27 @@
 ﻿using System;
+using AsterNET.ARI.Models;
 
 namespace AsterNET.ARI.TestApplication
 {
-    class Program
+    internal class Program
     {
-        public static ARIClient client;
-        static void Main(string[] args)
+        public static AriClient ActionClient;
+
+        private static void Main(string[] args)
         {
             try
             {
-                client = new ARIClient(
-                    new StasisEndpoint("192.168.3.19", 8088, "test", "test"), 
+                // Create a new Ari Connection
+                ActionClient = new AriClient(
+                    new StasisEndpoint("192.168.3.201", 8088, "test", "test"),
                     "HelloWorld");
-                client.OnStasisStartEvent += c_OnStasisStartEvent;
-                client.OnChannelDtmfReceivedEvent += client_OnChannelDtmfReceivedEvent;
-                client.OnConnectionStateChanged += client_OnConnectionStateChanged;
 
-                client.Connect(true, 5);
+                // Hook into required events
+                ActionClient.OnStasisStartEvent += c_OnStasisStartEvent;
+                ActionClient.OnChannelDtmfReceivedEvent += ActionClientOnChannelDtmfReceivedEvent;
+                ActionClient.OnConnectionStateChanged += ActionClientOnConnectionStateChanged;
+
+                ActionClient.Connect();
 
                 Console.ReadKey();
             }
@@ -27,34 +32,36 @@ namespace AsterNET.ARI.TestApplication
             }
         }
 
-        static void client_OnConnectionStateChanged(object sender)
+        private static void ActionClientOnConnectionStateChanged(object sender)
         {
-            Console.WriteLine("Connection state is now {0}", client.Connected);
+            Console.WriteLine("Connection state is now {0}", ActionClient.Connected);
         }
 
-        static void client_OnChannelDtmfReceivedEvent(object sender, AsterNET.ARI.Models.ChannelDtmfReceivedEvent e)
+        private static void ActionClientOnChannelDtmfReceivedEvent(object sender, ChannelDtmfReceivedEvent e)
         {
+            // When DTMF received
             switch (e.Digit)
             {
                 case "*":
-                    client.Channels.Play(e.Channel.Id, "sound:asterisk-friend", "en", 0, 0, Guid.NewGuid().ToString());
+                    ActionClient.Channels.Play(e.Channel.Id, "sound:asterisk-friend");
                     break;
                 case "#":
-                    client.Channels.Play(e.Channel.Id, "sound:goodbye", "en", 0, 0, Guid.NewGuid().ToString());
-                    client.Channels.Hangup(e.Channel.Id, "normal");
+                    ActionClient.Channels.Play(e.Channel.Id, "sound:goodbye");
+                    ActionClient.Channels.Hangup(e.Channel.Id, "normal");
                     break;
                 default:
-                    client.Channels.Play(e.Channel.Id, string.Format("sound:digits/{0}", e.Digit), "en", 0, 0, Guid.NewGuid().ToString());
+                    ActionClient.Channels.Play(e.Channel.Id, string.Format("sound:digits/{0}", e.Digit));
                     break;
             }
         }
 
-        static void c_OnStasisStartEvent(object sender, AsterNET.ARI.Models.StasisStartEvent e)
+        private static void c_OnStasisStartEvent(object sender, StasisStartEvent e)
         {
             // Answer the channel
-            client.Channels.Answer(e.Channel.Id);
+            ActionClient.Channels.Answer(e.Channel.Id);
+
             // Play an announcement
-            client.Channels.Play(e.Channel.Id, "sound:hello-world", "en", 0, 0, Guid.NewGuid().ToString());
+            ActionClient.Channels.Play(e.Channel.Id, "sound:hello-world");
         }
     }
 }

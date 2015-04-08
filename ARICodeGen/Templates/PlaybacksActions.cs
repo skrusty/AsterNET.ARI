@@ -1,21 +1,21 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 06/11/2014 10:21:07
+	Automatically generated file @ 17/03/2015 15:48:04
 */
 using System;
 using System.Collections.Generic;
+using AsterNET.ARI.Middleware;
 using AsterNET.ARI.Models;
 using AsterNET.ARI;
-using RestSharp;
 
 namespace AsterNET.ARI.Actions
 {
 	
-	public class PlaybacksActions : ARIBaseAction
+	public class PlaybacksActions : ARIBaseAction, IPlaybacksActions
 	{
 
-		public PlaybacksActions(StasisEndpoint endPoint)
-			: base(endPoint)
+		public PlaybacksActions(IActionConsumer consumer)
+			: base(consumer)
 		{}
 
 		/// <summary>
@@ -25,11 +25,11 @@ namespace AsterNET.ARI.Actions
 		public Playback Get(string playbackId)
 		{
 			string path = "/playbacks/{playbackId}";
-			var request = GetNewRequest(path, Method.GET);
+			var request = GetNewRequest(path, HttpMethod.GET);
 			if(playbackId != null)
 				request.AddUrlSegment("playbackId", playbackId);
 
-			var response = Client.Execute<Playback>(request);
+			var response = Execute<Playback>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -37,11 +37,11 @@ namespace AsterNET.ARI.Actions
 			switch((int)response.StatusCode)
             {
 				case 404:
-					throw new ARIException("The playback cannot be found");
+					throw new AriException("The playback cannot be found");
 					break;
 				default:
 					// Unknown server response
-					throw new ARIException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
             }
 		}
 		/// <summary>
@@ -51,10 +51,10 @@ namespace AsterNET.ARI.Actions
 		public void Stop(string playbackId)
 		{
 			string path = "/playbacks/{playbackId}";
-			var request = GetNewRequest(path, Method.DELETE);
+			var request = GetNewRequest(path, HttpMethod.DELETE);
 			if(playbackId != null)
 				request.AddUrlSegment("playbackId", playbackId);
-			var response = Client.Execute(request);
+			var response = Execute(request);
 		}
 		/// <summary>
 		/// Control a playback.. 
@@ -64,12 +64,12 @@ namespace AsterNET.ARI.Actions
 		public void Control(string playbackId, string operation)
 		{
 			string path = "/playbacks/{playbackId}/control";
-			var request = GetNewRequest(path, Method.POST);
+			var request = GetNewRequest(path, HttpMethod.POST);
 			if(playbackId != null)
 				request.AddUrlSegment("playbackId", playbackId);
 			if(operation != null)
 				request.AddParameter("operation", operation, ParameterType.QueryString);
-			var response = Client.Execute(request);
+			var response = Execute(request);
 		}
 	}
 }

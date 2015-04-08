@@ -35,7 +35,7 @@ namespace AsterNET.ARI.SimpleConfExample
     {
         #region Private Properties
 
-        private readonly ARIClient _client;
+        private readonly AriClient _client;
         private Conference _conference;
         private ConferenceUserState _state;
 
@@ -62,7 +62,7 @@ namespace AsterNET.ARI.SimpleConfExample
 
         #endregion
 
-        public ConferenceUser(Conference conf, Channel chan, ARIClient client, ConferenceUserType type)
+        public ConferenceUser(Conference conf, Channel chan, AriClient client, ConferenceUserType type)
         {
             _conference = conf;
             Channel = chan;

@@ -1,21 +1,21 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 06/11/2014 10:21:07
+	Automatically generated file @ 17/03/2015 15:48:04
 */
 using System;
 using System.Collections.Generic;
+using AsterNET.ARI.Middleware;
 using AsterNET.ARI.Models;
 using AsterNET.ARI;
-using RestSharp;
 
 namespace AsterNET.ARI.Actions
 {
 	
-	public class EventsActions : ARIBaseAction
+	public class EventsActions : ARIBaseAction, IEventsActions
 	{
 
-		public EventsActions(StasisEndpoint endPoint)
-			: base(endPoint)
+		public EventsActions(IActionConsumer consumer)
+			: base(consumer)
 		{}
 
 		/// <summary>
@@ -25,11 +25,11 @@ namespace AsterNET.ARI.Actions
 		public Message EventWebsocket(string app)
 		{
 			string path = "/events";
-			var request = GetNewRequest(path, Method.GET);
+			var request = GetNewRequest(path, HttpMethod.GET);
 			if(app != null)
 				request.AddParameter("app", app, ParameterType.QueryString);
 
-			var response = Client.Execute<Message>(request);
+			var response = Execute<Message>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -38,7 +38,7 @@ namespace AsterNET.ARI.Actions
             {
 				default:
 					// Unknown server response
-					throw new ARIException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
             }
 		}
 		/// <summary>
@@ -51,7 +51,7 @@ namespace AsterNET.ARI.Actions
 		public void UserEvent(string eventName, string application, string source = null, List<KeyValuePair<string, string>> variables = null)
 		{
 			string path = "/events/user/{eventName}";
-			var request = GetNewRequest(path, Method.POST);
+			var request = GetNewRequest(path, HttpMethod.POST);
 			if(eventName != null)
 				request.AddUrlSegment("eventName", eventName);
 			if(application != null)
@@ -60,7 +60,7 @@ namespace AsterNET.ARI.Actions
 				request.AddParameter("source", source, ParameterType.QueryString);
 			if(variables != null)
 				request.AddParameter("variables", variables, ParameterType.RequestBody);
-			var response = Client.Execute(request);
+			var response = Execute(request);
 		}
 	}
 }

@@ -1,21 +1,21 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 06/11/2014 10:21:07
+	Automatically generated file @ 17/03/2015 15:48:04
 */
 using System;
 using System.Collections.Generic;
+using AsterNET.ARI.Middleware;
 using AsterNET.ARI.Models;
 using AsterNET.ARI;
-using RestSharp;
 
 namespace AsterNET.ARI.Actions
 {
 	
-	public class AsteriskActions : ARIBaseAction
+	public class AsteriskActions : ARIBaseAction, IAsteriskActions
 	{
 
-		public AsteriskActions(StasisEndpoint endPoint)
-			: base(endPoint)
+		public AsteriskActions(IActionConsumer consumer)
+			: base(consumer)
 		{}
 
 		/// <summary>
@@ -25,11 +25,11 @@ namespace AsterNET.ARI.Actions
 		public AsteriskInfo GetInfo(string only = null)
 		{
 			string path = "/asterisk/info";
-			var request = GetNewRequest(path, Method.GET);
+			var request = GetNewRequest(path, HttpMethod.GET);
 			if(only != null)
 				request.AddParameter("only", only, ParameterType.QueryString);
 
-			var response = Client.Execute<AsteriskInfo>(request);
+			var response = Execute<AsteriskInfo>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -38,7 +38,7 @@ namespace AsterNET.ARI.Actions
             {
 				default:
 					// Unknown server response
-					throw new ARIException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
             }
 		}
 		/// <summary>
@@ -48,11 +48,11 @@ namespace AsterNET.ARI.Actions
 		public Variable GetGlobalVar(string variable)
 		{
 			string path = "/asterisk/variable";
-			var request = GetNewRequest(path, Method.GET);
+			var request = GetNewRequest(path, HttpMethod.GET);
 			if(variable != null)
 				request.AddParameter("variable", variable, ParameterType.QueryString);
 
-			var response = Client.Execute<Variable>(request);
+			var response = Execute<Variable>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -60,11 +60,11 @@ namespace AsterNET.ARI.Actions
 			switch((int)response.StatusCode)
             {
 				case 400:
-					throw new ARIException("Missing variable parameter.");
+					throw new AriException("Missing variable parameter.");
 					break;
 				default:
 					// Unknown server response
-					throw new ARIException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
             }
 		}
 		/// <summary>
@@ -75,12 +75,12 @@ namespace AsterNET.ARI.Actions
 		public void SetGlobalVar(string variable, string value = null)
 		{
 			string path = "/asterisk/variable";
-			var request = GetNewRequest(path, Method.POST);
+			var request = GetNewRequest(path, HttpMethod.POST);
 			if(variable != null)
 				request.AddParameter("variable", variable, ParameterType.QueryString);
 			if(value != null)
 				request.AddParameter("value", value, ParameterType.QueryString);
-			var response = Client.Execute(request);
+			var response = Execute(request);
 		}
 	}
 }

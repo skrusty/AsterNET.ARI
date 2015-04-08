@@ -1,21 +1,21 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 06/11/2014 10:21:07
+	Automatically generated file @ 17/03/2015 15:48:04
 */
 using System;
 using System.Collections.Generic;
+using AsterNET.ARI.Middleware;
 using AsterNET.ARI.Models;
 using AsterNET.ARI;
-using RestSharp;
 
 namespace AsterNET.ARI.Actions
 {
 	
-	public class EndpointsActions : ARIBaseAction
+	public class EndpointsActions : ARIBaseAction, IEndpointsActions
 	{
 
-		public EndpointsActions(StasisEndpoint endPoint)
-			: base(endPoint)
+		public EndpointsActions(IActionConsumer consumer)
+			: base(consumer)
 		{}
 
 		/// <summary>
@@ -24,9 +24,9 @@ namespace AsterNET.ARI.Actions
 		public List<Endpoint> List()
 		{
 			string path = "/endpoints";
-			var request = GetNewRequest(path, Method.GET);
+			var request = GetNewRequest(path, HttpMethod.GET);
 
-			var response = Client.Execute<List<Endpoint>>(request);
+			var response = Execute<List<Endpoint>>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -35,7 +35,7 @@ namespace AsterNET.ARI.Actions
             {
 				default:
 					// Unknown server response
-					throw new ARIException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
             }
 		}
 		/// <summary>
@@ -45,11 +45,11 @@ namespace AsterNET.ARI.Actions
 		public List<Endpoint> ListByTech(string tech)
 		{
 			string path = "/endpoints/{tech}";
-			var request = GetNewRequest(path, Method.GET);
+			var request = GetNewRequest(path, HttpMethod.GET);
 			if(tech != null)
 				request.AddUrlSegment("tech", tech);
 
-			var response = Client.Execute<List<Endpoint>>(request);
+			var response = Execute<List<Endpoint>>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -57,11 +57,11 @@ namespace AsterNET.ARI.Actions
 			switch((int)response.StatusCode)
             {
 				case 404:
-					throw new ARIException("Endpoints not found");
+					throw new AriException("Endpoints not found");
 					break;
 				default:
 					// Unknown server response
-					throw new ARIException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
             }
 		}
 		/// <summary>
@@ -72,13 +72,13 @@ namespace AsterNET.ARI.Actions
 		public Endpoint Get(string tech, string resource)
 		{
 			string path = "/endpoints/{tech}/{resource}";
-			var request = GetNewRequest(path, Method.GET);
+			var request = GetNewRequest(path, HttpMethod.GET);
 			if(tech != null)
 				request.AddUrlSegment("tech", tech);
 			if(resource != null)
 				request.AddUrlSegment("resource", resource);
 
-			var response = Client.Execute<Endpoint>(request);
+			var response = Execute<Endpoint>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -86,11 +86,11 @@ namespace AsterNET.ARI.Actions
 			switch((int)response.StatusCode)
             {
 				case 404:
-					throw new ARIException("Endpoints not found");
+					throw new AriException("Endpoints not found");
 					break;
 				default:
 					// Unknown server response
-					throw new ARIException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
             }
 		}
 	}

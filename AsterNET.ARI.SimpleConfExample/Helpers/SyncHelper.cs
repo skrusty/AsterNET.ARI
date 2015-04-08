@@ -17,7 +17,7 @@ namespace AsterNET.ARI.SimpleConfExample.Helpers
 {
     public static class SyncHelper
     {
-        public static PlaybackFinishedEvent Wait(this Playback playback, ARIClient client)
+        public static PlaybackFinishedEvent Wait(this Playback playback, AriClient client)
         {
             AutoResetEvent _playbackFinished = new AutoResetEvent(false);
             PlaybackFinishedEvent rtn = null;
