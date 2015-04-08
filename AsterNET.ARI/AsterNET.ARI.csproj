@@ -54,8 +54,8 @@
     <Compile Include="Middleware\Default\Command.cs" />
     <Compile Include="Middleware\Default\CommandResult.cs" />
     <Compile Include="ARI_1_0\Actions\ARIBaseAction.cs" />
-    <Compile Include="AriClient.cs" />
-    <Compile Include="AriException.cs" />
+    <Compile Include="ARIClient.cs" />
+    <Compile Include="ARIException.cs" />
     <Compile Include="ARI_1_0\Actions\IApplicationsActions.cs" />
     <Compile Include="ARI_1_0\Actions\IAsteriskActions.cs" />
     <Compile Include="ARI_1_0\Actions\IBridgesActions.cs" />
@@ -120,7 +120,7 @@
     <Compile Include="Middleware\Default\WebSocketEventProducer.cs" />
     <Compile Include="Middleware\IActionConsumer.cs" />
     <Compile Include="Middleware\IEventProducer.cs" />
-    <Compile Include="Middleware\IRestCommand.cs" />
+    <Compile Include="Middleware\IRESTCommand.cs" />
     <Compile Include="Middleware\IRestCommandResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ARI_1_0\Events\RecordingFailedEvent.cs" />
