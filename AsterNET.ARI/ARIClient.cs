@@ -387,6 +387,8 @@ namespace AsterNET.ARI
 
         public void Connect(bool autoReconnect = true, int autoReconnectDelay = 5)
         {
+	        _autoReconnect = autoReconnect;
+	        _autoReconnectDelay = TimeSpan.FromSeconds(autoReconnectDelay);
             _eventProducer.Connect();
         }
 
