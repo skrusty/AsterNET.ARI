@@ -189,181 +189,211 @@ namespace AsterNET.ARI
             switch (eventName)
             {
                 case "ChannelCallerId":
-                    if (OnChannelCallerIdEvent != null)
-                        OnChannelCallerIdEvent(sender, (ChannelCallerIdEvent) eventArgs);
-                    break;
+		            if (OnChannelCallerIdEvent != null)
+			            OnChannelCallerIdEvent(sender, (ChannelCallerIdEvent) eventArgs);
+		            else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event) eventArgs);
+		            break;
 
 
                 case "ChannelDtmfReceived":
                     if (OnChannelDtmfReceivedEvent != null)
                         OnChannelDtmfReceivedEvent(sender, (ChannelDtmfReceivedEvent) eventArgs);
-                    break;
+					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+					break;
 
 
                 case "BridgeCreated":
                     if (OnBridgeCreatedEvent != null)
                         OnBridgeCreatedEvent(sender, (BridgeCreatedEvent) eventArgs);
-                    break;
+					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+					break;
 
 
                 case "ChannelCreated":
                     if (OnChannelCreatedEvent != null)
                         OnChannelCreatedEvent(sender, (ChannelCreatedEvent) eventArgs);
-                    break;
+					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+					break;
 
 
                 case "ApplicationReplaced":
                     if (OnApplicationReplacedEvent != null)
                         OnApplicationReplacedEvent(sender, (ApplicationReplacedEvent) eventArgs);
-                    break;
+					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+					break;
 
 
                 case "ChannelStateChange":
                     if (OnChannelStateChangeEvent != null)
                         OnChannelStateChangeEvent(sender, (ChannelStateChangeEvent) eventArgs);
-                    break;
+					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+					break;
 
 
                 case "PlaybackFinished":
                     if (OnPlaybackFinishedEvent != null)
                         OnPlaybackFinishedEvent(sender, (PlaybackFinishedEvent) eventArgs);
-                    break;
+					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+					break;
 
 
                 case "RecordingStarted":
                     if (OnRecordingStartedEvent != null)
                         OnRecordingStartedEvent(sender, (RecordingStartedEvent) eventArgs);
-                    break;
+					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+					break;
 
 
                 case "ChannelLeftBridge":
                     if (OnChannelLeftBridgeEvent != null)
                         OnChannelLeftBridgeEvent(sender, (ChannelLeftBridgeEvent) eventArgs);
-                    break;
+					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+					break;
 
 
                 case "ChannelDestroyed":
                     if (OnChannelDestroyedEvent != null)
                         OnChannelDestroyedEvent(sender, (ChannelDestroyedEvent) eventArgs);
-                    break;
+					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+					break;
 
 
                 case "DeviceStateChanged":
                     if (OnDeviceStateChangedEvent != null)
                         OnDeviceStateChangedEvent(sender, (DeviceStateChangedEvent) eventArgs);
-                    break;
+					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+					break;
 
 
                 case "ChannelTalkingFinished":
                     if (OnChannelTalkingFinishedEvent != null)
                         OnChannelTalkingFinishedEvent(sender, (ChannelTalkingFinishedEvent) eventArgs);
-                    break;
+					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+					break;
 
 
                 case "PlaybackStarted":
                     if (OnPlaybackStartedEvent != null)
                         OnPlaybackStartedEvent(sender, (PlaybackStartedEvent) eventArgs);
-                    break;
+					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+					break;
 
 
                 case "ChannelTalkingStarted":
                     if (OnChannelTalkingStartedEvent != null)
                         OnChannelTalkingStartedEvent(sender, (ChannelTalkingStartedEvent) eventArgs);
-                    break;
+					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+					break;
 
 
                 case "RecordingFailed":
                     if (OnRecordingFailedEvent != null)
                         OnRecordingFailedEvent(sender, (RecordingFailedEvent) eventArgs);
-                    break;
+					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+					break;
 
 
                 case "BridgeMerged":
                     if (OnBridgeMergedEvent != null)
                         OnBridgeMergedEvent(sender, (BridgeMergedEvent) eventArgs);
-                    break;
+					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+					break;
 
 
                 case "RecordingFinished":
                     if (OnRecordingFinishedEvent != null)
                         OnRecordingFinishedEvent(sender, (RecordingFinishedEvent) eventArgs);
-                    break;
+					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+					break;
 
 
                 case "BridgeAttendedTransfer":
                     if (OnBridgeAttendedTransferEvent != null)
                         OnBridgeAttendedTransferEvent(sender, (BridgeAttendedTransferEvent) eventArgs);
-                    break;
+					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+					break;
 
 
                 case "ChannelEnteredBridge":
                     if (OnChannelEnteredBridgeEvent != null)
                         OnChannelEnteredBridgeEvent(sender, (ChannelEnteredBridgeEvent) eventArgs);
-                    break;
+					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+					break;
 
 
                 case "BridgeDestroyed":
                     if (OnBridgeDestroyedEvent != null)
                         OnBridgeDestroyedEvent(sender, (BridgeDestroyedEvent) eventArgs);
-                    break;
+					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+					break;
 
 
                 case "BridgeBlindTransfer":
                     if (OnBridgeBlindTransferEvent != null)
                         OnBridgeBlindTransferEvent(sender, (BridgeBlindTransferEvent) eventArgs);
-                    break;
+					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+					break;
 
 
                 case "ChannelUserevent":
                     if (OnChannelUsereventEvent != null)
                         OnChannelUsereventEvent(sender, (ChannelUsereventEvent) eventArgs);
-                    break;
+					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+					break;
 
 
                 case "ChannelDialplan":
                     if (OnChannelDialplanEvent != null)
                         OnChannelDialplanEvent(sender, (ChannelDialplanEvent) eventArgs);
-                    break;
+					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+					break;
 
 
                 case "ChannelHangupRequest":
                     if (OnChannelHangupRequestEvent != null)
                         OnChannelHangupRequestEvent(sender, (ChannelHangupRequestEvent) eventArgs);
-                    break;
+					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+					break;
 
 
                 case "ChannelVarset":
                     if (OnChannelVarsetEvent != null)
                         OnChannelVarsetEvent(sender, (ChannelVarsetEvent) eventArgs);
-                    break;
+					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+					break;
 
 
                 case "EndpointStateChange":
                     if (OnEndpointStateChangeEvent != null)
                         OnEndpointStateChangeEvent(sender, (EndpointStateChangeEvent) eventArgs);
-                    break;
+					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+					break;
 
 
                 case "Dial":
                     if (OnDialEvent != null)
                         OnDialEvent(sender, (DialEvent) eventArgs);
-                    break;
+					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+					break;
 
 
                 case "StasisEnd":
                     if (OnStasisEndEvent != null)
                         OnStasisEndEvent(sender, (StasisEndEvent) eventArgs);
-                    break;
+					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+					break;
 
 
                 case "StasisStart":
                     if (OnStasisStartEvent != null)
                         OnStasisStartEvent(sender, (StasisStartEvent) eventArgs);
-                    break;
+					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+					break;
                 default:
                     if (OnUnhandledEvent != null)
                         OnUnhandledEvent(this, (Event) eventArgs);
-                    break;
+					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+					break;
             }
         }
 
