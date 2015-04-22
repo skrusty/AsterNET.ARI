@@ -5,12 +5,6 @@ VisualStudioVersion = 14.0.22609.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsterNET.ARI", "AsterNET.ARI\AsterNET.ARI.csproj", "{F4C8C633-2207-4C25-89A8-4D23D9CFA964}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsterNET.ARI.TestApplication", "AsterNET.ARI.TestApplication\AsterNET.ARI.TestApplication.csproj", "{1DD784F3-809C-465E-9F3B-8575705A5C6C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARICodeGen", "ARICodeGen\ARICodeGen.csproj", "{9A6809EF-E0C7-4552-98FA-2D75A33CCFE3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsterNET.ARI.SimpleConf", "AsterNET.ARI.SimpleConfExample\AsterNET.ARI.SimpleConf.csproj", "{BD04EEB4-0475-4D2F-ADA9-76E4F55BB5BB}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{FBB847F2-AC1C-47DD-B5F7-37C160743F53}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Swagger-CodeGen", "Swagger-CodeGen", "{8F66D9D2-6558-48CB-BAC7-9D5D5F820008}"
@@ -20,9 +14,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		changelog.txt = changelog.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsterNET.ARI.SimpleBridge", "AsterNET.ARI.SimpleBridge\AsterNET.ARI.SimpleBridge.csproj", "{4E7F6185-4433-4C75-96A6-8859411577CC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleBridge", "Samples\SimpleBridge\SimpleBridge.csproj", "{4E7F6185-4433-4C75-96A6-8859411577CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample-RecordAndPlayback", "Sample-RecordAndPlayback\Sample-RecordAndPlayback.csproj", "{F8C2150F-7D48-4E30-AE9A-E2354E5A536D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleConf", "Samples\SimpleConfExample\SimpleConf.csproj", "{BD04EEB4-0475-4D2F-ADA9-76E4F55BB5BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleRecordAndPlayback", "Samples\SimpleRecordAndPlayback\SimpleRecordAndPlayback.csproj", "{F8C2150F-7D48-4E30-AE9A-E2354E5A536D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleTestApplication", "Samples\SimpleTestApplication\SimpleTestApplication.csproj", "{1DD784F3-809C-465E-9F3B-8575705A5C6C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,32 +32,30 @@ Global
 		{F4C8C633-2207-4C25-89A8-4D23D9CFA964}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4C8C633-2207-4C25-89A8-4D23D9CFA964}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4C8C633-2207-4C25-89A8-4D23D9CFA964}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1DD784F3-809C-465E-9F3B-8575705A5C6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1DD784F3-809C-465E-9F3B-8575705A5C6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1DD784F3-809C-465E-9F3B-8575705A5C6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1DD784F3-809C-465E-9F3B-8575705A5C6C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9A6809EF-E0C7-4552-98FA-2D75A33CCFE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9A6809EF-E0C7-4552-98FA-2D75A33CCFE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BD04EEB4-0475-4D2F-ADA9-76E4F55BB5BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BD04EEB4-0475-4D2F-ADA9-76E4F55BB5BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BD04EEB4-0475-4D2F-ADA9-76E4F55BB5BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BD04EEB4-0475-4D2F-ADA9-76E4F55BB5BB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4E7F6185-4433-4C75-96A6-8859411577CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4E7F6185-4433-4C75-96A6-8859411577CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E7F6185-4433-4C75-96A6-8859411577CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E7F6185-4433-4C75-96A6-8859411577CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD04EEB4-0475-4D2F-ADA9-76E4F55BB5BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD04EEB4-0475-4D2F-ADA9-76E4F55BB5BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD04EEB4-0475-4D2F-ADA9-76E4F55BB5BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD04EEB4-0475-4D2F-ADA9-76E4F55BB5BB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F8C2150F-7D48-4E30-AE9A-E2354E5A536D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F8C2150F-7D48-4E30-AE9A-E2354E5A536D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8C2150F-7D48-4E30-AE9A-E2354E5A536D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8C2150F-7D48-4E30-AE9A-E2354E5A536D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DD784F3-809C-465E-9F3B-8575705A5C6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DD784F3-809C-465E-9F3B-8575705A5C6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DD784F3-809C-465E-9F3B-8575705A5C6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DD784F3-809C-465E-9F3B-8575705A5C6C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{9A6809EF-E0C7-4552-98FA-2D75A33CCFE3} = {8F66D9D2-6558-48CB-BAC7-9D5D5F820008}
-		{BD04EEB4-0475-4D2F-ADA9-76E4F55BB5BB} = {FBB847F2-AC1C-47DD-B5F7-37C160743F53}
 		{4E7F6185-4433-4C75-96A6-8859411577CC} = {FBB847F2-AC1C-47DD-B5F7-37C160743F53}
+		{BD04EEB4-0475-4D2F-ADA9-76E4F55BB5BB} = {FBB847F2-AC1C-47DD-B5F7-37C160743F53}
 		{F8C2150F-7D48-4E30-AE9A-E2354E5A536D} = {FBB847F2-AC1C-47DD-B5F7-37C160743F53}
+		{1DD784F3-809C-465E-9F3B-8575705A5C6C} = {FBB847F2-AC1C-47DD-B5F7-37C160743F53}
 	EndGlobalSection
 EndGlobal
