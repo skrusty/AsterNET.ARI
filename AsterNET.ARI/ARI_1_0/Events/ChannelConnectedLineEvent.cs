@@ -6,15 +6,15 @@
 namespace AsterNET.ARI.Models
 {
 	/// <summary>
-	///     Notification that a bridge has been destroyed.
+	///     Channel changed Connected Line.
 	/// </summary>
-	public class BridgeDestroyedEvent : Event
+	public class ChannelConnectedLineEvent : Event
 	{
 		/// <summary>
 		/// </summary>
 		/// <summary>
-		///     no description provided
+		///     The channel whose connected line has changed.
 		/// </summary>
-		public Bridge Bridge { get; set; }
+		public Channel Channel { get; set; }
 	}
 }

@@ -48,6 +48,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ARI_1_0\Actions\IMailboxesActions.cs" />
+    <Compile Include="ARI_1_0\Actions\MailboxesActions.cs" />
+    <Compile Include="ARI_1_0\Events\ChannelConnectedLineEvent.cs" />
+    <Compile Include="ARI_1_0\Events\TextMessageReceivedEvent.cs" />
+    <Compile Include="ARI_1_0\Mailbox.cs" />
+    <Compile Include="ARI_1_0\TextMessage.cs" />
+    <Compile Include="ARI_1_0\TextMessageVariable.cs" />
     <Compile Include="Helpers\SyncHelper.cs" />
     <Compile Include="IAriActionClient.cs" />
     <Compile Include="IAriClient.cs" />

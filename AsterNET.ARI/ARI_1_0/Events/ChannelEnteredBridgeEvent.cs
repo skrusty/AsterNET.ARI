@@ -1,34 +1,25 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 06/11/2014 10:02:06
+	Automatically generated file @ 22/04/2015 09:45:42
 */
-using System;
-using System.Collections.Generic;
-using AsterNET.ARI.Actions;
 
 namespace AsterNET.ARI.Models
 {
 	/// <summary>
-	/// Notification that a channel has entered a bridge.
+	///     Notification that a channel has entered a bridge.
 	/// </summary>
-	public class ChannelEnteredBridgeEvent  : Event
+	public class ChannelEnteredBridgeEvent : Event
 	{
-
 		/// <summary>
-		///
 		/// </summary>
-		// public EventsActions Event { get; set; }
-
-
 		/// <summary>
-		/// no description provided
+		///     no description provided
 		/// </summary>
 		public Bridge Bridge { get; set; }
 
 		/// <summary>
-		/// no description provided
+		///     no description provided
 		/// </summary>
 		public Channel Channel { get; set; }
-
 	}
 }

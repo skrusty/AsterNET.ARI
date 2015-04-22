@@ -1,34 +1,24 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 06/11/2014 10:02:06
+	Automatically generated file @ 22/04/2015 09:45:42
 */
-using System;
-using System.Collections.Generic;
-using AsterNET.ARI.Actions;
 
 namespace AsterNET.ARI.Models
 {
 	/// <summary>
-	/// Info about Asterisk
+	///     Info about Asterisk
 	/// </summary>
-	public class SystemInfo 
+	public class SystemInfo
 	{
-
 		/// <summary>
-		///
 		/// </summary>
-		// public AsteriskActions Asteris { get; set; }
-
-
 		/// <summary>
-		/// Asterisk version.
+		///     Asterisk version.
 		/// </summary>
 		public string Version { get; set; }
 
 		/// <summary>
-		/// 
 		/// </summary>
 		public string Entity_id { get; set; }
-
 	}
 }

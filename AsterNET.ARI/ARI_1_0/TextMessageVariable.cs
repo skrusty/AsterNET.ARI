@@ -6,20 +6,20 @@
 namespace AsterNET.ARI.Models
 {
 	/// <summary>
-	///     Identifies the format and language of a sound file
+	///     A key/value pair variable in a text message.
 	/// </summary>
-	public class FormatLangPair
+	public class TextMessageVariable
 	{
 		/// <summary>
 		/// </summary>
 		/// <summary>
-		///     no description provided
+		///     A unique key identifying the variable.
 		/// </summary>
-		public string Language { get; set; }
+		public string Key { get; set; }
 
 		/// <summary>
-		///     no description provided
+		///     The value of the variable.
 		/// </summary>
-		public string Format { get; set; }
+		public string Value { get; set; }
 	}
 }

@@ -1,34 +1,25 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 06/11/2014 10:02:06
+	Automatically generated file @ 22/04/2015 09:45:42
 */
-using System;
-using System.Collections.Generic;
-using AsterNET.ARI.Actions;
 
 namespace AsterNET.ARI.Models
 {
 	/// <summary>
-	/// Represents the state of a device.
+	///     Represents the state of a device.
 	/// </summary>
-	public class DeviceState 
+	public class DeviceState
 	{
-
 		/// <summary>
-		///
 		/// </summary>
-		// public DeviceStatesActions DeviceState { get; set; }
-
-
 		/// <summary>
-		/// Device's state
-		/// </summary>
-		public string State { get; set; }
-
-		/// <summary>
-		/// Name of the device.
+		///     Name of the device.
 		/// </summary>
 		public string Name { get; set; }
 
+		/// <summary>
+		///     Device's state
+		/// </summary>
+		public string State { get; set; }
 	}
 }

@@ -6,20 +6,20 @@
 namespace AsterNET.ARI.Models
 {
 	/// <summary>
-	///     Identifies the format and language of a sound file
+	///     A text message was received from an endpoint.
 	/// </summary>
-	public class FormatLangPair
+	public class TextMessageReceivedEvent : Event
 	{
 		/// <summary>
 		/// </summary>
 		/// <summary>
 		///     no description provided
 		/// </summary>
-		public string Language { get; set; }
+		public TextMessage Message { get; set; }
 
 		/// <summary>
 		///     no description provided
 		/// </summary>
-		public string Format { get; set; }
+		public Endpoint Endpoint { get; set; }
 	}
 }

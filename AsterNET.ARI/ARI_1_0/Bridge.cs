@@ -1,59 +1,52 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 06/11/2014 10:02:06
+	Automatically generated file @ 22/04/2015 09:45:42
 */
-using System;
+
 using System.Collections.Generic;
-using AsterNET.ARI.Actions;
 
 namespace AsterNET.ARI.Models
 {
 	/// <summary>
-	/// The merging of media from one or more channels.  Everyone on the bridge receives the same audio.
+	///     The merging of media from one or more channels.  Everyone on the bridge receives the same audio.
 	/// </summary>
-	public class Bridge 
+	public class Bridge
 	{
-
 		/// <summary>
-		///
 		/// </summary>
-		// public BridgesActions Bridge { get; set; }
-
-
 		/// <summary>
-		/// Unique identifier for this bridge
+		///     Unique identifier for this bridge
 		/// </summary>
 		public string Id { get; set; }
 
 		/// <summary>
-		/// Ids of channels participating in this bridge
-		/// </summary>
-		public List<string> Channels { get; set; }
-
-		/// <summary>
-		/// Name the creator gave the bridge
-		/// </summary>
-		public string Name { get; set; }
-
-		/// <summary>
-		/// Name of the current bridging technology
+		///     Name of the current bridging technology
 		/// </summary>
 		public string Technology { get; set; }
 
 		/// <summary>
-		/// Bridging class
+		///     Type of bridge technology
+		/// </summary>
+		public string Bridge_type { get; set; }
+
+		/// <summary>
+		///     Bridging class
 		/// </summary>
 		public string Bridge_class { get; set; }
 
 		/// <summary>
-		/// Entity that created the bridge
+		///     Entity that created the bridge
 		/// </summary>
 		public string Creator { get; set; }
 
 		/// <summary>
-		/// Type of bridge technology
+		///     Name the creator gave the bridge
 		/// </summary>
-		public string Bridge_type { get; set; }
+		public string Name { get; set; }
 
+		/// <summary>
+		///     Ids of channels participating in this bridge
+		/// </summary>
+		public List<string> Channels { get; set; }
 	}
 }

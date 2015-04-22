@@ -48,7 +48,9 @@ namespace AsterNET.ARI
         public event DialEventHandler OnDialEvent;
         public event StasisEndEventHandler OnStasisEndEvent;
         public event StasisStartEventHandler OnStasisStartEvent;
-        public event UnhandledEventHandler OnUnhandledEvent;
+	    public event TextMessageReceivedEventHandler OnTextMessageReceivedEvent;
+	    public event ChannelConnectedLineEventHandler OnChannelConnectedLineEvent;
+	    public event UnhandledEventHandler OnUnhandledEvent;
         public event ConnectionStateChangedHandler OnConnectionStateChanged;
 
         #endregion       
@@ -389,7 +391,21 @@ namespace AsterNET.ARI
                         OnStasisStartEvent(sender, (StasisStartEvent) eventArgs);
 					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
 					break;
-                default:
+				case "TextMessageReceived":
+					if (OnTextMessageReceivedEvent != null)
+						OnTextMessageReceivedEvent(sender, (TextMessageReceivedEvent)eventArgs);
+					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+					break;
+
+
+				case "ChannelConnectedLine":
+					if (OnChannelConnectedLineEvent != null)
+						OnChannelConnectedLineEvent(sender, (ChannelConnectedLineEvent)eventArgs);
+					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+					break;
+
+
+				default:
                     if (OnUnhandledEvent != null)
                         OnUnhandledEvent(this, (Event) eventArgs);
 					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);

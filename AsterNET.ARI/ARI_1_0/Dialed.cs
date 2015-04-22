@@ -1,24 +1,15 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 06/11/2014 10:02:06
+	Automatically generated file @ 22/04/2015 09:45:42
 */
-using System;
-using System.Collections.Generic;
-using AsterNET.ARI.Actions;
 
 namespace AsterNET.ARI.Models
 {
 	/// <summary>
-	/// Dialed channel information.
+	///     Dialed channel information.
 	/// </summary>
-	public class Dialed 
+	public class Dialed
 	{
-
-		/// <summary>
-		///
-		/// </summary>
-		// public ChannelsActions Channel { get; set; }
-
-
+		
 	}
 }

@@ -1,90 +1,94 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 17/03/2015 15:48:04
+	Automatically generated file @ 22/04/2015 09:45:42
 */
-using System;
+
 using System.Collections.Generic;
 using AsterNET.ARI.Middleware;
 using AsterNET.ARI.Models;
-using AsterNET.ARI;
 
 namespace AsterNET.ARI.Actions
 {
-	
 	public class ApplicationsActions : ARIBaseAction, IApplicationsActions
 	{
-
 		public ApplicationsActions(IActionConsumer consumer)
 			: base(consumer)
-		{}
+		{
+		}
 
 		/// <summary>
-		/// List all applications.. 
+		///     List all applications..
 		/// </summary>
 		public List<Application> List()
 		{
-			string path = "/applications";
+			var path = "/applications";
 			var request = GetNewRequest(path, HttpMethod.GET);
 
 			var response = Execute<List<Application>>(request);
 
-			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+			if ((int) response.StatusCode >= 200 && (int) response.StatusCode < 300)
 				return response.Data;
 
-			switch((int)response.StatusCode)
-            {
+			switch ((int) response.StatusCode)
+			{
 				default:
 					// Unknown server response
-					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
-            }
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode));
+			}
 		}
+
 		/// <summary>
-		/// Get details of an application.. 
+		///     Get details of an application..
 		/// </summary>
 		/// <param name="applicationName">Application's name</param>
 		public Application Get(string applicationName)
 		{
-			string path = "/applications/{applicationName}";
+			var path = "/applications/{applicationName}";
 			var request = GetNewRequest(path, HttpMethod.GET);
-			if(applicationName != null)
+			if (applicationName != null)
 				request.AddUrlSegment("applicationName", applicationName);
 
 			var response = Execute<Application>(request);
 
-			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+			if ((int) response.StatusCode >= 200 && (int) response.StatusCode < 300)
 				return response.Data;
 
-			switch((int)response.StatusCode)
-            {
+			switch ((int) response.StatusCode)
+			{
 				case 404:
 					throw new AriException("Application does not exist.");
 					break;
 				default:
 					// Unknown server response
-					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
-            }
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode));
+			}
 		}
+
 		/// <summary>
-		/// Subscribe an application to a event source.. Returns the state of the application after the subscriptions have changed
+		///     Subscribe an application to a event source.. Returns the state of the application after the subscriptions have
+		///     changed
 		/// </summary>
 		/// <param name="applicationName">Application's name</param>
-		/// <param name="eventSource">URI for event source (channel:{channelId}, bridge:{bridgeId}, endpoint:{tech}/{resource}, deviceState:{deviceName}</param>
+		/// <param name="eventSource">
+		///     URI for event source (channel:{channelId}, bridge:{bridgeId}, endpoint:{tech}[/{resource}],
+		///     deviceState:{deviceName}
+		/// </param>
 		public Application Subscribe(string applicationName, string eventSource)
 		{
-			string path = "/applications/{applicationName}/subscription";
+			var path = "/applications/{applicationName}/subscription";
 			var request = GetNewRequest(path, HttpMethod.POST);
-			if(applicationName != null)
+			if (applicationName != null)
 				request.AddUrlSegment("applicationName", applicationName);
-			if(eventSource != null)
+			if (eventSource != null)
 				request.AddParameter("eventSource", eventSource, ParameterType.QueryString);
 
 			var response = Execute<Application>(request);
 
-			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+			if ((int) response.StatusCode >= 200 && (int) response.StatusCode < 300)
 				return response.Data;
 
-			switch((int)response.StatusCode)
-            {
+			switch ((int) response.StatusCode)
+			{
 				case 400:
 					throw new AriException("Missing parameter.");
 					break;
@@ -96,30 +100,35 @@ namespace AsterNET.ARI.Actions
 					break;
 				default:
 					// Unknown server response
-					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
-            }
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode));
+			}
 		}
+
 		/// <summary>
-		/// Unsubscribe an application from an event source.. Returns the state of the application after the subscriptions have changed
+		///     Unsubscribe an application from an event source.. Returns the state of the application after the subscriptions have
+		///     changed
 		/// </summary>
 		/// <param name="applicationName">Application's name</param>
-		/// <param name="eventSource">URI for event source (channel:{channelId}, bridge:{bridgeId}, endpoint:{tech}/{resource}, deviceState:{deviceName}</param>
+		/// <param name="eventSource">
+		///     URI for event source (channel:{channelId}, bridge:{bridgeId}, endpoint:{tech}[/{resource}],
+		///     deviceState:{deviceName}
+		/// </param>
 		public Application Unsubscribe(string applicationName, string eventSource)
 		{
-			string path = "/applications/{applicationName}/subscription";
+			var path = "/applications/{applicationName}/subscription";
 			var request = GetNewRequest(path, HttpMethod.DELETE);
-			if(applicationName != null)
+			if (applicationName != null)
 				request.AddUrlSegment("applicationName", applicationName);
-			if(eventSource != null)
+			if (eventSource != null)
 				request.AddParameter("eventSource", eventSource, ParameterType.QueryString);
 
 			var response = Execute<Application>(request);
 
-			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+			if ((int) response.StatusCode >= 200 && (int) response.StatusCode < 300)
 				return response.Data;
 
-			switch((int)response.StatusCode)
-            {
+			switch ((int) response.StatusCode)
+			{
 				case 400:
 					throw new AriException("Missing parameter; event source scheme not recognized.");
 					break;
@@ -134,9 +143,8 @@ namespace AsterNET.ARI.Actions
 					break;
 				default:
 					// Unknown server response
-					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
-            }
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode));
+			}
 		}
 	}
 }
-

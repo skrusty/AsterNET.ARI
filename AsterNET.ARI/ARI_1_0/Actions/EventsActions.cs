@@ -1,67 +1,72 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 17/03/2015 15:48:04
+	Automatically generated file @ 22/04/2015 09:45:42
 */
-using System;
+
 using System.Collections.Generic;
 using AsterNET.ARI.Middleware;
 using AsterNET.ARI.Models;
-using AsterNET.ARI;
 
 namespace AsterNET.ARI.Actions
 {
-	
 	public class EventsActions : ARIBaseAction, IEventsActions
 	{
-
 		public EventsActions(IActionConsumer consumer)
 			: base(consumer)
-		{}
+		{
+		}
 
 		/// <summary>
-		/// WebSocket connection for events.. 
+		///     WebSocket connection for events..
 		/// </summary>
 		/// <param name="app">Applications to subscribe to.</param>
 		public Message EventWebsocket(string app)
 		{
-			string path = "/events";
+			var path = "/events";
 			var request = GetNewRequest(path, HttpMethod.GET);
-			if(app != null)
+			if (app != null)
 				request.AddParameter("app", app, ParameterType.QueryString);
 
 			var response = Execute<Message>(request);
 
-			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+			if ((int) response.StatusCode >= 200 && (int) response.StatusCode < 300)
 				return response.Data;
 
-			switch((int)response.StatusCode)
-            {
+			switch ((int) response.StatusCode)
+			{
 				default:
 					// Unknown server response
-					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
-            }
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode));
+			}
 		}
+
 		/// <summary>
-		/// Generate a user event.. 
+		///     Generate a user event..
 		/// </summary>
 		/// <param name="eventName">Event name</param>
 		/// <param name="application">The name of the application that will receive this event</param>
-		/// <param name="source">URI for event source (channel:{channelId}, bridge:{bridgeId}, endpoint:{tech}/{resource}, deviceState:{deviceName}</param>
-		/// <param name="variables">The "variables" key in the body object holds custom key/value pairs to add to the user event. Ex. { "variables": { "key": "value" } }</param>
-		public void UserEvent(string eventName, string application, string source = null, List<KeyValuePair<string, string>> variables = null)
+		/// <param name="source">
+		///     URI for event source (channel:{channelId}, bridge:{bridgeId}, endpoint:{tech}/{resource},
+		///     deviceState:{deviceName}
+		/// </param>
+		/// <param name="variables">
+		///     The "variables" key in the body object holds custom key/value pairs to add to the user event.
+		///     Ex. { "variables": { "key": "value" } }
+		/// </param>
+		public void UserEvent(string eventName, string application, string source = null,
+			List<KeyValuePair<string, string>> variables = null)
 		{
-			string path = "/events/user/{eventName}";
+			var path = "/events/user/{eventName}";
 			var request = GetNewRequest(path, HttpMethod.POST);
-			if(eventName != null)
+			if (eventName != null)
 				request.AddUrlSegment("eventName", eventName);
-			if(application != null)
+			if (application != null)
 				request.AddParameter("application", application, ParameterType.QueryString);
-			if(source != null)
+			if (source != null)
 				request.AddParameter("source", source, ParameterType.QueryString);
-			if(variables != null)
+			if (variables != null)
 				request.AddParameter("variables", variables, ParameterType.RequestBody);
 			var response = Execute(request);
 		}
 	}
 }
-
