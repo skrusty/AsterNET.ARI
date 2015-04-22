@@ -37,31 +37,31 @@ namespace AsterNET.ARI.TestApplication
             Console.WriteLine("Connection state is now {0}", ActionClient.Connected);
         }
 
-        private static void ActionClientOnChannelDtmfReceivedEvent(object sender, ChannelDtmfReceivedEvent e)
+        private static void ActionClientOnChannelDtmfReceivedEvent(IAriClient sender, ChannelDtmfReceivedEvent e)
         {
             // When DTMF received
             switch (e.Digit)
             {
                 case "*":
-                    ActionClient.Channels.Play(e.Channel.Id, "sound:asterisk-friend");
+                    sender.Channels.Play(e.Channel.Id, "sound:asterisk-friend");
                     break;
                 case "#":
-                    ActionClient.Channels.Play(e.Channel.Id, "sound:goodbye");
-                    ActionClient.Channels.Hangup(e.Channel.Id, "normal");
+					sender.Channels.Play(e.Channel.Id, "sound:goodbye");
+					sender.Channels.Hangup(e.Channel.Id, "normal");
                     break;
                 default:
-                    ActionClient.Channels.Play(e.Channel.Id, string.Format("sound:digits/{0}", e.Digit));
+					sender.Channels.Play(e.Channel.Id, string.Format("sound:digits/{0}", e.Digit));
                     break;
             }
         }
 
-        private static void c_OnStasisStartEvent(object sender, StasisStartEvent e)
+        private static void c_OnStasisStartEvent(IAriClient sender, StasisStartEvent e)
         {
-            // Answer the channel
-            ActionClient.Channels.Answer(e.Channel.Id);
+			// Answer the channel
+			sender.Channels.Answer(e.Channel.Id);
 
-            // Play an announcement
-            ActionClient.Channels.Play(e.Channel.Id, "sound:hello-world");
+			// Play an announcement
+			sender.Channels.Play(e.Channel.Id, "sound:hello-world");
         }
     }
 }
