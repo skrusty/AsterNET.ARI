@@ -18,11 +18,7 @@ We'll soon be ready to move from Alpha to Beta! So, what's in and working: -
 * Support for ARI Actions
 * Support for ARI Models
 * Events hooked up and deserialized to objects
-* Compatible up to Asterisk 12.5 (13 coming soon)
-
-
-### Why still in planning?
-It wont be for long! We're getting ready to move to Beta in the next month or so.
+* Compatible up to Asterisk 13.3.2
 
 ### AsterNET on IRC
 Join in the conversation on Freenode, #asternet
