@@ -1,14 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
-using System.IO;
-using Newtonsoft.Json;
-using AsterNET.ARI;
-using AsterNET.ARI.Actions;
-using RestSharp;
+
 
 namespace ARICodeGen
 {
@@ -19,23 +10,6 @@ namespace ARICodeGen
      */
     class Program
     {
-        public static ARIClient client;
-        static void Main(string[] args)
-        {
-            try
-            {
-                client = new ARIClient(new StasisEndpoint("192.168.1.67", 8088, "username", "test"), "test");
-                
-                client.Connect();
-
-                Console.ReadKey();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                Console.ReadKey();
-            }
-        }
 
     }
 

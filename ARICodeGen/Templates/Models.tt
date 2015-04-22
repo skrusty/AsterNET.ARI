@@ -30,7 +30,8 @@ var files = new List<string>() {
 	@"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\DeviceStates.json",
 	@"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Playbacks.json",
 	@"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Sounds.json",
-	@"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Recordings.json"
+	@"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Recordings.json",
+	@"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Mailboxes.json"
 };
 var events = new List<string>();
 #>
