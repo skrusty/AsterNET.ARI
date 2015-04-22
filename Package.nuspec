@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>AsterNET.ARI</id>
+    <version>1.0.0</version>
+    <authors>Ben Merrills</authors>
+    <owners>Ben Merrills</owners>
+    <licenseUrl>https://github.com/skrusty/AsterNET.ARI/blob/master/LICENSE.txt</licenseUrl>
+    <projectUrl>https://github.com/skrusty/AsterNET.ARI</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>AsterNET.ARI Asterisk ARI/Stasis framework for .NET</description>
+    <releaseNotes>Please see: https://github.com/skrusty/AsterNET.ARI/commits/master</releaseNotes>
+    <copyright>Copyright 2015</copyright>
+    <tags>Asterisk AsterNET Asterisk.NET ARI Stasis</tags>
+	<dependencies>
+	  <dependency id="Newtonsoft.Json" version="5.0.8" />
+	  <dependency id="RestSharp" version="104.4.0" />
+	  <dependency id="WebSocket4Net" version="0.8" />
+	</dependencies>
+  </metadata>
+</package>
