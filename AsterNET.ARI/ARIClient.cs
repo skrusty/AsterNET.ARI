@@ -136,6 +136,9 @@ namespace AsterNET.ARI
         {
             if (_eventProducer.State != ConnectionState.Open)
                 Reconnect();
+
+            if (OnConnectionStateChanged != null)
+                OnConnectionStateChanged(sender);
         }
 
         private void _eventProducer_OnMessageReceived(object sender, MessageEventArgs e)
