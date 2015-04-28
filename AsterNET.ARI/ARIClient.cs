@@ -62,7 +62,6 @@ namespace AsterNET.ARI
 
         private bool _autoReconnect;
         private TimeSpan _autoReconnectDelay;
-        private ConnectionState _lastKnownState;
 
         private event AriEventHandler InternalEvent;
 
