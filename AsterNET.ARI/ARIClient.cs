@@ -416,15 +416,6 @@ namespace AsterNET.ARI
             }
         }
 
-        protected virtual void RaiseOnConnectionStateChanged()
-        {
-            if (_eventProducer.State == _lastKnownState) return;
-
-            _lastKnownState = _eventProducer.State;
-            var handler = OnConnectionStateChanged;
-            if (handler != null) handler(this);
-        }
-
         #endregion
 
         #region Public Methods
