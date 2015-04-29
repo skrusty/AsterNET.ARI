@@ -62,7 +62,6 @@ namespace AsterNET.ARI
 
         private bool _autoReconnect;
         private TimeSpan _autoReconnectDelay;
-        private ConnectionState _lastKnownState;
 
         private event AriEventHandler InternalEvent;
 
@@ -136,6 +135,9 @@ namespace AsterNET.ARI
         {
             if (_eventProducer.State != ConnectionState.Open)
                 Reconnect();
+
+            if (OnConnectionStateChanged != null)
+                OnConnectionStateChanged(sender);
         }
 
         private void _eventProducer_OnMessageReceived(object sender, MessageEventArgs e)
@@ -411,15 +413,6 @@ namespace AsterNET.ARI
 					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
 					break;
             }
-        }
-
-        protected virtual void RaiseOnConnectionStateChanged()
-        {
-            if (_eventProducer.State == _lastKnownState) return;
-
-            _lastKnownState = _eventProducer.State;
-            var handler = OnConnectionStateChanged;
-            if (handler != null) handler(this);
         }
 
         #endregion
