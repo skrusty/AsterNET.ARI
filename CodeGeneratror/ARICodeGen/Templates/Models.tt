@@ -339,7 +339,7 @@ namespace AsterNET.ARI.Actions
 			{
 				var dictionary = <#= param.SelectToken("name").Value<string>() #>.ToDictionary((keyItem) => keyItem.Key, (valueItem) => valueItem.Value);
 				var variablesValue = JsonConvert.SerializeObject(new { <#= param.SelectToken("name").Value<string>() #> = dictionary });
-				request.AddParameter("<#= param.SelectToken("name").Value<string>() #>", variablesValue, ParameterType.RequestBody);
+				request.AddParameter("application/json", variablesValue, ParameterType.RequestBody);
 			}
 <#
 					}else if(param.SelectToken("paramType").Value<string>() == "header"){
