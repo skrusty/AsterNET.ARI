@@ -20,18 +20,19 @@
 <#
 // System.Diagnostics.Debugger.Launch();
 var manager = TemplateFileManager.Create(this);
+var filesPath = @"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\";
 var files = new List<string>() { 
-	@"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Events.json",
-	@"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Bridges.json",
-	@"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Channels.json",
-	@"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Asterisk.json",
-	@"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Applications.json",
-	@"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Endpoints.json",
-	@"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\DeviceStates.json",
-	@"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Playbacks.json",
-	@"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Sounds.json",
-	@"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Recordings.json",
-	@"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Mailboxes.json"
+	filesPath + "Events.json",
+	filesPath + "Bridges.json",
+	filesPath + "Channels.json",
+	filesPath + "Asterisk.json",
+	filesPath + "Applications.json",
+	filesPath + "Endpoints.json",
+	filesPath + "DeviceStates.json",
+	filesPath + "Playbacks.json",
+	filesPath + "Sounds.json",
+	filesPath + "Recordings.json",
+	filesPath + "Mailboxes.json"
 };
 var events = new List<string>();
 #>
