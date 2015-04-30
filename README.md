@@ -19,6 +19,8 @@ We'll soon be ready to move from Alpha to Beta! So, what's in and working: -
 * Support for ARI Models
 * Events hooked up and deserialized to objects
 * Compatible up to Asterisk 13.3.2
+* [Middleware Support](https://github.com/skrusty/AsterNET-ARI-Middleware-Queue)
+* [AsterNET ARI Proxy](https://github.com/skrusty/AsterNET-ARI-Proxy)
 
 ### AsterNET on IRC
 Join in the conversation on Freenode, #asternet
