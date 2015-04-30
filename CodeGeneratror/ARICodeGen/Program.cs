@@ -10,7 +10,10 @@ namespace ARICodeGen
      */
     class Program
     {
+        public static void Main(string[] args)
+        {
 
+        }
     }
 
     public class SwaggerHelper

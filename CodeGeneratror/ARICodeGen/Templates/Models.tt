@@ -20,18 +20,19 @@
 <#
 // System.Diagnostics.Debugger.Launch();
 var manager = TemplateFileManager.Create(this);
+var filesPath = @"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\";
 var files = new List<string>() { 
-	@"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Events.json",
-	@"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Bridges.json",
-	@"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Channels.json",
-	@"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Asterisk.json",
-	@"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Applications.json",
-	@"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Endpoints.json",
-	@"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\DeviceStates.json",
-	@"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Playbacks.json",
-	@"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Sounds.json",
-	@"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Recordings.json",
-	@"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\Mailboxes.json"
+	filesPath + "Events.json",
+	filesPath + "Bridges.json",
+	filesPath + "Channels.json",
+	filesPath + "Asterisk.json",
+	filesPath + "Applications.json",
+	filesPath + "Endpoints.json",
+	filesPath + "DeviceStates.json",
+	filesPath + "Playbacks.json",
+	filesPath + "Sounds.json",
+	filesPath + "Recordings.json",
+	filesPath + "Mailboxes.json"
 };
 var events = new List<string>();
 #>
@@ -239,11 +240,11 @@ namespace AsterNET.ARI.Actions
 	AsterNET ARI Framework
 	Automatically generated file @ <#= DateTime.Now.ToString() #>
 */
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using AsterNET.ARI.Middleware;
 using AsterNET.ARI.Models;
-using AsterNET.ARI;
+using Newtonsoft.Json;
 
 namespace AsterNET.ARI.Actions
 {
@@ -335,7 +336,11 @@ namespace AsterNET.ARI.Actions
 <#
 					}else if(param.SelectToken("paramType").Value<string>() == "body"){
 #>
-				request.AddParameter("<#= param.SelectToken("name").Value<string>() #>", <#= param.SelectToken("name").Value<string>() #>, ParameterType.RequestBody);
+			{
+				var dictionary = <#= param.SelectToken("name").Value<string>() #>.ToDictionary((keyItem) => keyItem.Key, (valueItem) => valueItem.Value);
+				var variablesValue = JsonConvert.SerializeObject(new { <#= param.SelectToken("name").Value<string>() #> = dictionary });
+				request.AddParameter("application/json", variablesValue, ParameterType.RequestBody);
+			}
 <#
 					}else if(param.SelectToken("paramType").Value<string>() == "header"){
 #>
