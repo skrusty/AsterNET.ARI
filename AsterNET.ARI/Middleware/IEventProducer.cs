@@ -3,11 +3,6 @@ using WebSocket4Net;
 
 namespace AsterNET.ARI.Middleware
 {
-    public enum ConnectionState
-    {
-        Open,
-        Closed
-    }
     public class MessageEventArgs
     {
         public string Message;
