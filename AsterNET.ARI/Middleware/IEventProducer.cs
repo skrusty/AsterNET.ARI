@@ -1,11 +1,15 @@
 ﻿using System;
+using WebSocket4Net;
 
 namespace AsterNET.ARI.Middleware
 {
     public enum ConnectionState
     {
-        Open,
-        Closed
+        None = WebSocketState.None,
+        Connecting = WebSocketState.Connecting,
+        Open = WebSocketState.Open,
+        Closing = WebSocketState.Closing,
+        Closed = WebSocketState.Closed
     }
 
     public class MessageEventArgs

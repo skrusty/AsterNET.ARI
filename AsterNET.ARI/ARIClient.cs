@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Runtime.Remoting.Messaging;
 using System.Threading;
 using AsterNET.ARI.Actions;
@@ -81,6 +80,11 @@ namespace AsterNET.ARI
         public IPlaybacksActions Playbacks { get; set; }
         public IRecordingsActions Recordings { get; set; }
         public ISoundsActions Sounds { get; set; }
+
+        public ConnectionState ConnectionState
+        {
+            get { return _eventProducer.State; }
+        }
 
         #endregion
 
@@ -180,7 +184,7 @@ namespace AsterNET.ARI
 
         private void Reconnect()
         {
-            if (_autoReconnect && _eventProducer.State != ConnectionState.Open)
+            if (_autoReconnect && _eventProducer.State != ConnectionState.Open && _eventProducer.State != ConnectionState.Connecting)
             {
                 if (_autoReconnectDelay != TimeSpan.Zero)
                     Thread.Sleep(_autoReconnectDelay);
