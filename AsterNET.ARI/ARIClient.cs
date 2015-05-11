@@ -185,7 +185,7 @@ namespace AsterNET.ARI
 
         private void Reconnect()
         {
-            if (_autoReconnect && _eventProducer.State != WebSocketState.Open)
+            if (_autoReconnect && _eventProducer.State != WebSocketState.Open && _eventProducer.State != WebSocketState.Connecting)
             {
                 if (_autoReconnectDelay != TimeSpan.Zero)
                     Thread.Sleep(_autoReconnectDelay);
