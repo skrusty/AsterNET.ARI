@@ -82,6 +82,11 @@ namespace AsterNET.ARI
         public IRecordingsActions Recordings { get; set; }
         public ISoundsActions Sounds { get; set; }
 
+        public WebSocketState ConnectionState
+        {
+            get { return _eventProducer.State; }
+        }
+
         #endregion
 
         #region Constructor
