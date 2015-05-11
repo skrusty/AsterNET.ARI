@@ -27,9 +27,9 @@ namespace AsterNET.ARI.Middleware.Default
 
         #region Public Properties
 
-        public WebSocketState State
+        public ConnectionState State
         {
-            get { return _client.State; }
+            get { return (ConnectionState)_client.State; }
         }
 
         #endregion

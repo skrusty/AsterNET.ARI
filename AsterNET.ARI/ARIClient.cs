@@ -7,7 +7,6 @@ using AsterNET.ARI.Middleware.Default;
 using AsterNET.ARI.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using WebSocket4Net;
 
 namespace AsterNET.ARI
 {
@@ -82,7 +81,7 @@ namespace AsterNET.ARI
         public IRecordingsActions Recordings { get; set; }
         public ISoundsActions Sounds { get; set; }
 
-        public WebSocketState ConnectionState
+        public ConnectionState ConnectionState
         {
             get { return _eventProducer.State; }
         }
@@ -138,7 +137,7 @@ namespace AsterNET.ARI
 
         private void _eventProducer_OnConnectionStateChanged(object sender, EventArgs e)
         {
-            if (_eventProducer.State != WebSocketState.Open)
+            if (_eventProducer.State != ConnectionState.Open)
                 Reconnect();
 
             if (OnConnectionStateChanged != null)
@@ -185,7 +184,7 @@ namespace AsterNET.ARI
 
         private void Reconnect()
         {
-            if (_autoReconnect && _eventProducer.State != WebSocketState.Open && _eventProducer.State != WebSocketState.Connecting)
+            if (_autoReconnect && _eventProducer.State != ConnectionState.Open && _eventProducer.State != ConnectionState.Connecting)
             {
                 if (_autoReconnectDelay != TimeSpan.Zero)
                     Thread.Sleep(_autoReconnectDelay);
@@ -426,7 +425,7 @@ namespace AsterNET.ARI
 
         public bool Connected
         {
-            get { return _eventProducer.State == WebSocketState.Open; }
+            get { return _eventProducer.State == ConnectionState.Open; }
         }
 
         public void Connect(bool autoReconnect = true, int autoReconnectDelay = 5)
