@@ -27,9 +27,9 @@ namespace AsterNET.ARI.Middleware.Default
 
         #region Public Properties
 
-        public ConnectionState State
+        public WebSocketState State
         {
-            get { return _client.State == WebSocketState.Open ? ConnectionState.Open : ConnectionState.Closed; }
+            get { return _client.State; }
         }
 
         #endregion

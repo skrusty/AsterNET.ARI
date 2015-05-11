@@ -1,4 +1,5 @@
 ﻿using System;
+using WebSocket4Net;
 
 namespace AsterNET.ARI.Middleware
 {
@@ -7,7 +8,6 @@ namespace AsterNET.ARI.Middleware
         Open,
         Closed
     }
-
     public class MessageEventArgs
     {
         public string Message;
@@ -15,7 +15,7 @@ namespace AsterNET.ARI.Middleware
 
     public interface IEventProducer
     {
-        ConnectionState State { get; }
+        WebSocketState State { get; }
         event EventHandler<MessageEventArgs> OnMessageReceived;
         event EventHandler OnConnectionStateChanged;
 
