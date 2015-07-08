@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Diagnostics;
-using System.Runtime.Remoting.Messaging;
 using System.Threading;
 using AsterNET.ARI.Actions;
 using AsterNET.ARI.Middleware;
@@ -13,7 +13,7 @@ namespace AsterNET.ARI
 {
     /// <summary>
     /// </summary>
-    public class AriClient : IAriClient
+    public class AriClient : IAriClient, IDisposable
     {
         public delegate void ConnectionStateChangedHandler(object sender);
 
@@ -60,12 +60,10 @@ namespace AsterNET.ARI
         private readonly IActionConsumer _actionConsumer;
         private readonly IEventProducer _eventProducer;
 
+	    private readonly object _syncRoot = new object();
         private bool _autoReconnect;
         private TimeSpan _autoReconnectDelay;
-
-        private event AriEventHandler InternalEvent;
-
-        private delegate void AriEventHandler(IAriClient sender, Event e);
+	    private AriEventDispatcher _eventDispatcher;
 
         #endregion
 
@@ -112,6 +110,11 @@ namespace AsterNET.ARI
             Init();
         }
 
+	    public void Dispose()
+	    {
+		    Disconnect();
+	    }
+
         #endregion
 
         #region Internal Methods
@@ -131,7 +134,6 @@ namespace AsterNET.ARI
             Sounds = new SoundsActions(_actionConsumer);
 
             // Setup Event Handlers
-            InternalEvent += ARIClient_internalEvent;
             _eventProducer.OnMessageReceived += _eventProducer_OnMessageReceived;
             _eventProducer.OnConnectionStateChanged += _eventProducer_OnConnectionStateChanged;
         }
@@ -154,43 +156,39 @@ namespace AsterNET.ARI
             var jsonMsg = (JObject) JToken.Parse(e.Message);
             var eventName = jsonMsg.SelectToken("type").Value<string>();
             var type = Type.GetType("AsterNET.ARI.Models." + eventName + "Event");
-            if (type != null)
-                InternalEvent.BeginInvoke(this, (Event) JsonConvert.DeserializeObject(e.Message, type), eventComplete,
-                    null);
-            else
-                InternalEvent.BeginInvoke(this, (Event) JsonConvert.DeserializeObject(e.Message, typeof (Event)),
-                    eventComplete, null);
-        }
+	        var evnt =
+		        (type != null)
+			        ? (Event) JsonConvert.DeserializeObject(e.Message, type)
+			        : (Event) JsonConvert.DeserializeObject(e.Message, typeof (Event));
 
-        private void ARIClient_internalEvent(IAriClient sender, Event e)
-        {
-            FireEvent(e.Type, e, sender);
-        }
-
-        private void eventComplete(IAsyncResult result)
-        {
-            var ar = (AsyncResult) result;
-            var invokedMethod = (AriEventHandler) ar.AsyncDelegate;
-
-            try
-            {
-                invokedMethod.EndInvoke(result);
-            }
-            catch
-            {
-                // Handle any exceptions that were thrown by the invoked method
-                Console.WriteLine("An event listener went kaboom!");
-            }
-        }
+	        lock (_syncRoot)
+	        {
+				if (_eventDispatcher != null)
+				{
+					_eventDispatcher.QueueEvent(evnt);
+				}
+	        }
+		}
 
         private void Reconnect()
         {
-            if (_autoReconnect && _eventProducer.State != ConnectionState.Open && _eventProducer.State != ConnectionState.Connecting)
-            {
-                if (_autoReconnectDelay != TimeSpan.Zero)
-                    Thread.Sleep(_autoReconnectDelay);
-                Connect();
-            }
+	        TimeSpan reconnectDelay;
+
+	        lock (_syncRoot)
+	        {
+		        var shouldReconnect = _autoReconnect 
+					&& _eventProducer.State != ConnectionState.Open
+					&& _eventProducer.State != ConnectionState.Connecting;
+
+		        if (!shouldReconnect)
+			        return;
+
+		        reconnectDelay = _autoReconnectDelay;
+	        }
+
+	        if (reconnectDelay != TimeSpan.Zero)
+		        Thread.Sleep(reconnectDelay);
+	        _eventProducer.Connect();
         }
 
         protected void FireEvent(string eventName, object eventArgs, IAriClient sender)
@@ -431,17 +429,77 @@ namespace AsterNET.ARI
 
         public void Connect(bool autoReconnect = true, int autoReconnectDelay = 5)
         {
-	        _autoReconnect = autoReconnect;
-	        _autoReconnectDelay = TimeSpan.FromSeconds(autoReconnectDelay);
-            _eventProducer.Connect();
+	        lock (_syncRoot)
+	        {
+				_autoReconnect = autoReconnect;
+				_autoReconnectDelay = TimeSpan.FromSeconds(autoReconnectDelay);
+				if (_eventDispatcher == null)
+					_eventDispatcher = new AriEventDispatcher(this);
+	        }
+
+			_eventProducer.Connect();
         }
 
         public void Disconnect()
         {
-            _autoReconnect = false;
-            _eventProducer.Disconnect();
+	        lock (_syncRoot)
+	        {
+				_autoReconnect = false;
+		        if (_eventDispatcher != null)
+		        {
+					_eventDispatcher.Dispose();
+					_eventDispatcher = null;
+		        }
+	        }
+
+			_eventProducer.Disconnect();
         }
 
         #endregion
+
+		// We introduce a dedicated thread to dispatch ARI events, so that their order is preserved and
+		// the event handlers are not called from different threads at the same time.
+
+	    sealed class AriEventDispatcher : IDisposable
+	    {
+		    readonly AriClient _ariClient;
+		    readonly BlockingCollection<Event> _eventQueue = new BlockingCollection<Event>();
+			readonly CancellationTokenSource _threadCancellation = new CancellationTokenSource();
+
+			public AriEventDispatcher(AriClient ariClient)
+		    {
+			    _ariClient = ariClient;
+			    var thread = new Thread(EventDispatcher);
+			    thread.Start();
+		    }
+
+			public void QueueEvent(Event e)
+			{ 
+				_eventQueue.Add(e);
+			}
+
+		    public void Dispose()
+		    {
+			    _threadCancellation.Cancel();
+				// We can not join the thread here, because we might be called back from it 
+				// and don't want to cause a deadlock. The GC will clean everything up 
+				// including the CancellationTokenSource and the BlockingCollection.
+		    }
+
+			void EventDispatcher()
+			{
+				try
+				{
+					var cancellationToken = _threadCancellation.Token;
+					while (true)
+					{
+						var e = _eventQueue.Take(cancellationToken);
+						_ariClient.FireEvent(e.Type, e, _ariClient);
+					}
+				}
+				catch (OperationCanceledException)
+				{ }
+			}
+	    }
     }
 }
