@@ -94,12 +94,9 @@ namespace AsterNET.ARI
         /// <param name="endPoint"></param>
         /// <param name="application"></param>
         public AriClient(StasisEndpoint endPoint, string application)
-        {
             // Use Default Middleware
-            _eventProducer = new WebSocketEventProducer(endPoint, application);
-            _actionConsumer = new RestActionConsumer(endPoint);
-
-            Init();
+			: this(new RestActionConsumer(endPoint), new WebSocketEventProducer(endPoint, application), application)
+        {
         }
 
         public AriClient(IActionConsumer actionConsumer, IEventProducer eventProducer, string application)
@@ -107,36 +104,34 @@ namespace AsterNET.ARI
             _actionConsumer = actionConsumer;
             _eventProducer = eventProducer;
 
-            Init();
+			// Setup Action Properties
+			Asterisk = new AsteriskActions(_actionConsumer);
+			Applications = new ApplicationsActions(_actionConsumer);
+			Bridges = new BridgesActions(_actionConsumer);
+			Channels = new ChannelsActions(_actionConsumer);
+			DeviceStates = new DeviceStatesActions(_actionConsumer);
+			Endpoints = new EndpointsActions(_actionConsumer);
+			Events = new EventsActions(_actionConsumer);
+			Playbacks = new PlaybacksActions(_actionConsumer);
+			Recordings = new RecordingsActions(_actionConsumer);
+			Sounds = new SoundsActions(_actionConsumer);
+
+			// Setup Event Handlers
+			_eventProducer.OnMessageReceived += _eventProducer_OnMessageReceived;
+			_eventProducer.OnConnectionStateChanged += _eventProducer_OnConnectionStateChanged;
         }
 
 	    public void Dispose()
 	    {
-		    Disconnect();
+			_eventProducer.OnConnectionStateChanged -= _eventProducer_OnConnectionStateChanged;
+			_eventProducer.OnMessageReceived -= _eventProducer_OnMessageReceived;
+			
+			Disconnect();
 	    }
 
         #endregion
 
-        #region Internal Methods
-
-        internal void Init()
-        {
-            // Setup Action Properties
-            Asterisk = new AsteriskActions(_actionConsumer);
-            Applications = new ApplicationsActions(_actionConsumer);
-            Bridges = new BridgesActions(_actionConsumer);
-            Channels = new ChannelsActions(_actionConsumer);
-            DeviceStates = new DeviceStatesActions(_actionConsumer);
-            Endpoints = new EndpointsActions(_actionConsumer);
-            Events = new EventsActions(_actionConsumer);
-            Playbacks = new PlaybacksActions(_actionConsumer);
-            Recordings = new RecordingsActions(_actionConsumer);
-            Sounds = new SoundsActions(_actionConsumer);
-
-            // Setup Event Handlers
-            _eventProducer.OnMessageReceived += _eventProducer_OnMessageReceived;
-            _eventProducer.OnConnectionStateChanged += _eventProducer_OnConnectionStateChanged;
-        }
+        #region Private and Protected Methods
 
         private void _eventProducer_OnConnectionStateChanged(object sender, EventArgs e)
         {
