@@ -55,6 +55,7 @@
     <Compile Include="ARI_1_0\Mailbox.cs" />
     <Compile Include="ARI_1_0\TextMessage.cs" />
     <Compile Include="ARI_1_0\TextMessageVariable.cs" />
+    <Compile Include="Dispatchers\DedicatedThreadDispatcher.cs" />
     <Compile Include="Helpers\SyncHelper.cs" />
     <Compile Include="IAriActionClient.cs" />
     <Compile Include="IAriClient.cs" />
