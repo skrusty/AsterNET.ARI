@@ -11,10 +11,19 @@ using Newtonsoft.Json.Linq;
 
 namespace AsterNET.ARI
 {
+    public enum EventDispatchingStrategy
+    {
+        DedicatedThread,
+        // Note that dispatching events on the thread pool implies that events might be processed out of order.
+        ThreadPool
+    }
+
     /// <summary>
     /// </summary>
     public class AriClient : IAriClient, IDisposable
     {
+        public const EventDispatchingStrategy DefaultEventDispatchingStrategy = EventDispatchingStrategy.DedicatedThread;
+
         public delegate void ConnectionStateChangedHandler(object sender);
 
         #region Events
@@ -63,7 +72,8 @@ namespace AsterNET.ARI
         private readonly object _syncRoot = new object();
         private bool _autoReconnect;
         private TimeSpan _autoReconnectDelay;
-        private DedicatedThreadDispatcher _dispatcher;
+        private EventDispatchingStrategy _dispatchingStrategy = DefaultEventDispatchingStrategy; 
+        private IAriDispatcher _dispatcher;
 
         #endregion
 
@@ -85,6 +95,8 @@ namespace AsterNET.ARI
             get { return _eventProducer.State; }
         }
 
+        public EventDispatchingStrategy EventDispatchingStrategy { get; set; }
+        
         #endregion
 
         #region Constructor
@@ -416,6 +428,17 @@ namespace AsterNET.ARI
             }
         }
 
+        IAriDispatcher CreateDispatcher()
+        {
+            switch (_dispatchingStrategy)
+            {
+                case EventDispatchingStrategy.DedicatedThread: return new DedicatedThreadDispatcher();
+                case EventDispatchingStrategy.ThreadPool: return new ThreadPoolDispatcher();
+            }
+
+            throw new AriException(_dispatchingStrategy.ToString());
+        }
+
         #endregion
 
         #region Public Methods
@@ -432,7 +455,7 @@ namespace AsterNET.ARI
                 _autoReconnect = autoReconnect;
                 _autoReconnectDelay = TimeSpan.FromSeconds(autoReconnectDelay);
                 if (_dispatcher == null)
-                    _dispatcher = new DedicatedThreadDispatcher();
+                    _dispatcher = CreateDispatcher();
             }
 
             _eventProducer.Connect();
@@ -454,9 +477,5 @@ namespace AsterNET.ARI
         }
 
         #endregion
-
     }
-
-    // We introduce a dedicated thread to dispatch ARI events, so that their order is preserved and
-    // the event handlers are not called from different threads at the same time.
 }

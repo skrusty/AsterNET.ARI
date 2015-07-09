@@ -4,7 +4,10 @@ using System.Threading;
 
 namespace AsterNET.ARI.Dispatchers
 {
-    sealed class DedicatedThreadDispatcher : IDisposable
+    // This dispatcher uses a dedicated thread to dispatch ARI events, so that their order is preserved and
+    // the event handlers are not called from different threads at the same time.
+
+    sealed class DedicatedThreadDispatcher : IAriDispatcher
     {
         readonly BlockingCollection<Action> _eventQueue = new BlockingCollection<Action>();
         readonly CancellationTokenSource _threadCancellation = new CancellationTokenSource();
