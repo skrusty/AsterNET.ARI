@@ -63,7 +63,7 @@ namespace AsterNET.ARI
         private readonly object _syncRoot = new object();
         private bool _autoReconnect;
         private TimeSpan _autoReconnectDelay;
-        private AriEventDispatcher _eventDispatcher;
+        private DedicatedThreadDispatcher _dispatcher;
 
         #endregion
 
@@ -158,9 +158,12 @@ namespace AsterNET.ARI
 
             lock (_syncRoot)
             {
-                if (_eventDispatcher != null)
+                if (_dispatcher != null)
                 {
-                    _eventDispatcher.QueueEvent(evnt);
+                    _dispatcher.QueueAction(() =>
+                    {
+                        FireEvent(evnt.Type, evnt, this);
+                    });
                 }
             }
         }
@@ -428,8 +431,8 @@ namespace AsterNET.ARI
             {
                 _autoReconnect = autoReconnect;
                 _autoReconnectDelay = TimeSpan.FromSeconds(autoReconnectDelay);
-                if (_eventDispatcher == null)
-                    _eventDispatcher = new AriEventDispatcher(this);
+                if (_dispatcher == null)
+                    _dispatcher = new DedicatedThreadDispatcher();
             }
 
             _eventProducer.Connect();
@@ -440,10 +443,10 @@ namespace AsterNET.ARI
             lock (_syncRoot)
             {
                 _autoReconnect = false;
-                if (_eventDispatcher != null)
+                if (_dispatcher != null)
                 {
-                    _eventDispatcher.Dispose();
-                    _eventDispatcher = null;
+                    _dispatcher.Dispose();
+                    _dispatcher = null;
                 }
             }
 
@@ -455,22 +458,20 @@ namespace AsterNET.ARI
         // We introduce a dedicated thread to dispatch ARI events, so that their order is preserved and
         // the event handlers are not called from different threads at the same time.
 
-        sealed class AriEventDispatcher : IDisposable
+        sealed class DedicatedThreadDispatcher : IDisposable
         {
-            readonly AriClient _ariClient;
-            readonly BlockingCollection<Event> _eventQueue = new BlockingCollection<Event>();
+            readonly BlockingCollection<Action> _eventQueue = new BlockingCollection<Action>();
             readonly CancellationTokenSource _threadCancellation = new CancellationTokenSource();
 
-            public AriEventDispatcher(AriClient ariClient)
+            public DedicatedThreadDispatcher()
             {
-                _ariClient = ariClient;
                 var thread = new Thread(EventDispatcher);
                 thread.Start();
             }
 
-            public void QueueEvent(Event e)
+            public void QueueAction(Action action)
             { 
-                _eventQueue.Add(e);
+                _eventQueue.Add(action);
             }
 
             public void Dispose()
@@ -488,8 +489,8 @@ namespace AsterNET.ARI
                     var cancellationToken = _threadCancellation.Token;
                     while (true)
                     {
-                        var e = _eventQueue.Take(cancellationToken);
-                        _ariClient.FireEvent(e.Type, e, _ariClient);
+                        var action = _eventQueue.Take(cancellationToken);
+                        action();
                     }
                 }
                 catch (OperationCanceledException)
