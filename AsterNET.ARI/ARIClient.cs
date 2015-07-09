@@ -72,7 +72,6 @@ namespace AsterNET.ARI
         private readonly object _syncRoot = new object();
         private bool _autoReconnect;
         private TimeSpan _autoReconnectDelay;
-        private EventDispatchingStrategy _dispatchingStrategy = DefaultEventDispatchingStrategy; 
         private IAriDispatcher _dispatcher;
 
         #endregion
@@ -115,6 +114,7 @@ namespace AsterNET.ARI
         {
             _actionConsumer = actionConsumer;
             _eventProducer = eventProducer;
+            EventDispatchingStrategy = DefaultEventDispatchingStrategy;
 
             // Setup Action Properties
             Asterisk = new AsteriskActions(_actionConsumer);
@@ -430,13 +430,13 @@ namespace AsterNET.ARI
 
         IAriDispatcher CreateDispatcher()
         {
-            switch (_dispatchingStrategy)
+            switch (EventDispatchingStrategy)
             {
                 case EventDispatchingStrategy.DedicatedThread: return new DedicatedThreadDispatcher();
                 case EventDispatchingStrategy.ThreadPool: return new ThreadPoolDispatcher();
             }
 
-            throw new AriException(_dispatchingStrategy.ToString());
+            throw new AriException(EventDispatchingStrategy.ToString());
         }
 
         #endregion
