@@ -13,16 +13,16 @@ namespace AsterNET.ARI
 {
     public enum EventDispatchingStrategy
     {
-        DedicatedThread,
         // Note that dispatching events on the thread pool implies that events might be processed out of order.
-        ThreadPool
+        ThreadPool,
+        DedicatedThread
     }
 
     /// <summary>
     /// </summary>
     public class AriClient : IAriClient, IDisposable
     {
-        public const EventDispatchingStrategy DefaultEventDispatchingStrategy = EventDispatchingStrategy.DedicatedThread;
+        public const EventDispatchingStrategy DefaultEventDispatchingStrategy = EventDispatchingStrategy.ThreadPool;
 
         public delegate void ConnectionStateChangedHandler(object sender);
 
@@ -181,8 +181,8 @@ namespace AsterNET.ARI
                     }
                     catch
                     {
-						// Handle any exceptions that were thrown by the invoked event handler
-						Console.WriteLine("An event listener went kaboom!");
+                        // Handle any exceptions that were thrown by the invoked event handler
+                        Console.WriteLine("An event listener went kaboom!");
                     }
                 });
             }
