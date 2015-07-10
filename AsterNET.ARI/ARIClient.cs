@@ -170,13 +170,21 @@ namespace AsterNET.ARI
 
             lock (_syncRoot)
             {
-                if (_dispatcher != null)
+                if (_dispatcher == null)
+                    return;
+                
+                _dispatcher.QueueAction(() =>
                 {
-                    _dispatcher.QueueAction(() =>
+                    try
                     {
                         FireEvent(evnt.Type, evnt, this);
-                    });
-                }
+                    }
+                    catch
+                    {
+						// Handle any exceptions that were thrown by the invoked event handler
+						Console.WriteLine("An event listener went kaboom!");
+                    }
+                });
             }
         }
 
