@@ -14,12 +14,22 @@ namespace AsterNET.ARI.Dispatchers
 
         public DedicatedThreadDispatcher()
         {
-            var thread = new Thread(EventDispatcher);
+            // copy the variables the thread needs on the stack, so we don't capture 'this'
+            // into the thread and so would prevent the finalizer from running.
+            var cancellationToken = _threadCancellation.Token;
+            var queue = _eventQueue;
+
+            var thread = new Thread(() => EventDispatcherThread(cancellationToken, queue));
             thread.Start();
         }
 
+        ~DedicatedThreadDispatcher()
+        {
+            _threadCancellation.Cancel();
+        }
+
         public void QueueAction(Action action)
-        { 
+        {
             _eventQueue.Add(action);
         }
 
@@ -31,19 +41,18 @@ namespace AsterNET.ARI.Dispatchers
             // including the CancellationTokenSource and the BlockingCollection.
         }
 
-        void EventDispatcher()
+        static void EventDispatcherThread(CancellationToken cancellationToken, BlockingCollection<Action> queue)
         {
             try
             {
-                var cancellationToken = _threadCancellation.Token;
                 while (true)
                 {
-                    var action = _eventQueue.Take(cancellationToken);
+                    var action = queue.Take(cancellationToken);
                     action();
                 }
             }
             catch (OperationCanceledException)
-            { }
+            {}
         }
     }
 }
