@@ -85,6 +85,7 @@ namespace AsterNET.ARI
         public IDeviceStatesActions DeviceStates { get; set; }
         public IEndpointsActions Endpoints { get; set; }
         public IEventsActions Events { get; set; }
+        public IMailboxesActions Mailboxes { get; set; }
         public IPlaybacksActions Playbacks { get; set; }
         public IRecordingsActions Recordings { get; set; }
         public ISoundsActions Sounds { get; set; }
@@ -124,9 +125,11 @@ namespace AsterNET.ARI
             DeviceStates = new DeviceStatesActions(_actionConsumer);
             Endpoints = new EndpointsActions(_actionConsumer);
             Events = new EventsActions(_actionConsumer);
+            Mailboxes = new MailboxesActions(_actionConsumer);
             Playbacks = new PlaybacksActions(_actionConsumer);
             Recordings = new RecordingsActions(_actionConsumer);
             Sounds = new SoundsActions(_actionConsumer);
+            
 
             // Setup Event Handlers
             _eventProducer.OnMessageReceived += _eventProducer_OnMessageReceived;

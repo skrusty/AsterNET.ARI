@@ -11,6 +11,7 @@ namespace AsterNET.ARI
         IDeviceStatesActions DeviceStates { get; set; }
         IEndpointsActions Endpoints { get; set; }
         IEventsActions Events { get; set; }
+        IMailboxesActions Mailboxes { get; set; }
         IPlaybacksActions Playbacks { get; set; }
         IRecordingsActions Recordings { get; set; }
         ISoundsActions Sounds { get; set; }
