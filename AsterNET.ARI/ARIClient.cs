@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Runtime.Remoting.Messaging;
 using System.Threading;
 using AsterNET.ARI.Actions;
+using AsterNET.ARI.Dispatchers;
 using AsterNET.ARI.Middleware;
 using AsterNET.ARI.Middleware.Default;
 using AsterNET.ARI.Models;
@@ -11,10 +11,19 @@ using Newtonsoft.Json.Linq;
 
 namespace AsterNET.ARI
 {
+    public enum EventDispatchingStrategy
+    {
+        // Note that dispatching events on the thread pool implies that events might be processed out of order.
+        ThreadPool,
+        DedicatedThread
+    }
+
     /// <summary>
     /// </summary>
-    public class AriClient : IAriClient
+    public class AriClient : IAriClient, IDisposable
     {
+        public const EventDispatchingStrategy DefaultEventDispatchingStrategy = EventDispatchingStrategy.ThreadPool;
+
         public delegate void ConnectionStateChangedHandler(object sender);
 
         #region Events
@@ -48,9 +57,9 @@ namespace AsterNET.ARI
         public event DialEventHandler OnDialEvent;
         public event StasisEndEventHandler OnStasisEndEvent;
         public event StasisStartEventHandler OnStasisStartEvent;
-	    public event TextMessageReceivedEventHandler OnTextMessageReceivedEvent;
-	    public event ChannelConnectedLineEventHandler OnChannelConnectedLineEvent;
-	    public event UnhandledEventHandler OnUnhandledEvent;
+        public event TextMessageReceivedEventHandler OnTextMessageReceivedEvent;
+        public event ChannelConnectedLineEventHandler OnChannelConnectedLineEvent;
+        public event UnhandledEventHandler OnUnhandledEvent;
         public event ConnectionStateChangedHandler OnConnectionStateChanged;
 
         #endregion       
@@ -60,12 +69,10 @@ namespace AsterNET.ARI
         private readonly IActionConsumer _actionConsumer;
         private readonly IEventProducer _eventProducer;
 
+        private readonly object _syncRoot = new object();
         private bool _autoReconnect;
         private TimeSpan _autoReconnectDelay;
-
-        private event AriEventHandler InternalEvent;
-
-        private delegate void AriEventHandler(IAriClient sender, Event e);
+        private IAriDispatcher _dispatcher;
 
         #endregion
 
@@ -87,6 +94,8 @@ namespace AsterNET.ARI
             get { return _eventProducer.State; }
         }
 
+        public EventDispatchingStrategy EventDispatchingStrategy { get; set; }
+        
         #endregion
 
         #region Constructor
@@ -96,28 +105,17 @@ namespace AsterNET.ARI
         /// <param name="endPoint"></param>
         /// <param name="application"></param>
         public AriClient(StasisEndpoint endPoint, string application)
-        {
             // Use Default Middleware
-            _eventProducer = new WebSocketEventProducer(endPoint, application);
-            _actionConsumer = new RestActionConsumer(endPoint);
-
-            Init();
+            : this(new RestActionConsumer(endPoint), new WebSocketEventProducer(endPoint, application), application)
+        {
         }
 
         public AriClient(IActionConsumer actionConsumer, IEventProducer eventProducer, string application)
         {
             _actionConsumer = actionConsumer;
             _eventProducer = eventProducer;
+            EventDispatchingStrategy = DefaultEventDispatchingStrategy;
 
-            Init();
-        }
-
-        #endregion
-
-        #region Internal Methods
-
-        internal void Init()
-        {
             // Setup Action Properties
             Asterisk = new AsteriskActions(_actionConsumer);
             Applications = new ApplicationsActions(_actionConsumer);
@@ -131,10 +129,21 @@ namespace AsterNET.ARI
             Sounds = new SoundsActions(_actionConsumer);
 
             // Setup Event Handlers
-            InternalEvent += ARIClient_internalEvent;
             _eventProducer.OnMessageReceived += _eventProducer_OnMessageReceived;
             _eventProducer.OnConnectionStateChanged += _eventProducer_OnConnectionStateChanged;
         }
+
+        public void Dispose()
+        {
+            _eventProducer.OnConnectionStateChanged -= _eventProducer_OnConnectionStateChanged;
+            _eventProducer.OnMessageReceived -= _eventProducer_OnMessageReceived;
+            
+            Disconnect();
+        }
+
+        #endregion
+
+        #region Private and Protected Methods
 
         private void _eventProducer_OnConnectionStateChanged(object sender, EventArgs e)
         {
@@ -154,43 +163,50 @@ namespace AsterNET.ARI
             var jsonMsg = (JObject) JToken.Parse(e.Message);
             var eventName = jsonMsg.SelectToken("type").Value<string>();
             var type = Type.GetType("AsterNET.ARI.Models." + eventName + "Event");
-            if (type != null)
-                InternalEvent.BeginInvoke(this, (Event) JsonConvert.DeserializeObject(e.Message, type), eventComplete,
-                    null);
-            else
-                InternalEvent.BeginInvoke(this, (Event) JsonConvert.DeserializeObject(e.Message, typeof (Event)),
-                    eventComplete, null);
-        }
+            var evnt =
+                (type != null)
+                    ? (Event) JsonConvert.DeserializeObject(e.Message, type)
+                    : (Event) JsonConvert.DeserializeObject(e.Message, typeof (Event));
 
-        private void ARIClient_internalEvent(IAriClient sender, Event e)
-        {
-            FireEvent(e.Type, e, sender);
-        }
-
-        private void eventComplete(IAsyncResult result)
-        {
-            var ar = (AsyncResult) result;
-            var invokedMethod = (AriEventHandler) ar.AsyncDelegate;
-
-            try
+            lock (_syncRoot)
             {
-                invokedMethod.EndInvoke(result);
-            }
-            catch
-            {
-                // Handle any exceptions that were thrown by the invoked method
-                Console.WriteLine("An event listener went kaboom!");
+                if (_dispatcher == null)
+                    return;
+                
+                _dispatcher.QueueAction(() =>
+                {
+                    try
+                    {
+                        FireEvent(evnt.Type, evnt, this);
+                    }
+                    catch
+                    {
+                        // Handle any exceptions that were thrown by the invoked event handler
+                        Console.WriteLine("An event listener went kaboom!");
+                    }
+                });
             }
         }
 
         private void Reconnect()
         {
-            if (_autoReconnect && _eventProducer.State != ConnectionState.Open && _eventProducer.State != ConnectionState.Connecting)
+            TimeSpan reconnectDelay;
+
+            lock (_syncRoot)
             {
-                if (_autoReconnectDelay != TimeSpan.Zero)
-                    Thread.Sleep(_autoReconnectDelay);
-                Connect();
+                var shouldReconnect = _autoReconnect 
+                    && _eventProducer.State != ConnectionState.Open
+                    && _eventProducer.State != ConnectionState.Connecting;
+
+                if (!shouldReconnect)
+                    return;
+
+                reconnectDelay = _autoReconnectDelay;
             }
+
+            if (reconnectDelay != TimeSpan.Zero)
+                Thread.Sleep(reconnectDelay);
+            _eventProducer.Connect();
         }
 
         protected void FireEvent(string eventName, object eventArgs, IAriClient sender)
@@ -198,226 +214,237 @@ namespace AsterNET.ARI
             switch (eventName)
             {
                 case "ChannelCallerId":
-		            if (OnChannelCallerIdEvent != null)
-			            OnChannelCallerIdEvent(sender, (ChannelCallerIdEvent) eventArgs);
-		            else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event) eventArgs);
-		            break;
+                    if (OnChannelCallerIdEvent != null)
+                        OnChannelCallerIdEvent(sender, (ChannelCallerIdEvent) eventArgs);
+                    else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event) eventArgs);
+                    break;
 
 
                 case "ChannelDtmfReceived":
                     if (OnChannelDtmfReceivedEvent != null)
                         OnChannelDtmfReceivedEvent(sender, (ChannelDtmfReceivedEvent) eventArgs);
-					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
-					break;
+                    else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+                    break;
 
 
                 case "BridgeCreated":
                     if (OnBridgeCreatedEvent != null)
                         OnBridgeCreatedEvent(sender, (BridgeCreatedEvent) eventArgs);
-					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
-					break;
+                    else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+                    break;
 
 
                 case "ChannelCreated":
                     if (OnChannelCreatedEvent != null)
                         OnChannelCreatedEvent(sender, (ChannelCreatedEvent) eventArgs);
-					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
-					break;
+                    else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+                    break;
 
 
                 case "ApplicationReplaced":
                     if (OnApplicationReplacedEvent != null)
                         OnApplicationReplacedEvent(sender, (ApplicationReplacedEvent) eventArgs);
-					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
-					break;
+                    else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+                    break;
 
 
                 case "ChannelStateChange":
                     if (OnChannelStateChangeEvent != null)
                         OnChannelStateChangeEvent(sender, (ChannelStateChangeEvent) eventArgs);
-					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
-					break;
+                    else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+                    break;
 
 
                 case "PlaybackFinished":
                     if (OnPlaybackFinishedEvent != null)
                         OnPlaybackFinishedEvent(sender, (PlaybackFinishedEvent) eventArgs);
-					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
-					break;
+                    else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+                    break;
 
 
                 case "RecordingStarted":
                     if (OnRecordingStartedEvent != null)
                         OnRecordingStartedEvent(sender, (RecordingStartedEvent) eventArgs);
-					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
-					break;
+                    else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+                    break;
 
 
                 case "ChannelLeftBridge":
                     if (OnChannelLeftBridgeEvent != null)
                         OnChannelLeftBridgeEvent(sender, (ChannelLeftBridgeEvent) eventArgs);
-					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
-					break;
+                    else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+                    break;
 
 
                 case "ChannelDestroyed":
                     if (OnChannelDestroyedEvent != null)
                         OnChannelDestroyedEvent(sender, (ChannelDestroyedEvent) eventArgs);
-					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
-					break;
+                    else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+                    break;
 
 
                 case "DeviceStateChanged":
                     if (OnDeviceStateChangedEvent != null)
                         OnDeviceStateChangedEvent(sender, (DeviceStateChangedEvent) eventArgs);
-					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
-					break;
+                    else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+                    break;
 
 
                 case "ChannelTalkingFinished":
                     if (OnChannelTalkingFinishedEvent != null)
                         OnChannelTalkingFinishedEvent(sender, (ChannelTalkingFinishedEvent) eventArgs);
-					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
-					break;
+                    else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+                    break;
 
 
                 case "PlaybackStarted":
                     if (OnPlaybackStartedEvent != null)
                         OnPlaybackStartedEvent(sender, (PlaybackStartedEvent) eventArgs);
-					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
-					break;
+                    else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+                    break;
 
 
                 case "ChannelTalkingStarted":
                     if (OnChannelTalkingStartedEvent != null)
                         OnChannelTalkingStartedEvent(sender, (ChannelTalkingStartedEvent) eventArgs);
-					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
-					break;
+                    else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+                    break;
 
 
                 case "RecordingFailed":
                     if (OnRecordingFailedEvent != null)
                         OnRecordingFailedEvent(sender, (RecordingFailedEvent) eventArgs);
-					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
-					break;
+                    else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+                    break;
 
 
                 case "BridgeMerged":
                     if (OnBridgeMergedEvent != null)
                         OnBridgeMergedEvent(sender, (BridgeMergedEvent) eventArgs);
-					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
-					break;
+                    else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+                    break;
 
 
                 case "RecordingFinished":
                     if (OnRecordingFinishedEvent != null)
                         OnRecordingFinishedEvent(sender, (RecordingFinishedEvent) eventArgs);
-					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
-					break;
+                    else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+                    break;
 
 
                 case "BridgeAttendedTransfer":
                     if (OnBridgeAttendedTransferEvent != null)
                         OnBridgeAttendedTransferEvent(sender, (BridgeAttendedTransferEvent) eventArgs);
-					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
-					break;
+                    else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+                    break;
 
 
                 case "ChannelEnteredBridge":
                     if (OnChannelEnteredBridgeEvent != null)
                         OnChannelEnteredBridgeEvent(sender, (ChannelEnteredBridgeEvent) eventArgs);
-					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
-					break;
+                    else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+                    break;
 
 
                 case "BridgeDestroyed":
                     if (OnBridgeDestroyedEvent != null)
                         OnBridgeDestroyedEvent(sender, (BridgeDestroyedEvent) eventArgs);
-					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
-					break;
+                    else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+                    break;
 
 
                 case "BridgeBlindTransfer":
                     if (OnBridgeBlindTransferEvent != null)
                         OnBridgeBlindTransferEvent(sender, (BridgeBlindTransferEvent) eventArgs);
-					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
-					break;
+                    else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+                    break;
 
 
                 case "ChannelUserevent":
                     if (OnChannelUsereventEvent != null)
                         OnChannelUsereventEvent(sender, (ChannelUsereventEvent) eventArgs);
-					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
-					break;
+                    else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+                    break;
 
 
                 case "ChannelDialplan":
                     if (OnChannelDialplanEvent != null)
                         OnChannelDialplanEvent(sender, (ChannelDialplanEvent) eventArgs);
-					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
-					break;
+                    else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+                    break;
 
 
                 case "ChannelHangupRequest":
                     if (OnChannelHangupRequestEvent != null)
                         OnChannelHangupRequestEvent(sender, (ChannelHangupRequestEvent) eventArgs);
-					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
-					break;
+                    else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+                    break;
 
 
                 case "ChannelVarset":
                     if (OnChannelVarsetEvent != null)
                         OnChannelVarsetEvent(sender, (ChannelVarsetEvent) eventArgs);
-					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
-					break;
+                    else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+                    break;
 
 
                 case "EndpointStateChange":
                     if (OnEndpointStateChangeEvent != null)
                         OnEndpointStateChangeEvent(sender, (EndpointStateChangeEvent) eventArgs);
-					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
-					break;
+                    else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+                    break;
 
 
                 case "Dial":
                     if (OnDialEvent != null)
                         OnDialEvent(sender, (DialEvent) eventArgs);
-					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
-					break;
+                    else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+                    break;
 
 
                 case "StasisEnd":
                     if (OnStasisEndEvent != null)
                         OnStasisEndEvent(sender, (StasisEndEvent) eventArgs);
-					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
-					break;
+                    else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+                    break;
 
 
                 case "StasisStart":
                     if (OnStasisStartEvent != null)
                         OnStasisStartEvent(sender, (StasisStartEvent) eventArgs);
-					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
-					break;
-				case "TextMessageReceived":
-					if (OnTextMessageReceivedEvent != null)
-						OnTextMessageReceivedEvent(sender, (TextMessageReceivedEvent)eventArgs);
-					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
-					break;
+                    else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+                    break;
+                case "TextMessageReceived":
+                    if (OnTextMessageReceivedEvent != null)
+                        OnTextMessageReceivedEvent(sender, (TextMessageReceivedEvent)eventArgs);
+                    else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+                    break;
 
 
-				case "ChannelConnectedLine":
-					if (OnChannelConnectedLineEvent != null)
-						OnChannelConnectedLineEvent(sender, (ChannelConnectedLineEvent)eventArgs);
-					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
-					break;
+                case "ChannelConnectedLine":
+                    if (OnChannelConnectedLineEvent != null)
+                        OnChannelConnectedLineEvent(sender, (ChannelConnectedLineEvent)eventArgs);
+                    else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+                    break;
 
 
-				default:
+                default:
                     if (OnUnhandledEvent != null)
                         OnUnhandledEvent(this, (Event) eventArgs);
-					else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
-					break;
+                    else if (OnUnhandledEvent != null) OnUnhandledEvent(sender, (Event)eventArgs);
+                    break;
             }
+        }
+
+        IAriDispatcher CreateDispatcher()
+        {
+            switch (EventDispatchingStrategy)
+            {
+                case EventDispatchingStrategy.DedicatedThread: return new DedicatedThreadDispatcher();
+                case EventDispatchingStrategy.ThreadPool: return new ThreadPoolDispatcher();
+            }
+
+            throw new AriException(EventDispatchingStrategy.ToString());
         }
 
         #endregion
@@ -431,14 +458,29 @@ namespace AsterNET.ARI
 
         public void Connect(bool autoReconnect = true, int autoReconnectDelay = 5)
         {
-	        _autoReconnect = autoReconnect;
-	        _autoReconnectDelay = TimeSpan.FromSeconds(autoReconnectDelay);
+            lock (_syncRoot)
+            {
+                _autoReconnect = autoReconnect;
+                _autoReconnectDelay = TimeSpan.FromSeconds(autoReconnectDelay);
+                if (_dispatcher == null)
+                    _dispatcher = CreateDispatcher();
+            }
+
             _eventProducer.Connect();
         }
 
         public void Disconnect()
         {
-            _autoReconnect = false;
+            lock (_syncRoot)
+            {
+                _autoReconnect = false;
+                if (_dispatcher != null)
+                {
+                    _dispatcher.Dispose();
+                    _dispatcher = null;
+                }
+            }
+
             _eventProducer.Disconnect();
         }
 
