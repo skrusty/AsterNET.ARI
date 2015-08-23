@@ -1,93 +1,115 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 22/04/2015 09:45:42
+	Automatically generated file @ 23/08/2015 23:04:36
 */
-
 using System.Collections.Generic;
+using System.Linq;
 using AsterNET.ARI.Middleware;
 using AsterNET.ARI.Models;
+using Newtonsoft.Json;
 
 namespace AsterNET.ARI.Actions
 {
+	
 	public class DeviceStatesActions : ARIBaseAction, IDeviceStatesActions
 	{
+
 		public DeviceStatesActions(IActionConsumer consumer)
 			: base(consumer)
-		{
-		}
+		{}
 
 		/// <summary>
-		///     List all ARI controlled device states..
+		/// List all ARI controlled device states.. 
 		/// </summary>
 		public List<DeviceState> List()
 		{
-			var path = "/deviceStates";
+			string path = "/deviceStates";
 			var request = GetNewRequest(path, HttpMethod.GET);
 
 			var response = Execute<List<DeviceState>>(request);
 
-			if ((int) response.StatusCode >= 200 && (int) response.StatusCode < 300)
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
-
-			switch ((int) response.StatusCode)
-			{
+			switch((int)response.StatusCode)
+            {
 				default:
 					// Unknown server response
-					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode));
-			}
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
 		}
-
 		/// <summary>
-		///     Retrieve the current state of a device..
+		/// Retrieve the current state of a device.. 
 		/// </summary>
 		/// <param name="deviceName">Name of the device</param>
 		public DeviceState Get(string deviceName)
 		{
-			var path = "/deviceStates/{deviceName}";
+			string path = "/deviceStates/{deviceName}";
 			var request = GetNewRequest(path, HttpMethod.GET);
-			if (deviceName != null)
+			if(deviceName != null)
 				request.AddUrlSegment("deviceName", deviceName);
 
 			var response = Execute<DeviceState>(request);
 
-			if ((int) response.StatusCode >= 200 && (int) response.StatusCode < 300)
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
-
-			switch ((int) response.StatusCode)
-			{
+			switch((int)response.StatusCode)
+            {
 				default:
 					// Unknown server response
-					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode));
-			}
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
 		}
-
 		/// <summary>
-		///     Change the state of a device controlled by ARI. (Note - implicitly creates the device state)..
+		/// Change the state of a device controlled by ARI. (Note - implicitly creates the device state).. 
 		/// </summary>
 		/// <param name="deviceName">Name of the device</param>
 		/// <param name="deviceState">Device state value</param>
 		public void Update(string deviceName, string deviceState)
 		{
-			var path = "/deviceStates/{deviceName}";
+			string path = "/deviceStates/{deviceName}";
 			var request = GetNewRequest(path, HttpMethod.PUT);
-			if (deviceName != null)
+			if(deviceName != null)
 				request.AddUrlSegment("deviceName", deviceName);
-			if (deviceState != null)
+			if(deviceState != null)
 				request.AddParameter("deviceState", deviceState, ParameterType.QueryString);
 			var response = Execute(request);
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return;
+			switch((int)response.StatusCode)
+            {
+				case 404:
+					throw new AriException("Device name is missing", (int)response.StatusCode);
+				case 409:
+					throw new AriException("Uncontrolled device specified", (int)response.StatusCode);
+				default:
+					// Unknown server response
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
 		}
-
 		/// <summary>
-		///     Destroy a device-state controlled by ARI..
+		/// Destroy a device-state controlled by ARI.. 
 		/// </summary>
 		/// <param name="deviceName">Name of the device</param>
 		public void Delete(string deviceName)
 		{
-			var path = "/deviceStates/{deviceName}";
+			string path = "/deviceStates/{deviceName}";
 			var request = GetNewRequest(path, HttpMethod.DELETE);
-			if (deviceName != null)
+			if(deviceName != null)
 				request.AddUrlSegment("deviceName", deviceName);
 			var response = Execute(request);
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return;
+			switch((int)response.StatusCode)
+            {
+				case 404:
+					throw new AriException("Device name is missing", (int)response.StatusCode);
+				case 409:
+					throw new AriException("Uncontrolled device specified", (int)response.StatusCode);
+				default:
+					// Unknown server response
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
 		}
 	}
 }
+

@@ -20,7 +20,7 @@
 <#
 // System.Diagnostics.Debugger.Launch();
 var manager = TemplateFileManager.Create(this);
-var filesPath = @"E:\Projects\Github\AsterNET.ARI\ARICodeGen\bin\Debug\Data\";
+var filesPath = @"E:\Projects\Github\AsterNET.ARI\CodeGeneratror\ARICodeGen\Data\";
 var files = new List<string>() { 
 	filesPath + "Events.json",
 	filesPath + "Bridges.json",
@@ -361,14 +361,15 @@ namespace AsterNET.ARI.Actions
 			if(responseType == "void") {
 #>
 			var response = Execute(request);
-		}
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return;
 <#			}else{#>
 
 			var response = Execute<<#= responseType #>>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
-
+<#			} #>
 			switch((int)response.StatusCode)
             {
 <#  
@@ -376,8 +377,7 @@ namespace AsterNET.ARI.Actions
 				foreach(var errorCode in op.SelectToken("errorResponses")) {
 #>
 				case <#= errorCode.SelectToken("code").Value<string>() #>:
-					throw new AriException("<#= errorCode.SelectToken("reason").Value<string>() #>");
-					break;
+					throw new AriException("<#= errorCode.SelectToken("reason").Value<string>() #>", (int)response.StatusCode);
 <#  
 				}
 			}catch{}
@@ -385,10 +385,9 @@ namespace AsterNET.ARI.Actions
 #>
 				default:
 					// Unknown server response
-					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode.ToString()));
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
             }
 		}
-<#			} #>
 <#		} 
 		
 	}
