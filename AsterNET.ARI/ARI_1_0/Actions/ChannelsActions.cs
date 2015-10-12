@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 12/10/2015 12:13:33
+	Automatically generated file @ 12/10/2015 17:14:23
 */
 using System.Collections.Generic;
 using System.Linq;
@@ -53,7 +53,7 @@ namespace AsterNET.ARI.Actions
 		/// <param name="channelId">The unique id to assign the channel on creation.</param>
 		/// <param name="otherChannelId">The unique id to assign the second channel when using local channels.</param>
 		/// <param name="originator">The unique id of the channel which is originating this one.</param>
-		public Channel Originate(string endpoint, string extension = null, string context = null, long? priority = null, string label = null, string app = null, string appArgs = null, string callerId = null, int? timeout = null, List<KeyValuePair<string, string>> variables = null, string channelId = null, string otherChannelId = null, string originator = null)
+		public Channel Originate(string endpoint, string extension = null, string context = null, long? priority = null, string label = null, string app = null, string appArgs = null, string callerId = null, int? timeout = null, Dictionary<string, string> variables = null, string channelId = null, string otherChannelId = null, string originator = null)
 		{
 			string path = "/channels";
 			var request = GetNewRequest(path, HttpMethod.POST);
@@ -139,7 +139,7 @@ namespace AsterNET.ARI.Actions
 		/// <param name="variables">The "variables" key in the body object holds variable key/value pairs to set on the channel on creation. Other keys in the body object are interpreted as query parameters. Ex. { "endpoint": "SIP/Alice", "variables": { "CALLERID(name)": "Alice" } }</param>
 		/// <param name="otherChannelId">The unique id to assign the second channel when using local channels.</param>
 		/// <param name="originator">The unique id of the channel which is originating this one.</param>
-		public Channel OriginateWithId(string channelId, string endpoint, string extension = null, string context = null, long? priority = null, string label = null, string app = null, string appArgs = null, string callerId = null, int? timeout = null, List<KeyValuePair<string, string>> variables = null, string otherChannelId = null, string originator = null)
+		public Channel OriginateWithId(string channelId, string endpoint, string extension = null, string context = null, long? priority = null, string label = null, string app = null, string appArgs = null, string callerId = null, int? timeout = null, Dictionary<string, string> variables = null, string otherChannelId = null, string originator = null)
 		{
 			string path = "/channels/{channelId}";
 			var request = GetNewRequest(path, HttpMethod.POST);
