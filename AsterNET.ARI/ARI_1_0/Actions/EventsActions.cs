@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 23/08/2015 23:04:36
+	Automatically generated file @ 12/10/2015 11:53:27
 */
 using System.Collections.Generic;
 using System.Linq;
@@ -59,9 +59,7 @@ namespace AsterNET.ARI.Actions
 				request.AddParameter("source", source, ParameterType.QueryString);
 			if(variables != null)
 			{
-				var dictionary = variables.ToDictionary((keyItem) => keyItem.Key, (valueItem) => valueItem.Value);
-				var variablesValue = JsonConvert.SerializeObject(new { variables = dictionary });
-				request.AddParameter("application/json", variablesValue, ParameterType.RequestBody);
+				request.AddParameter("application/json", variables, ParameterType.RequestBody);
 			}
 			var response = Execute(request);
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)

@@ -38,6 +38,8 @@ namespace AsterNET.ARI.Middleware.Default
         public void AddParameter(string name, object value, Middleware.ParameterType type)
         {
             Request.AddParameter(name, value, (RestSharp.ParameterType)Enum.Parse(typeof(RestSharp.ParameterType), type.ToString()));
+            if (type == ParameterType.RequestBody)
+                Request.RequestFormat = DataFormat.Json;
         }
     }
 }

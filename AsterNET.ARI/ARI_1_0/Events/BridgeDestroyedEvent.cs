@@ -1,20 +1,29 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 22/04/2015 09:45:42
+	Automatically generated file @ 12/10/2015 11:53:27
 */
+using System;
+using System.Collections.Generic;
+using AsterNET.ARI.Actions;
 
 namespace AsterNET.ARI.Models
 {
 	/// <summary>
-	///     Notification that a bridge has been destroyed.
+	/// Notification that a bridge has been destroyed.
 	/// </summary>
-	public class BridgeDestroyedEvent : Event
+	public class BridgeDestroyedEvent  : Event
 	{
+
 		/// <summary>
+		///
 		/// </summary>
+		// public EventsActions Event { get; set; }
+
+
 		/// <summary>
-		///     no description provided
+		/// no description provided
 		/// </summary>
 		public Bridge Bridge { get; set; }
+
 	}
 }

@@ -50,9 +50,14 @@
   <ItemGroup>
     <Compile Include="ARI_1_0\Actions\IMailboxesActions.cs" />
     <Compile Include="ARI_1_0\Actions\MailboxesActions.cs" />
+    <Compile Include="ARI_1_0\ConfigTuple.cs" />
+    <Compile Include="ARI_1_0\Event.cs" />
     <Compile Include="ARI_1_0\Events\ChannelConnectedLineEvent.cs" />
+    <Compile Include="ARI_1_0\Events\ChannelHoldEvent.cs" />
+    <Compile Include="ARI_1_0\Events\ChannelUnholdEvent.cs" />
     <Compile Include="ARI_1_0\Events\TextMessageReceivedEvent.cs" />
     <Compile Include="ARI_1_0\Mailbox.cs" />
+    <Compile Include="ARI_1_0\Module.cs" />
     <Compile Include="ARI_1_0\TextMessage.cs" />
     <Compile Include="ARI_1_0\TextMessageVariable.cs" />
     <Compile Include="Dispatchers\DedicatedThreadDispatcher.cs" />
@@ -116,7 +121,6 @@
     <Compile Include="ARI_1_0\Endpoint.cs" />
     <Compile Include="ARI_1_0\Actions\EndpointsActions.cs" />
     <Compile Include="ARI_1_0\Events\EndpointStateChangeEvent.cs" />
-    <Compile Include="ARI_1_0\Event.cs" />
     <Compile Include="ARI_1_0\Actions\EventsActions.cs" />
     <Compile Include="ARI_1_0\FormatLangPair.cs" />
     <Compile Include="ARI_1_0\LiveRecording.cs" />

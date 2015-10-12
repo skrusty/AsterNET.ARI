@@ -1,22 +1,29 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 22/04/2015 09:45:42
+	Automatically generated file @ 12/10/2015 11:53:27
 */
-
+using System;
 using System.Collections.Generic;
+using AsterNET.ARI.Actions;
 
 namespace AsterNET.ARI.Models
 {
 	/// <summary>
-	///     Error event sent when required params are missing.
+	/// Error event sent when required params are missing.
 	/// </summary>
-	public class MissingParams : Message
+	public class MissingParams  : Message
 	{
+
 		/// <summary>
+		///
 		/// </summary>
+		// public EventsActions Event { get; set; }
+
+
 		/// <summary>
-		///     A list of the missing parameters
+		/// A list of the missing parameters
 		/// </summary>
 		public List<string> Params { get; set; }
+
 	}
 }

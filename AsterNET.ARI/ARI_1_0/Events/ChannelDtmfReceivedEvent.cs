@@ -1,31 +1,39 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 22/04/2015 09:45:42
+	Automatically generated file @ 12/10/2015 11:53:27
 */
+using System;
+using System.Collections.Generic;
+using AsterNET.ARI.Actions;
 
 namespace AsterNET.ARI.Models
 {
 	/// <summary>
-	///     DTMF received on a channel.  This event is sent when the DTMF ends. There is no notification about the start of
-	///     DTMF
+	/// DTMF received on a channel.  This event is sent when the DTMF ends. There is no notification about the start of DTMF
 	/// </summary>
-	public class ChannelDtmfReceivedEvent : Event
+	public class ChannelDtmfReceivedEvent  : Event
 	{
+
 		/// <summary>
+		///
 		/// </summary>
+		// public EventsActions Event { get; set; }
+
+
 		/// <summary>
-		///     DTMF digit received (0-9, A-E, # or *)
+		/// DTMF digit received (0-9, A-E, # or *)
 		/// </summary>
 		public string Digit { get; set; }
 
 		/// <summary>
-		///     Number of milliseconds DTMF was received
+		/// Number of milliseconds DTMF was received
 		/// </summary>
 		public int Duration_ms { get; set; }
 
 		/// <summary>
-		///     The channel on which DTMF was received
+		/// The channel on which DTMF was received
 		/// </summary>
 		public Channel Channel { get; set; }
+
 	}
 }

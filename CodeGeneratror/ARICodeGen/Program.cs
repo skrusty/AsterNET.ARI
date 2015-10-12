@@ -27,7 +27,7 @@ namespace ARICodeGen
             if (inputType.ToLower() == "boolean")
                 return "bool";
             if (inputType.ToLower() == "containers")
-                return "List<KeyValuePair<string, string>>";
+                return "Dictionary<string, string>";
             return inputType;
         }
 

@@ -9,26 +9,26 @@ using AsterNET.ARI.Actions;
 namespace AsterNET.ARI.Models
 {
 	/// <summary>
-	/// Represents the state of a device.
+	/// A key/value pair that makes up part of a configuration object.
 	/// </summary>
-	public class DeviceState 
+	public class ConfigTuple 
 	{
 
 		/// <summary>
 		///
 		/// </summary>
-		// public DeviceStatesActions DeviceState { get; set; }
+		// public AsteriskActions Asteris { get; set; }
 
 
 		/// <summary>
-		/// Device's state
+		/// A configuration object attribute.
 		/// </summary>
-		public string State { get; set; }
+		public string Attribute { get; set; }
 
 		/// <summary>
-		/// Name of the device.
+		/// The value for the attribute.
 		/// </summary>
-		public string Name { get; set; }
+		public string Value { get; set; }
 
 	}
 }

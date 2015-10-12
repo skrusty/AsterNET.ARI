@@ -1,55 +1,64 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 22/04/2015 09:45:42
+	Automatically generated file @ 12/10/2015 11:53:27
 */
+using System;
+using System.Collections.Generic;
+using AsterNET.ARI.Actions;
 
 namespace AsterNET.ARI.Models
 {
 	/// <summary>
-	///     Notification that a blind transfer has occurred.
+	/// Notification that a blind transfer has occurred.
 	/// </summary>
-	public class BridgeBlindTransferEvent : Event
+	public class BridgeBlindTransferEvent  : Event
 	{
-		/// <summary>
-		/// </summary>
-		/// <summary>
-		///     The channel performing the blind transfer
-		/// </summary>
-		public Channel Channel { get; set; }
 
 		/// <summary>
-		///     The channel that is replacing transferer when the transferee(s) can not be transferred directly
+		///
 		/// </summary>
-		public Channel Replace_channel { get; set; }
+		// public EventsActions Event { get; set; }
+
 
 		/// <summary>
-		///     The channel that is being transferred
-		/// </summary>
-		public Channel Transferee { get; set; }
-
-		/// <summary>
-		///     The extension transferred to
-		/// </summary>
-		public string Exten { get; set; }
-
-		/// <summary>
-		///     The context transferred to
+		/// The context transferred to
 		/// </summary>
 		public string Context { get; set; }
 
 		/// <summary>
-		///     The result of the transfer attempt
+		/// The channel performing the blind transfer
 		/// </summary>
-		public string Result { get; set; }
+		public Channel Channel { get; set; }
 
 		/// <summary>
-		///     Whether the transfer was externally initiated or not
+		/// The extension transferred to
+		/// </summary>
+		public string Exten { get; set; }
+
+		/// <summary>
+		/// The channel that is being transferred
+		/// </summary>
+		public Channel Transferee { get; set; }
+
+		/// <summary>
+		/// Whether the transfer was externally initiated or not
 		/// </summary>
 		public bool Is_external { get; set; }
 
 		/// <summary>
-		///     The bridge being transferred
+		/// The channel that is replacing transferer when the transferee(s) can not be transferred directly
+		/// </summary>
+		public Channel Replace_channel { get; set; }
+
+		/// <summary>
+		/// The result of the transfer attempt
+		/// </summary>
+		public string Result { get; set; }
+
+		/// <summary>
+		/// The bridge being transferred
 		/// </summary>
 		public Bridge Bridge { get; set; }
+
 	}
 }

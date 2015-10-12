@@ -9,9 +9,9 @@ using AsterNET.ARI.Actions;
 namespace AsterNET.ARI.Models
 {
 	/// <summary>
-	/// Notification that a channel has entered a bridge.
+	/// A channel initiated a media unhold.
 	/// </summary>
-	public class ChannelEnteredBridgeEvent  : Event
+	public class ChannelUnholdEvent  : Event
 	{
 
 		/// <summary>
@@ -21,12 +21,7 @@ namespace AsterNET.ARI.Models
 
 
 		/// <summary>
-		/// no description provided
-		/// </summary>
-		public Bridge Bridge { get; set; }
-
-		/// <summary>
-		/// no description provided
+		/// The channel that initiated the unhold event.
 		/// </summary>
 		public Channel Channel { get; set; }
 

@@ -9,9 +9,9 @@ using AsterNET.ARI.Actions;
 namespace AsterNET.ARI.Models
 {
 	/// <summary>
-	/// Notification that a channel has entered a bridge.
+	/// A channel initiated a media hold.
 	/// </summary>
-	public class ChannelEnteredBridgeEvent  : Event
+	public class ChannelHoldEvent  : Event
 	{
 
 		/// <summary>
@@ -21,12 +21,12 @@ namespace AsterNET.ARI.Models
 
 
 		/// <summary>
-		/// no description provided
+		/// The music on hold class that the initiator requested.
 		/// </summary>
-		public Bridge Bridge { get; set; }
+		public string Musicclass { get; set; }
 
 		/// <summary>
-		/// no description provided
+		/// The channel that initiated the hold event.
 		/// </summary>
 		public Channel Channel { get; set; }
 
