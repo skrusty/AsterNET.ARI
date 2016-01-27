@@ -66,7 +66,8 @@ namespace AsterNET.ARI.Middleware.Default
 
         public void Disconnect()
         {
-            _client.Close();
+            if (_client != null)
+                _client.Close();
         }
 
         #endregion
