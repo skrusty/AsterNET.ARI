@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using RestSharp;
+using Newtonsoft.Json;
 
 namespace AsterNET.ARI.Middleware.Default
 {
@@ -37,9 +38,15 @@ namespace AsterNET.ARI.Middleware.Default
 
         public void AddParameter(string name, object value, Middleware.ParameterType type)
         {
-            Request.AddParameter(name, value, (RestSharp.ParameterType)Enum.Parse(typeof(RestSharp.ParameterType), type.ToString()));
             if (type == ParameterType.RequestBody)
+            {
                 Request.RequestFormat = DataFormat.Json;
+                Request.AddParameter(name, JsonConvert.SerializeObject(value), (RestSharp.ParameterType)Enum.Parse(typeof(RestSharp.ParameterType), type.ToString()));
+            }
+            else
+            {
+                Request.AddParameter(name, value, (RestSharp.ParameterType)Enum.Parse(typeof(RestSharp.ParameterType), type.ToString()));
+            }
         }
     }
 }
