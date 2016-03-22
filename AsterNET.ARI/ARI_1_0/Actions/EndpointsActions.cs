@@ -1,12 +1,13 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 12/10/2015 11:53:28
+	Automatically generated file @ 3/22/2016 11:41:14 AM
 */
 using System.Collections.Generic;
 using System.Linq;
 using AsterNET.ARI.Middleware;
 using AsterNET.ARI.Models;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace AsterNET.ARI.Actions
 {
@@ -21,12 +22,12 @@ namespace AsterNET.ARI.Actions
 		/// <summary>
 		/// List all endpoints.. 
 		/// </summary>
-		public List<Endpoint> List()
+		public async Task<List<Endpoint>> List()
 		{
 			string path = "/endpoints";
 			var request = GetNewRequest(path, HttpMethod.GET);
 
-			var response = Execute<List<Endpoint>>(request);
+			var response = await ExecuteTask<List<Endpoint>>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -43,8 +44,7 @@ namespace AsterNET.ARI.Actions
 		/// <param name="to">The endpoint resource or technology specific URI to send the message to. Valid resources are sip, pjsip, and xmpp.</param>
 		/// <param name="from">The endpoint resource or technology specific identity to send this message from. Valid resources are sip, pjsip, and xmpp.</param>
 		/// <param name="body">The body of the message</param>
-		/// <param name="variables">		
-		public void SendMessage(string to, string from, string body = null, List<KeyValuePair<string, string>> variables = null)
+		public async Task SendMessage(string to, string from, string body = null, Dictionary<string, string> variables = null)
 		{
 			string path = "/endpoints/sendMessage";
 			var request = GetNewRequest(path, HttpMethod.PUT);
@@ -56,9 +56,9 @@ namespace AsterNET.ARI.Actions
 				request.AddParameter("body", body, ParameterType.QueryString);
 			if(variables != null)
 			{
-				request.AddParameter("application/json", variables, ParameterType.RequestBody);
+				request.AddParameter("application/json", new { variables = variables }, ParameterType.RequestBody);
 			}
-			var response = Execute(request);
+			var response = await ExecuteTask(request);
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return;
 			switch((int)response.StatusCode)
@@ -76,14 +76,14 @@ namespace AsterNET.ARI.Actions
 		/// List available endoints for a given endpoint technology.. 
 		/// </summary>
 		/// <param name="tech">Technology of the endpoints (sip,iax2,...)</param>
-		public List<Endpoint> ListByTech(string tech)
+		public async Task<List<Endpoint>> ListByTech(string tech)
 		{
 			string path = "/endpoints/{tech}";
 			var request = GetNewRequest(path, HttpMethod.GET);
 			if(tech != null)
 				request.AddUrlSegment("tech", tech);
 
-			var response = Execute<List<Endpoint>>(request);
+			var response = await ExecuteTask<List<Endpoint>>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -101,7 +101,7 @@ namespace AsterNET.ARI.Actions
 		/// </summary>
 		/// <param name="tech">Technology of the endpoint</param>
 		/// <param name="resource">ID of the endpoint</param>
-		public Endpoint Get(string tech, string resource)
+		public async Task<Endpoint> Get(string tech, string resource)
 		{
 			string path = "/endpoints/{tech}/{resource}";
 			var request = GetNewRequest(path, HttpMethod.GET);
@@ -110,7 +110,7 @@ namespace AsterNET.ARI.Actions
 			if(resource != null)
 				request.AddUrlSegment("resource", resource);
 
-			var response = Execute<Endpoint>(request);
+			var response = await ExecuteTask<Endpoint>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -132,8 +132,7 @@ namespace AsterNET.ARI.Actions
 		/// <param name="resource">ID of the endpoint</param>
 		/// <param name="from">The endpoint resource or technology specific identity to send this message from. Valid resources are sip, pjsip, and xmpp.</param>
 		/// <param name="body">The body of the message</param>
-		/// <param name="variables">		
-		public void SendMessageToEndpoint(string tech, string resource, string from, string body = null, List<KeyValuePair<string, string>> variables = null)
+		public async Task SendMessageToEndpoint(string tech, string resource, string from, string body = null, Dictionary<string, string> variables = null)
 		{
 			string path = "/endpoints/{tech}/{resource}/sendMessage";
 			var request = GetNewRequest(path, HttpMethod.PUT);
@@ -147,9 +146,9 @@ namespace AsterNET.ARI.Actions
 				request.AddParameter("body", body, ParameterType.QueryString);
 			if(variables != null)
 			{
-				request.AddParameter("application/json", variables, ParameterType.RequestBody);
+				request.AddParameter("application/json", new { variables = variables }, ParameterType.RequestBody);
 			}
-			var response = Execute(request);
+			var response = await ExecuteTask(request);
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return;
 			switch((int)response.StatusCode)

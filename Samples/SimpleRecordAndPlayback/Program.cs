@@ -83,12 +83,12 @@ namespace Sample_RecordAndPlayback
             }
         }
 
-        static void GetRecording(Channel c)
+        static async void GetRecording(Channel c)
         {
-            var playback = actionClient.Channels.Play(c.Id, "sound:vm-rec-name", "en", 0, 0, Guid.NewGuid().ToString()).Id;
+            var playback = await actionClient.Channels.Play(c.Id, "sound:vm-rec-name", "en", 0, 0, Guid.NewGuid().ToString());
             recording = new RecordingToChannel()
             {
-                Recording = actionClient.Channels.Record(c.Id, "temp-recording", "wav", 6, 1, "overwrite", true, "#"),
+                Recording = await actionClient.Channels.Record(c.Id, "temp-recording", "wav", 6, 1, "overwrite", true, "#"),
                 Channel = c
             };
         }
@@ -107,19 +107,19 @@ namespace Sample_RecordAndPlayback
             GetRecording(recording.Channel);
         }
 
-        static void c_OnStasisEndEvent(object sender, AsterNET.ARI.Models.StasisEndEvent e)
+        static async void c_OnStasisEndEvent(object sender, AsterNET.ARI.Models.StasisEndEvent e)
         {
             // Delete recording
-            actionClient.Recordings.DeleteStored("temp-recording");
+            await actionClient.Recordings.DeleteStored("temp-recording");
 
             // hangup
-            actionClient.Channels.Hangup(e.Channel.Id, "normal");
+            await actionClient.Channels.Hangup(e.Channel.Id, "normal");
         }
 
-        static void c_OnStasisStartEvent(object sender, AsterNET.ARI.Models.StasisStartEvent e)
+        static async void c_OnStasisStartEvent(object sender, AsterNET.ARI.Models.StasisStartEvent e)
         {
             // answer channel
-            actionClient.Channels.Answer(e.Channel.Id);
+            await actionClient.Channels.Answer(e.Channel.Id);
 
             GetRecording(e.Channel);
         }

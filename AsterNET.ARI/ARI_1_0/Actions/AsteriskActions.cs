@@ -1,12 +1,13 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 12/10/2015 17:14:23
+	Automatically generated file @ 3/22/2016 11:41:14 AM
 */
 using System.Collections.Generic;
 using System.Linq;
 using AsterNET.ARI.Middleware;
 using AsterNET.ARI.Models;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace AsterNET.ARI.Actions
 {
@@ -24,7 +25,7 @@ namespace AsterNET.ARI.Actions
 		/// <param name="configClass">The configuration class containing dynamic configuration objects.</param>
 		/// <param name="objectType">The type of configuration object to retrieve.</param>
 		/// <param name="id">The unique identifier of the object to retrieve.</param>
-		public List<ConfigTuple> GetObject(string configClass, string objectType, string id)
+		public async Task<List<ConfigTuple>> GetObject(string configClass, string objectType, string id)
 		{
 			string path = "/asterisk/config/dynamic/{configClass}/{objectType}/{id}";
 			var request = GetNewRequest(path, HttpMethod.GET);
@@ -35,7 +36,7 @@ namespace AsterNET.ARI.Actions
 			if(id != null)
 				request.AddUrlSegment("id", id);
 
-			var response = Execute<List<ConfigTuple>>(request);
+			var response = await ExecuteTask<List<ConfigTuple>>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -55,7 +56,7 @@ namespace AsterNET.ARI.Actions
 		/// <param name="objectType">The type of configuration object to create or update.</param>
 		/// <param name="id">The unique identifier of the object to create or update.</param>
 		/// <param name="fields">The body object should have a value that is a list of ConfigTuples, which provide the fields to update. Ex. [ { "attribute": "directmedia", "value": "false" } ]</param>
-		public List<ConfigTuple> UpdateObject(string configClass, string objectType, string id, Dictionary<string, string> fields = null)
+		public async Task<List<ConfigTuple>> UpdateObject(string configClass, string objectType, string id, Dictionary<string, string> fields = null)
 		{
 			string path = "/asterisk/config/dynamic/{configClass}/{objectType}/{id}";
 			var request = GetNewRequest(path, HttpMethod.PUT);
@@ -67,10 +68,10 @@ namespace AsterNET.ARI.Actions
 				request.AddUrlSegment("id", id);
 			if(fields != null)
 			{
-				request.AddParameter("application/json", fields, ParameterType.RequestBody);
+				request.AddParameter("application/json", new { fields = fields }, ParameterType.RequestBody);
 			}
 
-			var response = Execute<List<ConfigTuple>>(request);
+			var response = await ExecuteTask<List<ConfigTuple>>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -93,7 +94,7 @@ namespace AsterNET.ARI.Actions
 		/// <param name="configClass">The configuration class containing dynamic configuration objects.</param>
 		/// <param name="objectType">The type of configuration object to delete.</param>
 		/// <param name="id">The unique identifier of the object to delete.</param>
-		public void DeleteObject(string configClass, string objectType, string id)
+		public async Task DeleteObject(string configClass, string objectType, string id)
 		{
 			string path = "/asterisk/config/dynamic/{configClass}/{objectType}/{id}";
 			var request = GetNewRequest(path, HttpMethod.DELETE);
@@ -103,7 +104,7 @@ namespace AsterNET.ARI.Actions
 				request.AddUrlSegment("objectType", objectType);
 			if(id != null)
 				request.AddUrlSegment("id", id);
-			var response = Execute(request);
+			var response = await ExecuteTask(request);
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return;
 			switch((int)response.StatusCode)
@@ -121,14 +122,14 @@ namespace AsterNET.ARI.Actions
 		/// Gets Asterisk system information.. 
 		/// </summary>
 		/// <param name="only">Filter information returned</param>
-		public AsteriskInfo GetInfo(string only = null)
+		public async Task<AsteriskInfo> GetInfo(string only = null)
 		{
 			string path = "/asterisk/info";
 			var request = GetNewRequest(path, HttpMethod.GET);
 			if(only != null)
 				request.AddParameter("only", only, ParameterType.QueryString);
 
-			var response = Execute<AsteriskInfo>(request);
+			var response = await ExecuteTask<AsteriskInfo>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -142,12 +143,12 @@ namespace AsterNET.ARI.Actions
 		/// <summary>
 		/// List Asterisk modules.. 
 		/// </summary>
-		public List<Module> ListModules()
+		public async Task<List<Module>> ListModules()
 		{
 			string path = "/asterisk/modules";
 			var request = GetNewRequest(path, HttpMethod.GET);
 
-			var response = Execute<List<Module>>(request);
+			var response = await ExecuteTask<List<Module>>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -162,14 +163,14 @@ namespace AsterNET.ARI.Actions
 		/// Get Asterisk module information.. 
 		/// </summary>
 		/// <param name="moduleName">Module's name</param>
-		public Module GetModule(string moduleName)
+		public async Task<Module> GetModule(string moduleName)
 		{
 			string path = "/asterisk/modules/{moduleName}";
 			var request = GetNewRequest(path, HttpMethod.GET);
 			if(moduleName != null)
 				request.AddUrlSegment("moduleName", moduleName);
 
-			var response = Execute<Module>(request);
+			var response = await ExecuteTask<Module>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -188,13 +189,13 @@ namespace AsterNET.ARI.Actions
 		/// Load an Asterisk module.. 
 		/// </summary>
 		/// <param name="moduleName">Module's name</param>
-		public void LoadModule(string moduleName)
+		public async Task LoadModule(string moduleName)
 		{
 			string path = "/asterisk/modules/{moduleName}";
 			var request = GetNewRequest(path, HttpMethod.POST);
 			if(moduleName != null)
 				request.AddUrlSegment("moduleName", moduleName);
-			var response = Execute(request);
+			var response = await ExecuteTask(request);
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return;
 			switch((int)response.StatusCode)
@@ -210,13 +211,13 @@ namespace AsterNET.ARI.Actions
 		/// Unload an Asterisk module.. 
 		/// </summary>
 		/// <param name="moduleName">Module's name</param>
-		public void UnloadModule(string moduleName)
+		public async Task UnloadModule(string moduleName)
 		{
 			string path = "/asterisk/modules/{moduleName}";
 			var request = GetNewRequest(path, HttpMethod.DELETE);
 			if(moduleName != null)
 				request.AddUrlSegment("moduleName", moduleName);
-			var response = Execute(request);
+			var response = await ExecuteTask(request);
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return;
 			switch((int)response.StatusCode)
@@ -234,13 +235,13 @@ namespace AsterNET.ARI.Actions
 		/// Reload an Asterisk module.. 
 		/// </summary>
 		/// <param name="moduleName">Module's name</param>
-		public void ReloadModule(string moduleName)
+		public async Task ReloadModule(string moduleName)
 		{
 			string path = "/asterisk/modules/{moduleName}";
 			var request = GetNewRequest(path, HttpMethod.PUT);
 			if(moduleName != null)
 				request.AddUrlSegment("moduleName", moduleName);
-			var response = Execute(request);
+			var response = await ExecuteTask(request);
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return;
 			switch((int)response.StatusCode)
@@ -258,14 +259,14 @@ namespace AsterNET.ARI.Actions
 		/// Get the value of a global variable.. 
 		/// </summary>
 		/// <param name="variable">The variable to get</param>
-		public Variable GetGlobalVar(string variable)
+		public async Task<Variable> GetGlobalVar(string variable)
 		{
 			string path = "/asterisk/variable";
 			var request = GetNewRequest(path, HttpMethod.GET);
 			if(variable != null)
 				request.AddParameter("variable", variable, ParameterType.QueryString);
 
-			var response = Execute<Variable>(request);
+			var response = await ExecuteTask<Variable>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -283,7 +284,7 @@ namespace AsterNET.ARI.Actions
 		/// </summary>
 		/// <param name="variable">The variable to set</param>
 		/// <param name="value">The value to set the variable to</param>
-		public void SetGlobalVar(string variable, string value = null)
+		public async Task SetGlobalVar(string variable, string value = null)
 		{
 			string path = "/asterisk/variable";
 			var request = GetNewRequest(path, HttpMethod.POST);
@@ -291,7 +292,7 @@ namespace AsterNET.ARI.Actions
 				request.AddParameter("variable", variable, ParameterType.QueryString);
 			if(value != null)
 				request.AddParameter("value", value, ParameterType.QueryString);
-			var response = Execute(request);
+			var response = await ExecuteTask(request);
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return;
 			switch((int)response.StatusCode)

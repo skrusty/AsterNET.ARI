@@ -1,12 +1,13 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 12/10/2015 11:53:27
+	Automatically generated file @ 3/22/2016 11:41:14 AM
 */
 using System.Collections.Generic;
 using System.Linq;
 using AsterNET.ARI.Middleware;
 using AsterNET.ARI.Models;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace AsterNET.ARI.Actions
 {
@@ -21,12 +22,12 @@ namespace AsterNET.ARI.Actions
 		/// <summary>
 		/// List all active bridges in Asterisk.. 
 		/// </summary>
-		public List<Bridge> List()
+		public async Task<List<Bridge>> List()
 		{
 			string path = "/bridges";
 			var request = GetNewRequest(path, HttpMethod.GET);
 
-			var response = Execute<List<Bridge>>(request);
+			var response = await ExecuteTask<List<Bridge>>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -43,7 +44,7 @@ namespace AsterNET.ARI.Actions
 		/// <param name="type">Comma separated list of bridge type attributes (mixing, holding, dtmf_events, proxy_media).</param>
 		/// <param name="bridgeId">Unique ID to give to the bridge being created.</param>
 		/// <param name="name">Name to give to the bridge being created.</param>
-		public Bridge Create(string type = null, string bridgeId = null, string name = null)
+		public async Task<Bridge> Create(string type = null, string bridgeId = null, string name = null)
 		{
 			string path = "/bridges";
 			var request = GetNewRequest(path, HttpMethod.POST);
@@ -54,7 +55,7 @@ namespace AsterNET.ARI.Actions
 			if(name != null)
 				request.AddParameter("name", name, ParameterType.QueryString);
 
-			var response = Execute<Bridge>(request);
+			var response = await ExecuteTask<Bridge>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -71,7 +72,7 @@ namespace AsterNET.ARI.Actions
 		/// <param name="type">Comma separated list of bridge type attributes (mixing, holding, dtmf_events, proxy_media) to set.</param>
 		/// <param name="bridgeId">Unique ID to give to the bridge being created.</param>
 		/// <param name="name">Set the name of the bridge.</param>
-		public Bridge CreateWithId(string bridgeId, string type = null, string name = null)
+		public async Task<Bridge> CreateWithId(string bridgeId, string type = null, string name = null)
 		{
 			string path = "/bridges/{bridgeId}";
 			var request = GetNewRequest(path, HttpMethod.POST);
@@ -82,7 +83,7 @@ namespace AsterNET.ARI.Actions
 			if(name != null)
 				request.AddParameter("name", name, ParameterType.QueryString);
 
-			var response = Execute<Bridge>(request);
+			var response = await ExecuteTask<Bridge>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -97,14 +98,14 @@ namespace AsterNET.ARI.Actions
 		/// Get bridge details.. 
 		/// </summary>
 		/// <param name="bridgeId">Bridge's id</param>
-		public Bridge Get(string bridgeId)
+		public async Task<Bridge> Get(string bridgeId)
 		{
 			string path = "/bridges/{bridgeId}";
 			var request = GetNewRequest(path, HttpMethod.GET);
 			if(bridgeId != null)
 				request.AddUrlSegment("bridgeId", bridgeId);
 
-			var response = Execute<Bridge>(request);
+			var response = await ExecuteTask<Bridge>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -121,13 +122,13 @@ namespace AsterNET.ARI.Actions
 		/// Shut down a bridge.. If any channels are in this bridge, they will be removed and resume whatever they were doing beforehand.
 		/// </summary>
 		/// <param name="bridgeId">Bridge's id</param>
-		public void Destroy(string bridgeId)
+		public async Task Destroy(string bridgeId)
 		{
 			string path = "/bridges/{bridgeId}";
 			var request = GetNewRequest(path, HttpMethod.DELETE);
 			if(bridgeId != null)
 				request.AddUrlSegment("bridgeId", bridgeId);
-			var response = Execute(request);
+			var response = await ExecuteTask(request);
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return;
 			switch((int)response.StatusCode)
@@ -145,7 +146,7 @@ namespace AsterNET.ARI.Actions
 		/// <param name="bridgeId">Bridge's id</param>
 		/// <param name="channel">Ids of channels to add to bridge</param>
 		/// <param name="role">Channel's role in the bridge</param>
-		public void AddChannel(string bridgeId, string channel, string role = null)
+		public async Task AddChannel(string bridgeId, string channel, string role = null)
 		{
 			string path = "/bridges/{bridgeId}/addChannel";
 			var request = GetNewRequest(path, HttpMethod.POST);
@@ -155,7 +156,7 @@ namespace AsterNET.ARI.Actions
 				request.AddParameter("channel", channel, ParameterType.QueryString);
 			if(role != null)
 				request.AddParameter("role", role, ParameterType.QueryString);
-			var response = Execute(request);
+			var response = await ExecuteTask(request);
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return;
 			switch((int)response.StatusCode)
@@ -178,7 +179,7 @@ namespace AsterNET.ARI.Actions
 		/// </summary>
 		/// <param name="bridgeId">Bridge's id</param>
 		/// <param name="channel">Ids of channels to remove from bridge</param>
-		public void RemoveChannel(string bridgeId, string channel)
+		public async Task RemoveChannel(string bridgeId, string channel)
 		{
 			string path = "/bridges/{bridgeId}/removeChannel";
 			var request = GetNewRequest(path, HttpMethod.POST);
@@ -186,7 +187,7 @@ namespace AsterNET.ARI.Actions
 				request.AddUrlSegment("bridgeId", bridgeId);
 			if(channel != null)
 				request.AddParameter("channel", channel, ParameterType.QueryString);
-			var response = Execute(request);
+			var response = await ExecuteTask(request);
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return;
 			switch((int)response.StatusCode)
@@ -209,7 +210,7 @@ namespace AsterNET.ARI.Actions
 		/// </summary>
 		/// <param name="bridgeId">Bridge's id</param>
 		/// <param name="mohClass">Channel's id</param>
-		public void StartMoh(string bridgeId, string mohClass = null)
+		public async Task StartMoh(string bridgeId, string mohClass = null)
 		{
 			string path = "/bridges/{bridgeId}/moh";
 			var request = GetNewRequest(path, HttpMethod.POST);
@@ -217,7 +218,7 @@ namespace AsterNET.ARI.Actions
 				request.AddUrlSegment("bridgeId", bridgeId);
 			if(mohClass != null)
 				request.AddParameter("mohClass", mohClass, ParameterType.QueryString);
-			var response = Execute(request);
+			var response = await ExecuteTask(request);
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return;
 			switch((int)response.StatusCode)
@@ -235,13 +236,13 @@ namespace AsterNET.ARI.Actions
 		/// Stop playing music on hold to a bridge.. This will only stop music on hold being played via POST bridges/{bridgeId}/moh.
 		/// </summary>
 		/// <param name="bridgeId">Bridge's id</param>
-		public void StopMoh(string bridgeId)
+		public async Task StopMoh(string bridgeId)
 		{
 			string path = "/bridges/{bridgeId}/moh";
 			var request = GetNewRequest(path, HttpMethod.DELETE);
 			if(bridgeId != null)
 				request.AddUrlSegment("bridgeId", bridgeId);
-			var response = Execute(request);
+			var response = await ExecuteTask(request);
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return;
 			switch((int)response.StatusCode)
@@ -264,7 +265,7 @@ namespace AsterNET.ARI.Actions
 		/// <param name="offsetms">Number of media to skip before playing.</param>
 		/// <param name="skipms">Number of milliseconds to skip for forward/reverse operations.</param>
 		/// <param name="playbackId">Playback Id.</param>
-		public Playback Play(string bridgeId, string media, string lang = null, int? offsetms = null, int? skipms = null, string playbackId = null)
+		public async Task<Playback> Play(string bridgeId, string media, string lang = null, int? offsetms = null, int? skipms = null, string playbackId = null)
 		{
 			string path = "/bridges/{bridgeId}/play";
 			var request = GetNewRequest(path, HttpMethod.POST);
@@ -281,7 +282,7 @@ namespace AsterNET.ARI.Actions
 			if(playbackId != null)
 				request.AddParameter("playbackId", playbackId, ParameterType.QueryString);
 
-			var response = Execute<Playback>(request);
+			var response = await ExecuteTask<Playback>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -305,7 +306,7 @@ namespace AsterNET.ARI.Actions
 		/// <param name="lang">For sounds, selects language for sound.</param>
 		/// <param name="offsetms">Number of media to skip before playing.</param>
 		/// <param name="skipms">Number of milliseconds to skip for forward/reverse operations.</param>
-		public Playback PlayWithId(string bridgeId, string playbackId, string media, string lang = null, int? offsetms = null, int? skipms = null)
+		public async Task<Playback> PlayWithId(string bridgeId, string playbackId, string media, string lang = null, int? offsetms = null, int? skipms = null)
 		{
 			string path = "/bridges/{bridgeId}/play/{playbackId}";
 			var request = GetNewRequest(path, HttpMethod.POST);
@@ -322,7 +323,7 @@ namespace AsterNET.ARI.Actions
 			if(skipms != null)
 				request.AddParameter("skipms", skipms, ParameterType.QueryString);
 
-			var response = Execute<Playback>(request);
+			var response = await ExecuteTask<Playback>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -348,7 +349,7 @@ namespace AsterNET.ARI.Actions
 		/// <param name="ifExists">Action to take if a recording with the same name already exists.</param>
 		/// <param name="beep">Play beep when recording begins</param>
 		/// <param name="terminateOn">DTMF input to terminate recording.</param>
-		public LiveRecording Record(string bridgeId, string name, string format, int? maxDurationSeconds = null, int? maxSilenceSeconds = null, string ifExists = null, bool? beep = null, string terminateOn = null)
+		public async Task<LiveRecording> Record(string bridgeId, string name, string format, int? maxDurationSeconds = null, int? maxSilenceSeconds = null, string ifExists = null, bool? beep = null, string terminateOn = null)
 		{
 			string path = "/bridges/{bridgeId}/record";
 			var request = GetNewRequest(path, HttpMethod.POST);
@@ -369,7 +370,7 @@ namespace AsterNET.ARI.Actions
 			if(terminateOn != null)
 				request.AddParameter("terminateOn", terminateOn, ParameterType.QueryString);
 
-			var response = Execute<LiveRecording>(request);
+			var response = await ExecuteTask<LiveRecording>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;

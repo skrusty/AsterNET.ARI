@@ -40,7 +40,7 @@ namespace AsterNET.ARI.SimpleBridge
                 ActionClient.Connect();
 
                 // Create simple bridge
-                SimpleBridge = ActionClient.Bridges.Create("mixing", Guid.NewGuid().ToString(), AppName);
+                SimpleBridge = ActionClient.Bridges.Create("mixing", Guid.NewGuid().ToString(), AppName).Result;
 
                 // subscribe to bridge events
                 ActionClient.Applications.Subscribe(AppName, "bridge:" + SimpleBridge.Id);
@@ -65,13 +65,13 @@ namespace AsterNET.ARI.SimpleBridge
                             break;
                         case "3":
                             // Mute all channels on bridge
-                            var bridgeMute = ActionClient.Bridges.Get(SimpleBridge.Id);
+                            var bridgeMute = ActionClient.Bridges.Get(SimpleBridge.Id).Result;
                             foreach (var chan in bridgeMute.Channels)
                                 ActionClient.Channels.Mute(chan, "in");
                             break;
                         case "4":
                             // Unmute all channels on bridge
-                            var bridgeUnmute = ActionClient.Bridges.Get(SimpleBridge.Id);
+                            var bridgeUnmute = ActionClient.Bridges.Get(SimpleBridge.Id).Result;
                             foreach (var chan in bridgeUnmute.Channels)
                                 ActionClient.Channels.Unmute(chan, "in");
                             break;

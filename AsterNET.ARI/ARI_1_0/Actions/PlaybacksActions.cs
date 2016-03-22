@@ -1,12 +1,13 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 12/10/2015 11:53:28
+	Automatically generated file @ 3/22/2016 11:41:14 AM
 */
 using System.Collections.Generic;
 using System.Linq;
 using AsterNET.ARI.Middleware;
 using AsterNET.ARI.Models;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace AsterNET.ARI.Actions
 {
@@ -22,14 +23,14 @@ namespace AsterNET.ARI.Actions
 		/// Get a playback's details.. 
 		/// </summary>
 		/// <param name="playbackId">Playback's id</param>
-		public Playback Get(string playbackId)
+		public async Task<Playback> Get(string playbackId)
 		{
 			string path = "/playbacks/{playbackId}";
 			var request = GetNewRequest(path, HttpMethod.GET);
 			if(playbackId != null)
 				request.AddUrlSegment("playbackId", playbackId);
 
-			var response = Execute<Playback>(request);
+			var response = await ExecuteTask<Playback>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -46,13 +47,13 @@ namespace AsterNET.ARI.Actions
 		/// Stop a playback.. 
 		/// </summary>
 		/// <param name="playbackId">Playback's id</param>
-		public void Stop(string playbackId)
+		public async Task Stop(string playbackId)
 		{
 			string path = "/playbacks/{playbackId}";
 			var request = GetNewRequest(path, HttpMethod.DELETE);
 			if(playbackId != null)
 				request.AddUrlSegment("playbackId", playbackId);
-			var response = Execute(request);
+			var response = await ExecuteTask(request);
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return;
 			switch((int)response.StatusCode)
@@ -69,7 +70,7 @@ namespace AsterNET.ARI.Actions
 		/// </summary>
 		/// <param name="playbackId">Playback's id</param>
 		/// <param name="operation">Operation to perform on the playback.</param>
-		public void Control(string playbackId, string operation)
+		public async Task Control(string playbackId, string operation)
 		{
 			string path = "/playbacks/{playbackId}/control";
 			var request = GetNewRequest(path, HttpMethod.POST);
@@ -77,7 +78,7 @@ namespace AsterNET.ARI.Actions
 				request.AddUrlSegment("playbackId", playbackId);
 			if(operation != null)
 				request.AddParameter("operation", operation, ParameterType.QueryString);
-			var response = Execute(request);
+			var response = await ExecuteTask(request);
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return;
 			switch((int)response.StatusCode)
