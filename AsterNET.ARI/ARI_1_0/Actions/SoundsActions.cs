@@ -1,12 +1,13 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 12/10/2015 11:53:28
+	Automatically generated file @ 3/22/2016 11:41:14 AM
 */
 using System.Collections.Generic;
 using System.Linq;
 using AsterNET.ARI.Middleware;
 using AsterNET.ARI.Models;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace AsterNET.ARI.Actions
 {
@@ -23,7 +24,7 @@ namespace AsterNET.ARI.Actions
 		/// </summary>
 		/// <param name="lang">Lookup sound for a specific language.</param>
 		/// <param name="format">Lookup sound in a specific format.</param>
-		public List<Sound> List(string lang = null, string format = null)
+		public async Task<List<Sound>> List(string lang = null, string format = null)
 		{
 			string path = "/sounds";
 			var request = GetNewRequest(path, HttpMethod.GET);
@@ -32,7 +33,7 @@ namespace AsterNET.ARI.Actions
 			if(format != null)
 				request.AddParameter("format", format, ParameterType.QueryString);
 
-			var response = Execute<List<Sound>>(request);
+			var response = await ExecuteTask<List<Sound>>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -47,14 +48,14 @@ namespace AsterNET.ARI.Actions
 		/// Get a sound's details.. 
 		/// </summary>
 		/// <param name="soundId">Sound's id</param>
-		public Sound Get(string soundId)
+		public async Task<Sound> Get(string soundId)
 		{
 			string path = "/sounds/{soundId}";
 			var request = GetNewRequest(path, HttpMethod.GET);
 			if(soundId != null)
 				request.AddUrlSegment("soundId", soundId);
 
-			var response = Execute<Sound>(request);
+			var response = await ExecuteTask<Sound>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;

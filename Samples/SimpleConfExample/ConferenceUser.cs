@@ -72,19 +72,22 @@ namespace AsterNET.ARI.SimpleConfExample
             // Initial State
             State = ConferenceUserState.AskForName;
             // Get user to speak name
-            CurrentPlaybackId = _client.Channels.Play(Channel.Id, "sound:vm-rec-name", "en", 0, 0, Guid.NewGuid().ToString()).Id;
+            var playback = _client.Channels.Play(Channel.Id, "sound:vm-rec-name", "en", 0, 0, Guid.NewGuid().ToString());
+            playback.RunSynchronously();
+            CurrentPlaybackId = playback.Result.Id;
             RecordName();
         }
 
         #region Public Methods
 
-        public void RecordName()
+        public async void RecordName()
         {
             State = ConferenceUserState.RecordingName;
-            CurrentRecodingId =
-                _client.Channels.Record(Channel.Id, string.Format("conftemp-{0}", Channel.Id), "wav", 6, 1,
+            var recording =
+                await _client.Channels.Record(Channel.Id, string.Format("conftemp-{0}", Channel.Id), "wav", 6, 1,
                     "overwrite",
-                    true, "#").Name;
+                    true, "#");
+            CurrentRecodingId = recording.Name;
         }
 
         public void KeyPress(string digit)

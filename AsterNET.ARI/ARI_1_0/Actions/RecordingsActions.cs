@@ -1,12 +1,13 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 12/10/2015 11:53:28
+	Automatically generated file @ 3/22/2016 11:41:14 AM
 */
 using System.Collections.Generic;
 using System.Linq;
 using AsterNET.ARI.Middleware;
 using AsterNET.ARI.Models;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace AsterNET.ARI.Actions
 {
@@ -21,12 +22,12 @@ namespace AsterNET.ARI.Actions
 		/// <summary>
 		/// List recordings that are complete.. 
 		/// </summary>
-		public List<StoredRecording> ListStored()
+		public async Task<List<StoredRecording>> ListStored()
 		{
 			string path = "/recordings/stored";
 			var request = GetNewRequest(path, HttpMethod.GET);
 
-			var response = Execute<List<StoredRecording>>(request);
+			var response = await ExecuteTask<List<StoredRecording>>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -41,14 +42,14 @@ namespace AsterNET.ARI.Actions
 		/// Get a stored recording's details.. 
 		/// </summary>
 		/// <param name="recordingName">The name of the recording</param>
-		public StoredRecording GetStored(string recordingName)
+		public async Task<StoredRecording> GetStored(string recordingName)
 		{
 			string path = "/recordings/stored/{recordingName}";
 			var request = GetNewRequest(path, HttpMethod.GET);
 			if(recordingName != null)
 				request.AddUrlSegment("recordingName", recordingName);
 
-			var response = Execute<StoredRecording>(request);
+			var response = await ExecuteTask<StoredRecording>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -65,13 +66,13 @@ namespace AsterNET.ARI.Actions
 		/// Delete a stored recording.. 
 		/// </summary>
 		/// <param name="recordingName">The name of the recording</param>
-		public void DeleteStored(string recordingName)
+		public async Task DeleteStored(string recordingName)
 		{
 			string path = "/recordings/stored/{recordingName}";
 			var request = GetNewRequest(path, HttpMethod.DELETE);
 			if(recordingName != null)
 				request.AddUrlSegment("recordingName", recordingName);
-			var response = Execute(request);
+			var response = await ExecuteTask(request);
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return;
 			switch((int)response.StatusCode)
@@ -88,7 +89,7 @@ namespace AsterNET.ARI.Actions
 		/// </summary>
 		/// <param name="recordingName">The name of the recording to copy</param>
 		/// <param name="destinationRecordingName">The destination name of the recording</param>
-		public StoredRecording CopyStored(string recordingName, string destinationRecordingName)
+		public async Task<StoredRecording> CopyStored(string recordingName, string destinationRecordingName)
 		{
 			string path = "/recordings/stored/{recordingName}/copy";
 			var request = GetNewRequest(path, HttpMethod.POST);
@@ -97,7 +98,7 @@ namespace AsterNET.ARI.Actions
 			if(destinationRecordingName != null)
 				request.AddParameter("destinationRecordingName", destinationRecordingName, ParameterType.QueryString);
 
-			var response = Execute<StoredRecording>(request);
+			var response = await ExecuteTask<StoredRecording>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -116,14 +117,14 @@ namespace AsterNET.ARI.Actions
 		/// List live recordings.. 
 		/// </summary>
 		/// <param name="recordingName">The name of the recording</param>
-		public LiveRecording GetLive(string recordingName)
+		public async Task<LiveRecording> GetLive(string recordingName)
 		{
 			string path = "/recordings/live/{recordingName}";
 			var request = GetNewRequest(path, HttpMethod.GET);
 			if(recordingName != null)
 				request.AddUrlSegment("recordingName", recordingName);
 
-			var response = Execute<LiveRecording>(request);
+			var response = await ExecuteTask<LiveRecording>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -140,13 +141,13 @@ namespace AsterNET.ARI.Actions
 		/// Stop a live recording and discard it.. 
 		/// </summary>
 		/// <param name="recordingName">The name of the recording</param>
-		public void Cancel(string recordingName)
+		public async Task Cancel(string recordingName)
 		{
 			string path = "/recordings/live/{recordingName}";
 			var request = GetNewRequest(path, HttpMethod.DELETE);
 			if(recordingName != null)
 				request.AddUrlSegment("recordingName", recordingName);
-			var response = Execute(request);
+			var response = await ExecuteTask(request);
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return;
 			switch((int)response.StatusCode)
@@ -162,13 +163,13 @@ namespace AsterNET.ARI.Actions
 		/// Stop a live recording and store it.. 
 		/// </summary>
 		/// <param name="recordingName">The name of the recording</param>
-		public void Stop(string recordingName)
+		public async Task Stop(string recordingName)
 		{
 			string path = "/recordings/live/{recordingName}/stop";
 			var request = GetNewRequest(path, HttpMethod.POST);
 			if(recordingName != null)
 				request.AddUrlSegment("recordingName", recordingName);
-			var response = Execute(request);
+			var response = await ExecuteTask(request);
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return;
 			switch((int)response.StatusCode)
@@ -184,13 +185,13 @@ namespace AsterNET.ARI.Actions
 		/// Pause a live recording.. Pausing a recording suspends silence detection, which will be restarted when the recording is unpaused. Paused time is not included in the accounting for maxDurationSeconds.
 		/// </summary>
 		/// <param name="recordingName">The name of the recording</param>
-		public void Pause(string recordingName)
+		public async Task Pause(string recordingName)
 		{
 			string path = "/recordings/live/{recordingName}/pause";
 			var request = GetNewRequest(path, HttpMethod.POST);
 			if(recordingName != null)
 				request.AddUrlSegment("recordingName", recordingName);
-			var response = Execute(request);
+			var response = await ExecuteTask(request);
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return;
 			switch((int)response.StatusCode)
@@ -208,13 +209,13 @@ namespace AsterNET.ARI.Actions
 		/// Unpause a live recording.. 
 		/// </summary>
 		/// <param name="recordingName">The name of the recording</param>
-		public void Unpause(string recordingName)
+		public async Task Unpause(string recordingName)
 		{
 			string path = "/recordings/live/{recordingName}/pause";
 			var request = GetNewRequest(path, HttpMethod.DELETE);
 			if(recordingName != null)
 				request.AddUrlSegment("recordingName", recordingName);
-			var response = Execute(request);
+			var response = await ExecuteTask(request);
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return;
 			switch((int)response.StatusCode)
@@ -232,13 +233,13 @@ namespace AsterNET.ARI.Actions
 		/// Mute a live recording.. Muting a recording suspends silence detection, which will be restarted when the recording is unmuted.
 		/// </summary>
 		/// <param name="recordingName">The name of the recording</param>
-		public void Mute(string recordingName)
+		public async Task Mute(string recordingName)
 		{
 			string path = "/recordings/live/{recordingName}/mute";
 			var request = GetNewRequest(path, HttpMethod.POST);
 			if(recordingName != null)
 				request.AddUrlSegment("recordingName", recordingName);
-			var response = Execute(request);
+			var response = await ExecuteTask(request);
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return;
 			switch((int)response.StatusCode)
@@ -256,13 +257,13 @@ namespace AsterNET.ARI.Actions
 		/// Unmute a live recording.. 
 		/// </summary>
 		/// <param name="recordingName">The name of the recording</param>
-		public void Unmute(string recordingName)
+		public async Task Unmute(string recordingName)
 		{
 			string path = "/recordings/live/{recordingName}/mute";
 			var request = GetNewRequest(path, HttpMethod.DELETE);
 			if(recordingName != null)
 				request.AddUrlSegment("recordingName", recordingName);
-			var response = Execute(request);
+			var response = await ExecuteTask(request);
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return;
 			switch((int)response.StatusCode)

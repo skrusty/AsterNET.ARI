@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/skrusty/AsterNET.ARI.svg?branch=master)](https://travis-ci.org/skrusty/AsterNET.ARI)
+[![Build Status](https://travis-ci.org/seiggy/AsterNET.ARI.svg?branch=master)](https://travis-ci.org/seiggy/AsterNET.ARI)
+[![NuGet Version](https://img.shields.io/nuget/v/AsterNET.ARI.Async.svg?style=flat)](https://www.nuget.org/packages/AsterNET.ARI.Async/)
 
 AsterNET.ARI
 ============
@@ -6,11 +7,11 @@ AsterNET.ARI
 AsterNET.ARI is an incubation project and addition to the AsterNET framework for .NET. It allows you to develop against Stasis ARI for Asterisk using the .NET framework.
 
 ### Where to get AsterNET.ARI
-**Nuget** http://www.nuget.org/packages/AsterNET.ARI/
+**Nuget** https://www.nuget.org/packages/AsterNET.ARI.Async/
 ```
 PM> Install-Package AsterNET.ARI
 ```
-**Releases** https://github.com/skrusty/AsterNET.ARI/releases
+**Releases** https://github.com/seiggy/AsterNET.ARI/releases
 
 ### Current Development
 We'll soon be ready to move from Alpha to Beta! So, what's in and working: -
@@ -33,9 +34,9 @@ We are trying to ensure all .NET libs used are both .NET and mono compatible so 
 coming soon
 
 ### Example Applications
-* [Simple Bridge Example](https://github.com/skrusty/AsterNET.ARI/blob/master/AsterNET.ARI.SimpleBridge/Program.cs) - demonstrates how to create a bridge, play MOH on it and add and remove channels from the bridge.
-* [Record and Playback](https://github.com/skrusty/AsterNET.ARI/blob/master/Sample-RecordAndPlayback/Program.cs) - Demonstrates how to record and playback on a channel.
-* [Simple Conference Example](https://github.com/skrusty/AsterNET.ARI/blob/master/AsterNET.ARI.SimpleBridge/Program.cs) Sample Conference application using ARI.
+* [Simple Bridge Example](https://github.com/seiggy/AsterNET.ARI/blob/master/AsterNET.ARI.SimpleBridge/Program.cs) - demonstrates how to create a bridge, play MOH on it and add and remove channels from the bridge.
+* [Record and Playback](https://github.com/seiggy/AsterNET.ARI/blob/master/Sample-RecordAndPlayback/Program.cs) - Demonstrates how to record and playback on a channel.
+* [Simple Conference Example](https://github.com/seiggy/AsterNET.ARI/blob/master/AsterNET.ARI.SimpleBridge/Program.cs) Sample Conference application using ARI.
 * [ari-examples](https://github.com/asterisk/ari-examples)
 ARI Samples managed by the Asterisk ARI Team (asternet.ari examples end with .cs)
 

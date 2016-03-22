@@ -20,7 +20,7 @@
 <#
 // System.Diagnostics.Debugger.Launch();
 var manager = TemplateFileManager.Create(this);
-var filesPath = @"E:\Projects\Github\AsterNET.ARI\CodeGeneratror\ARICodeGen\Data\";
+var filesPath = @"E:\code\git\AsterNET.ARI\CodeGeneratror\ARICodeGen\Data\";
 var files = new List<string>() { 
 	filesPath + "Events.json",
 	filesPath + "Bridges.json",
@@ -158,6 +158,7 @@ using System;
 using System.Collections.Generic;
 using AsterNET.ARI.Models;
 using AsterNET.ARI;
+using System.Threading.Tasks;
 
 namespace AsterNET.ARI.Actions
 {
@@ -178,7 +179,7 @@ namespace AsterNET.ARI.Actions
 				var description = string.Format("{0}. {1}", op.SelectToken("summary").Value<string>(), op.SelectToken("notes") == null ? "" : op.SelectToken("notes").Value<string>());
 				var httpMethod = op.SelectToken("httpMethod").Value<string>();
 			
-				var responseType = ARICodeGen.SwaggerHelper.TypeConvert(op.SelectToken("responseClass").Value<string>());
+				var responseType = ARICodeGen.SwaggerHelper.TypeConvertTask(op.SelectToken("responseClass").Value<string>());
 
 				var parameters = string.Empty;
 			
@@ -245,6 +246,7 @@ using System.Linq;
 using AsterNET.ARI.Middleware;
 using AsterNET.ARI.Models;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace AsterNET.ARI.Actions
 {
@@ -271,6 +273,7 @@ namespace AsterNET.ARI.Actions
 				var httpMethod = op.SelectToken("httpMethod").Value<string>();
 			
 				var responseType = ARICodeGen.SwaggerHelper.TypeConvert(op.SelectToken("responseClass").Value<string>());
+				var taskType = ARICodeGen.SwaggerHelper.TypeConvertTask(op.SelectToken("responseClass").Value<string>());
 
 				var parameters = string.Empty;
 			
@@ -308,13 +311,14 @@ namespace AsterNET.ARI.Actions
 <# 
 				try {
 					foreach(var param in op.SelectToken("parameters")) {
+						if (param.SelectToken("description").Value<string>() != null)
 #>
 		/// <param name="<#= param.SelectToken("name").Value<string>() #>"><#= param.SelectToken("description").Value<string>() #></param>
 <#
 					}
-                }catch{}
+                }catch (Exception e){ }
 #>
-		public <#= responseType #> <#= ARICodeGen.SwaggerHelper.GetSafeName(methodName) #>(<#= parameters #>)
+		public async <#= taskType #> <#= ARICodeGen.SwaggerHelper.GetSafeName(methodName) #>(<#= parameters #>)
 		{
 			string path = "<#= path #>";
 			var request = GetNewRequest(path, HttpMethod.<#= httpMethod.ToUpper() #>);
@@ -358,12 +362,12 @@ namespace AsterNET.ARI.Actions
 			}
 			if(responseType == "void") {
 #>
-			var response = Execute(request);
+			var response = await ExecuteTask(request);
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return;
 <#			}else{#>
 
-			var response = Execute<<#= responseType #>>(request);
+			var response = await ExecuteTask<<#= responseType #>>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -440,12 +444,25 @@ namespace AsterNET.ARI
 	/// <summary>
 	/// 
 	/// </summary>
-	public partial class BaseARIClient
+	public class BaseAriClient
 	{
+		#region Events
+
+		<#
+	System.Diagnostics.Debug.WriteLine("event count " + events.Count);
+    foreach (var evt in events)
+    {
+#>
+		public event <#= evt + "Handler"#> On<#= evt #>;
+<#
+    }
+#>
+		public event UnhandledEventHandler OnUnhandledEvent;
+
+		#endregion
 		
-		protected void FireEvent(string eventName, object eventArgs, object sender)
+		protected void FireEvent(string eventName, object eventArgs, IAriClient sender)
 		{
-		
 			switch(eventName) 
 			{
 <#int i = 1;

@@ -13,8 +13,9 @@ namespace AsterNET.ARI.TestApplication
             {
                 // Create a new Ari Connection
                 ActionClient = new AriClient(
-                    new StasisEndpoint("192.168.3.201", 8088, "test", "test"),
-                    "HelloWorld");
+                    new StasisEndpoint("10.50.10.15", 8088, "asterisk", "asterisk"),
+                    "artemis");
+                ActionClient.EventDispatchingStrategy = EventDispatchingStrategy.AsyncTask;
 
                 // Hook into required events
                 ActionClient.OnStasisStartEvent += c_OnStasisStartEvent;
@@ -37,31 +38,31 @@ namespace AsterNET.ARI.TestApplication
             Console.WriteLine("Connection state is now {0}", ActionClient.Connected);
         }
 
-        private static void ActionClientOnChannelDtmfReceivedEvent(IAriClient sender, ChannelDtmfReceivedEvent e)
+        private static async void ActionClientOnChannelDtmfReceivedEvent(IAriClient sender, ChannelDtmfReceivedEvent e)
         {
             // When DTMF received
             switch (e.Digit)
             {
                 case "*":
-                    sender.Channels.Play(e.Channel.Id, "sound:asterisk-friend");
+                    await sender.Channels.Play(e.Channel.Id, "sound:asterisk-friend");
                     break;
                 case "#":
-					sender.Channels.Play(e.Channel.Id, "sound:goodbye");
-					sender.Channels.Hangup(e.Channel.Id, "normal");
+					//await sender.Channels.PlayTask(e.Channel.Id, "sound:goodbye");
+					await sender.Channels.Hangup(e.Channel.Id, "normal");
                     break;
                 default:
-					sender.Channels.Play(e.Channel.Id, string.Format("sound:digits/{0}", e.Digit));
+					await sender.Channels.Play(e.Channel.Id, string.Format("sound:digits/{0}", e.Digit));
                     break;
             }
         }
 
-        private static void c_OnStasisStartEvent(IAriClient sender, StasisStartEvent e)
+        private static async void c_OnStasisStartEvent(IAriClient sender, StasisStartEvent e)
         {
 			// Answer the channel
-			sender.Channels.Answer(e.Channel.Id);
+			await sender.Channels.Answer(e.Channel.Id);
 
 			// Play an announcement
-			sender.Channels.Play(e.Channel.Id, "sound:hello-world");
+			await sender.Channels.Play(e.Channel.Id, "sound:hello-world");
         }
     }
 }

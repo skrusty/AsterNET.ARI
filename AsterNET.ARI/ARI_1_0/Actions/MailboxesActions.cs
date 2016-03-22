@@ -1,12 +1,13 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 12/10/2015 11:53:28
+	Automatically generated file @ 3/22/2016 11:41:14 AM
 */
 using System.Collections.Generic;
 using System.Linq;
 using AsterNET.ARI.Middleware;
 using AsterNET.ARI.Models;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace AsterNET.ARI.Actions
 {
@@ -21,12 +22,12 @@ namespace AsterNET.ARI.Actions
 		/// <summary>
 		/// List all mailboxes.. 
 		/// </summary>
-		public List<Mailbox> List()
+		public async Task<List<Mailbox>> List()
 		{
 			string path = "/mailboxes";
 			var request = GetNewRequest(path, HttpMethod.GET);
 
-			var response = Execute<List<Mailbox>>(request);
+			var response = await ExecuteTask<List<Mailbox>>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -41,14 +42,14 @@ namespace AsterNET.ARI.Actions
 		/// Retrieve the current state of a mailbox.. 
 		/// </summary>
 		/// <param name="mailboxName">Name of the mailbox</param>
-		public Mailbox Get(string mailboxName)
+		public async Task<Mailbox> Get(string mailboxName)
 		{
 			string path = "/mailboxes/{mailboxName}";
 			var request = GetNewRequest(path, HttpMethod.GET);
 			if(mailboxName != null)
 				request.AddUrlSegment("mailboxName", mailboxName);
 
-			var response = Execute<Mailbox>(request);
+			var response = await ExecuteTask<Mailbox>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -67,7 +68,7 @@ namespace AsterNET.ARI.Actions
 		/// <param name="mailboxName">Name of the mailbox</param>
 		/// <param name="oldMessages">Count of old messages in the mailbox</param>
 		/// <param name="newMessages">Count of new messages in the mailbox</param>
-		public void Update(string mailboxName, int oldMessages, int newMessages)
+		public async Task Update(string mailboxName, int oldMessages, int newMessages)
 		{
 			string path = "/mailboxes/{mailboxName}";
 			var request = GetNewRequest(path, HttpMethod.PUT);
@@ -77,7 +78,7 @@ namespace AsterNET.ARI.Actions
 				request.AddParameter("oldMessages", oldMessages, ParameterType.QueryString);
 			if(newMessages != null)
 				request.AddParameter("newMessages", newMessages, ParameterType.QueryString);
-			var response = Execute(request);
+			var response = await ExecuteTask(request);
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return;
 			switch((int)response.StatusCode)
@@ -93,13 +94,13 @@ namespace AsterNET.ARI.Actions
 		/// Destroy a mailbox.. 
 		/// </summary>
 		/// <param name="mailboxName">Name of the mailbox</param>
-		public void Delete(string mailboxName)
+		public async Task Delete(string mailboxName)
 		{
 			string path = "/mailboxes/{mailboxName}";
 			var request = GetNewRequest(path, HttpMethod.DELETE);
 			if(mailboxName != null)
 				request.AddUrlSegment("mailboxName", mailboxName);
-			var response = Execute(request);
+			var response = await ExecuteTask(request);
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return;
 			switch((int)response.StatusCode)

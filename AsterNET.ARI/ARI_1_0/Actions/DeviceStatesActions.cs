@@ -1,12 +1,13 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 12/10/2015 11:53:28
+	Automatically generated file @ 3/22/2016 11:41:14 AM
 */
 using System.Collections.Generic;
 using System.Linq;
 using AsterNET.ARI.Middleware;
 using AsterNET.ARI.Models;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace AsterNET.ARI.Actions
 {
@@ -21,12 +22,12 @@ namespace AsterNET.ARI.Actions
 		/// <summary>
 		/// List all ARI controlled device states.. 
 		/// </summary>
-		public List<DeviceState> List()
+		public async Task<List<DeviceState>> List()
 		{
 			string path = "/deviceStates";
 			var request = GetNewRequest(path, HttpMethod.GET);
 
-			var response = Execute<List<DeviceState>>(request);
+			var response = await ExecuteTask<List<DeviceState>>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -41,14 +42,14 @@ namespace AsterNET.ARI.Actions
 		/// Retrieve the current state of a device.. 
 		/// </summary>
 		/// <param name="deviceName">Name of the device</param>
-		public DeviceState Get(string deviceName)
+		public async Task<DeviceState> Get(string deviceName)
 		{
 			string path = "/deviceStates/{deviceName}";
 			var request = GetNewRequest(path, HttpMethod.GET);
 			if(deviceName != null)
 				request.AddUrlSegment("deviceName", deviceName);
 
-			var response = Execute<DeviceState>(request);
+			var response = await ExecuteTask<DeviceState>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -64,7 +65,7 @@ namespace AsterNET.ARI.Actions
 		/// </summary>
 		/// <param name="deviceName">Name of the device</param>
 		/// <param name="deviceState">Device state value</param>
-		public void Update(string deviceName, string deviceState)
+		public async Task Update(string deviceName, string deviceState)
 		{
 			string path = "/deviceStates/{deviceName}";
 			var request = GetNewRequest(path, HttpMethod.PUT);
@@ -72,7 +73,7 @@ namespace AsterNET.ARI.Actions
 				request.AddUrlSegment("deviceName", deviceName);
 			if(deviceState != null)
 				request.AddParameter("deviceState", deviceState, ParameterType.QueryString);
-			var response = Execute(request);
+			var response = await ExecuteTask(request);
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return;
 			switch((int)response.StatusCode)
@@ -90,13 +91,13 @@ namespace AsterNET.ARI.Actions
 		/// Destroy a device-state controlled by ARI.. 
 		/// </summary>
 		/// <param name="deviceName">Name of the device</param>
-		public void Delete(string deviceName)
+		public async Task Delete(string deviceName)
 		{
 			string path = "/deviceStates/{deviceName}";
 			var request = GetNewRequest(path, HttpMethod.DELETE);
 			if(deviceName != null)
 				request.AddUrlSegment("deviceName", deviceName);
-			var response = Execute(request);
+			var response = await ExecuteTask(request);
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return;
 			switch((int)response.StatusCode)

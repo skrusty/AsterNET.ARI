@@ -61,6 +61,7 @@
     <Compile Include="ARI_1_0\Module.cs" />
     <Compile Include="ARI_1_0\TextMessage.cs" />
     <Compile Include="ARI_1_0\TextMessageVariable.cs" />
+    <Compile Include="Dispatchers\AsyncDispatcher.cs" />
     <Compile Include="Dispatchers\DedicatedThreadDispatcher.cs" />
     <Compile Include="Dispatchers\ThreadPoolDispatcher.cs" />
     <Compile Include="Helpers\SyncHelper.cs" />

@@ -1,11 +1,12 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 12/10/2015 11:53:28
+	Automatically generated file @ 3/22/2016 11:41:14 AM
 */
 using System;
 using System.Collections.Generic;
 using AsterNET.ARI.Models;
 using AsterNET.ARI;
+using System.Threading.Tasks;
 
 namespace AsterNET.ARI.Actions
 {
@@ -17,11 +18,11 @@ namespace AsterNET.ARI.Actions
 		/// </summary>
 		/// <param name="lang">Lookup sound for a specific language.</param>
 		/// <param name="format">Lookup sound in a specific format.</param>
-		List<Sound> List(string lang = null, string format = null);
+		Task<List<Sound>> List(string lang = null, string format = null);
 		/// <summary>
 		/// Get a sound's details.. 
 		/// </summary>
 		/// <param name="soundId">Sound's id</param>
-		Sound Get(string soundId);
+		Task<Sound> Get(string soundId);
 	}
 }

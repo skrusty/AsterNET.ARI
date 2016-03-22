@@ -1,12 +1,13 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 12/10/2015 17:14:23
+	Automatically generated file @ 3/22/2016 11:41:14 AM
 */
 using System.Collections.Generic;
 using System.Linq;
 using AsterNET.ARI.Middleware;
 using AsterNET.ARI.Models;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace AsterNET.ARI.Actions
 {
@@ -22,14 +23,14 @@ namespace AsterNET.ARI.Actions
 		/// WebSocket connection for events.. 
 		/// </summary>
 		/// <param name="app">Applications to subscribe to.</param>
-		public Message EventWebsocket(string app)
+		public async Task<Message> EventWebsocket(string app)
 		{
 			string path = "/events";
 			var request = GetNewRequest(path, HttpMethod.GET);
 			if(app != null)
 				request.AddParameter("app", app, ParameterType.QueryString);
 
-			var response = Execute<Message>(request);
+			var response = await ExecuteTask<Message>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -47,7 +48,7 @@ namespace AsterNET.ARI.Actions
 		/// <param name="application">The name of the application that will receive this event</param>
 		/// <param name="source">URI for event source (channel:{channelId}, bridge:{bridgeId}, endpoint:{tech}/{resource}, deviceState:{deviceName}</param>
 		/// <param name="variables">The "variables" key in the body object holds custom key/value pairs to add to the user event. Ex. { "variables": { "key": "value" } }</param>
-		public void UserEvent(string eventName, string application, string source = null, Dictionary<string, string> variables = null)
+		public async Task UserEvent(string eventName, string application, string source = null, Dictionary<string, string> variables = null)
 		{
 			string path = "/events/user/{eventName}";
 			var request = GetNewRequest(path, HttpMethod.POST);
@@ -59,9 +60,9 @@ namespace AsterNET.ARI.Actions
 				request.AddParameter("source", source, ParameterType.QueryString);
 			if(variables != null)
 			{
-				request.AddParameter("application/json", variables, ParameterType.RequestBody);
+				request.AddParameter("application/json", new { variables = variables }, ParameterType.RequestBody);
 			}
-			var response = Execute(request);
+			var response = await ExecuteTask(request);
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return;
 			switch((int)response.StatusCode)

@@ -1,11 +1,12 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 12/10/2015 11:53:28
+	Automatically generated file @ 3/22/2016 11:41:14 AM
 */
 using System;
 using System.Collections.Generic;
 using AsterNET.ARI.Models;
 using AsterNET.ARI;
+using System.Threading.Tasks;
 
 namespace AsterNET.ARI.Actions
 {
@@ -15,22 +16,22 @@ namespace AsterNET.ARI.Actions
 		/// <summary>
 		/// List all ARI controlled device states.. 
 		/// </summary>
-		List<DeviceState> List();
+		Task<List<DeviceState>> List();
 		/// <summary>
 		/// Retrieve the current state of a device.. 
 		/// </summary>
 		/// <param name="deviceName">Name of the device</param>
-		DeviceState Get(string deviceName);
+		Task<DeviceState> Get(string deviceName);
 		/// <summary>
 		/// Change the state of a device controlled by ARI. (Note - implicitly creates the device state).. 
 		/// </summary>
 		/// <param name="deviceName">Name of the device</param>
 		/// <param name="deviceState">Device state value</param>
-		void Update(string deviceName, string deviceState);
+		Task Update(string deviceName, string deviceState);
 		/// <summary>
 		/// Destroy a device-state controlled by ARI.. 
 		/// </summary>
 		/// <param name="deviceName">Name of the device</param>
-		void Delete(string deviceName);
+		Task Delete(string deviceName);
 	}
 }

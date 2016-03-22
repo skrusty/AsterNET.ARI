@@ -1,12 +1,13 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 12/10/2015 17:10:12
+	Automatically generated file @ 3/22/2016 11:41:14 AM
 */
 using System.Collections.Generic;
 using System.Linq;
 using AsterNET.ARI.Middleware;
 using AsterNET.ARI.Models;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace AsterNET.ARI.Actions
 {
@@ -21,12 +22,12 @@ namespace AsterNET.ARI.Actions
 		/// <summary>
 		/// List all applications.. 
 		/// </summary>
-		public List<Application> List()
+		public async Task<List<Application>> List()
 		{
 			string path = "/applications";
 			var request = GetNewRequest(path, HttpMethod.GET);
 
-			var response = Execute<List<Application>>(request);
+			var response = await ExecuteTask<List<Application>>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -41,14 +42,14 @@ namespace AsterNET.ARI.Actions
 		/// Get details of an application.. 
 		/// </summary>
 		/// <param name="applicationName">Application's name</param>
-		public Application Get(string applicationName)
+		public async Task<Application> Get(string applicationName)
 		{
 			string path = "/applications/{applicationName}";
 			var request = GetNewRequest(path, HttpMethod.GET);
 			if(applicationName != null)
 				request.AddUrlSegment("applicationName", applicationName);
 
-			var response = Execute<Application>(request);
+			var response = await ExecuteTask<Application>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -66,7 +67,7 @@ namespace AsterNET.ARI.Actions
 		/// </summary>
 		/// <param name="applicationName">Application's name</param>
 		/// <param name="eventSource">URI for event source (channel:{channelId}, bridge:{bridgeId}, endpoint:{tech}[/{resource}], deviceState:{deviceName}</param>
-		public Application Subscribe(string applicationName, string eventSource)
+		public async Task<Application> Subscribe(string applicationName, string eventSource)
 		{
 			string path = "/applications/{applicationName}/subscription";
 			var request = GetNewRequest(path, HttpMethod.POST);
@@ -75,7 +76,7 @@ namespace AsterNET.ARI.Actions
 			if(eventSource != null)
 				request.AddParameter("eventSource", eventSource, ParameterType.QueryString);
 
-			var response = Execute<Application>(request);
+			var response = await ExecuteTask<Application>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;
@@ -97,7 +98,7 @@ namespace AsterNET.ARI.Actions
 		/// </summary>
 		/// <param name="applicationName">Application's name</param>
 		/// <param name="eventSource">URI for event source (channel:{channelId}, bridge:{bridgeId}, endpoint:{tech}[/{resource}], deviceState:{deviceName}</param>
-		public Application Unsubscribe(string applicationName, string eventSource)
+		public async Task<Application> Unsubscribe(string applicationName, string eventSource)
 		{
 			string path = "/applications/{applicationName}/subscription";
 			var request = GetNewRequest(path, HttpMethod.DELETE);
@@ -106,7 +107,7 @@ namespace AsterNET.ARI.Actions
 			if(eventSource != null)
 				request.AddParameter("eventSource", eventSource, ParameterType.QueryString);
 
-			var response = Execute<Application>(request);
+			var response = await ExecuteTask<Application>(request);
 
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return response.Data;

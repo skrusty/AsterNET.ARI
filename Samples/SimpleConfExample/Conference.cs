@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using AsterNET.ARI.Models;
 
 namespace AsterNET.ARI.SimpleConfExample
@@ -181,7 +182,7 @@ namespace AsterNET.ARI.SimpleConfExample
 
         #region Public Methods
 
-        public bool StartConference()
+        public async Task<bool> StartConference()
         {
             // TODO: fix this, .Connected returning false all the time
             //if (!client.Connected)
@@ -189,7 +190,7 @@ namespace AsterNET.ARI.SimpleConfExample
 
             // Create the conference bridge
             Debug.Print("Requesting new bridge {0} for {1}", Id, ConferenceName);
-            Bridge bridge = _client.Bridges.Create("mixing", Id.ToString(), ConferenceName);
+            Bridge bridge = await _client.Bridges.Create("mixing", Id.ToString(), ConferenceName);
 
             if (bridge == null)
             {
@@ -198,10 +199,10 @@ namespace AsterNET.ARI.SimpleConfExample
 
 
             Debug.Print("Subscribing to events on bridge {0} for {1}", Id, ConferenceName);
-            _client.Applications.Subscribe(AppConfig.AppName, "bridge:" + bridge.Id);
+            await _client.Applications.Subscribe(AppConfig.AppName, "bridge:" + bridge.Id);
 
             // Start MOH on conf bridge
-            _client.Bridges.StartMoh(bridge.Id, "default");
+            await _client.Bridges.StartMoh(bridge.Id, "default");
 
             // Default state is ReadyWaiting until MOH is turned off
             State = ConferenceState.ReadyWaiting;
@@ -213,23 +214,23 @@ namespace AsterNET.ARI.SimpleConfExample
             return true;
         }
 
-        public bool AddUser(Channel c)
+        public async Task<bool> AddUser(Channel c)
         {
             if (State == ConferenceState.Destroying)
                 return false;
             if (State == ConferenceState.Destroyed)
             {
                 // We should initiate a new conference bridge
-                if (!StartConference())
+                if (!await StartConference())
                     return false;
             }
             if (State < ConferenceState.Ready) return false;
 
             // Answer channel
-            _client.Channels.Answer(c.Id);
+            await _client.Channels.Answer(c.Id);
 
             // Turn on talk detection on this channel
-            _client.Channels.SetChannelVar(c.Id, "TALK_DETECT(set)", "");
+            await _client.Channels.SetChannelVar(c.Id, "TALK_DETECT(set)", "");
 
             // Add conference user to collection
             ConferenceUsers.Add(new ConferenceUser(this, c, _client, ConferenceUserType.Normal));
