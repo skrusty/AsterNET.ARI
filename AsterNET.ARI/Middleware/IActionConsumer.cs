@@ -1,4 +1,6 @@
-﻿namespace AsterNET.ARI.Middleware
+﻿using System.Threading.Tasks;
+
+namespace AsterNET.ARI.Middleware
 {
 
     public enum HttpMethod
@@ -18,5 +20,8 @@
         IRestCommand GetRestCommand(HttpMethod method, string path);
         IRestCommandResult<T> ProcessRestCommand<T>(IRestCommand command) where T : new();
         IRestCommandResult ProcessRestCommand(IRestCommand command);
+
+        Task<IRestCommandResult<T>> ProcessRestTaskCommand<T>(IRestCommand command) where T : new();
+        Task<IRestCommandResult> ProcessRestTaskCommand(IRestCommand command);
     }
 }

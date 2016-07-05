@@ -1,11 +1,12 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 12/10/2015 11:53:28
+	Automatically generated file @ 7/5/2016 4:16:58 PM
 */
 using System;
 using System.Collections.Generic;
 using AsterNET.ARI.Models;
 using AsterNET.ARI;
+using System.Threading.Tasks;
 
 namespace AsterNET.ARI.Actions
 {
@@ -28,5 +29,22 @@ namespace AsterNET.ARI.Actions
 		/// <param name="playbackId">Playback's id</param>
 		/// <param name="operation">Operation to perform on the playback.</param>
 		void Control(string playbackId, string operation);
+
+		/// <summary>
+		/// Get a playback's details.. 
+		/// </summary>
+		/// <param name="playbackId">Playback's id</param>
+		Task<Playback> GetAsync(string playbackId);
+		/// <summary>
+		/// Stop a playback.. 
+		/// </summary>
+		/// <param name="playbackId">Playback's id</param>
+		Task StopAsync(string playbackId);
+		/// <summary>
+		/// Control a playback.. 
+		/// </summary>
+		/// <param name="playbackId">Playback's id</param>
+		/// <param name="operation">Operation to perform on the playback.</param>
+		Task ControlAsync(string playbackId, string operation);
 	}
 }
