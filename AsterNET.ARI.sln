@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleBridgeAsync", "AsyncS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleConfAsync", "SimpleConfAsync\SimpleConfAsync.csproj", "{BEDEAA1C-0513-4CFB-8B5C-794E4C682820}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleRecordAndPlaybackAsync", "AsyncSamples\SimpleRecordAndPlaybackAsync\SimpleRecordAndPlaybackAsync.csproj", "{DEE23389-A37D-484F-BB35-E63CF7977C7E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,6 +66,10 @@ Global
 		{BEDEAA1C-0513-4CFB-8B5C-794E4C682820}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BEDEAA1C-0513-4CFB-8B5C-794E4C682820}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BEDEAA1C-0513-4CFB-8B5C-794E4C682820}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DEE23389-A37D-484F-BB35-E63CF7977C7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEE23389-A37D-484F-BB35-E63CF7977C7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEE23389-A37D-484F-BB35-E63CF7977C7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEE23389-A37D-484F-BB35-E63CF7977C7E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -76,5 +82,6 @@ Global
 		{9A6809EF-E0C7-4552-98FA-2D75A33CCFE3} = {8F66D9D2-6558-48CB-BAC7-9D5D5F820008}
 		{C9AE28E1-5D6E-4995-A40D-FFB9A3B39CE1} = {31012840-0DA0-4F79-8C4E-952D1422DD0A}
 		{BEDEAA1C-0513-4CFB-8B5C-794E4C682820} = {31012840-0DA0-4F79-8C4E-952D1422DD0A}
+		{DEE23389-A37D-484F-BB35-E63CF7977C7E} = {31012840-0DA0-4F79-8C4E-952D1422DD0A}
 	EndGlobalSection
 EndGlobal
