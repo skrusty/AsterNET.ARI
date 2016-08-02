@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 12/10/2015 11:53:28
+	Automatically generated file @ 02/08/2016 20:28:17
 */
 using System;
 using System.Collections.Generic;
@@ -22,7 +22,7 @@ namespace AsterNET.ARI.Actions
 		/// <param name="to">The endpoint resource or technology specific URI to send the message to. Valid resources are sip, pjsip, and xmpp.</param>
 		/// <param name="from">The endpoint resource or technology specific identity to send this message from. Valid resources are sip, pjsip, and xmpp.</param>
 		/// <param name="body">The body of the message</param>
-		/// <param name="variables">		void SendMessage(string to, string from, string body = null, List<KeyValuePair<string, string>> variables = null);
+		void SendMessage(string to, string from, string body = null, Dictionary<string, string> variables = null);
 		/// <summary>
 		/// List available endoints for a given endpoint technology.. 
 		/// </summary>
@@ -41,6 +41,6 @@ namespace AsterNET.ARI.Actions
 		/// <param name="resource">ID of the endpoint</param>
 		/// <param name="from">The endpoint resource or technology specific identity to send this message from. Valid resources are sip, pjsip, and xmpp.</param>
 		/// <param name="body">The body of the message</param>
-		/// <param name="variables">		void SendMessageToEndpoint(string tech, string resource, string from, string body = null, List<KeyValuePair<string, string>> variables = null);
+		void SendMessageToEndpoint(string tech, string resource, string from, string body = null, Dictionary<string, string> variables = null);
 	}
 }

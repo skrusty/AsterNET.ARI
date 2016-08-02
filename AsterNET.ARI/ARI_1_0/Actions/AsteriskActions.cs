@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 12/10/2015 17:14:23
+	Automatically generated file @ 02/08/2016 20:28:17
 */
 using System.Collections.Generic;
 using System.Linq;
@@ -67,7 +67,7 @@ namespace AsterNET.ARI.Actions
 				request.AddUrlSegment("id", id);
 			if(fields != null)
 			{
-				request.AddParameter("application/json", fields, ParameterType.RequestBody);
+				request.AddParameter("application/json", new { fields = fields }, ParameterType.RequestBody);
 			}
 
 			var response = Execute<List<ConfigTuple>>(request);

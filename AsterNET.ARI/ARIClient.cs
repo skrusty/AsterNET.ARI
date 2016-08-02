@@ -20,7 +20,7 @@ namespace AsterNET.ARI
 
     /// <summary>
     /// </summary>
-    public class AriClient : BaseAriClient, IAriClient, IDisposable
+    public class AriClient : BaseAriClient, IDisposable, IAriClient
     {
         public const EventDispatchingStrategy DefaultEventDispatchingStrategy = EventDispatchingStrategy.ThreadPool;
 

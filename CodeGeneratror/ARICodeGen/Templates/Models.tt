@@ -20,6 +20,8 @@
 <#
 // System.Diagnostics.Debugger.Launch();
 var manager = TemplateFileManager.Create(this);
+	manager.CanOverrideExistingFile = true;
+	manager.IsAutoIndentEnabled = true;
 var filesPath = @"E:\Projects\Github\AsterNET.ARI\CodeGeneratror\ARICodeGen\Data\";
 var files = new List<string>() { 
 	filesPath + "Events.json",
@@ -35,6 +37,10 @@ var files = new List<string>() {
 	filesPath + "Mailboxes.json"
 };
 var events = new List<string>();
+var fileProperties = new FileProperties()
+{
+	BuildAction = BuildAction.Compile
+};
 #>
 
 <#	
@@ -77,14 +83,17 @@ foreach (var file in files)
 			// if class exists in subtypes, extend
 			var inherit = subtypes.Where(x => x.Value.Contains(item.SelectToken("id").Value<string>())).SingleOrDefault().Key;
 			var className = item.SelectToken("id").Value<string>();
+			var output = "/Models";
 			if(inherit == "Event")
 			{
 				className += "Event";
 				events.Add(className);
+				// look to see if this is an event. If so, we should put this in the events folder
+				output = "/Events";
             }
 
 			// create new file
-			manager.StartNewFile(className + ".cs");
+			manager.StartNewFile(className + ".cs", projectName:"AsterNET.ARI", folderName:"ARI_1_0" + output, fileProperties:fileProperties);
 #>
 /*
 	AsterNET ARI Framework
@@ -102,16 +111,11 @@ namespace AsterNET.ARI.Models
 	public class <#= className #> <#= !string.IsNullOrEmpty(inherit) ? string.Format(" : {0}", inherit) : "" #>
 	{
 
-		/// <summary>
-		///
-		/// </summary>
-		// public <#= actionClassName #> <#= filename.Substring(0, filename.Length -1) #> { get; set; }
-
 
 <# 
-			foreach (var prop in item.SelectToken("properties"))
-			{
-				var jProp = ((JProperty)prop);
+				foreach (var prop in item.SelectToken("properties"))
+				{
+					var jProp = ((JProperty)prop);
 
 #>
 		/// <summary>
@@ -120,19 +124,19 @@ namespace AsterNET.ARI.Models
 		public <#= ARICodeGen.SwaggerHelper.TypeConvert(prop.First().SelectToken("type").Value<string>()) #> <#= ARICodeGen.SwaggerHelper.GetSafeName(jProp.Name) #> { get; set; }
 
 <#
-			}
-			// check for subtypes
-			/*try {
-				foreach (JValue prop in item.SelectToken("subTypes"))
-				{
-	
-					if(!subtypes.ContainsKey(item.SelectToken("id").Value<string>())) {
-						subtypes.Add(item.SelectToken("id").Value<string>(), new List<string>()); 
-					}
-					subtypes[item.SelectToken("id").Value<string>()].Add(prop.ToString());
 				}
-			}
-			catch{}*/
+				// check for subtypes
+				/*try {
+					foreach (JValue prop in item.SelectToken("subTypes"))
+					{
+	
+						if(!subtypes.ContainsKey(item.SelectToken("id").Value<string>())) {
+							subtypes.Add(item.SelectToken("id").Value<string>(), new List<string>()); 
+						}
+						subtypes[item.SelectToken("id").Value<string>()].Add(prop.ToString());
+					}
+				}
+				catch{}*/
 #>
 	}
 }
@@ -147,7 +151,7 @@ namespace AsterNET.ARI.Models
 		// Generate Action Interface
 		//
 		
-		manager.StartNewFile("I" + actionClassName + ".cs");
+		manager.StartNewFile("I" + actionClassName + ".cs", "AsterNET.ARI", "ARI_1_0/Actions");
 
 #>
 /*
@@ -216,9 +220,13 @@ namespace AsterNET.ARI.Actions
 <# 
 				try {
 					foreach(var param in op.SelectToken("parameters")) {
+						try {
+						var pName = param.SelectToken("name").Value<string>();
+						var pDesc = param.SelectToken("description").Value<string>();
 #>
-		/// <param name="<#= param.SelectToken("name").Value<string>() #>"><#= param.SelectToken("description").Value<string>() #></param>
+		/// <param name="<#= pName #>"><#= pDesc #></param>
 <#
+						}catch{}
 					}
                 }catch{}
 #>
@@ -234,7 +242,7 @@ namespace AsterNET.ARI.Actions
 		// Start Actions Output
 		//
 
-		manager.StartNewFile(actionClassName + ".cs");
+		manager.StartNewFile(actionClassName + ".cs", "AsterNET.ARI", "ARI_1_0/Actions");
 #>
 /*
 	AsterNET ARI Framework
@@ -308,9 +316,15 @@ namespace AsterNET.ARI.Actions
 <# 
 				try {
 					foreach(var param in op.SelectToken("parameters")) {
+						try {
+						var pName = param.SelectToken("name").Value<string>();
+						var pDesc = param.SelectToken("description").Value<string>();
 #>
-		/// <param name="<#= param.SelectToken("name").Value<string>() #>"><#= param.SelectToken("description").Value<string>() #></param>
+		/// <param name="<#= pName #>"><#= pDesc #></param>
 <#
+						}catch(Exception ex){
+							System.Diagnostics.Debug.WriteLine(ex.Message);
+						}
 					}
                 }catch{}
 #>
@@ -399,7 +413,7 @@ namespace AsterNET.ARI.Actions
 <#
 	} 
 }
-	manager.StartNewFile("ARIClient.cs");
+	manager.StartNewFile("ARIClient.cs", "AsterNET.ARI", "ARI_1_0");
 #>
 /*
 	AsterNET ARI Framework
@@ -440,10 +454,23 @@ namespace AsterNET.ARI
 	/// <summary>
 	/// 
 	/// </summary>
-	public partial class BaseARIClient
+	public class BaseAriClient : IAriEventClient
 	{
+
+		#region Events
+		<#
+
+			foreach (var evt in events) {
+#>
+			public event <#= evt + "Handler"#> On<#= evt #>;
+<#
+			}
+
+		#>
+			public event UnhandledEventHandler OnUnhandledEvent; 
+		#endregion
 		
-		protected void FireEvent(string eventName, object eventArgs, object sender)
+		protected void FireEvent(string eventName, object eventArgs, IAriClient sender)
 		{
 		
 			switch(eventName) 
