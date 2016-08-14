@@ -83,6 +83,7 @@
     <Compile Include="ARI_1_0\Models\TextMessage.cs" />
     <Compile Include="ARI_1_0\Models\TextMessageVariable.cs" />
     <Compile Include="ARI_1_0\Models\Variable.cs" />
+    <Compile Include="Dispatchers\AsyncDispatcher.cs" />
     <Compile Include="Dispatchers\DedicatedThreadDispatcher.cs" />
     <Compile Include="Dispatchers\ThreadPoolDispatcher.cs" />
     <Compile Include="Helpers\SyncHelper.cs" />

@@ -1,12 +1,13 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 02/08/2016 20:28:17
+	Automatically generated file @ 14/08/2016 18:59:17
 */
 using System.Collections.Generic;
 using System.Linq;
 using AsterNET.ARI.Middleware;
 using AsterNET.ARI.Models;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace AsterNET.ARI.Actions
 {
@@ -292,6 +293,274 @@ namespace AsterNET.ARI.Actions
 			if(value != null)
 				request.AddParameter("value", value, ParameterType.QueryString);
 			var response = Execute(request);
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return;
+			switch((int)response.StatusCode)
+            {
+				case 400:
+					throw new AriException("Missing variable parameter.", (int)response.StatusCode);
+				default:
+					// Unknown server response
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+		}
+
+		/// <summary>
+		/// Retrieve a dynamic configuration object.. 
+		/// </summary>
+		public async Task<List<ConfigTuple>> GetObjectAsync(string configClass, string objectType, string id)
+		{
+			string path = "/asterisk/config/dynamic/{configClass}/{objectType}/{id}";
+			var request = GetNewRequest(path, HttpMethod.GET);
+			if(configClass != null)
+				request.AddUrlSegment("configClass", configClass);
+			if(objectType != null)
+				request.AddUrlSegment("objectType", objectType);
+			if(id != null)
+				request.AddUrlSegment("id", id);
+
+			var response = await ExecuteTask<List<ConfigTuple>>(request);
+
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return response.Data;
+			switch((int)response.StatusCode)
+            {
+				case 404:
+					throw new AriException("{configClass|objectType|id} not found", (int)response.StatusCode);
+				default:
+					// Unknown server response
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+		}
+		/// <summary>
+		/// Create or update a dynamic configuration object.. 
+		/// </summary>
+		public async Task<List<ConfigTuple>> UpdateObjectAsync(string configClass, string objectType, string id, Dictionary<string, string> fields = null)
+		{
+			string path = "/asterisk/config/dynamic/{configClass}/{objectType}/{id}";
+			var request = GetNewRequest(path, HttpMethod.PUT);
+			if(configClass != null)
+				request.AddUrlSegment("configClass", configClass);
+			if(objectType != null)
+				request.AddUrlSegment("objectType", objectType);
+			if(id != null)
+				request.AddUrlSegment("id", id);
+			if(fields != null)
+			{
+				request.AddParameter("application/json", new { fields = fields }, ParameterType.RequestBody);
+			}
+
+			var response = await ExecuteTask<List<ConfigTuple>>(request);
+
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return response.Data;
+			switch((int)response.StatusCode)
+            {
+				case 400:
+					throw new AriException("Bad request body", (int)response.StatusCode);
+				case 403:
+					throw new AriException("Could not create or update object", (int)response.StatusCode);
+				case 404:
+					throw new AriException("{configClass|objectType} not found", (int)response.StatusCode);
+				default:
+					// Unknown server response
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+		}
+		/// <summary>
+		/// Delete a dynamic configuration object.. 
+		/// </summary>
+		public async Task DeleteObjectAsync(string configClass, string objectType, string id)
+		{
+			string path = "/asterisk/config/dynamic/{configClass}/{objectType}/{id}";
+			var request = GetNewRequest(path, HttpMethod.DELETE);
+			if(configClass != null)
+				request.AddUrlSegment("configClass", configClass);
+			if(objectType != null)
+				request.AddUrlSegment("objectType", objectType);
+			if(id != null)
+				request.AddUrlSegment("id", id);
+			var response = await ExecuteTask(request);
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return;
+			switch((int)response.StatusCode)
+            {
+				case 403:
+					throw new AriException("Could not delete object", (int)response.StatusCode);
+				case 404:
+					throw new AriException("{configClass|objectType|id} not found", (int)response.StatusCode);
+				default:
+					// Unknown server response
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+		}
+		/// <summary>
+		/// Gets Asterisk system information.. 
+		/// </summary>
+		public async Task<AsteriskInfo> GetInfoAsync(string only = null)
+		{
+			string path = "/asterisk/info";
+			var request = GetNewRequest(path, HttpMethod.GET);
+			if(only != null)
+				request.AddParameter("only", only, ParameterType.QueryString);
+
+			var response = await ExecuteTask<AsteriskInfo>(request);
+
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return response.Data;
+			switch((int)response.StatusCode)
+            {
+				default:
+					// Unknown server response
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+		}
+		/// <summary>
+		/// List Asterisk modules.. 
+		/// </summary>
+		public async Task<List<Module>> ListModulesAsync()
+		{
+			string path = "/asterisk/modules";
+			var request = GetNewRequest(path, HttpMethod.GET);
+
+			var response = await ExecuteTask<List<Module>>(request);
+
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return response.Data;
+			switch((int)response.StatusCode)
+            {
+				default:
+					// Unknown server response
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+		}
+		/// <summary>
+		/// Get Asterisk module information.. 
+		/// </summary>
+		public async Task<Module> GetModuleAsync(string moduleName)
+		{
+			string path = "/asterisk/modules/{moduleName}";
+			var request = GetNewRequest(path, HttpMethod.GET);
+			if(moduleName != null)
+				request.AddUrlSegment("moduleName", moduleName);
+
+			var response = await ExecuteTask<Module>(request);
+
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return response.Data;
+			switch((int)response.StatusCode)
+            {
+				case 404:
+					throw new AriException("Module could not be found in running modules.", (int)response.StatusCode);
+				case 409:
+					throw new AriException("Module information could not be retrieved.", (int)response.StatusCode);
+				default:
+					// Unknown server response
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+		}
+		/// <summary>
+		/// Load an Asterisk module.. 
+		/// </summary>
+		public async Task LoadModuleAsync(string moduleName)
+		{
+			string path = "/asterisk/modules/{moduleName}";
+			var request = GetNewRequest(path, HttpMethod.POST);
+			if(moduleName != null)
+				request.AddUrlSegment("moduleName", moduleName);
+			var response = await ExecuteTask(request);
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return;
+			switch((int)response.StatusCode)
+            {
+				case 409:
+					throw new AriException("Module could not be loaded.", (int)response.StatusCode);
+				default:
+					// Unknown server response
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+		}
+		/// <summary>
+		/// Unload an Asterisk module.. 
+		/// </summary>
+		public async Task UnloadModuleAsync(string moduleName)
+		{
+			string path = "/asterisk/modules/{moduleName}";
+			var request = GetNewRequest(path, HttpMethod.DELETE);
+			if(moduleName != null)
+				request.AddUrlSegment("moduleName", moduleName);
+			var response = await ExecuteTask(request);
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return;
+			switch((int)response.StatusCode)
+            {
+				case 404:
+					throw new AriException("Module not found in running modules.", (int)response.StatusCode);
+				case 409:
+					throw new AriException("Module could not be unloaded.", (int)response.StatusCode);
+				default:
+					// Unknown server response
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+		}
+		/// <summary>
+		/// Reload an Asterisk module.. 
+		/// </summary>
+		public async Task ReloadModuleAsync(string moduleName)
+		{
+			string path = "/asterisk/modules/{moduleName}";
+			var request = GetNewRequest(path, HttpMethod.PUT);
+			if(moduleName != null)
+				request.AddUrlSegment("moduleName", moduleName);
+			var response = await ExecuteTask(request);
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return;
+			switch((int)response.StatusCode)
+            {
+				case 404:
+					throw new AriException("Module not found in running modules.", (int)response.StatusCode);
+				case 409:
+					throw new AriException("Module could not be reloaded.", (int)response.StatusCode);
+				default:
+					// Unknown server response
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+		}
+		/// <summary>
+		/// Get the value of a global variable.. 
+		/// </summary>
+		public async Task<Variable> GetGlobalVarAsync(string variable)
+		{
+			string path = "/asterisk/variable";
+			var request = GetNewRequest(path, HttpMethod.GET);
+			if(variable != null)
+				request.AddParameter("variable", variable, ParameterType.QueryString);
+
+			var response = await ExecuteTask<Variable>(request);
+
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return response.Data;
+			switch((int)response.StatusCode)
+            {
+				case 400:
+					throw new AriException("Missing variable parameter.", (int)response.StatusCode);
+				default:
+					// Unknown server response
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+		}
+		/// <summary>
+		/// Set the value of a global variable.. 
+		/// </summary>
+		public async Task SetGlobalVarAsync(string variable, string value = null)
+		{
+			string path = "/asterisk/variable";
+			var request = GetNewRequest(path, HttpMethod.POST);
+			if(variable != null)
+				request.AddParameter("variable", variable, ParameterType.QueryString);
+			if(value != null)
+				request.AddParameter("value", value, ParameterType.QueryString);
+			var response = await ExecuteTask(request);
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return;
 			switch((int)response.StatusCode)
