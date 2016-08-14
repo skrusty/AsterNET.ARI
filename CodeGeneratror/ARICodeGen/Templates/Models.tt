@@ -22,7 +22,7 @@
 var manager = TemplateFileManager.Create(this);
 	manager.CanOverrideExistingFile = true;
 	manager.IsAutoIndentEnabled = true;
-var filesPath = @"E:\Projects\Github\AsterNET.ARI\CodeGeneratror\ARICodeGen\Data\";
+var filesPath = @"..\Data\";
 var files = new List<string>() { 
 	filesPath + "Events.json",
 	filesPath + "Bridges.json",
@@ -618,7 +618,7 @@ namespace AsterNET.ARI.Actions
 <#
 	} 
 }
-	manager.StartNewFile("ARIClient.cs");
+	manager.StartNewFile("ARIClient.cs", projectName:"AsterNET.ARI", folderName:"ARI_1_0", fileProperties:fileProperties);
 #>
 /*
 	AsterNET ARI Framework

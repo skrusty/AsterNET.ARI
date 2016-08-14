@@ -54,6 +54,9 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Templates\ARIClient.cs">
+      <DependentUpon>Models.tt</DependentUpon>
+    </Compile>
     <Compile Include="Templates\Models.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

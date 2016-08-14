@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 7/5/2016 4:16:58 PM
+	Automatically generated file @ 14/08/2016 18:59:17
 */
 using System;
 using System.Collections.Generic;
@@ -13,11 +13,6 @@ namespace AsterNET.ARI.Models
 	/// </summary>
 	public class Endpoint 
 	{
-
-		/// <summary>
-		///
-		/// </summary>
-		// public EndpointsActions Endpoint { get; set; }
 
 
 		/// <summary>

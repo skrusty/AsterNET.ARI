@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 7/5/2016 5:35:10 PM
+	Automatically generated file @ 14/08/2016 18:59:17
 */
 using System;
 using System.Collections.Generic;
@@ -86,45 +86,46 @@ namespace AsterNET.ARI
 	/// <summary>
 	/// 
 	/// </summary>
-	public partial class BaseAriClient
+	public class BaseAriClient : IAriEventClient
 	{
+
 		#region Events
 					public event ChannelCallerIdEventHandler OnChannelCallerIdEvent;
-					public event ChannelDtmfReceivedEventHandler OnChannelDtmfReceivedEvent;
-					public event BridgeCreatedEventHandler OnBridgeCreatedEvent;
-					public event ChannelCreatedEventHandler OnChannelCreatedEvent;
-					public event ApplicationReplacedEventHandler OnApplicationReplacedEvent;
-					public event ChannelStateChangeEventHandler OnChannelStateChangeEvent;
-					public event PlaybackFinishedEventHandler OnPlaybackFinishedEvent;
-					public event RecordingStartedEventHandler OnRecordingStartedEvent;
-					public event ChannelLeftBridgeEventHandler OnChannelLeftBridgeEvent;
-					public event ChannelDestroyedEventHandler OnChannelDestroyedEvent;
-					public event DeviceStateChangedEventHandler OnDeviceStateChangedEvent;
-					public event ChannelTalkingFinishedEventHandler OnChannelTalkingFinishedEvent;
-					public event PlaybackStartedEventHandler OnPlaybackStartedEvent;
-					public event ChannelTalkingStartedEventHandler OnChannelTalkingStartedEvent;
-					public event RecordingFailedEventHandler OnRecordingFailedEvent;
-					public event BridgeMergedEventHandler OnBridgeMergedEvent;
-					public event RecordingFinishedEventHandler OnRecordingFinishedEvent;
-					public event BridgeAttendedTransferEventHandler OnBridgeAttendedTransferEvent;
-					public event TextMessageReceivedEventHandler OnTextMessageReceivedEvent;
-					public event ChannelEnteredBridgeEventHandler OnChannelEnteredBridgeEvent;
-					public event BridgeDestroyedEventHandler OnBridgeDestroyedEvent;
-					public event BridgeBlindTransferEventHandler OnBridgeBlindTransferEvent;
-					public event ChannelUsereventEventHandler OnChannelUsereventEvent;
-					public event ChannelDialplanEventHandler OnChannelDialplanEvent;
-					public event ChannelHangupRequestEventHandler OnChannelHangupRequestEvent;
-					public event ChannelVarsetEventHandler OnChannelVarsetEvent;
-					public event ChannelHoldEventHandler OnChannelHoldEvent;
-					public event ChannelConnectedLineEventHandler OnChannelConnectedLineEvent;
-					public event ChannelUnholdEventHandler OnChannelUnholdEvent;
-					public event EndpointStateChangeEventHandler OnEndpointStateChangeEvent;
-					public event DialEventHandler OnDialEvent;
-					public event StasisEndEventHandler OnStasisEndEvent;
-					public event StasisStartEventHandler OnStasisStartEvent;
-				public event UnhandledEventHandler OnUnhandledEvent;
+			public event ChannelDtmfReceivedEventHandler OnChannelDtmfReceivedEvent;
+			public event BridgeCreatedEventHandler OnBridgeCreatedEvent;
+			public event ChannelCreatedEventHandler OnChannelCreatedEvent;
+			public event ApplicationReplacedEventHandler OnApplicationReplacedEvent;
+			public event ChannelStateChangeEventHandler OnChannelStateChangeEvent;
+			public event PlaybackFinishedEventHandler OnPlaybackFinishedEvent;
+			public event RecordingStartedEventHandler OnRecordingStartedEvent;
+			public event ChannelLeftBridgeEventHandler OnChannelLeftBridgeEvent;
+			public event ChannelDestroyedEventHandler OnChannelDestroyedEvent;
+			public event DeviceStateChangedEventHandler OnDeviceStateChangedEvent;
+			public event ChannelTalkingFinishedEventHandler OnChannelTalkingFinishedEvent;
+			public event PlaybackStartedEventHandler OnPlaybackStartedEvent;
+			public event ChannelTalkingStartedEventHandler OnChannelTalkingStartedEvent;
+			public event RecordingFailedEventHandler OnRecordingFailedEvent;
+			public event BridgeMergedEventHandler OnBridgeMergedEvent;
+			public event RecordingFinishedEventHandler OnRecordingFinishedEvent;
+			public event BridgeAttendedTransferEventHandler OnBridgeAttendedTransferEvent;
+			public event TextMessageReceivedEventHandler OnTextMessageReceivedEvent;
+			public event ChannelEnteredBridgeEventHandler OnChannelEnteredBridgeEvent;
+			public event BridgeDestroyedEventHandler OnBridgeDestroyedEvent;
+			public event BridgeBlindTransferEventHandler OnBridgeBlindTransferEvent;
+			public event ChannelUsereventEventHandler OnChannelUsereventEvent;
+			public event ChannelDialplanEventHandler OnChannelDialplanEvent;
+			public event ChannelHangupRequestEventHandler OnChannelHangupRequestEvent;
+			public event ChannelVarsetEventHandler OnChannelVarsetEvent;
+			public event ChannelHoldEventHandler OnChannelHoldEvent;
+			public event ChannelConnectedLineEventHandler OnChannelConnectedLineEvent;
+			public event ChannelUnholdEventHandler OnChannelUnholdEvent;
+			public event EndpointStateChangeEventHandler OnEndpointStateChangeEvent;
+			public event DialEventHandler OnDialEvent;
+			public event StasisEndEventHandler OnStasisEndEvent;
+			public event StasisStartEventHandler OnStasisStartEvent;
+			public event UnhandledEventHandler OnUnhandledEvent; 
 		#endregion
-
+		
 		protected void FireEvent(string eventName, object eventArgs, IAriClient sender)
 		{
 		
