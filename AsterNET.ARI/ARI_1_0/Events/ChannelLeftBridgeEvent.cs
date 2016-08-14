@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 02/08/2016 20:28:17
+	Automatically generated file @ 7/5/2016 4:16:58 PM
 */
 using System;
 using System.Collections.Generic;
@@ -13,6 +13,11 @@ namespace AsterNET.ARI.Models
 	/// </summary>
 	public class ChannelLeftBridgeEvent  : Event
 	{
+
+		/// <summary>
+		///
+		/// </summary>
+		// public EventsActions Event { get; set; }
 
 
 		/// <summary>

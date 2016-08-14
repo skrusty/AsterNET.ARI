@@ -1,12 +1,13 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 02/08/2016 20:28:17
+	Automatically generated file @ 7/5/2016 4:16:58 PM
 */
 using System.Collections.Generic;
 using System.Linq;
 using AsterNET.ARI.Middleware;
 using AsterNET.ARI.Models;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace AsterNET.ARI.Actions
 {
@@ -62,6 +63,61 @@ namespace AsterNET.ARI.Actions
 				request.AddParameter("application/json", new { variables = variables }, ParameterType.RequestBody);
 			}
 			var response = Execute(request);
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return;
+			switch((int)response.StatusCode)
+            {
+				case 404:
+					throw new AriException("Application does not exist.", (int)response.StatusCode);
+				case 422:
+					throw new AriException("Event source not found.", (int)response.StatusCode);
+				case 400:
+					throw new AriException("Invalid even tsource URI or userevent data.", (int)response.StatusCode);
+				default:
+					// Unknown server response
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+		}
+
+		/// <summary>
+		/// WebSocket connection for events.. 
+		/// </summary>
+		public async Task<Message> EventWebsocketAsync(string app)
+		{
+			string path = "/events";
+			var request = GetNewRequest(path, HttpMethod.GET);
+			if(app != null)
+				request.AddParameter("app", app, ParameterType.QueryString);
+
+			var response = await ExecuteTask<Message>(request);
+
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return response.Data;
+			switch((int)response.StatusCode)
+            {
+				default:
+					// Unknown server response
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+		}
+		/// <summary>
+		/// Generate a user event.. 
+		/// </summary>
+		public async Task UserEventAsync(string eventName, string application, string source = null, Dictionary<string, string> variables = null)
+		{
+			string path = "/events/user/{eventName}";
+			var request = GetNewRequest(path, HttpMethod.POST);
+			if(eventName != null)
+				request.AddUrlSegment("eventName", eventName);
+			if(application != null)
+				request.AddParameter("application", application, ParameterType.QueryString);
+			if(source != null)
+				request.AddParameter("source", source, ParameterType.QueryString);
+			if(variables != null)
+			{
+				request.AddParameter("application/json", new { variables = variables }, ParameterType.RequestBody);
+			}
+			var response = await ExecuteTask(request);
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return;
 			switch((int)response.StatusCode)

@@ -162,6 +162,7 @@ using System;
 using System.Collections.Generic;
 using AsterNET.ARI.Models;
 using AsterNET.ARI;
+using System.Threading.Tasks;
 
 namespace AsterNET.ARI.Actions
 {
@@ -183,6 +184,69 @@ namespace AsterNET.ARI.Actions
 				var httpMethod = op.SelectToken("httpMethod").Value<string>();
 			
 				var responseType = ARICodeGen.SwaggerHelper.TypeConvert(op.SelectToken("responseClass").Value<string>());
+
+				var parameters = string.Empty;
+			
+				try {
+					var allParams = op.SelectToken("parameters").ToList();
+					try {
+						allParams = allParams.OrderByDescending(x => x.SelectToken("required").Value<bool>()).ToList();
+					}catch{}
+
+					foreach(var param in allParams) {
+						// Get Param Type
+						var paramType = ARICodeGen.SwaggerHelper.TypeConvert(param.SelectToken("dataType").Value<string>());
+						// string defaultValue = param.SelectToken("defalutValue").Value<string>()
+						var optionalString = "";
+						if(param.SelectToken("required") != null && !param.SelectToken("required").Value<bool>()){
+							if(paramType == "int" || paramType == "bool" || paramType == "long")
+								paramType = paramType + "?";
+							
+							optionalString = " = null";
+						}
+						parameters += string.Format("{2}{1} {0}{3}", 
+							param.SelectToken("name").Value<string>(), 
+							paramType, 
+							parameters.Length > 0 ? ", " : "", 
+							optionalString);
+					}
+				}catch(Exception ex){
+					Trace.WriteLine(ex.ToString());
+				}
+
+#>
+		/// <summary>
+		/// <#= description ?? "no description provided" #>
+		/// </summary>
+<# 
+				try {
+					foreach(var param in op.SelectToken("parameters")) {
+#>
+		/// <param name="<#= param.SelectToken("name").Value<string>() #>"><#= param.SelectToken("description").Value<string>() #></param>
+<#
+					}
+                }catch{}
+#>
+		<#= responseType #> <#= ARICodeGen.SwaggerHelper.GetSafeName(methodName) #>(<#= parameters #>);
+<#			}
+		}
+#>
+
+<#
+
+		foreach (var item in apis)
+		{
+			var path = item.SelectToken("path").Value<string>();
+			var operations = item.SelectToken("operations");
+			
+			foreach(var op in operations) 
+			{
+				
+				var methodName = op.SelectToken("nickname").Value<string>() + "Async";
+				var description = string.Format("{0}. {1}", op.SelectToken("summary").Value<string>(), op.SelectToken("notes") == null ? "" : op.SelectToken("notes").Value<string>());
+				var httpMethod = op.SelectToken("httpMethod").Value<string>();
+			
+				var responseType = ARICodeGen.SwaggerHelper.TypeConvertTask(op.SelectToken("responseClass").Value<string>());
 
 				var parameters = string.Empty;
 			
@@ -253,6 +317,7 @@ using System.Linq;
 using AsterNET.ARI.Middleware;
 using AsterNET.ARI.Models;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace AsterNET.ARI.Actions
 {
@@ -407,13 +472,153 @@ namespace AsterNET.ARI.Actions
 	// end of for on operations 
 	//
 #>
+
+<#
+		// Get each operation
+		foreach (var item in apis)
+		{
+			var path = item.SelectToken("path").Value<string>();
+			var operations = item.SelectToken("operations");
+			
+			foreach(var op in operations) 
+			{
+				
+				var methodName = op.SelectToken("nickname").Value<string>();
+				var description = string.Format("{0}. {1}", op.SelectToken("summary").Value<string>(), op.SelectToken("notes") == null ? "" : op.SelectToken("notes").Value<string>());
+				var httpMethod = op.SelectToken("httpMethod").Value<string>();
+			
+				var responseType = ARICodeGen.SwaggerHelper.TypeConvert(op.SelectToken("responseClass").Value<string>());
+				var taskType = ARICodeGen.SwaggerHelper.TypeConvertTask(op.SelectToken("responseClass").Value<string>());
+
+				var parameters = string.Empty;
+			
+				try {
+					var allParams = op.SelectToken("parameters").ToList();
+					try {
+						allParams = allParams.OrderByDescending(x => x.SelectToken("required").Value<bool>()).ToList();
+					}catch{}
+
+					foreach(var param in allParams) {
+						// Get Param Type
+						var paramType = ARICodeGen.SwaggerHelper.TypeConvert(param.SelectToken("dataType").Value<string>());
+						// string defaultValue = param.SelectToken("defalutValue").Value<string>()
+						var optionalString = "";
+						if(param.SelectToken("required") != null && !param.SelectToken("required").Value<bool>()){
+							if(paramType == "int" || paramType == "bool" || paramType == "long")
+								paramType = paramType + "?";
+							
+							optionalString = " = null";
+						}
+						parameters += string.Format("{2}{1} {0}{3}", 
+							param.SelectToken("name").Value<string>(), 
+							paramType, 
+							parameters.Length > 0 ? ", " : "", 
+							optionalString);
+					}
+				}catch(Exception ex){
+					Trace.WriteLine(ex.ToString());
+				}
+
+#>
+		/// <summary>
+		/// <#= description ?? "no description provided" #>
+		/// </summary>
+<# 
+				try {
+					foreach(var param in op.SelectToken("parameters")) {
+						if (param.SelectToken("decription").Value<string>() != null)
+#>
+		/// <param name="<#= param.SelectToken("name").Value<string>() #>"><#= param.SelectToken("description").Value<string>() #></param>
+<#
+					}
+                }catch (Exception e){}
+#>
+		public async <#= taskType #> <#= ARICodeGen.SwaggerHelper.GetSafeName(methodName) + "Async" #>(<#= parameters #>)
+		{
+			string path = "<#= path #>";
+			var request = GetNewRequest(path, HttpMethod.<#= httpMethod.ToUpper() #>);
+<# 
+			try {
+				foreach(var param in op.SelectToken("parameters")) {
+					var paramType = ARICodeGen.SwaggerHelper.TypeConvert(param.SelectToken("dataType").Value<string>());
+					// Perform null check in code
+#>
+			if(<#= param.SelectToken("name").Value<string>() #> != null)
+<#
+					if(param.SelectToken("paramType").Value<string>() == "path"){
+#>
+				request.AddUrlSegment("<#= param.SelectToken("name").Value<string>() #>", <#= param.SelectToken("name").Value<string>() #>);
+<# 
+					}else if(param.SelectToken("paramType").Value<string>() == "query"){
+#>
+				request.AddParameter("<#= param.SelectToken("name").Value<string>() #>", <#= param.SelectToken("name").Value<string>() #>, ParameterType.QueryString);
+<#
+					}else if(param.SelectToken("paramType").Value<string>() == "body"){
+#>
+			{
+				request.AddParameter("application/json", new { <#= param.SelectToken("name").Value<string>() #> = <#= param.SelectToken("name").Value<string>() #> }, ParameterType.RequestBody);
+			}
+<#
+					}else if(param.SelectToken("paramType").Value<string>() == "header"){
+#>
+				request.AddParameter("<#= param.SelectToken("name").Value<string>() #>", <#= param.SelectToken("name").Value<string>() #>, ParameterType.HttpHeader);
+<#
+					}else if(param.SelectToken("paramType").Value<string>() == "form"){
+#>
+				request.AddParameter("<#= param.SelectToken("name").Value<string>() #>", <#= param.SelectToken("name").Value<string>() #>, ParameterType.HttpHeader);
+<#
+					}
+
+
+
+				}
+			}catch(Exception ex){
+					Trace.WriteLine(ex.ToString());
+			}
+			if(responseType == "void") {
+#>
+			var response = await ExecuteTask(request);
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return;
+<#			}else{#>
+
+			var response = await ExecuteTask<<#= responseType #>>(request);
+
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return response.Data;
+<#			} #>
+			switch((int)response.StatusCode)
+            {
+<#  
+			try {
+				foreach(var errorCode in op.SelectToken("errorResponses")) {
+#>
+				case <#= errorCode.SelectToken("code").Value<string>() #>:
+					throw new AriException("<#= errorCode.SelectToken("reason").Value<string>() #>", (int)response.StatusCode);
+<#  
+				}
+			}catch{}
+        
+#>
+				default:
+					// Unknown server response
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+		}
+<#		} 
+		
+	}
+	//
+	// end of for on operations 
+	//
+#>
 	}
 }
 
 <#
 	} 
 }
-	manager.StartNewFile("ARIClient.cs", "AsterNET.ARI", "ARI_1_0");
+	manager.StartNewFile("ARIClient.cs");
 #>
 /*
 	AsterNET ARI Framework

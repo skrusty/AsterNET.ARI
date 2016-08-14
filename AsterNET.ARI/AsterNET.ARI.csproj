@@ -156,7 +156,6 @@
     <Compile Include="StasisEndpoint.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ARI_1_0\Models.txt4" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

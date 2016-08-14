@@ -15,7 +15,8 @@ namespace AsterNET.ARI
     {
         // Note that dispatching events on the thread pool implies that events might be processed out of order.
         ThreadPool,
-        DedicatedThread
+        DedicatedThread,
+        AsyncTask
     }
 
     /// <summary>
@@ -188,6 +189,7 @@ namespace AsterNET.ARI
             {
                 case EventDispatchingStrategy.DedicatedThread: return new DedicatedThreadDispatcher();
                 case EventDispatchingStrategy.ThreadPool: return new ThreadPoolDispatcher();
+                case EventDispatchingStrategy.AsyncTask: return new AsyncDispatcher();
             }
 
             throw new AriException(EventDispatchingStrategy.ToString());
