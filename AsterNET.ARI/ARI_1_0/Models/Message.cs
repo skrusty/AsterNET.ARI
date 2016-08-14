@@ -9,16 +9,16 @@ using AsterNET.ARI.Actions;
 namespace AsterNET.ARI.Models
 {
 	/// <summary>
-	/// Notification that a device state has changed.
+	/// Base type for errors and events
 	/// </summary>
-	public class DeviceStateChangedEvent  : Event
+	public class Message 
 	{
 
 
 		/// <summary>
-		/// Device state object
+		/// Indicates the type of this message.
 		/// </summary>
-		public DeviceState Device_state { get; set; }
+		public string Type { get; set; }
 
 	}
 }

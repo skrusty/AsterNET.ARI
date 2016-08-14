@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 12/10/2015 11:53:28
+	Automatically generated file @ 02/08/2016 20:28:17
 */
 using System;
 using System.Collections.Generic;
@@ -13,11 +13,6 @@ namespace AsterNET.ARI.Models
 	/// </summary>
 	public class Module 
 	{
-
-		/// <summary>
-		///
-		/// </summary>
-		// public AsteriskActions Asteris { get; set; }
 
 
 		/// <summary>

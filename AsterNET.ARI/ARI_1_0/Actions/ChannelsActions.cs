@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 12/10/2015 17:14:23
+	Automatically generated file @ 02/08/2016 20:28:17
 */
 using System.Collections.Generic;
 using System.Linq;
@@ -77,7 +77,7 @@ namespace AsterNET.ARI.Actions
 				request.AddParameter("timeout", timeout, ParameterType.QueryString);
 			if(variables != null)
 			{
-				request.AddParameter("application/json", variables, ParameterType.RequestBody);
+				request.AddParameter("application/json", new { variables = variables }, ParameterType.RequestBody);
 			}
 			if(channelId != null)
 				request.AddParameter("channelId", channelId, ParameterType.QueryString);
@@ -165,7 +165,7 @@ namespace AsterNET.ARI.Actions
 				request.AddParameter("timeout", timeout, ParameterType.QueryString);
 			if(variables != null)
 			{
-				request.AddParameter("application/json", variables, ParameterType.RequestBody);
+				request.AddParameter("application/json", new { variables = variables }, ParameterType.RequestBody);
 			}
 			if(otherChannelId != null)
 				request.AddParameter("otherChannelId", otherChannelId, ParameterType.QueryString);

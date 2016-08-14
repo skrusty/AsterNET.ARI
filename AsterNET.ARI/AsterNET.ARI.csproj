@@ -51,16 +51,38 @@
   <ItemGroup>
     <Compile Include="ARI_1_0\Actions\IMailboxesActions.cs" />
     <Compile Include="ARI_1_0\Actions\MailboxesActions.cs" />
-    <Compile Include="ARI_1_0\ConfigTuple.cs" />
-    <Compile Include="ARI_1_0\Event.cs" />
     <Compile Include="ARI_1_0\Events\ChannelConnectedLineEvent.cs" />
     <Compile Include="ARI_1_0\Events\ChannelHoldEvent.cs" />
     <Compile Include="ARI_1_0\Events\ChannelUnholdEvent.cs" />
     <Compile Include="ARI_1_0\Events\TextMessageReceivedEvent.cs" />
-    <Compile Include="ARI_1_0\Mailbox.cs" />
-    <Compile Include="ARI_1_0\Module.cs" />
-    <Compile Include="ARI_1_0\TextMessage.cs" />
-    <Compile Include="ARI_1_0\TextMessageVariable.cs" />
+    <Compile Include="ARI_1_0\Models\Application.cs" />
+    <Compile Include="ARI_1_0\Models\AsteriskInfo.cs" />
+    <Compile Include="ARI_1_0\Models\Bridge.cs" />
+    <Compile Include="ARI_1_0\Models\BuildInfo.cs" />
+    <Compile Include="ARI_1_0\Models\CallerID.cs" />
+    <Compile Include="ARI_1_0\Models\Channel.cs" />
+    <Compile Include="ARI_1_0\Models\ConfigInfo.cs" />
+    <Compile Include="ARI_1_0\Models\ConfigTuple.cs" />
+    <Compile Include="ARI_1_0\Models\DeviceState.cs" />
+    <Compile Include="ARI_1_0\Models\Dialed.cs" />
+    <Compile Include="ARI_1_0\Models\DialplanCEP.cs" />
+    <Compile Include="ARI_1_0\Models\Endpoint.cs" />
+    <Compile Include="ARI_1_0\Models\Event.cs" />
+    <Compile Include="ARI_1_0\Models\FormatLangPair.cs" />
+    <Compile Include="ARI_1_0\Models\LiveRecording.cs" />
+    <Compile Include="ARI_1_0\Models\Mailbox.cs" />
+    <Compile Include="ARI_1_0\Models\Message.cs" />
+    <Compile Include="ARI_1_0\Models\MissingParams.cs" />
+    <Compile Include="ARI_1_0\Models\Module.cs" />
+    <Compile Include="ARI_1_0\Models\Playback.cs" />
+    <Compile Include="ARI_1_0\Models\SetId.cs" />
+    <Compile Include="ARI_1_0\Models\Sound.cs" />
+    <Compile Include="ARI_1_0\Models\StatusInfo.cs" />
+    <Compile Include="ARI_1_0\Models\StoredRecording.cs" />
+    <Compile Include="ARI_1_0\Models\SystemInfo.cs" />
+    <Compile Include="ARI_1_0\Models\TextMessage.cs" />
+    <Compile Include="ARI_1_0\Models\TextMessageVariable.cs" />
+    <Compile Include="ARI_1_0\Models\Variable.cs" />
     <Compile Include="Dispatchers\DedicatedThreadDispatcher.cs" />
     <Compile Include="Dispatchers\ThreadPoolDispatcher.cs" />
     <Compile Include="Helpers\SyncHelper.cs" />
@@ -82,22 +104,18 @@
     <Compile Include="ARI_1_0\Actions\IPlaybacksActions.cs" />
     <Compile Include="ARI_1_0\Actions\IRecordingsActions.cs" />
     <Compile Include="ARI_1_0\Actions\ISoundsActions.cs" />
-    <Compile Include="ARI_1_0\Application.cs" />
     <Compile Include="ARI_1_0\Events\ApplicationReplacedEvent.cs" />
     <Compile Include="ARI_1_0\Actions\ApplicationsActions.cs" />
-    <Compile Include="ARI_1_0\ARIClient.cs" />
+    <Compile Include="ARI_1_0\ARIClient.cs">
+      <DependentUpon>Models.txt4</DependentUpon>
+    </Compile>
     <Compile Include="ARI_1_0\Actions\AsteriskActions.cs" />
-    <Compile Include="ARI_1_0\AsteriskInfo.cs" />
-    <Compile Include="ARI_1_0\Bridge.cs" />
     <Compile Include="ARI_1_0\Events\BridgeAttendedTransferEvent.cs" />
     <Compile Include="ARI_1_0\Events\BridgeBlindTransferEvent.cs" />
     <Compile Include="ARI_1_0\Events\BridgeCreatedEvent.cs" />
     <Compile Include="ARI_1_0\Events\BridgeDestroyedEvent.cs" />
     <Compile Include="ARI_1_0\Events\BridgeMergedEvent.cs" />
     <Compile Include="ARI_1_0\Actions\BridgesActions.cs" />
-    <Compile Include="ARI_1_0\BuildInfo.cs" />
-    <Compile Include="ARI_1_0\CallerID.cs" />
-    <Compile Include="ARI_1_0\Channel.cs" />
     <Compile Include="ARI_1_0\Events\ChannelCallerIdEvent.cs" />
     <Compile Include="ARI_1_0\Events\ChannelCreatedEvent.cs" />
     <Compile Include="ARI_1_0\Events\ChannelDestroyedEvent.cs" />
@@ -112,22 +130,12 @@
     <Compile Include="ARI_1_0\Events\ChannelTalkingStartedEvent.cs" />
     <Compile Include="ARI_1_0\Events\ChannelUsereventEvent.cs" />
     <Compile Include="ARI_1_0\Events\ChannelVarsetEvent.cs" />
-    <Compile Include="ARI_1_0\ConfigInfo.cs" />
-    <Compile Include="ARI_1_0\DeviceState.cs" />
     <Compile Include="ARI_1_0\Events\DeviceStateChangedEvent.cs" />
     <Compile Include="ARI_1_0\Actions\DeviceStatesActions.cs" />
-    <Compile Include="ARI_1_0\Dialed.cs" />
     <Compile Include="ARI_1_0\Events\DialEvent.cs" />
-    <Compile Include="ARI_1_0\DialplanCEP.cs" />
-    <Compile Include="ARI_1_0\Endpoint.cs" />
     <Compile Include="ARI_1_0\Actions\EndpointsActions.cs" />
     <Compile Include="ARI_1_0\Events\EndpointStateChangeEvent.cs" />
     <Compile Include="ARI_1_0\Actions\EventsActions.cs" />
-    <Compile Include="ARI_1_0\FormatLangPair.cs" />
-    <Compile Include="ARI_1_0\LiveRecording.cs" />
-    <Compile Include="ARI_1_0\Message.cs" />
-    <Compile Include="ARI_1_0\MissingParams.cs" />
-    <Compile Include="ARI_1_0\Playback.cs" />
     <Compile Include="ARI_1_0\Events\PlaybackFinishedEvent.cs" />
     <Compile Include="ARI_1_0\Actions\PlaybacksActions.cs" />
     <Compile Include="ARI_1_0\Events\PlaybackStartedEvent.cs" />
@@ -142,18 +150,13 @@
     <Compile Include="ARI_1_0\Events\RecordingFinishedEvent.cs" />
     <Compile Include="ARI_1_0\Actions\RecordingsActions.cs" />
     <Compile Include="ARI_1_0\Events\RecordingStartedEvent.cs" />
-    <Compile Include="ARI_1_0\SetId.cs" />
-    <Compile Include="ARI_1_0\Sound.cs" />
     <Compile Include="ARI_1_0\Actions\SoundsActions.cs" />
     <Compile Include="ARI_1_0\Events\StasisEndEvent.cs" />
     <Compile Include="ARI_1_0\Events\StasisStartEvent.cs" />
-    <Compile Include="ARI_1_0\StatusInfo.cs" />
-    <Compile Include="ARI_1_0\StoredRecording.cs" />
-    <Compile Include="ARI_1_0\SystemInfo.cs" />
-    <Compile Include="ARI_1_0\Variable.cs" />
     <Compile Include="StasisEndpoint.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ARI_1_0\Models.txt4" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
