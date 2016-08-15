@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 14/08/2016 18:59:17
+	Automatically generated file @ 14/08/2016 22:14:39
 */
 using System;
 using System.Collections.Generic;
@@ -16,14 +16,14 @@ namespace AsterNET.ARI.Models
 
 
 		/// <summary>
-		/// The length of time, in milliseconds, that talking was detected on the channel
-		/// </summary>
-		public int Duration { get; set; }
-
-		/// <summary>
 		/// The channel on which talking completed.
 		/// </summary>
 		public Channel Channel { get; set; }
+
+		/// <summary>
+		/// The length of time, in milliseconds, that talking was detected on the channel
+		/// </summary>
+		public int Duration { get; set; }
 
 	}
 }

@@ -28,6 +28,8 @@ namespace ARICodeGen
                 return "bool";
             if (inputType.ToLower() == "containers")
                 return "Dictionary<string, string>";
+            if (inputType.ToLower() == "binary")
+                return "byte[]";
             return inputType;
         }
 
@@ -43,6 +45,8 @@ namespace ARICodeGen
                 return "Task<bool>";
             if (inputType.ToLower() == "containers")
                 return "Task<Dictionary<string, string>>";
+            if (inputType.ToLower() == "binary")
+                return "Task<byte[]>";
             return $"Task<{inputType}>";
         }
 

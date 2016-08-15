@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 14/08/2016 18:59:17
+	Automatically generated file @ 14/08/2016 22:14:39
 */
 using System;
 using System.Collections.Generic;
@@ -65,6 +65,26 @@ namespace AsterNET.ARI.Actions
 		/// <param name="moduleName">Module's name</param>
 		void ReloadModule(string moduleName);
 		/// <summary>
+		/// Gets Asterisk log channel information.. 
+		/// </summary>
+		List<LogChannel> ListLogChannels();
+		/// <summary>
+		/// Adds a log channel.. 
+		/// </summary>
+		/// <param name="logChannelName">The log channel to add</param>
+		/// <param name="configuration">levels of the log channel</param>
+		void AddLog(string logChannelName, string configuration);
+		/// <summary>
+		/// Deletes a log channel.. 
+		/// </summary>
+		/// <param name="logChannelName">Log channels name</param>
+		void DeleteLog(string logChannelName);
+		/// <summary>
+		/// Rotates a log channel.. 
+		/// </summary>
+		/// <param name="logChannelName">Log channel's name</param>
+		void RotateLog(string logChannelName);
+		/// <summary>
 		/// Get the value of a global variable.. 
 		/// </summary>
 		/// <param name="variable">The variable to get</param>
@@ -127,6 +147,26 @@ namespace AsterNET.ARI.Actions
 		/// </summary>
 		/// <param name="moduleName">Module's name</param>
 		Task ReloadModuleAsync(string moduleName);
+		/// <summary>
+		/// Gets Asterisk log channel information.. 
+		/// </summary>
+		Task<List<LogChannel>> ListLogChannelsAsync();
+		/// <summary>
+		/// Adds a log channel.. 
+		/// </summary>
+		/// <param name="logChannelName">The log channel to add</param>
+		/// <param name="configuration">levels of the log channel</param>
+		Task AddLogAsync(string logChannelName, string configuration);
+		/// <summary>
+		/// Deletes a log channel.. 
+		/// </summary>
+		/// <param name="logChannelName">Log channels name</param>
+		Task DeleteLogAsync(string logChannelName);
+		/// <summary>
+		/// Rotates a log channel.. 
+		/// </summary>
+		/// <param name="logChannelName">Log channel's name</param>
+		Task RotateLogAsync(string logChannelName);
 		/// <summary>
 		/// Get the value of a global variable.. 
 		/// </summary>

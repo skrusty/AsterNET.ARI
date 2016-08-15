@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsterNET.ARI", "AsterNET.ARI\AsterNET.ARI.csproj", "{F4C8C633-2207-4C25-89A8-4D23D9CFA964}"
 EndProject
@@ -34,6 +34,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleRecordAndPlaybackAsync", "AsyncSamples\SimpleRecordAndPlaybackAsync\SimpleRecordAndPlaybackAsync.csproj", "{DEE23389-A37D-484F-BB35-E63CF7977C7E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleTestApplicationAsync", "AsyncSamples\SimpleTestApplicationAsync\SimpleTestApplicationAsync.csproj", "{55979546-152E-4157-9AA3-839F6E3CE4E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecordingSample", "RecordingSample\RecordingSample.csproj", "{830E8CF5-E8DD-4E2E-82FA-6433E3BF174B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -76,6 +78,10 @@ Global
 		{55979546-152E-4157-9AA3-839F6E3CE4E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55979546-152E-4157-9AA3-839F6E3CE4E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55979546-152E-4157-9AA3-839F6E3CE4E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{830E8CF5-E8DD-4E2E-82FA-6433E3BF174B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{830E8CF5-E8DD-4E2E-82FA-6433E3BF174B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{830E8CF5-E8DD-4E2E-82FA-6433E3BF174B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{830E8CF5-E8DD-4E2E-82FA-6433E3BF174B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -90,5 +96,6 @@ Global
 		{BEDEAA1C-0513-4CFB-8B5C-794E4C682820} = {31012840-0DA0-4F79-8C4E-952D1422DD0A}
 		{DEE23389-A37D-484F-BB35-E63CF7977C7E} = {31012840-0DA0-4F79-8C4E-952D1422DD0A}
 		{55979546-152E-4157-9AA3-839F6E3CE4E8} = {31012840-0DA0-4F79-8C4E-952D1422DD0A}
+		{830E8CF5-E8DD-4E2E-82FA-6433E3BF174B} = {FBB847F2-AC1C-47DD-B5F7-37C160743F53}
 	EndGlobalSection
 EndGlobal

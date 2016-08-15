@@ -36,7 +36,7 @@ namespace AsterNET.ARI.Middleware.Default
             var cmd = (Command) command;
             var result = cmd.Client.Execute(cmd.Request);
 
-            var rtn = new CommandResult {StatusCode = result.StatusCode};
+            var rtn = new CommandResult {StatusCode = result.StatusCode, RawData = result.RawBytes};
 
             return rtn;
         }
@@ -56,7 +56,7 @@ namespace AsterNET.ARI.Middleware.Default
         {
             var cmd = (Command) command;
             var result = await cmd.Client.ExecuteTaskAsync(cmd.Request);
-            var rtn = new CommandResult {StatusCode = result.StatusCode};
+            var rtn = new CommandResult {StatusCode = result.StatusCode, RawData = result.RawBytes};
             return rtn;
         }
     }

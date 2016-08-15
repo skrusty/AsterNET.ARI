@@ -54,6 +54,9 @@
     <Compile Include="ARI_1_0\Events\ChannelConnectedLineEvent.cs" />
     <Compile Include="ARI_1_0\Events\ChannelHoldEvent.cs" />
     <Compile Include="ARI_1_0\Events\ChannelUnholdEvent.cs" />
+    <Compile Include="ARI_1_0\Events\ContactStatusChangeEvent.cs" />
+    <Compile Include="ARI_1_0\Events\PeerStatusChangeEvent.cs" />
+    <Compile Include="ARI_1_0\Events\PlaybackContinuingEvent.cs" />
     <Compile Include="ARI_1_0\Events\TextMessageReceivedEvent.cs" />
     <Compile Include="ARI_1_0\Models\Application.cs" />
     <Compile Include="ARI_1_0\Models\AsteriskInfo.cs" />
@@ -63,6 +66,7 @@
     <Compile Include="ARI_1_0\Models\Channel.cs" />
     <Compile Include="ARI_1_0\Models\ConfigInfo.cs" />
     <Compile Include="ARI_1_0\Models\ConfigTuple.cs" />
+    <Compile Include="ARI_1_0\Models\ContactInfo.cs" />
     <Compile Include="ARI_1_0\Models\DeviceState.cs" />
     <Compile Include="ARI_1_0\Models\Dialed.cs" />
     <Compile Include="ARI_1_0\Models\DialplanCEP.cs" />
@@ -70,10 +74,12 @@
     <Compile Include="ARI_1_0\Models\Event.cs" />
     <Compile Include="ARI_1_0\Models\FormatLangPair.cs" />
     <Compile Include="ARI_1_0\Models\LiveRecording.cs" />
+    <Compile Include="ARI_1_0\Models\LogChannel.cs" />
     <Compile Include="ARI_1_0\Models\Mailbox.cs" />
     <Compile Include="ARI_1_0\Models\Message.cs" />
     <Compile Include="ARI_1_0\Models\MissingParams.cs" />
     <Compile Include="ARI_1_0\Models\Module.cs" />
+    <Compile Include="ARI_1_0\Models\Peer.cs" />
     <Compile Include="ARI_1_0\Models\Playback.cs" />
     <Compile Include="ARI_1_0\Models\SetId.cs" />
     <Compile Include="ARI_1_0\Models\Sound.cs" />

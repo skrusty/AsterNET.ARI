@@ -14,5 +14,6 @@ namespace AsterNET.ARI.Middleware
     {
         string UniqueId { get; set; }
         HttpStatusCode StatusCode { get; set; }
+        byte[] RawData { get; set; }
     }
 }

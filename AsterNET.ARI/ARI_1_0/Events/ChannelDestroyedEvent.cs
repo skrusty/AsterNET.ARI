@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 14/08/2016 18:59:17
+	Automatically generated file @ 14/08/2016 22:14:39
 */
 using System;
 using System.Collections.Generic;
@@ -16,14 +16,14 @@ namespace AsterNET.ARI.Models
 
 
 		/// <summary>
-		/// Text representation of the cause of the hangup
-		/// </summary>
-		public string Cause_txt { get; set; }
-
-		/// <summary>
 		/// Integer representation of the cause of the hangup
 		/// </summary>
 		public int Cause { get; set; }
+
+		/// <summary>
+		/// Text representation of the cause of the hangup
+		/// </summary>
+		public string Cause_txt { get; set; }
 
 		/// <summary>
 		/// no description provided

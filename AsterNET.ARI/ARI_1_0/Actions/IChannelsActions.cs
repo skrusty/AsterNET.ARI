@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 14/08/2016 18:59:17
+	Automatically generated file @ 14/08/2016 22:14:39
 */
 using System;
 using System.Collections.Generic;
@@ -33,7 +33,19 @@ namespace AsterNET.ARI.Actions
 		/// <param name="channelId">The unique id to assign the channel on creation.</param>
 		/// <param name="otherChannelId">The unique id to assign the second channel when using local channels.</param>
 		/// <param name="originator">The unique id of the channel which is originating this one.</param>
-		Channel Originate(string endpoint, string extension = null, string context = null, long? priority = null, string label = null, string app = null, string appArgs = null, string callerId = null, int? timeout = null, Dictionary<string, string> variables = null, string channelId = null, string otherChannelId = null, string originator = null);
+		/// <param name="formats">The format name capability list to use if originator is not specified. Ex. "ulaw,slin16".  Format names can be found with "core show codecs".</param>
+		Channel Originate(string endpoint, string extension = null, string context = null, long? priority = null, string label = null, string app = null, string appArgs = null, string callerId = null, int? timeout = null, Dictionary<string, string> variables = null, string channelId = null, string otherChannelId = null, string originator = null, string formats = null);
+		/// <summary>
+		/// Create channel.. 
+		/// </summary>
+		/// <param name="endpoint">Endpoint for channel communication</param>
+		/// <param name="app">Stasis Application to place channel into</param>
+		/// <param name="appArgs">The application arguments to pass to the Stasis application provided by 'app'. Mutually exclusive with 'context', 'extension', 'priority', and 'label'.</param>
+		/// <param name="channelId">The unique id to assign the channel on creation.</param>
+		/// <param name="otherChannelId">The unique id to assign the second channel when using local channels.</param>
+		/// <param name="originator">Unique ID of the calling channel</param>
+		/// <param name="formats">The format name capability list to use if originator is not specified. Ex. "ulaw,slin16".  Format names can be found with "core show codecs".</param>
+		Channel Create(string endpoint, string app, string appArgs = null, string channelId = null, string otherChannelId = null, string originator = null, string formats = null);
 		/// <summary>
 		/// Channel details.. 
 		/// </summary>
@@ -55,7 +67,8 @@ namespace AsterNET.ARI.Actions
 		/// <param name="variables">The "variables" key in the body object holds variable key/value pairs to set on the channel on creation. Other keys in the body object are interpreted as query parameters. Ex. { "endpoint": "SIP/Alice", "variables": { "CALLERID(name)": "Alice" } }</param>
 		/// <param name="otherChannelId">The unique id to assign the second channel when using local channels.</param>
 		/// <param name="originator">The unique id of the channel which is originating this one.</param>
-		Channel OriginateWithId(string channelId, string endpoint, string extension = null, string context = null, long? priority = null, string label = null, string app = null, string appArgs = null, string callerId = null, int? timeout = null, Dictionary<string, string> variables = null, string otherChannelId = null, string originator = null);
+		/// <param name="formats">The format name capability list to use if originator is not specified. Ex. "ulaw,slin16".  Format names can be found with "core show codecs".</param>
+		Channel OriginateWithId(string channelId, string endpoint, string extension = null, string context = null, long? priority = null, string label = null, string app = null, string appArgs = null, string callerId = null, int? timeout = null, Dictionary<string, string> variables = null, string otherChannelId = null, string originator = null, string formats = null);
 		/// <summary>
 		/// Delete (i.e. hangup) a channel.. 
 		/// </summary>
@@ -149,9 +162,9 @@ namespace AsterNET.ARI.Actions
 		/// Start playback of media.. The media URI may be any of a number of URI's. Currently sound:, recording:, number:, digits:, characters:, and tone: URI's are supported. This operation creates a playback resource that can be used to control the playback of media (pause, rewind, fast forward, etc.)
 		/// </summary>
 		/// <param name="channelId">Channel's id</param>
-		/// <param name="media">Media's URI to play.</param>
+		/// <param name="media">Media URIs to play.</param>
 		/// <param name="lang">For sounds, selects language for sound.</param>
-		/// <param name="offsetms">Number of media to skip before playing.</param>
+		/// <param name="offsetms">Number of milliseconds to skip before playing. Only applies to the first URI if multiple media URIs are specified.</param>
 		/// <param name="skipms">Number of milliseconds to skip for forward/reverse operations.</param>
 		/// <param name="playbackId">Playback ID.</param>
 		Playback Play(string channelId, string media, string lang = null, int? offsetms = null, int? skipms = null, string playbackId = null);
@@ -160,9 +173,9 @@ namespace AsterNET.ARI.Actions
 		/// </summary>
 		/// <param name="channelId">Channel's id</param>
 		/// <param name="playbackId">Playback ID.</param>
-		/// <param name="media">Media's URI to play.</param>
+		/// <param name="media">Media URIs to play.</param>
 		/// <param name="lang">For sounds, selects language for sound.</param>
-		/// <param name="offsetms">Number of media to skip before playing.</param>
+		/// <param name="offsetms">Number of milliseconds to skip before playing. Only applies to the first URI if multiple media URIs are specified.</param>
 		/// <param name="skipms">Number of milliseconds to skip for forward/reverse operations.</param>
 		Playback PlayWithId(string channelId, string playbackId, string media, string lang = null, int? offsetms = null, int? skipms = null);
 		/// <summary>
@@ -210,6 +223,13 @@ namespace AsterNET.ARI.Actions
 		/// <param name="app">Application the snooping channel is placed into</param>
 		/// <param name="appArgs">The application arguments to pass to the Stasis application</param>
 		Channel SnoopChannelWithId(string channelId, string snoopId, string app, string spy = null, string whisper = null, string appArgs = null);
+		/// <summary>
+		/// Dial a created channel.. 
+		/// </summary>
+		/// <param name="channelId">Channel's id</param>
+		/// <param name="caller">Channel ID of caller</param>
+		/// <param name="timeout">Dial timeout</param>
+		void Dial(string channelId, string caller = null, int? timeout = null);
 
 		/// <summary>
 		/// List all active channels in Asterisk.. 
@@ -231,7 +251,19 @@ namespace AsterNET.ARI.Actions
 		/// <param name="channelId">The unique id to assign the channel on creation.</param>
 		/// <param name="otherChannelId">The unique id to assign the second channel when using local channels.</param>
 		/// <param name="originator">The unique id of the channel which is originating this one.</param>
-		Task<Channel> OriginateAsync(string endpoint, string extension = null, string context = null, long? priority = null, string label = null, string app = null, string appArgs = null, string callerId = null, int? timeout = null, Dictionary<string, string> variables = null, string channelId = null, string otherChannelId = null, string originator = null);
+		/// <param name="formats">The format name capability list to use if originator is not specified. Ex. "ulaw,slin16".  Format names can be found with "core show codecs".</param>
+		Task<Channel> OriginateAsync(string endpoint, string extension = null, string context = null, long? priority = null, string label = null, string app = null, string appArgs = null, string callerId = null, int? timeout = null, Dictionary<string, string> variables = null, string channelId = null, string otherChannelId = null, string originator = null, string formats = null);
+		/// <summary>
+		/// Create channel.. 
+		/// </summary>
+		/// <param name="endpoint">Endpoint for channel communication</param>
+		/// <param name="app">Stasis Application to place channel into</param>
+		/// <param name="appArgs">The application arguments to pass to the Stasis application provided by 'app'. Mutually exclusive with 'context', 'extension', 'priority', and 'label'.</param>
+		/// <param name="channelId">The unique id to assign the channel on creation.</param>
+		/// <param name="otherChannelId">The unique id to assign the second channel when using local channels.</param>
+		/// <param name="originator">Unique ID of the calling channel</param>
+		/// <param name="formats">The format name capability list to use if originator is not specified. Ex. "ulaw,slin16".  Format names can be found with "core show codecs".</param>
+		Task<Channel> CreateAsync(string endpoint, string app, string appArgs = null, string channelId = null, string otherChannelId = null, string originator = null, string formats = null);
 		/// <summary>
 		/// Channel details.. 
 		/// </summary>
@@ -253,7 +285,8 @@ namespace AsterNET.ARI.Actions
 		/// <param name="variables">The "variables" key in the body object holds variable key/value pairs to set on the channel on creation. Other keys in the body object are interpreted as query parameters. Ex. { "endpoint": "SIP/Alice", "variables": { "CALLERID(name)": "Alice" } }</param>
 		/// <param name="otherChannelId">The unique id to assign the second channel when using local channels.</param>
 		/// <param name="originator">The unique id of the channel which is originating this one.</param>
-		Task<Channel> OriginateWithIdAsync(string channelId, string endpoint, string extension = null, string context = null, long? priority = null, string label = null, string app = null, string appArgs = null, string callerId = null, int? timeout = null, Dictionary<string, string> variables = null, string otherChannelId = null, string originator = null);
+		/// <param name="formats">The format name capability list to use if originator is not specified. Ex. "ulaw,slin16".  Format names can be found with "core show codecs".</param>
+		Task<Channel> OriginateWithIdAsync(string channelId, string endpoint, string extension = null, string context = null, long? priority = null, string label = null, string app = null, string appArgs = null, string callerId = null, int? timeout = null, Dictionary<string, string> variables = null, string otherChannelId = null, string originator = null, string formats = null);
 		/// <summary>
 		/// Delete (i.e. hangup) a channel.. 
 		/// </summary>
@@ -347,9 +380,9 @@ namespace AsterNET.ARI.Actions
 		/// Start playback of media.. The media URI may be any of a number of URI's. Currently sound:, recording:, number:, digits:, characters:, and tone: URI's are supported. This operation creates a playback resource that can be used to control the playback of media (pause, rewind, fast forward, etc.)
 		/// </summary>
 		/// <param name="channelId">Channel's id</param>
-		/// <param name="media">Media's URI to play.</param>
+		/// <param name="media">Media URIs to play.</param>
 		/// <param name="lang">For sounds, selects language for sound.</param>
-		/// <param name="offsetms">Number of media to skip before playing.</param>
+		/// <param name="offsetms">Number of milliseconds to skip before playing. Only applies to the first URI if multiple media URIs are specified.</param>
 		/// <param name="skipms">Number of milliseconds to skip for forward/reverse operations.</param>
 		/// <param name="playbackId">Playback ID.</param>
 		Task<Playback> PlayAsync(string channelId, string media, string lang = null, int? offsetms = null, int? skipms = null, string playbackId = null);
@@ -358,9 +391,9 @@ namespace AsterNET.ARI.Actions
 		/// </summary>
 		/// <param name="channelId">Channel's id</param>
 		/// <param name="playbackId">Playback ID.</param>
-		/// <param name="media">Media's URI to play.</param>
+		/// <param name="media">Media URIs to play.</param>
 		/// <param name="lang">For sounds, selects language for sound.</param>
-		/// <param name="offsetms">Number of media to skip before playing.</param>
+		/// <param name="offsetms">Number of milliseconds to skip before playing. Only applies to the first URI if multiple media URIs are specified.</param>
 		/// <param name="skipms">Number of milliseconds to skip for forward/reverse operations.</param>
 		Task<Playback> PlayWithIdAsync(string channelId, string playbackId, string media, string lang = null, int? offsetms = null, int? skipms = null);
 		/// <summary>
@@ -408,5 +441,12 @@ namespace AsterNET.ARI.Actions
 		/// <param name="app">Application the snooping channel is placed into</param>
 		/// <param name="appArgs">The application arguments to pass to the Stasis application</param>
 		Task<Channel> SnoopChannelWithIdAsync(string channelId, string snoopId, string app, string spy = null, string whisper = null, string appArgs = null);
+		/// <summary>
+		/// Dial a created channel.. 
+		/// </summary>
+		/// <param name="channelId">Channel's id</param>
+		/// <param name="caller">Channel ID of caller</param>
+		/// <param name="timeout">Dial timeout</param>
+		Task DialAsync(string channelId, string caller = null, int? timeout = null);
 	}
 }

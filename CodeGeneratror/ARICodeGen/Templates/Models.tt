@@ -440,6 +440,11 @@ namespace AsterNET.ARI.Actions
 			var response = Execute(request);
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return;
+<#			}else if(responseType == "byte[]") {
+#>
+			var response = Execute(request);
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return response.RawData;
 <#			}else{#>
 
 			var response = Execute<<#= responseType #>>(request);
@@ -580,6 +585,11 @@ namespace AsterNET.ARI.Actions
 			var response = await ExecuteTask(request);
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return;
+<#			}else if(responseType == "byte[]") {
+#>
+			var response = await ExecuteTask(request);
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return response.RawData;
 <#			}else{#>
 
 			var response = await ExecuteTask<<#= responseType #>>(request);

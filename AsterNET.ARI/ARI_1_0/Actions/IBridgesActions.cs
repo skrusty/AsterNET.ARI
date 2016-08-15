@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 14/08/2016 18:59:17
+	Automatically generated file @ 14/08/2016 22:14:39
 */
 using System;
 using System.Collections.Generic;
@@ -69,9 +69,9 @@ namespace AsterNET.ARI.Actions
 		/// Start playback of media on a bridge.. The media URI may be any of a number of URI's. Currently sound:, recording:, number:, digits:, characters:, and tone: URI's are supported. This operation creates a playback resource that can be used to control the playback of media (pause, rewind, fast forward, etc.)
 		/// </summary>
 		/// <param name="bridgeId">Bridge's id</param>
-		/// <param name="media">Media's URI to play.</param>
+		/// <param name="media">Media URIs to play.</param>
 		/// <param name="lang">For sounds, selects language for sound.</param>
-		/// <param name="offsetms">Number of media to skip before playing.</param>
+		/// <param name="offsetms">Number of milliseconds to skip before playing. Only applies to the first URI if multiple media URIs are specified.</param>
 		/// <param name="skipms">Number of milliseconds to skip for forward/reverse operations.</param>
 		/// <param name="playbackId">Playback Id.</param>
 		Playback Play(string bridgeId, string media, string lang = null, int? offsetms = null, int? skipms = null, string playbackId = null);
@@ -80,9 +80,9 @@ namespace AsterNET.ARI.Actions
 		/// </summary>
 		/// <param name="bridgeId">Bridge's id</param>
 		/// <param name="playbackId">Playback ID.</param>
-		/// <param name="media">Media's URI to play.</param>
+		/// <param name="media">Media URIs to play.</param>
 		/// <param name="lang">For sounds, selects language for sound.</param>
-		/// <param name="offsetms">Number of media to skip before playing.</param>
+		/// <param name="offsetms">Number of milliseconds to skip before playing. Only applies to the first URI if multiple media URIs are specified.</param>
 		/// <param name="skipms">Number of milliseconds to skip for forward/reverse operations.</param>
 		Playback PlayWithId(string bridgeId, string playbackId, string media, string lang = null, int? offsetms = null, int? skipms = null);
 		/// <summary>
@@ -154,9 +154,9 @@ namespace AsterNET.ARI.Actions
 		/// Start playback of media on a bridge.. The media URI may be any of a number of URI's. Currently sound:, recording:, number:, digits:, characters:, and tone: URI's are supported. This operation creates a playback resource that can be used to control the playback of media (pause, rewind, fast forward, etc.)
 		/// </summary>
 		/// <param name="bridgeId">Bridge's id</param>
-		/// <param name="media">Media's URI to play.</param>
+		/// <param name="media">Media URIs to play.</param>
 		/// <param name="lang">For sounds, selects language for sound.</param>
-		/// <param name="offsetms">Number of media to skip before playing.</param>
+		/// <param name="offsetms">Number of milliseconds to skip before playing. Only applies to the first URI if multiple media URIs are specified.</param>
 		/// <param name="skipms">Number of milliseconds to skip for forward/reverse operations.</param>
 		/// <param name="playbackId">Playback Id.</param>
 		Task<Playback> PlayAsync(string bridgeId, string media, string lang = null, int? offsetms = null, int? skipms = null, string playbackId = null);
@@ -165,9 +165,9 @@ namespace AsterNET.ARI.Actions
 		/// </summary>
 		/// <param name="bridgeId">Bridge's id</param>
 		/// <param name="playbackId">Playback ID.</param>
-		/// <param name="media">Media's URI to play.</param>
+		/// <param name="media">Media URIs to play.</param>
 		/// <param name="lang">For sounds, selects language for sound.</param>
-		/// <param name="offsetms">Number of media to skip before playing.</param>
+		/// <param name="offsetms">Number of milliseconds to skip before playing. Only applies to the first URI if multiple media URIs are specified.</param>
 		/// <param name="skipms">Number of milliseconds to skip for forward/reverse operations.</param>
 		Task<Playback> PlayWithIdAsync(string bridgeId, string playbackId, string media, string lang = null, int? offsetms = null, int? skipms = null);
 		/// <summary>

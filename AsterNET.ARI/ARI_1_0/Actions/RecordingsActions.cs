@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 14/08/2016 18:59:17
+	Automatically generated file @ 14/08/2016 22:14:39
 */
 using System.Collections.Generic;
 using System.Linq;
@@ -77,6 +77,30 @@ namespace AsterNET.ARI.Actions
 				return;
 			switch((int)response.StatusCode)
             {
+				case 404:
+					throw new AriException("Recording not found", (int)response.StatusCode);
+				default:
+					// Unknown server response
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+		}
+		/// <summary>
+		/// Get the file associated with the stored recording.. 
+		/// </summary>
+		/// <param name="recordingName">The name of the recording</param>
+		public byte[] GetStoredFile(string recordingName)
+		{
+			string path = "/recordings/stored/{recordingName}/file";
+			var request = GetNewRequest(path, HttpMethod.GET);
+			if(recordingName != null)
+				request.AddUrlSegment("recordingName", recordingName);
+			var response = Execute(request);
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return response.RawData;
+			switch((int)response.StatusCode)
+            {
+				case 403:
+					throw new AriException("The recording file could not be opened", (int)response.StatusCode);
 				case 404:
 					throw new AriException("Recording not found", (int)response.StatusCode);
 				default:
@@ -334,6 +358,29 @@ namespace AsterNET.ARI.Actions
 				return;
 			switch((int)response.StatusCode)
             {
+				case 404:
+					throw new AriException("Recording not found", (int)response.StatusCode);
+				default:
+					// Unknown server response
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+		}
+		/// <summary>
+		/// Get the file associated with the stored recording.. 
+		/// </summary>
+		public async Task<byte[]> GetStoredFileAsync(string recordingName)
+		{
+			string path = "/recordings/stored/{recordingName}/file";
+			var request = GetNewRequest(path, HttpMethod.GET);
+			if(recordingName != null)
+				request.AddUrlSegment("recordingName", recordingName);
+			var response = await ExecuteTask(request);
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return response.RawData;
+			switch((int)response.StatusCode)
+            {
+				case 403:
+					throw new AriException("The recording file could not be opened", (int)response.StatusCode);
 				case 404:
 					throw new AriException("Recording not found", (int)response.StatusCode);
 				default:

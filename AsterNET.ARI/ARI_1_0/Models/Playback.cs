@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 14/08/2016 18:59:17
+	Automatically generated file @ 14/08/2016 22:14:39
 */
 using System;
 using System.Collections.Generic;
@@ -21,9 +21,14 @@ namespace AsterNET.ARI.Models
 		public string Id { get; set; }
 
 		/// <summary>
-		/// URI for the media to play back.
+		/// The URI for the media currently being played back.
 		/// </summary>
 		public string Media_uri { get; set; }
+
+		/// <summary>
+		/// If a list of URIs is being played, the next media URI to be played back.
+		/// </summary>
+		public string Next_media_uri { get; set; }
 
 		/// <summary>
 		/// URI for the channel or bridge to play the media on

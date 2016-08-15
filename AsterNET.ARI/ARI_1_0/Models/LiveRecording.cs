@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 14/08/2016 18:59:17
+	Automatically generated file @ 14/08/2016 22:14:39
 */
 using System;
 using System.Collections.Generic;
@@ -16,14 +16,9 @@ namespace AsterNET.ARI.Models
 
 
 		/// <summary>
-		/// no description provided
+		/// Base name for the recording
 		/// </summary>
-		public string State { get; set; }
-
-		/// <summary>
-		/// Duration of talking, in seconds, detected in the recording. This is only available if the recording was initiated with a non-zero maxSilenceSeconds.
-		/// </summary>
-		public int Talking_duration { get; set; }
+		public string Name { get; set; }
 
 		/// <summary>
 		/// Recording format (wav, gsm, etc.)
@@ -31,19 +26,14 @@ namespace AsterNET.ARI.Models
 		public string Format { get; set; }
 
 		/// <summary>
-		/// Cause for recording failure if failed
+		/// URI for the channel or bridge being recorded
 		/// </summary>
-		public string Cause { get; set; }
+		public string Target_uri { get; set; }
 
 		/// <summary>
-		/// Duration of silence, in seconds, detected in the recording. This is only available if the recording was initiated with a non-zero maxSilenceSeconds.
+		/// no description provided
 		/// </summary>
-		public int Silence_duration { get; set; }
-
-		/// <summary>
-		/// Base name for the recording
-		/// </summary>
-		public string Name { get; set; }
+		public string State { get; set; }
 
 		/// <summary>
 		/// Duration in seconds of the recording
@@ -51,9 +41,19 @@ namespace AsterNET.ARI.Models
 		public int Duration { get; set; }
 
 		/// <summary>
-		/// URI for the channel or bridge being recorded
+		/// Duration of talking, in seconds, detected in the recording. This is only available if the recording was initiated with a non-zero maxSilenceSeconds.
 		/// </summary>
-		public string Target_uri { get; set; }
+		public int Talking_duration { get; set; }
+
+		/// <summary>
+		/// Duration of silence, in seconds, detected in the recording. This is only available if the recording was initiated with a non-zero maxSilenceSeconds.
+		/// </summary>
+		public int Silence_duration { get; set; }
+
+		/// <summary>
+		/// Cause for recording failure if failed
+		/// </summary>
+		public string Cause { get; set; }
 
 	}
 }

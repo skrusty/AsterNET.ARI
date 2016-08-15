@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 14/08/2016 18:59:17
+	Automatically generated file @ 14/08/2016 22:14:39
 */
 using System;
 using System.Collections.Generic;
@@ -21,14 +21,14 @@ namespace AsterNET.ARI.Models
 		public string Technology { get; set; }
 
 		/// <summary>
-		/// Endpoint's state
-		/// </summary>
-		public string State { get; set; }
-
-		/// <summary>
 		/// Identifier of the endpoint, specific to the given technology.
 		/// </summary>
 		public string Resource { get; set; }
+
+		/// <summary>
+		/// Endpoint's state
+		/// </summary>
+		public string State { get; set; }
 
 		/// <summary>
 		/// Id's of channels associated with this endpoint

@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 14/08/2016 18:59:17
+	Automatically generated file @ 14/08/2016 22:14:39
 */
 using System;
 using System.Collections.Generic;
@@ -27,6 +27,11 @@ namespace AsterNET.ARI.Actions
 		/// </summary>
 		/// <param name="recordingName">The name of the recording</param>
 		void DeleteStored(string recordingName);
+		/// <summary>
+		/// Get the file associated with the stored recording.. 
+		/// </summary>
+		/// <param name="recordingName">The name of the recording</param>
+		byte[] GetStoredFile(string recordingName);
 		/// <summary>
 		/// Copy a stored recording.. 
 		/// </summary>
@@ -83,6 +88,11 @@ namespace AsterNET.ARI.Actions
 		/// </summary>
 		/// <param name="recordingName">The name of the recording</param>
 		Task DeleteStoredAsync(string recordingName);
+		/// <summary>
+		/// Get the file associated with the stored recording.. 
+		/// </summary>
+		/// <param name="recordingName">The name of the recording</param>
+		Task<byte[]> GetStoredFileAsync(string recordingName);
 		/// <summary>
 		/// Copy a stored recording.. 
 		/// </summary>

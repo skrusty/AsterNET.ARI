@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 14/08/2016 18:59:17
+	Automatically generated file @ 14/08/2016 22:14:39
 */
 using System;
 using System.Collections.Generic;
@@ -16,21 +16,6 @@ namespace AsterNET.ARI.Models
 
 
 		/// <summary>
-		/// Machine architecture (x86_64, i686, ppc, etc.)
-		/// </summary>
-		public string Machine { get; set; }
-
-		/// <summary>
-		/// Username that build Asterisk
-		/// </summary>
-		public string User { get; set; }
-
-		/// <summary>
-		/// Compile time options, or empty string if default.
-		/// </summary>
-		public string Options { get; set; }
-
-		/// <summary>
 		/// OS Asterisk was built on.
 		/// </summary>
 		public string Os { get; set; }
@@ -41,9 +26,24 @@ namespace AsterNET.ARI.Models
 		public string Kernel { get; set; }
 
 		/// <summary>
+		/// Compile time options, or empty string if default.
+		/// </summary>
+		public string Options { get; set; }
+
+		/// <summary>
+		/// Machine architecture (x86_64, i686, ppc, etc.)
+		/// </summary>
+		public string Machine { get; set; }
+
+		/// <summary>
 		/// Date and time when Asterisk was built.
 		/// </summary>
 		public string Date { get; set; }
+
+		/// <summary>
+		/// Username that build Asterisk
+		/// </summary>
+		public string User { get; set; }
 
 	}
 }

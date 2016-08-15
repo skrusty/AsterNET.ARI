@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 14/08/2016 18:59:17
+	Automatically generated file @ 14/08/2016 22:14:39
 */
 using System.Collections.Generic;
 using System.Linq;
@@ -250,6 +250,96 @@ namespace AsterNET.ARI.Actions
 					throw new AriException("Module not found in running modules.", (int)response.StatusCode);
 				case 409:
 					throw new AriException("Module could not be reloaded.", (int)response.StatusCode);
+				default:
+					// Unknown server response
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+		}
+		/// <summary>
+		/// Gets Asterisk log channel information.. 
+		/// </summary>
+		public List<LogChannel> ListLogChannels()
+		{
+			string path = "/asterisk/logging";
+			var request = GetNewRequest(path, HttpMethod.GET);
+
+			var response = Execute<List<LogChannel>>(request);
+
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return response.Data;
+			switch((int)response.StatusCode)
+            {
+				default:
+					// Unknown server response
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+		}
+		/// <summary>
+		/// Adds a log channel.. 
+		/// </summary>
+		/// <param name="logChannelName">The log channel to add</param>
+		/// <param name="configuration">levels of the log channel</param>
+		public void AddLog(string logChannelName, string configuration)
+		{
+			string path = "/asterisk/logging/{logChannelName}";
+			var request = GetNewRequest(path, HttpMethod.POST);
+			if(logChannelName != null)
+				request.AddUrlSegment("logChannelName", logChannelName);
+			if(configuration != null)
+				request.AddParameter("configuration", configuration, ParameterType.QueryString);
+			var response = Execute(request);
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return;
+			switch((int)response.StatusCode)
+            {
+				case 400:
+					throw new AriException("Bad request body", (int)response.StatusCode);
+				case 409:
+					throw new AriException("Log channel could not be created.", (int)response.StatusCode);
+				default:
+					// Unknown server response
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+		}
+		/// <summary>
+		/// Deletes a log channel.. 
+		/// </summary>
+		/// <param name="logChannelName">Log channels name</param>
+		public void DeleteLog(string logChannelName)
+		{
+			string path = "/asterisk/logging/{logChannelName}";
+			var request = GetNewRequest(path, HttpMethod.DELETE);
+			if(logChannelName != null)
+				request.AddUrlSegment("logChannelName", logChannelName);
+			var response = Execute(request);
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return;
+			switch((int)response.StatusCode)
+            {
+				case 404:
+					throw new AriException("Log channel does not exist.", (int)response.StatusCode);
+				default:
+					// Unknown server response
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+		}
+		/// <summary>
+		/// Rotates a log channel.. 
+		/// </summary>
+		/// <param name="logChannelName">Log channel's name</param>
+		public void RotateLog(string logChannelName)
+		{
+			string path = "/asterisk/logging/{logChannelName}/rotate";
+			var request = GetNewRequest(path, HttpMethod.PUT);
+			if(logChannelName != null)
+				request.AddUrlSegment("logChannelName", logChannelName);
+			var response = Execute(request);
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return;
+			switch((int)response.StatusCode)
+            {
+				case 404:
+					throw new AriException("Log channel does not exist.", (int)response.StatusCode);
 				default:
 					// Unknown server response
 					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -521,6 +611,92 @@ namespace AsterNET.ARI.Actions
 					throw new AriException("Module not found in running modules.", (int)response.StatusCode);
 				case 409:
 					throw new AriException("Module could not be reloaded.", (int)response.StatusCode);
+				default:
+					// Unknown server response
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+		}
+		/// <summary>
+		/// Gets Asterisk log channel information.. 
+		/// </summary>
+		public async Task<List<LogChannel>> ListLogChannelsAsync()
+		{
+			string path = "/asterisk/logging";
+			var request = GetNewRequest(path, HttpMethod.GET);
+
+			var response = await ExecuteTask<List<LogChannel>>(request);
+
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return response.Data;
+			switch((int)response.StatusCode)
+            {
+				default:
+					// Unknown server response
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+		}
+		/// <summary>
+		/// Adds a log channel.. 
+		/// </summary>
+		public async Task AddLogAsync(string logChannelName, string configuration)
+		{
+			string path = "/asterisk/logging/{logChannelName}";
+			var request = GetNewRequest(path, HttpMethod.POST);
+			if(logChannelName != null)
+				request.AddUrlSegment("logChannelName", logChannelName);
+			if(configuration != null)
+				request.AddParameter("configuration", configuration, ParameterType.QueryString);
+			var response = await ExecuteTask(request);
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return;
+			switch((int)response.StatusCode)
+            {
+				case 400:
+					throw new AriException("Bad request body", (int)response.StatusCode);
+				case 409:
+					throw new AriException("Log channel could not be created.", (int)response.StatusCode);
+				default:
+					// Unknown server response
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+		}
+		/// <summary>
+		/// Deletes a log channel.. 
+		/// </summary>
+		public async Task DeleteLogAsync(string logChannelName)
+		{
+			string path = "/asterisk/logging/{logChannelName}";
+			var request = GetNewRequest(path, HttpMethod.DELETE);
+			if(logChannelName != null)
+				request.AddUrlSegment("logChannelName", logChannelName);
+			var response = await ExecuteTask(request);
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return;
+			switch((int)response.StatusCode)
+            {
+				case 404:
+					throw new AriException("Log channel does not exist.", (int)response.StatusCode);
+				default:
+					// Unknown server response
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+		}
+		/// <summary>
+		/// Rotates a log channel.. 
+		/// </summary>
+		public async Task RotateLogAsync(string logChannelName)
+		{
+			string path = "/asterisk/logging/{logChannelName}/rotate";
+			var request = GetNewRequest(path, HttpMethod.PUT);
+			if(logChannelName != null)
+				request.AddUrlSegment("logChannelName", logChannelName);
+			var response = await ExecuteTask(request);
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return;
+			switch((int)response.StatusCode)
+            {
+				case 404:
+					throw new AriException("Log channel does not exist.", (int)response.StatusCode);
 				default:
 					// Unknown server response
 					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);

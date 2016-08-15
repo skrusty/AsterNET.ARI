@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 14/08/2016 18:59:17
+	Automatically generated file @ 14/08/2016 22:14:39
 */
 using System;
 using System.Collections.Generic;
@@ -16,24 +16,14 @@ namespace AsterNET.ARI.Models
 
 
 		/// <summary>
-		/// Default language for media playback.
-		/// </summary>
-		public string Default_language { get; set; }
-
-		/// <summary>
 		/// Asterisk system name.
 		/// </summary>
 		public string Name { get; set; }
 
 		/// <summary>
-		/// Effective user/group id for running Asterisk.
+		/// Default language for media playback.
 		/// </summary>
-		public SetId Setid { get; set; }
-
-		/// <summary>
-		/// Maximum number of open file handles (files, sockets).
-		/// </summary>
-		public int Max_open_files { get; set; }
+		public string Default_language { get; set; }
 
 		/// <summary>
 		/// Maximum number of simultaneous channels.
@@ -41,9 +31,19 @@ namespace AsterNET.ARI.Models
 		public int Max_channels { get; set; }
 
 		/// <summary>
+		/// Maximum number of open file handles (files, sockets).
+		/// </summary>
+		public int Max_open_files { get; set; }
+
+		/// <summary>
 		/// Maximum load avg on system.
 		/// </summary>
 		public double Max_load { get; set; }
+
+		/// <summary>
+		/// Effective user/group id for running Asterisk.
+		/// </summary>
+		public SetId Setid { get; set; }
 
 	}
 }

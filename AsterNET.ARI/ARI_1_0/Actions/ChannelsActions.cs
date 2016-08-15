@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 14/08/2016 18:59:17
+	Automatically generated file @ 14/08/2016 22:14:39
 */
 using System.Collections.Generic;
 using System.Linq;
@@ -54,7 +54,8 @@ namespace AsterNET.ARI.Actions
 		/// <param name="channelId">The unique id to assign the channel on creation.</param>
 		/// <param name="otherChannelId">The unique id to assign the second channel when using local channels.</param>
 		/// <param name="originator">The unique id of the channel which is originating this one.</param>
-		public Channel Originate(string endpoint, string extension = null, string context = null, long? priority = null, string label = null, string app = null, string appArgs = null, string callerId = null, int? timeout = null, Dictionary<string, string> variables = null, string channelId = null, string otherChannelId = null, string originator = null)
+		/// <param name="formats">The format name capability list to use if originator is not specified. Ex. "ulaw,slin16".  Format names can be found with "core show codecs".</param>
+		public Channel Originate(string endpoint, string extension = null, string context = null, long? priority = null, string label = null, string app = null, string appArgs = null, string callerId = null, int? timeout = null, Dictionary<string, string> variables = null, string channelId = null, string otherChannelId = null, string originator = null, string formats = null)
 		{
 			string path = "/channels";
 			var request = GetNewRequest(path, HttpMethod.POST);
@@ -86,6 +87,8 @@ namespace AsterNET.ARI.Actions
 				request.AddParameter("otherChannelId", otherChannelId, ParameterType.QueryString);
 			if(originator != null)
 				request.AddParameter("originator", originator, ParameterType.QueryString);
+			if(formats != null)
+				request.AddParameter("formats", formats, ParameterType.QueryString);
 
 			var response = Execute<Channel>(request);
 
@@ -95,6 +98,46 @@ namespace AsterNET.ARI.Actions
             {
 				case 400:
 					throw new AriException("Invalid parameters for originating a channel.", (int)response.StatusCode);
+				default:
+					// Unknown server response
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+		}
+		/// <summary>
+		/// Create channel.. 
+		/// </summary>
+		/// <param name="endpoint">Endpoint for channel communication</param>
+		/// <param name="app">Stasis Application to place channel into</param>
+		/// <param name="appArgs">The application arguments to pass to the Stasis application provided by 'app'. Mutually exclusive with 'context', 'extension', 'priority', and 'label'.</param>
+		/// <param name="channelId">The unique id to assign the channel on creation.</param>
+		/// <param name="otherChannelId">The unique id to assign the second channel when using local channels.</param>
+		/// <param name="originator">Unique ID of the calling channel</param>
+		/// <param name="formats">The format name capability list to use if originator is not specified. Ex. "ulaw,slin16".  Format names can be found with "core show codecs".</param>
+		public Channel Create(string endpoint, string app, string appArgs = null, string channelId = null, string otherChannelId = null, string originator = null, string formats = null)
+		{
+			string path = "/channels/create";
+			var request = GetNewRequest(path, HttpMethod.POST);
+			if(endpoint != null)
+				request.AddParameter("endpoint", endpoint, ParameterType.QueryString);
+			if(app != null)
+				request.AddParameter("app", app, ParameterType.QueryString);
+			if(appArgs != null)
+				request.AddParameter("appArgs", appArgs, ParameterType.QueryString);
+			if(channelId != null)
+				request.AddParameter("channelId", channelId, ParameterType.QueryString);
+			if(otherChannelId != null)
+				request.AddParameter("otherChannelId", otherChannelId, ParameterType.QueryString);
+			if(originator != null)
+				request.AddParameter("originator", originator, ParameterType.QueryString);
+			if(formats != null)
+				request.AddParameter("formats", formats, ParameterType.QueryString);
+
+			var response = Execute<Channel>(request);
+
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return response.Data;
+			switch((int)response.StatusCode)
+            {
 				default:
 					// Unknown server response
 					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -140,7 +183,8 @@ namespace AsterNET.ARI.Actions
 		/// <param name="variables">The "variables" key in the body object holds variable key/value pairs to set on the channel on creation. Other keys in the body object are interpreted as query parameters. Ex. { "endpoint": "SIP/Alice", "variables": { "CALLERID(name)": "Alice" } }</param>
 		/// <param name="otherChannelId">The unique id to assign the second channel when using local channels.</param>
 		/// <param name="originator">The unique id of the channel which is originating this one.</param>
-		public Channel OriginateWithId(string channelId, string endpoint, string extension = null, string context = null, long? priority = null, string label = null, string app = null, string appArgs = null, string callerId = null, int? timeout = null, Dictionary<string, string> variables = null, string otherChannelId = null, string originator = null)
+		/// <param name="formats">The format name capability list to use if originator is not specified. Ex. "ulaw,slin16".  Format names can be found with "core show codecs".</param>
+		public Channel OriginateWithId(string channelId, string endpoint, string extension = null, string context = null, long? priority = null, string label = null, string app = null, string appArgs = null, string callerId = null, int? timeout = null, Dictionary<string, string> variables = null, string otherChannelId = null, string originator = null, string formats = null)
 		{
 			string path = "/channels/{channelId}";
 			var request = GetNewRequest(path, HttpMethod.POST);
@@ -172,6 +216,8 @@ namespace AsterNET.ARI.Actions
 				request.AddParameter("otherChannelId", otherChannelId, ParameterType.QueryString);
 			if(originator != null)
 				request.AddParameter("originator", originator, ParameterType.QueryString);
+			if(formats != null)
+				request.AddParameter("formats", formats, ParameterType.QueryString);
 
 			var response = Execute<Channel>(request);
 
@@ -244,6 +290,8 @@ namespace AsterNET.ARI.Actions
 					throw new AriException("Channel not found", (int)response.StatusCode);
 				case 409:
 					throw new AriException("Channel not in a Stasis application", (int)response.StatusCode);
+				case 412:
+					throw new AriException("Channel in invalid state", (int)response.StatusCode);
 				default:
 					// Unknown server response
 					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -275,6 +323,8 @@ namespace AsterNET.ARI.Actions
 					throw new AriException("Channel not in a Stasis application", (int)response.StatusCode);
 				case 422:
 					throw new AriException("Endpoint is not the same type as the channel", (int)response.StatusCode);
+				case 412:
+					throw new AriException("Channel in invalid state", (int)response.StatusCode);
 				default:
 					// Unknown server response
 					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -299,6 +349,8 @@ namespace AsterNET.ARI.Actions
 					throw new AriException("Channel not found", (int)response.StatusCode);
 				case 409:
 					throw new AriException("Channel not in a Stasis application", (int)response.StatusCode);
+				case 412:
+					throw new AriException("Channel in invalid state", (int)response.StatusCode);
 				default:
 					// Unknown server response
 					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -323,6 +375,8 @@ namespace AsterNET.ARI.Actions
 					throw new AriException("Channel not found", (int)response.StatusCode);
 				case 409:
 					throw new AriException("Channel not in a Stasis application", (int)response.StatusCode);
+				case 412:
+					throw new AriException("Channel in invalid state", (int)response.StatusCode);
 				default:
 					// Unknown server response
 					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -347,6 +401,8 @@ namespace AsterNET.ARI.Actions
 					throw new AriException("Channel not found", (int)response.StatusCode);
 				case 409:
 					throw new AriException("Channel not in a Stasis application", (int)response.StatusCode);
+				case 412:
+					throw new AriException("Channel in invalid state", (int)response.StatusCode);
 				default:
 					// Unknown server response
 					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -388,6 +444,8 @@ namespace AsterNET.ARI.Actions
 					throw new AriException("Channel not found", (int)response.StatusCode);
 				case 409:
 					throw new AriException("Channel not in a Stasis application", (int)response.StatusCode);
+				case 412:
+					throw new AriException("Channel in invalid state", (int)response.StatusCode);
 				default:
 					// Unknown server response
 					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -415,6 +473,8 @@ namespace AsterNET.ARI.Actions
 					throw new AriException("Channel not found", (int)response.StatusCode);
 				case 409:
 					throw new AriException("Channel not in a Stasis application", (int)response.StatusCode);
+				case 412:
+					throw new AriException("Channel in invalid state", (int)response.StatusCode);
 				default:
 					// Unknown server response
 					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -442,6 +502,8 @@ namespace AsterNET.ARI.Actions
 					throw new AriException("Channel not found", (int)response.StatusCode);
 				case 409:
 					throw new AriException("Channel not in a Stasis application", (int)response.StatusCode);
+				case 412:
+					throw new AriException("Channel in invalid state", (int)response.StatusCode);
 				default:
 					// Unknown server response
 					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -466,6 +528,8 @@ namespace AsterNET.ARI.Actions
 					throw new AriException("Channel not found", (int)response.StatusCode);
 				case 409:
 					throw new AriException("Channel not in a Stasis application", (int)response.StatusCode);
+				case 412:
+					throw new AriException("Channel in invalid state", (int)response.StatusCode);
 				default:
 					// Unknown server response
 					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -490,6 +554,8 @@ namespace AsterNET.ARI.Actions
 					throw new AriException("Channel not found", (int)response.StatusCode);
 				case 409:
 					throw new AriException("Channel not in a Stasis application", (int)response.StatusCode);
+				case 412:
+					throw new AriException("Channel in invalid state", (int)response.StatusCode);
 				default:
 					// Unknown server response
 					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -517,6 +583,8 @@ namespace AsterNET.ARI.Actions
 					throw new AriException("Channel not found", (int)response.StatusCode);
 				case 409:
 					throw new AriException("Channel not in a Stasis application", (int)response.StatusCode);
+				case 412:
+					throw new AriException("Channel in invalid state", (int)response.StatusCode);
 				default:
 					// Unknown server response
 					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -541,6 +609,8 @@ namespace AsterNET.ARI.Actions
 					throw new AriException("Channel not found", (int)response.StatusCode);
 				case 409:
 					throw new AriException("Channel not in a Stasis application", (int)response.StatusCode);
+				case 412:
+					throw new AriException("Channel in invalid state", (int)response.StatusCode);
 				default:
 					// Unknown server response
 					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -565,6 +635,8 @@ namespace AsterNET.ARI.Actions
 					throw new AriException("Channel not found", (int)response.StatusCode);
 				case 409:
 					throw new AriException("Channel not in a Stasis application", (int)response.StatusCode);
+				case 412:
+					throw new AriException("Channel in invalid state", (int)response.StatusCode);
 				default:
 					// Unknown server response
 					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -589,6 +661,8 @@ namespace AsterNET.ARI.Actions
 					throw new AriException("Channel not found", (int)response.StatusCode);
 				case 409:
 					throw new AriException("Channel not in a Stasis application", (int)response.StatusCode);
+				case 412:
+					throw new AriException("Channel in invalid state", (int)response.StatusCode);
 				default:
 					// Unknown server response
 					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -598,9 +672,9 @@ namespace AsterNET.ARI.Actions
 		/// Start playback of media.. The media URI may be any of a number of URI's. Currently sound:, recording:, number:, digits:, characters:, and tone: URI's are supported. This operation creates a playback resource that can be used to control the playback of media (pause, rewind, fast forward, etc.)
 		/// </summary>
 		/// <param name="channelId">Channel's id</param>
-		/// <param name="media">Media's URI to play.</param>
+		/// <param name="media">Media URIs to play.</param>
 		/// <param name="lang">For sounds, selects language for sound.</param>
-		/// <param name="offsetms">Number of media to skip before playing.</param>
+		/// <param name="offsetms">Number of milliseconds to skip before playing. Only applies to the first URI if multiple media URIs are specified.</param>
 		/// <param name="skipms">Number of milliseconds to skip for forward/reverse operations.</param>
 		/// <param name="playbackId">Playback ID.</param>
 		public Playback Play(string channelId, string media, string lang = null, int? offsetms = null, int? skipms = null, string playbackId = null)
@@ -630,6 +704,8 @@ namespace AsterNET.ARI.Actions
 					throw new AriException("Channel not found", (int)response.StatusCode);
 				case 409:
 					throw new AriException("Channel not in a Stasis application", (int)response.StatusCode);
+				case 412:
+					throw new AriException("Channel in invalid state", (int)response.StatusCode);
 				default:
 					// Unknown server response
 					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -640,9 +716,9 @@ namespace AsterNET.ARI.Actions
 		/// </summary>
 		/// <param name="channelId">Channel's id</param>
 		/// <param name="playbackId">Playback ID.</param>
-		/// <param name="media">Media's URI to play.</param>
+		/// <param name="media">Media URIs to play.</param>
 		/// <param name="lang">For sounds, selects language for sound.</param>
-		/// <param name="offsetms">Number of media to skip before playing.</param>
+		/// <param name="offsetms">Number of milliseconds to skip before playing. Only applies to the first URI if multiple media URIs are specified.</param>
 		/// <param name="skipms">Number of milliseconds to skip for forward/reverse operations.</param>
 		public Playback PlayWithId(string channelId, string playbackId, string media, string lang = null, int? offsetms = null, int? skipms = null)
 		{
@@ -671,6 +747,8 @@ namespace AsterNET.ARI.Actions
 					throw new AriException("Channel not found", (int)response.StatusCode);
 				case 409:
 					throw new AriException("Channel not in a Stasis application", (int)response.StatusCode);
+				case 412:
+					throw new AriException("Channel in invalid state", (int)response.StatusCode);
 				default:
 					// Unknown server response
 					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -872,6 +950,36 @@ namespace AsterNET.ARI.Actions
 					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
             }
 		}
+		/// <summary>
+		/// Dial a created channel.. 
+		/// </summary>
+		/// <param name="channelId">Channel's id</param>
+		/// <param name="caller">Channel ID of caller</param>
+		/// <param name="timeout">Dial timeout</param>
+		public void Dial(string channelId, string caller = null, int? timeout = null)
+		{
+			string path = "/channels/{channelId}/dial";
+			var request = GetNewRequest(path, HttpMethod.POST);
+			if(channelId != null)
+				request.AddUrlSegment("channelId", channelId);
+			if(caller != null)
+				request.AddParameter("caller", caller, ParameterType.QueryString);
+			if(timeout != null)
+				request.AddParameter("timeout", timeout, ParameterType.QueryString);
+			var response = Execute(request);
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return;
+			switch((int)response.StatusCode)
+            {
+				case 404:
+					throw new AriException("Channel cannot be found.", (int)response.StatusCode);
+				case 409:
+					throw new AriException("Channel cannot be dialed.", (int)response.StatusCode);
+				default:
+					// Unknown server response
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+		}
 
 		/// <summary>
 		/// List all active channels in Asterisk.. 
@@ -895,7 +1003,7 @@ namespace AsterNET.ARI.Actions
 		/// <summary>
 		/// Create a new channel (originate).. The new channel is created immediately and a snapshot of it returned. If a Stasis application is provided it will be automatically subscribed to the originated channel for further events and updates.
 		/// </summary>
-		public async Task<Channel> OriginateAsync(string endpoint, string extension = null, string context = null, long? priority = null, string label = null, string app = null, string appArgs = null, string callerId = null, int? timeout = null, Dictionary<string, string> variables = null, string channelId = null, string otherChannelId = null, string originator = null)
+		public async Task<Channel> OriginateAsync(string endpoint, string extension = null, string context = null, long? priority = null, string label = null, string app = null, string appArgs = null, string callerId = null, int? timeout = null, Dictionary<string, string> variables = null, string channelId = null, string otherChannelId = null, string originator = null, string formats = null)
 		{
 			string path = "/channels";
 			var request = GetNewRequest(path, HttpMethod.POST);
@@ -927,6 +1035,8 @@ namespace AsterNET.ARI.Actions
 				request.AddParameter("otherChannelId", otherChannelId, ParameterType.QueryString);
 			if(originator != null)
 				request.AddParameter("originator", originator, ParameterType.QueryString);
+			if(formats != null)
+				request.AddParameter("formats", formats, ParameterType.QueryString);
 
 			var response = await ExecuteTask<Channel>(request);
 
@@ -936,6 +1046,39 @@ namespace AsterNET.ARI.Actions
             {
 				case 400:
 					throw new AriException("Invalid parameters for originating a channel.", (int)response.StatusCode);
+				default:
+					// Unknown server response
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+		}
+		/// <summary>
+		/// Create channel.. 
+		/// </summary>
+		public async Task<Channel> CreateAsync(string endpoint, string app, string appArgs = null, string channelId = null, string otherChannelId = null, string originator = null, string formats = null)
+		{
+			string path = "/channels/create";
+			var request = GetNewRequest(path, HttpMethod.POST);
+			if(endpoint != null)
+				request.AddParameter("endpoint", endpoint, ParameterType.QueryString);
+			if(app != null)
+				request.AddParameter("app", app, ParameterType.QueryString);
+			if(appArgs != null)
+				request.AddParameter("appArgs", appArgs, ParameterType.QueryString);
+			if(channelId != null)
+				request.AddParameter("channelId", channelId, ParameterType.QueryString);
+			if(otherChannelId != null)
+				request.AddParameter("otherChannelId", otherChannelId, ParameterType.QueryString);
+			if(originator != null)
+				request.AddParameter("originator", originator, ParameterType.QueryString);
+			if(formats != null)
+				request.AddParameter("formats", formats, ParameterType.QueryString);
+
+			var response = await ExecuteTask<Channel>(request);
+
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return response.Data;
+			switch((int)response.StatusCode)
+            {
 				default:
 					// Unknown server response
 					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -967,7 +1110,7 @@ namespace AsterNET.ARI.Actions
 		/// <summary>
 		/// Create a new channel (originate with id).. The new channel is created immediately and a snapshot of it returned. If a Stasis application is provided it will be automatically subscribed to the originated channel for further events and updates.
 		/// </summary>
-		public async Task<Channel> OriginateWithIdAsync(string channelId, string endpoint, string extension = null, string context = null, long? priority = null, string label = null, string app = null, string appArgs = null, string callerId = null, int? timeout = null, Dictionary<string, string> variables = null, string otherChannelId = null, string originator = null)
+		public async Task<Channel> OriginateWithIdAsync(string channelId, string endpoint, string extension = null, string context = null, long? priority = null, string label = null, string app = null, string appArgs = null, string callerId = null, int? timeout = null, Dictionary<string, string> variables = null, string otherChannelId = null, string originator = null, string formats = null)
 		{
 			string path = "/channels/{channelId}";
 			var request = GetNewRequest(path, HttpMethod.POST);
@@ -999,6 +1142,8 @@ namespace AsterNET.ARI.Actions
 				request.AddParameter("otherChannelId", otherChannelId, ParameterType.QueryString);
 			if(originator != null)
 				request.AddParameter("originator", originator, ParameterType.QueryString);
+			if(formats != null)
+				request.AddParameter("formats", formats, ParameterType.QueryString);
 
 			var response = await ExecuteTask<Channel>(request);
 
@@ -1064,6 +1209,8 @@ namespace AsterNET.ARI.Actions
 					throw new AriException("Channel not found", (int)response.StatusCode);
 				case 409:
 					throw new AriException("Channel not in a Stasis application", (int)response.StatusCode);
+				case 412:
+					throw new AriException("Channel in invalid state", (int)response.StatusCode);
 				default:
 					// Unknown server response
 					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -1093,6 +1240,8 @@ namespace AsterNET.ARI.Actions
 					throw new AriException("Channel not in a Stasis application", (int)response.StatusCode);
 				case 422:
 					throw new AriException("Endpoint is not the same type as the channel", (int)response.StatusCode);
+				case 412:
+					throw new AriException("Channel in invalid state", (int)response.StatusCode);
 				default:
 					// Unknown server response
 					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -1116,6 +1265,8 @@ namespace AsterNET.ARI.Actions
 					throw new AriException("Channel not found", (int)response.StatusCode);
 				case 409:
 					throw new AriException("Channel not in a Stasis application", (int)response.StatusCode);
+				case 412:
+					throw new AriException("Channel in invalid state", (int)response.StatusCode);
 				default:
 					// Unknown server response
 					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -1139,6 +1290,8 @@ namespace AsterNET.ARI.Actions
 					throw new AriException("Channel not found", (int)response.StatusCode);
 				case 409:
 					throw new AriException("Channel not in a Stasis application", (int)response.StatusCode);
+				case 412:
+					throw new AriException("Channel in invalid state", (int)response.StatusCode);
 				default:
 					// Unknown server response
 					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -1162,6 +1315,8 @@ namespace AsterNET.ARI.Actions
 					throw new AriException("Channel not found", (int)response.StatusCode);
 				case 409:
 					throw new AriException("Channel not in a Stasis application", (int)response.StatusCode);
+				case 412:
+					throw new AriException("Channel in invalid state", (int)response.StatusCode);
 				default:
 					// Unknown server response
 					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -1197,6 +1352,8 @@ namespace AsterNET.ARI.Actions
 					throw new AriException("Channel not found", (int)response.StatusCode);
 				case 409:
 					throw new AriException("Channel not in a Stasis application", (int)response.StatusCode);
+				case 412:
+					throw new AriException("Channel in invalid state", (int)response.StatusCode);
 				default:
 					// Unknown server response
 					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -1222,6 +1379,8 @@ namespace AsterNET.ARI.Actions
 					throw new AriException("Channel not found", (int)response.StatusCode);
 				case 409:
 					throw new AriException("Channel not in a Stasis application", (int)response.StatusCode);
+				case 412:
+					throw new AriException("Channel in invalid state", (int)response.StatusCode);
 				default:
 					// Unknown server response
 					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -1247,6 +1406,8 @@ namespace AsterNET.ARI.Actions
 					throw new AriException("Channel not found", (int)response.StatusCode);
 				case 409:
 					throw new AriException("Channel not in a Stasis application", (int)response.StatusCode);
+				case 412:
+					throw new AriException("Channel in invalid state", (int)response.StatusCode);
 				default:
 					// Unknown server response
 					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -1270,6 +1431,8 @@ namespace AsterNET.ARI.Actions
 					throw new AriException("Channel not found", (int)response.StatusCode);
 				case 409:
 					throw new AriException("Channel not in a Stasis application", (int)response.StatusCode);
+				case 412:
+					throw new AriException("Channel in invalid state", (int)response.StatusCode);
 				default:
 					// Unknown server response
 					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -1293,6 +1456,8 @@ namespace AsterNET.ARI.Actions
 					throw new AriException("Channel not found", (int)response.StatusCode);
 				case 409:
 					throw new AriException("Channel not in a Stasis application", (int)response.StatusCode);
+				case 412:
+					throw new AriException("Channel in invalid state", (int)response.StatusCode);
 				default:
 					// Unknown server response
 					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -1318,6 +1483,8 @@ namespace AsterNET.ARI.Actions
 					throw new AriException("Channel not found", (int)response.StatusCode);
 				case 409:
 					throw new AriException("Channel not in a Stasis application", (int)response.StatusCode);
+				case 412:
+					throw new AriException("Channel in invalid state", (int)response.StatusCode);
 				default:
 					// Unknown server response
 					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -1341,6 +1508,8 @@ namespace AsterNET.ARI.Actions
 					throw new AriException("Channel not found", (int)response.StatusCode);
 				case 409:
 					throw new AriException("Channel not in a Stasis application", (int)response.StatusCode);
+				case 412:
+					throw new AriException("Channel in invalid state", (int)response.StatusCode);
 				default:
 					// Unknown server response
 					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -1364,6 +1533,8 @@ namespace AsterNET.ARI.Actions
 					throw new AriException("Channel not found", (int)response.StatusCode);
 				case 409:
 					throw new AriException("Channel not in a Stasis application", (int)response.StatusCode);
+				case 412:
+					throw new AriException("Channel in invalid state", (int)response.StatusCode);
 				default:
 					// Unknown server response
 					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -1387,6 +1558,8 @@ namespace AsterNET.ARI.Actions
 					throw new AriException("Channel not found", (int)response.StatusCode);
 				case 409:
 					throw new AriException("Channel not in a Stasis application", (int)response.StatusCode);
+				case 412:
+					throw new AriException("Channel in invalid state", (int)response.StatusCode);
 				default:
 					// Unknown server response
 					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -1422,6 +1595,8 @@ namespace AsterNET.ARI.Actions
 					throw new AriException("Channel not found", (int)response.StatusCode);
 				case 409:
 					throw new AriException("Channel not in a Stasis application", (int)response.StatusCode);
+				case 412:
+					throw new AriException("Channel in invalid state", (int)response.StatusCode);
 				default:
 					// Unknown server response
 					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -1457,6 +1632,8 @@ namespace AsterNET.ARI.Actions
 					throw new AriException("Channel not found", (int)response.StatusCode);
 				case 409:
 					throw new AriException("Channel not in a Stasis application", (int)response.StatusCode);
+				case 412:
+					throw new AriException("Channel in invalid state", (int)response.StatusCode);
 				default:
 					// Unknown server response
 					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -1628,6 +1805,33 @@ namespace AsterNET.ARI.Actions
 					throw new AriException("Invalid parameters", (int)response.StatusCode);
 				case 404:
 					throw new AriException("Channel not found", (int)response.StatusCode);
+				default:
+					// Unknown server response
+					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+		}
+		/// <summary>
+		/// Dial a created channel.. 
+		/// </summary>
+		public async Task DialAsync(string channelId, string caller = null, int? timeout = null)
+		{
+			string path = "/channels/{channelId}/dial";
+			var request = GetNewRequest(path, HttpMethod.POST);
+			if(channelId != null)
+				request.AddUrlSegment("channelId", channelId);
+			if(caller != null)
+				request.AddParameter("caller", caller, ParameterType.QueryString);
+			if(timeout != null)
+				request.AddParameter("timeout", timeout, ParameterType.QueryString);
+			var response = await ExecuteTask(request);
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return;
+			switch((int)response.StatusCode)
+            {
+				case 404:
+					throw new AriException("Channel cannot be found.", (int)response.StatusCode);
+				case 409:
+					throw new AriException("Channel cannot be dialed.", (int)response.StatusCode);
 				default:
 					// Unknown server response
 					throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);

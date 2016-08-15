@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 14/08/2016 18:59:17
+	Automatically generated file @ 14/08/2016 22:14:39
 */
 using System.Collections.Generic;
 using System.Linq;
@@ -23,12 +23,15 @@ namespace AsterNET.ARI.Actions
 		/// WebSocket connection for events.. 
 		/// </summary>
 		/// <param name="app">Applications to subscribe to.</param>
-		public Message EventWebsocket(string app)
+		/// <param name="subscribeAll">Subscribe to all Asterisk events. If provided, the applications listed will be subscribed to all events, effectively disabling the application specific subscriptions. Default is 'false'.</param>
+		public Message EventWebsocket(string app, bool? subscribeAll = null)
 		{
 			string path = "/events";
 			var request = GetNewRequest(path, HttpMethod.GET);
 			if(app != null)
 				request.AddParameter("app", app, ParameterType.QueryString);
+			if(subscribeAll != null)
+				request.AddParameter("subscribeAll", subscribeAll, ParameterType.QueryString);
 
 			var response = Execute<Message>(request);
 
@@ -82,12 +85,14 @@ namespace AsterNET.ARI.Actions
 		/// <summary>
 		/// WebSocket connection for events.. 
 		/// </summary>
-		public async Task<Message> EventWebsocketAsync(string app)
+		public async Task<Message> EventWebsocketAsync(string app, bool? subscribeAll = null)
 		{
 			string path = "/events";
 			var request = GetNewRequest(path, HttpMethod.GET);
 			if(app != null)
 				request.AddParameter("app", app, ParameterType.QueryString);
+			if(subscribeAll != null)
+				request.AddParameter("subscribeAll", subscribeAll, ParameterType.QueryString);
 
 			var response = await ExecuteTask<Message>(request);
 

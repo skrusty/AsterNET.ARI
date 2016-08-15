@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 14/08/2016 18:59:17
+	Automatically generated file @ 14/08/2016 22:14:39
 */
 using System;
 using System.Collections.Generic;
@@ -16,24 +16,24 @@ namespace AsterNET.ARI.Models
 
 
 		/// <summary>
-		/// The description of this module
-		/// </summary>
-		public string Description { get; set; }
-
-		/// <summary>
 		/// The name of this module
 		/// </summary>
 		public string Name { get; set; }
 
 		/// <summary>
-		/// The running status of this module
+		/// The description of this module
 		/// </summary>
-		public string Status { get; set; }
+		public string Description { get; set; }
 
 		/// <summary>
 		/// The number of times this module is being used
 		/// </summary>
 		public int Use_count { get; set; }
+
+		/// <summary>
+		/// The running status of this module
+		/// </summary>
+		public string Status { get; set; }
 
 		/// <summary>
 		/// The support state of this module
