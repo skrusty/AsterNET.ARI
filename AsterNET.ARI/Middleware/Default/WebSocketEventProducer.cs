@@ -29,7 +29,7 @@ namespace AsterNET.ARI.Middleware.Default
 
         public ConnectionState State
         {
-            get { return (ConnectionState)_client.State; }
+            get { return _client == null? ConnectionState.None : (ConnectionState)_client.State; }
         }
 
         #endregion
@@ -38,7 +38,7 @@ namespace AsterNET.ARI.Middleware.Default
 
         public bool Connected
         {
-            get { return _client.State == WebSocketState.Open; }
+            get { return _client != null && _client.State == WebSocketState.Open; }
         }
 
         public void Connect()
