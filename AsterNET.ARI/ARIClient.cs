@@ -27,13 +27,13 @@ namespace AsterNET.ARI
 
         public delegate void ConnectionStateChangedHandler(object sender);
 
-        #region Events
+#region Events
         
         public event ConnectionStateChangedHandler OnConnectionStateChanged;
 
-        #endregion       
+#endregion
 
-        #region Private Fields
+#region Private Fields
 
         private readonly IActionConsumer _actionConsumer;
         private readonly IEventProducer _eventProducer;
@@ -43,9 +43,9 @@ namespace AsterNET.ARI
         private TimeSpan _autoReconnectDelay;
         private IAriDispatcher _dispatcher;
 
-        #endregion
+#endregion
 
-        #region Public Properties
+#region Public Properties
 
         public IAsteriskActions Asterisk { get; set; }
         public IApplicationsActions Applications { get; set; }
@@ -66,9 +66,9 @@ namespace AsterNET.ARI
 
         public EventDispatchingStrategy EventDispatchingStrategy { get; set; }
         
-        #endregion
+#endregion
 
-        #region Constructor
+#region Constructor
 
         /// <summary>
         /// </summary>
@@ -113,9 +113,9 @@ namespace AsterNET.ARI
             Disconnect();
         }
 
-        #endregion
+#endregion
 
-        #region Private and Protected Methods
+#region Private and Protected Methods
 
         private void _eventProducer_OnConnectionStateChanged(object sender, EventArgs e)
         {
@@ -188,16 +188,18 @@ namespace AsterNET.ARI
             switch (EventDispatchingStrategy)
             {
                 case EventDispatchingStrategy.DedicatedThread: return new DedicatedThreadDispatcher();
+#if !NETCORE1
                 case EventDispatchingStrategy.ThreadPool: return new ThreadPoolDispatcher();
+#endif
                 case EventDispatchingStrategy.AsyncTask: return new AsyncDispatcher();
             }
 
             throw new AriException(EventDispatchingStrategy.ToString());
         }
 
-        #endregion
+#endregion
 
-        #region Public Methods
+#region Public Methods
 
         public bool Connected
         {
@@ -232,6 +234,6 @@ namespace AsterNET.ARI
             _eventProducer.Disconnect();
         }
 
-        #endregion
+#endregion
     }
 }

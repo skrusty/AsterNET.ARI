@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsterNET.ARI", "AsterNET.ARI\AsterNET.ARI.csproj", "{F4C8C633-2207-4C25-89A8-4D23D9CFA964}"
 EndProject
@@ -36,6 +36,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleTestApplicationAsync", "AsyncSamples\SimpleTestApplicationAsync\SimpleTestApplicationAsync.csproj", "{55979546-152E-4157-9AA3-839F6E3CE4E8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecordingSample", "RecordingSample\RecordingSample.csproj", "{830E8CF5-E8DD-4E2E-82FA-6433E3BF174B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsterNET.ARI.NetCore1", "AsterNET.ARI.NetCore1\AsterNET.ARI.NetCore1.csproj", "{9AD796B2-BF93-49FC-A903-91FFE8951F5B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -82,6 +84,10 @@ Global
 		{830E8CF5-E8DD-4E2E-82FA-6433E3BF174B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{830E8CF5-E8DD-4E2E-82FA-6433E3BF174B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{830E8CF5-E8DD-4E2E-82FA-6433E3BF174B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AD796B2-BF93-49FC-A903-91FFE8951F5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AD796B2-BF93-49FC-A903-91FFE8951F5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AD796B2-BF93-49FC-A903-91FFE8951F5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AD796B2-BF93-49FC-A903-91FFE8951F5B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
