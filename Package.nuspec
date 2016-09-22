@@ -1,21 +1,33 @@
-<?xml version="1.0"?>
-<package>
-  <metadata>
-    <id>AsterNET.ARI</id>
-    <version>1.1.0</version>
-    <authors>Ben Merrills</authors>
-    <owners>Ben Merrills</owners>
-    <licenseUrl>https://github.com/skrusty/AsterNET.ARI/blob/master/LICENSE.txt</licenseUrl>
-    <projectUrl>https://github.com/skrusty/AsterNET.ARI</projectUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>AsterNET.ARI Asterisk ARI/Stasis framework for .NET</description>
-    <releaseNotes>Please see: https://github.com/skrusty/AsterNET.ARI/commits/master</releaseNotes>
-    <copyright>Copyright 2015</copyright>
-    <tags>Asterisk AsterNET Asterisk.NET ARI Stasis</tags>
-	<dependencies>
-	  <dependency id="Newtonsoft.Json" version="5.0.8" />
-	  <dependency id="RestSharp" version="104.4.0" />
-	  <dependency id="WebSocket4Net" version="0.8" />
-	</dependencies>
-  </metadata>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
+    <metadata>
+        <id>AsterNET.ARI</id>
+        <version>1.2.0-beta1</version>
+        <authors>Ben Merrills, Zachary Way</authors>
+        <owners>Ben Merrills</owners>
+        <licenseUrl>https://github.com/skrusty/AsterNET.ARI/blob/master/LICENSE.txt</licenseUrl>
+        <projectUrl>https://github.com/skrusty/AsterNET.ARI</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>AsterNET.ARI Asterisk ARI/Stasis framework for .NET</description>
+        <releaseNotes>Please see: https://github.com/skrusty/AsterNET.ARI/commits/master</releaseNotes>
+        <copyright>Copyright 2015</copyright>
+        <tags>Asterisk AsterNET Asterisk.NET ARI Stasis</tags>
+        <dependencies>
+            <dependency id="Newtonsoft.Json" version="9.0.1" />
+            <dependency id="FubarCoder.RestSharp.Portable.Core" version="4.0.1" />
+            <dependency id="FubarCoder.RestSharp.Portable.HttpClient" version="4.0.1" />
+            <dependency id="FubarCoder.RestSharp.Portable.Encodings" version="4.0.1" />
+            <dependency id="WebSocket4Net" version="0.15.0-beta6" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="AsterNET.ARI\bin\Release\AsterNET.ARI.dll" target="lib\net45\AsterNET.ARI.dll" />
+        <file src="AsterNET.ARI\bin\Release\AsterNET.ARI.pdb" target="lib\net45\AsterNET.ARI.pdb" />
+        <file src="AsterNET.ARI.NetCore1\bin\Release\AsterNET.ARI.dll" target="lib\netstandard1.3\AsterNET.ARI.dll" />
+        <file src="AsterNET.ARI.NetCore1\bin\Release\AsterNET.ARI.dll.config" target="lib\netstandard1.3\AsterNET.ARI.dll.config" />
+        <file src="AsterNET.ARI.NetCore1\bin\Release\AsterNET.ARI.pdb" target="lib\netstandard1.3\AsterNET.ARI.pdb" />
+        <file src="changelog.txt" target="changelog.txt" />
+        <file src="LICENSE.txt" target="LICENSE.txt" />
+        <file src="README.md" target="README.md" />
+    </files>
 </package>
