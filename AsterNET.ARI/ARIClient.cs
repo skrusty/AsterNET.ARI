@@ -27,13 +27,13 @@ namespace AsterNET.ARI
 
         public delegate void ConnectionStateChangedHandler(object sender);
 
-#region Events
-        
+        #region Events
+
         public event ConnectionStateChangedHandler OnConnectionStateChanged;
 
-#endregion
+        #endregion
 
-#region Private Fields
+        #region Private Fields
 
         private readonly IActionConsumer _actionConsumer;
         private readonly IEventProducer _eventProducer;
@@ -43,9 +43,9 @@ namespace AsterNET.ARI
         private TimeSpan _autoReconnectDelay;
         private IAriDispatcher _dispatcher;
 
-#endregion
+        #endregion
 
-#region Public Properties
+        #region Public Properties
 
         public IAsteriskActions Asterisk { get; set; }
         public IApplicationsActions Applications { get; set; }
@@ -65,10 +65,10 @@ namespace AsterNET.ARI
         }
 
         public EventDispatchingStrategy EventDispatchingStrategy { get; set; }
-        
-#endregion
 
-#region Constructor
+        #endregion
+
+        #region Constructor
 
         /// <summary>
         /// </summary>
@@ -98,7 +98,7 @@ namespace AsterNET.ARI
             Playbacks = new PlaybacksActions(_actionConsumer);
             Recordings = new RecordingsActions(_actionConsumer);
             Sounds = new SoundsActions(_actionConsumer);
-            
+
 
             // Setup Event Handlers
             _eventProducer.OnMessageReceived += _eventProducer_OnMessageReceived;
@@ -109,13 +109,13 @@ namespace AsterNET.ARI
         {
             _eventProducer.OnConnectionStateChanged -= _eventProducer_OnConnectionStateChanged;
             _eventProducer.OnMessageReceived -= _eventProducer_OnMessageReceived;
-            
+
             Disconnect();
         }
 
-#endregion
+        #endregion
 
-#region Private and Protected Methods
+        #region Private and Protected Methods
 
         private void _eventProducer_OnConnectionStateChanged(object sender, EventArgs e)
         {
@@ -132,19 +132,19 @@ namespace AsterNET.ARI
             Debug.WriteLine(e.Message);
 #endif
             // load the message
-            var jsonMsg = (JObject) JToken.Parse(e.Message);
+            var jsonMsg = (JObject)JToken.Parse(e.Message);
             var eventName = jsonMsg.SelectToken("type").Value<string>();
             var type = Type.GetType("AsterNET.ARI.Models." + eventName + "Event");
             var evnt =
                 (type != null)
-                    ? (Event) JsonConvert.DeserializeObject(e.Message, type)
-                    : (Event) JsonConvert.DeserializeObject(e.Message, typeof (Event));
+                    ? (Event)JsonConvert.DeserializeObject(e.Message, type)
+                    : (Event)JsonConvert.DeserializeObject(e.Message, typeof(Event));
 
             lock (_syncRoot)
             {
                 if (_dispatcher == null)
                     return;
-                
+
                 _dispatcher.QueueAction(() =>
                 {
                     try
@@ -166,7 +166,7 @@ namespace AsterNET.ARI
 
             lock (_syncRoot)
             {
-                var shouldReconnect = _autoReconnect 
+                var shouldReconnect = _autoReconnect
                     && _eventProducer.State != ConnectionState.Open
                     && _eventProducer.State != ConnectionState.Connecting;
 
@@ -181,7 +181,7 @@ namespace AsterNET.ARI
             _eventProducer.Connect();
         }
 
-        
+
 
         IAriDispatcher CreateDispatcher()
         {
@@ -197,9 +197,9 @@ namespace AsterNET.ARI
             throw new AriException(EventDispatchingStrategy.ToString());
         }
 
-#endregion
+        #endregion
 
-#region Public Methods
+        #region Public Methods
 
         public bool Connected
         {
@@ -234,6 +234,6 @@ namespace AsterNET.ARI
             _eventProducer.Disconnect();
         }
 
-#endregion
+        #endregion
     }
 }
