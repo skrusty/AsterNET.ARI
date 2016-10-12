@@ -1,4 +1,8 @@
 language: csharp
+sudo: required
+dist: trusty
+mono:
+  - 4.0.5
 solution: ./AsterNET.ARI.sln
 matrix:
     include:
