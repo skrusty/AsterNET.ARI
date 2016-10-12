@@ -7,7 +7,7 @@ matrix:
           mono: latest
           env: DOTNETCORE=1
           install:
-            - dotnet restore --configfile "nuget.config"
+            - dotnet restore --configfile "nuget.config" .\AsterNET.ARI.NetCore1\project.json
         - mono: latest
           install:
             - nuget restore AsterNET.ARI.sln -source "https://www.nuget.org/api/v2/;https://www.myget.org/F/restsharp-portable/api/v3/index.json"
