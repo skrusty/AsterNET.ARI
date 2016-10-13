@@ -9,3 +9,8 @@ matrix:
           install:
             - dotnet restore --configfile "nuget.config" AsterNET.ARI.NetCore1/project.json
             - dotnet restore --configfile "nuget.config" AsterNET.ARI/project.json
+          script:
+            - dotnet build AsterNET.ARI
+            - dotnet publish AsterNET.ARI
+            - dotnet build AsterNET.ARI.NetCore1
+            - dotnet publish AsterNET.ARI.NetCore1
