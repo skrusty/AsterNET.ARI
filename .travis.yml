@@ -1,12 +1,13 @@
 language: csharp
-solution: ./AsterNET.ARI.sln
+sudo: required
+dist: trusty
 matrix:
     include:
         - dotnet: 1.0.0-preview2-003121
-          mono: none
+          mono: latest
           env: DOTNETCORE=1
           install:
-            - nuget -Source "https://www.nuget.org/api/v2/;https://www.myget.org/F/restsharp-portable/api/v3/index.json" restore AsterNET.ARI.sln
+            - dotnet restore --configfile "nuget.config" .\AsterNET.ARI.NetCore1\project.json
         - mono: latest
           install:
-            - nuget -Source "https://www.nuget.org/api/v2/;https://www.myget.org/F/restsharp-portable/api/v3/index.json" restore AsterNET.ARI.sln
+            - nuget restore AsterNET.ARI.sln -source "https://www.nuget.org/api/v2/;https://www.myget.org/F/restsharp-portable/api/v3/index.json"
