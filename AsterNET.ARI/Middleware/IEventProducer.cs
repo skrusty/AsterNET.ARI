@@ -23,7 +23,7 @@ namespace AsterNET.ARI.Middleware
         event EventHandler<MessageEventArgs> OnMessageReceived;
         event EventHandler OnConnectionStateChanged;
 
-        void Connect();
+        void Connect(bool subscribeAll = false);
         void Disconnect();
     }
 }

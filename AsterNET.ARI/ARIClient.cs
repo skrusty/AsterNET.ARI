@@ -39,6 +39,7 @@ namespace AsterNET.ARI
         private readonly IEventProducer _eventProducer;
 
         private readonly object _syncRoot = new object();
+        private readonly bool _subscribeAllEvents;
         private bool _autoReconnect;
         private TimeSpan _autoReconnectDelay;
         private IAriDispatcher _dispatcher;
@@ -74,13 +75,14 @@ namespace AsterNET.ARI
         /// </summary>
         /// <param name="endPoint"></param>
         /// <param name="application"></param>
-        public AriClient(StasisEndpoint endPoint, string application)
+        /// <param name="subscribeAllEvents">Subscribe to all Asterisk events. If provided, the applications listed will be subscribed to all events, effectively disabling the application specific subscriptions.</param>
+        public AriClient(StasisEndpoint endPoint, string application, bool subscribeAllEvents = false)
             // Use Default Middleware
-            : this(new RestActionConsumer(endPoint), new WebSocketEventProducer(endPoint, application), application)
+            : this(new RestActionConsumer(endPoint), new WebSocketEventProducer(endPoint, application), application, subscribeAllEvents)
         {
         }
 
-        public AriClient(IActionConsumer actionConsumer, IEventProducer eventProducer, string application)
+        public AriClient(IActionConsumer actionConsumer, IEventProducer eventProducer, string application, bool subscribeAllEvents = false)
         {
             _actionConsumer = actionConsumer;
             _eventProducer = eventProducer;
@@ -98,11 +100,11 @@ namespace AsterNET.ARI
             Playbacks = new PlaybacksActions(_actionConsumer);
             Recordings = new RecordingsActions(_actionConsumer);
             Sounds = new SoundsActions(_actionConsumer);
-
-
             // Setup Event Handlers
             _eventProducer.OnMessageReceived += _eventProducer_OnMessageReceived;
             _eventProducer.OnConnectionStateChanged += _eventProducer_OnConnectionStateChanged;
+
+            _subscribeAllEvents = subscribeAllEvents;
         }
 
         public void Dispose()
@@ -178,7 +180,7 @@ namespace AsterNET.ARI
 
             if (reconnectDelay != TimeSpan.Zero)
                 Thread.Sleep(reconnectDelay);
-            _eventProducer.Connect();
+            _eventProducer.Connect(_subscribeAllEvents);
         }
 
 
@@ -216,7 +218,7 @@ namespace AsterNET.ARI
                     _dispatcher = CreateDispatcher();
             }
 
-            _eventProducer.Connect();
+            _eventProducer.Connect(_subscribeAllEvents);
         }
 
         public void Disconnect()
