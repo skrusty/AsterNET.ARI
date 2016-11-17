@@ -23,9 +23,8 @@
     <files>
         <file src="AsterNET.ARI\bin\Release\net45\AsterNET.ARI.dll" target="lib\net45\AsterNET.ARI.dll" />
         <file src="AsterNET.ARI\bin\Release\net45\AsterNET.ARI.pdb" target="lib\net45\AsterNET.ARI.pdb" />
-        <file src="AsterNET.ARI.NetCore1\bin\Release\netstandard1.6\win7-x64\AsterNET.ARI.dll" target="lib\netstandard1.3\AsterNET.ARI.dll" />
-        <file src="AsterNET.ARI.NetCore1\bin\Release\netstandard1.6\win7-x64\AsterNET.ARI.dll.config" target="lib\netstandard1.3\AsterNET.ARI.dll.config" />
-        <file src="AsterNET.ARI.NetCore1\bin\Release\netstandard1.6\win7-x64\AsterNET.ARI.pdb" target="lib\netstandard1.3\AsterNET.ARI.pdb" />
+        <file src="AsterNET.ARI.NetCore1\bin\Release\netstandard1.6\AsterNET.ARI.NetCore1.dll" target="lib\netstandard1.3\AsterNET.ARI.dll" />
+        <file src="AsterNET.ARI.NetCore1\bin\Release\netstandard1.6\AsterNET.ARI.NetCore1.pdb" target="lib\netstandard1.3\AsterNET.ARI.pdb" />
         <file src="changelog.txt" target="changelog.txt" />
         <file src="LICENSE.txt" target="LICENSE.txt" />
         <file src="README.md" target="README.md" />
