@@ -1,2 +1,16 @@
 language: csharp
-solution: ./AsterNET.ARI.sln
+sudo: required
+dist: trusty
+matrix:
+    include:
+        - dotnet: 1.0.0-preview2-003121
+          mono: latest
+          env: DOTNETCORE=1
+          install:
+            - dotnet restore --configfile "nuget.config" AsterNET.ARI.NetCore1/project.json
+            - dotnet restore --configfile "nuget.config" AsterNET.ARI/project.json
+          script:
+            - dotnet build AsterNET.ARI -c Release
+            - dotnet publish AsterNET.ARI -c Release
+            - dotnet build AsterNET.ARI.NetCore1 -c Release
+            - dotnet publish AsterNET.ARI.NetCore1 -c Release

@@ -1,0 +1,17 @@
+﻿{
+  "version": "1.2.0-*",
+  "dependencies": {
+    "FubarCoder.RestSharp.Portable.Core": "4.0.1",
+    "FubarCoder.RestSharp.Portable.Encodings": "4.0.1",
+    "FubarCoder.RestSharp.Portable.HttpClient": "4.0.1",
+    "WebSocket4Net": "0.15.0-*" 
+  },
+  "runtimes": {
+    "win7-x64": {},
+	  "osx.10.11-x64": {},
+    "ubuntu.16.04-x64": {}
+  },
+  "frameworks": {
+    "net45": {} 
+  }
+}

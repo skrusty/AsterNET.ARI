@@ -28,10 +28,10 @@ namespace AsterNET.ARI
         public delegate void ConnectionStateChangedHandler(object sender);
 
         #region Events
-        
+
         public event ConnectionStateChangedHandler OnConnectionStateChanged;
 
-        #endregion       
+        #endregion
 
         #region Private Fields
 
@@ -100,7 +100,6 @@ namespace AsterNET.ARI
             Playbacks = new PlaybacksActions(_actionConsumer);
             Recordings = new RecordingsActions(_actionConsumer);
             Sounds = new SoundsActions(_actionConsumer);
-            
             // Setup Event Handlers
             _eventProducer.OnMessageReceived += _eventProducer_OnMessageReceived;
             _eventProducer.OnConnectionStateChanged += _eventProducer_OnConnectionStateChanged;
@@ -112,7 +111,7 @@ namespace AsterNET.ARI
         {
             _eventProducer.OnConnectionStateChanged -= _eventProducer_OnConnectionStateChanged;
             _eventProducer.OnMessageReceived -= _eventProducer_OnMessageReceived;
-            
+
             Disconnect();
         }
 
@@ -135,19 +134,19 @@ namespace AsterNET.ARI
             Debug.WriteLine(e.Message);
 #endif
             // load the message
-            var jsonMsg = (JObject) JToken.Parse(e.Message);
+            var jsonMsg = (JObject)JToken.Parse(e.Message);
             var eventName = jsonMsg.SelectToken("type").Value<string>();
             var type = Type.GetType("AsterNET.ARI.Models." + eventName + "Event");
             var evnt =
                 (type != null)
-                    ? (Event) JsonConvert.DeserializeObject(e.Message, type)
-                    : (Event) JsonConvert.DeserializeObject(e.Message, typeof (Event));
+                    ? (Event)JsonConvert.DeserializeObject(e.Message, type)
+                    : (Event)JsonConvert.DeserializeObject(e.Message, typeof(Event));
 
             lock (_syncRoot)
             {
                 if (_dispatcher == null)
                     return;
-                
+
                 _dispatcher.QueueAction(() =>
                 {
                     try
@@ -169,7 +168,7 @@ namespace AsterNET.ARI
 
             lock (_syncRoot)
             {
-                var shouldReconnect = _autoReconnect 
+                var shouldReconnect = _autoReconnect
                     && _eventProducer.State != ConnectionState.Open
                     && _eventProducer.State != ConnectionState.Connecting;
 
@@ -184,14 +183,16 @@ namespace AsterNET.ARI
             _eventProducer.Connect(_subscribeAllEvents);
         }
 
-        
+
 
         IAriDispatcher CreateDispatcher()
         {
             switch (EventDispatchingStrategy)
             {
                 case EventDispatchingStrategy.DedicatedThread: return new DedicatedThreadDispatcher();
+#if !NETCORE1
                 case EventDispatchingStrategy.ThreadPool: return new ThreadPoolDispatcher();
+#endif
                 case EventDispatchingStrategy.AsyncTask: return new AsyncDispatcher();
             }
 
