@@ -8,9 +8,8 @@ matrix:
           env: DOTNETCORE=1
           install:
             - dotnet restore AsterNET.ARI.NetStandard/AsterNET.ARI.NetStandard.csproj
-            - dotnet restore AsterNET.ARI/AsterNET.ARI.csproj
+            - nuget restore AsterNET.ARI.sln
           script:
-            - dotnet build AsterNET.ARI -c Release
-            - dotnet publish AsterNET.ARI -c Release
             - dotnet build AsterNET.ARI.NetStandard -c Release
             - dotnet publish AsterNET.ARI.NetStandard -c Release
+            - xbuild /p:Configuration=Release AsterNET.ARI/AsterNET.ARI.csproj
