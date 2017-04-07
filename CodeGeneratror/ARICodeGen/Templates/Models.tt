@@ -16,9 +16,9 @@
 <#@ import namespace="ARICodeGen" #>
 <#@ import namespace="System.Diagnostics" #>
 <#@ output extension=".cs" #>
-<#@ include file="TemplateFileManagerV2.1.ttinclude" #>
+<#@ include file="$(SolutionDir)packages\T4.TemplateFileManager.2.2.1\tools\ttinc\TemplateFilemanager.CS.ttinclude" #>
 <#
-// System.Diagnostics.Debugger.Launch();
+System.Diagnostics.Debugger.Launch();
 var manager = TemplateFileManager.Create(this);
 	manager.CanOverrideExistingFile = true;
 	manager.IsAutoIndentEnabled = true;
@@ -173,7 +173,7 @@ namespace AsterNET.ARI.Actions
 
 		foreach (var item in apis)
 		{
-			var path = item.SelectToken("path").Value<string>();
+			var path = item.SelectToken("path").Value<string>().Substring(1);
 			var operations = item.SelectToken("operations");
 			
 			foreach(var op in operations) 
@@ -236,7 +236,7 @@ namespace AsterNET.ARI.Actions
 
 		foreach (var item in apis)
 		{
-			var path = item.SelectToken("path").Value<string>();
+			var path = item.SelectToken("path").Value<string>().Substring(1);
 			var operations = item.SelectToken("operations");
 			
 			foreach(var op in operations) 
@@ -333,7 +333,7 @@ namespace AsterNET.ARI.Actions
 		// Get each operation
 		foreach (var item in apis)
 		{
-			var path = item.SelectToken("path").Value<string>();
+			var path = item.SelectToken("path").Value<string>().Substring(1);
 			var operations = item.SelectToken("operations");
 			
 			foreach(var op in operations) 
@@ -440,6 +440,11 @@ namespace AsterNET.ARI.Actions
 			var response = Execute(request);
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return;
+<#			}else if(responseType == "byte[]") {
+#>
+			var response = Execute(request);
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return response.RawData;
 <#			}else{#>
 
 			var response = Execute<<#= responseType #>>(request);
@@ -477,7 +482,7 @@ namespace AsterNET.ARI.Actions
 		// Get each operation
 		foreach (var item in apis)
 		{
-			var path = item.SelectToken("path").Value<string>();
+			var path = item.SelectToken("path").Value<string>().Substring(1);
 			var operations = item.SelectToken("operations");
 			
 			foreach(var op in operations) 
@@ -580,6 +585,11 @@ namespace AsterNET.ARI.Actions
 			var response = await ExecuteTask(request);
 			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
 				return;
+<#			}else if(responseType == "byte[]") {
+#>
+			var response = await ExecuteTask(request);
+			if((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+				return response.RawData;
 <#			}else{#>
 
 			var response = await ExecuteTask<<#= responseType #>>(request);

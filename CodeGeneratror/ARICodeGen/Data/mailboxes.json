@@ -1,1 +1,134 @@
-{"basePath":"http://ec2-52-18-188-47.eu-west-1.compute.amazonaws.com:8088/ari","swaggerVersion":"1.1","_svn_revision":"$Revision$","_copyright":"Copyright (C) 2013, Digium, Inc.","_author":"Jonathan Rose <jrose@digium.com>","apiVersion":"1.8.0","resourcePath":"/api-docs/mailboxes.{format}","apis":[{"path":"/mailboxes","description":"Mailboxes","operations":[{"httpMethod":"GET","nickname":"list","summary":"List all mailboxes.","responseClass":"List[Mailbox]"}]},{"path":"/mailboxes/{mailboxName}","description":"Mailbox state","operations":[{"httpMethod":"GET","nickname":"get","summary":"Retrieve the current state of a mailbox.","responseClass":"Mailbox","parameters":[{"description":"Name of the mailbox","name":"mailboxName","dataType":"string","paramType":"path","required":true,"allowMultiple":false}],"errorResponses":[{"reason":"Mailbox not found","code":404}]},{"httpMethod":"PUT","nickname":"update","summary":"Change the state of a mailbox. (Note - implicitly creates the mailbox).","responseClass":"void","parameters":[{"description":"Name of the mailbox","name":"mailboxName","dataType":"string","paramType":"path","required":true,"allowMultiple":false},{"description":"Count of old messages in the mailbox","name":"oldMessages","dataType":"int","paramType":"query","required":true,"allowMultiple":false},{"description":"Count of new messages in the mailbox","name":"newMessages","dataType":"int","paramType":"query","required":true,"allowMultiple":false}],"errorResponses":[{"reason":"Mailbox not found","code":404}]},{"httpMethod":"DELETE","nickname":"delete","summary":"Destroy a mailbox.","responseClass":"void","parameters":[{"description":"Name of the mailbox","name":"mailboxName","dataType":"string","paramType":"path","required":true,"allowMultiple":false}],"errorResponses":[{"reason":"Mailbox not found","code":404}]}]}],"models":{"Mailbox":{"id":"Mailbox","description":"Represents the state of a mailbox.","properties":{"new_messages":{"type":"int","description":"Count of new messages in the mailbox.","required":true},"name":{"type":"string","description":"Name of the mailbox.","required":true},"old_messages":{"type":"int","description":"Count of old messages in the mailbox.","required":true}}}}}
+{
+	"_copyright": "Copyright (C) 2013, Digium, Inc.",
+	"_author": "Jonathan Rose <jrose@digium.com>",
+	"_svn_revision": "$Revision$",
+	"apiVersion": "1.7.0",
+	"swaggerVersion": "1.1",
+	"basePath": "http://localhost:8088/ari",
+	"resourcePath": "/api-docs/mailboxes.{format}",
+	"apis": [
+		{
+			"path": "/mailboxes",
+			"description": "Mailboxes",
+			"operations": [
+				{
+					"httpMethod": "GET",
+					"summary": "List all mailboxes.",
+					"nickname": "list",
+					"responseClass": "List[Mailbox]"
+				}
+			]
+		},
+		{
+			"path": "/mailboxes/{mailboxName}",
+			"description": "Mailbox state",
+			"operations": [
+				{
+					"httpMethod": "GET",
+					"summary": "Retrieve the current state of a mailbox.",
+					"nickname": "get",
+					"responseClass": "Mailbox",
+					"parameters": [
+						{
+							"name": "mailboxName",
+							"description": "Name of the mailbox",
+							"paramType": "path",
+							"required": true,
+							"allowMultiple": false,
+							"dataType": "string"
+						}
+					],
+						"errorResponses": [
+						{
+							"code": 404,
+							"reason": "Mailbox not found"
+						}
+					]
+				},
+				{
+					"httpMethod": "PUT",
+					"summary": "Change the state of a mailbox. (Note - implicitly creates the mailbox).",
+					"nickname": "update",
+					"responseClass": "void",
+					"parameters": [
+						{
+							"name": "mailboxName",
+							"description": "Name of the mailbox",
+							"paramType": "path",
+							"required": true,
+							"allowMultiple": false,
+							"dataType": "string"
+						},
+						{
+							"name": "oldMessages",
+							"description": "Count of old messages in the mailbox",
+							"paramType": "query",
+							"required": true,
+							"allowMultiple": false,
+							"dataType": "int"
+						},
+						{
+							"name": "newMessages",
+							"description": "Count of new messages in the mailbox",
+							"paramType": "query",
+							"required": true,
+							"allowMultiple": false,
+							"dataType": "int"
+						}
+					],
+				        "errorResponses": [
+						{
+							"code": 404,
+							"reason": "Mailbox not found"
+						}
+					]
+				},
+				{
+					"httpMethod": "DELETE",
+					"summary": "Destroy a mailbox.",
+					"nickname": "delete",
+					"responseClass": "void",
+					"parameters": [
+						{
+							"name": "mailboxName",
+							"description": "Name of the mailbox",
+							"paramType": "path",
+							"required": true,
+							"allowMultiple": false,
+							"dataType": "string"
+						}
+					],
+				        "errorResponses": [
+						{
+							"code": 404,
+							"reason": "Mailbox not found"
+						}
+					]
+				}
+			]
+		}
+	],
+	"models": {
+		"Mailbox": {
+			"id": "Mailbox",
+			"description": "Represents the state of a mailbox.",
+			"properties": {
+				"name": {
+					"type": "string",
+					"description": "Name of the mailbox.",
+					"required": true
+				},
+				"old_messages": {
+					"type": "int",
+					"description": "Count of old messages in the mailbox.",
+					"required": true
+				},
+				"new_messages": {
+					"type": "int",
+					"description": "Count of new messages in the mailbox.",
+					"required": true
+				}
+			}
+		}
+	}
+}

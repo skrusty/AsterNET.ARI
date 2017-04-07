@@ -13,13 +13,14 @@ PM> Install-Package AsterNET.ARI
 **Releases** https://github.com/skrusty/AsterNET.ARI/releases
 
 ### Current Development
-We'll soon be ready to move from Alpha to Beta! So, what's in and working: -
 * Support for ARI Events
 * Support for ARI Actions
 * Support for ARI Models
-* Events hooked up and deserialized to objects
 * [Middleware Support](https://github.com/skrusty/AsterNET-ARI-Middleware-Queue)
 * [AsterNET ARI Proxy](https://github.com/skrusty/AsterNET-ARI-Proxy)
+* Async/Await Support
+* Supports ARI up to Asterisk 13.5
+
 
 ### AsterNET on IRC
 Join in the conversation on Freenode, #asternet

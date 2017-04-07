@@ -30,21 +30,37 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="FubarCoder.RestSharp.Portable.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=be81bb0f53eab22f, processorArchitecture=MSIL">
+      <HintPath>..\packages\FubarCoder.RestSharp.Portable.Core.4.0.1\lib\net45\FubarCoder.RestSharp.Portable.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="RestSharp">
-      <HintPath>..\packages\RestSharp.104.4.0\lib\net4\RestSharp.dll</HintPath>
+    <Reference Include="FubarCoder.RestSharp.Portable.Encodings, Version=4.0.0.0, Culture=neutral, PublicKeyToken=be81bb0f53eab22f, processorArchitecture=MSIL">
+      <HintPath>..\packages\FubarCoder.RestSharp.Portable.Encodings.4.0.1\lib\net45\FubarCoder.RestSharp.Portable.Encodings.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FubarCoder.RestSharp.Portable.HttpClient, Version=4.0.0.0, Culture=neutral, PublicKeyToken=be81bb0f53eab22f, processorArchitecture=MSIL">
+      <HintPath>..\packages\FubarCoder.RestSharp.Portable.HttpClient.4.0.1\lib\net45\FubarCoder.RestSharp.Portable.HttpClient.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SuperSocket.ClientEngine, Version=0.8.0.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SuperSocket.ClientEngine.Core.0.8.0.6\lib\net45\SuperSocket.ClientEngine.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="WebSocket4Net, Version=0.14.1.0, Culture=neutral, PublicKeyToken=eb4e154b696bf72a, processorArchitecture=MSIL">
-      <HintPath>..\packages\WebSocket4Net.0.14.1\lib\net45\WebSocket4Net.dll</HintPath>
+    <Reference Include="WebSocket4Net, Version=0.15.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebSocket4Net.0.15.0-beta6\lib\net45\WebSocket4Net.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -54,6 +70,9 @@
     <Compile Include="ARI_1_0\Events\ChannelConnectedLineEvent.cs" />
     <Compile Include="ARI_1_0\Events\ChannelHoldEvent.cs" />
     <Compile Include="ARI_1_0\Events\ChannelUnholdEvent.cs" />
+    <Compile Include="ARI_1_0\Events\ContactStatusChangeEvent.cs" />
+    <Compile Include="ARI_1_0\Events\PeerStatusChangeEvent.cs" />
+    <Compile Include="ARI_1_0\Events\PlaybackContinuingEvent.cs" />
     <Compile Include="ARI_1_0\Events\TextMessageReceivedEvent.cs" />
     <Compile Include="ARI_1_0\Models\Application.cs" />
     <Compile Include="ARI_1_0\Models\AsteriskInfo.cs" />
@@ -63,6 +82,7 @@
     <Compile Include="ARI_1_0\Models\Channel.cs" />
     <Compile Include="ARI_1_0\Models\ConfigInfo.cs" />
     <Compile Include="ARI_1_0\Models\ConfigTuple.cs" />
+    <Compile Include="ARI_1_0\Models\ContactInfo.cs" />
     <Compile Include="ARI_1_0\Models\DeviceState.cs" />
     <Compile Include="ARI_1_0\Models\Dialed.cs" />
     <Compile Include="ARI_1_0\Models\DialplanCEP.cs" />
@@ -70,10 +90,12 @@
     <Compile Include="ARI_1_0\Models\Event.cs" />
     <Compile Include="ARI_1_0\Models\FormatLangPair.cs" />
     <Compile Include="ARI_1_0\Models\LiveRecording.cs" />
+    <Compile Include="ARI_1_0\Models\LogChannel.cs" />
     <Compile Include="ARI_1_0\Models\Mailbox.cs" />
     <Compile Include="ARI_1_0\Models\Message.cs" />
     <Compile Include="ARI_1_0\Models\MissingParams.cs" />
     <Compile Include="ARI_1_0\Models\Module.cs" />
+    <Compile Include="ARI_1_0\Models\Peer.cs" />
     <Compile Include="ARI_1_0\Models\Playback.cs" />
     <Compile Include="ARI_1_0\Models\SetId.cs" />
     <Compile Include="ARI_1_0\Models\Sound.cs" />
@@ -158,7 +180,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ARI_1_0\Models.txt4" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
