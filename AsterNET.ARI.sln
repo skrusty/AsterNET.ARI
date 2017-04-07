@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsterNET.ARI", "AsterNET.ARI\AsterNET.ARI.csproj", "{F4C8C633-2207-4C25-89A8-4D23D9CFA964}"
 EndProject
@@ -12,6 +12,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7A23B569-33D7-4B8B-AFFD-8D6EC2200C06}"
 	ProjectSection(SolutionItems) = preProject
 		changelog.txt = changelog.txt
+		nuget.config = nuget.config
 		Package.nuspec = Package.nuspec
 	EndProjectSection
 EndProject
@@ -37,7 +38,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleTestApplicationAsync"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecordingSample", "RecordingSample\RecordingSample.csproj", "{830E8CF5-E8DD-4E2E-82FA-6433E3BF174B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsterNET.ARI.NetCore1", "AsterNET.ARI.NetCore1\AsterNET.ARI.NetCore1.csproj", "{9AD796B2-BF93-49FC-A903-91FFE8951F5B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsterNET.ARI.NetStandard", "AsterNET.ARI.NetStandard\AsterNET.ARI.NetStandard.csproj", "{431A2DF3-F413-4FC4-A6E3-FEA97212FD9C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -84,10 +85,10 @@ Global
 		{830E8CF5-E8DD-4E2E-82FA-6433E3BF174B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{830E8CF5-E8DD-4E2E-82FA-6433E3BF174B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{830E8CF5-E8DD-4E2E-82FA-6433E3BF174B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9AD796B2-BF93-49FC-A903-91FFE8951F5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9AD796B2-BF93-49FC-A903-91FFE8951F5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9AD796B2-BF93-49FC-A903-91FFE8951F5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9AD796B2-BF93-49FC-A903-91FFE8951F5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{431A2DF3-F413-4FC4-A6E3-FEA97212FD9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{431A2DF3-F413-4FC4-A6E3-FEA97212FD9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{431A2DF3-F413-4FC4-A6E3-FEA97212FD9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{431A2DF3-F413-4FC4-A6E3-FEA97212FD9C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

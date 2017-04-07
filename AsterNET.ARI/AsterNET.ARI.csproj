@@ -65,6 +65,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ARIClient.cs" />
+    <Compile Include="ARIException.cs" />
     <Compile Include="ARI_1_0\Actions\IMailboxesActions.cs" />
     <Compile Include="ARI_1_0\Actions\MailboxesActions.cs" />
     <Compile Include="ARI_1_0\Events\ChannelConnectedLineEvent.cs" />
@@ -115,8 +117,6 @@
     <Compile Include="Middleware\Default\Command.cs" />
     <Compile Include="Middleware\Default\CommandResult.cs" />
     <Compile Include="ARI_1_0\Actions\ARIBaseAction.cs" />
-    <Compile Include="ARIClient.cs" />
-    <Compile Include="ARIException.cs" />
     <Compile Include="ARI_1_0\Actions\IApplicationsActions.cs" />
     <Compile Include="ARI_1_0\Actions\IAsteriskActions.cs" />
     <Compile Include="ARI_1_0\Actions\IBridgesActions.cs" />
