@@ -190,9 +190,7 @@ namespace AsterNET.ARI
             switch (EventDispatchingStrategy)
             {
                 case EventDispatchingStrategy.DedicatedThread: return new DedicatedThreadDispatcher();
-#if !NETCORE1
                 case EventDispatchingStrategy.ThreadPool: return new ThreadPoolDispatcher();
-#endif
                 case EventDispatchingStrategy.AsyncTask: return new AsyncDispatcher();
             }
 

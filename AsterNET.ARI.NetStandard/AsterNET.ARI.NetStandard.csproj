@@ -1,0 +1,139 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.3</TargetFramework>
+    <AssemblyName>AsterNET.ARI.NetStandard</AssemblyName>
+    <RootNamespace>AsterNET.ARI</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\AsterNET.ARI\ARIClient.cs" Link="ARIClient.cs" />
+    <Compile Include="..\AsterNET.ARI\ARIException.cs" Link="ARIException.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Actions\ApplicationsActions.cs" Link="ARI_1_0\Actions\ApplicationsActions.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Actions\ARIBaseAction.cs" Link="ARI_1_0\Actions\ARIBaseAction.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Actions\AsteriskActions.cs" Link="ARI_1_0\Actions\AsteriskActions.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Actions\BridgesActions.cs" Link="ARI_1_0\Actions\BridgesActions.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Actions\ChannelsActions.cs" Link="ARI_1_0\Actions\ChannelsActions.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Actions\DeviceStatesActions.cs" Link="ARI_1_0\Actions\DeviceStatesActions.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Actions\EndpointsActions.cs" Link="ARI_1_0\Actions\EndpointsActions.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Actions\EventsActions.cs" Link="ARI_1_0\Actions\EventsActions.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Actions\IApplicationsActions.cs" Link="ARI_1_0\Actions\IApplicationsActions.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Actions\IAsteriskActions.cs" Link="ARI_1_0\Actions\IAsteriskActions.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Actions\IBridgesActions.cs" Link="ARI_1_0\Actions\IBridgesActions.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Actions\IChannelsActions.cs" Link="ARI_1_0\Actions\IChannelsActions.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Actions\IDeviceStatesActions.cs" Link="ARI_1_0\Actions\IDeviceStatesActions.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Actions\IEndpointsActions.cs" Link="ARI_1_0\Actions\IEndpointsActions.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Actions\IEventsActions.cs" Link="ARI_1_0\Actions\IEventsActions.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Actions\IMailboxesActions.cs" Link="ARI_1_0\Actions\IMailboxesActions.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Actions\IPlaybacksActions.cs" Link="ARI_1_0\Actions\IPlaybacksActions.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Actions\IRecordingsActions.cs" Link="ARI_1_0\Actions\IRecordingsActions.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Actions\ISoundsActions.cs" Link="ARI_1_0\Actions\ISoundsActions.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Actions\MailboxesActions.cs" Link="ARI_1_0\Actions\MailboxesActions.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Actions\PlaybacksActions.cs" Link="ARI_1_0\Actions\PlaybacksActions.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Actions\RecordingsActions.cs" Link="ARI_1_0\Actions\RecordingsActions.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Actions\SoundsActions.cs" Link="ARI_1_0\Actions\SoundsActions.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\ARIClient.cs" Link="ARI_1_0\ARIClient.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\ApplicationReplacedEvent.cs" Link="ARI_1_0\Events\ApplicationReplacedEvent.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\BridgeAttendedTransferEvent.cs" Link="ARI_1_0\Events\BridgeAttendedTransferEvent.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\BridgeBlindTransferEvent.cs" Link="ARI_1_0\Events\BridgeBlindTransferEvent.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\BridgeCreatedEvent.cs" Link="ARI_1_0\Events\BridgeCreatedEvent.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\BridgeDestroyedEvent.cs" Link="ARI_1_0\Events\BridgeDestroyedEvent.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\BridgeMergedEvent.cs" Link="ARI_1_0\Events\BridgeMergedEvent.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\ChannelCallerIdEvent.cs" Link="ARI_1_0\Events\ChannelCallerIdEvent.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\ChannelConnectedLineEvent.cs" Link="ARI_1_0\Events\ChannelConnectedLineEvent.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\ChannelCreatedEvent.cs" Link="ARI_1_0\Events\ChannelCreatedEvent.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\ChannelDestroyedEvent.cs" Link="ARI_1_0\Events\ChannelDestroyedEvent.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\ChannelDialplanEvent.cs" Link="ARI_1_0\Events\ChannelDialplanEvent.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\ChannelDtmfReceivedEvent.cs" Link="ARI_1_0\Events\ChannelDtmfReceivedEvent.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\ChannelEnteredBridgeEvent.cs" Link="ARI_1_0\Events\ChannelEnteredBridgeEvent.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\ChannelHangupRequestEvent.cs" Link="ARI_1_0\Events\ChannelHangupRequestEvent.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\ChannelHoldEvent.cs" Link="ARI_1_0\Events\ChannelHoldEvent.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\ChannelLeftBridgeEvent.cs" Link="ARI_1_0\Events\ChannelLeftBridgeEvent.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\ChannelStateChangeEvent.cs" Link="ARI_1_0\Events\ChannelStateChangeEvent.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\ChannelTalkingFinishedEvent.cs" Link="ARI_1_0\Events\ChannelTalkingFinishedEvent.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\ChannelTalkingStartedEvent.cs" Link="ARI_1_0\Events\ChannelTalkingStartedEvent.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\ChannelUnholdEvent.cs" Link="ARI_1_0\Events\ChannelUnholdEvent.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\ChannelUsereventEvent.cs" Link="ARI_1_0\Events\ChannelUsereventEvent.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\ChannelVarsetEvent.cs" Link="ARI_1_0\Events\ChannelVarsetEvent.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\ContactStatusChangeEvent.cs" Link="ARI_1_0\Events\ContactStatusChangeEvent.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\DeviceStateChangedEvent.cs" Link="ARI_1_0\Events\DeviceStateChangedEvent.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\DialEvent.cs" Link="ARI_1_0\Events\DialEvent.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\EndpointStateChangeEvent.cs" Link="ARI_1_0\Events\EndpointStateChangeEvent.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\PeerStatusChangeEvent.cs" Link="ARI_1_0\Events\PeerStatusChangeEvent.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\PlaybackContinuingEvent.cs" Link="ARI_1_0\Events\PlaybackContinuingEvent.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\PlaybackFinishedEvent.cs" Link="ARI_1_0\Events\PlaybackFinishedEvent.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\PlaybackStartedEvent.cs" Link="ARI_1_0\Events\PlaybackStartedEvent.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\RecordingFailedEvent.cs" Link="ARI_1_0\Events\RecordingFailedEvent.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\RecordingFinishedEvent.cs" Link="ARI_1_0\Events\RecordingFinishedEvent.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\RecordingStartedEvent.cs" Link="ARI_1_0\Events\RecordingStartedEvent.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\StasisEndEvent.cs" Link="ARI_1_0\Events\StasisEndEvent.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\StasisStartEvent.cs" Link="ARI_1_0\Events\StasisStartEvent.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\TextMessageReceivedEvent.cs" Link="ARI_1_0\Events\TextMessageReceivedEvent.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\Application.cs" Link="ARI_1_0\Models\Application.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\AsteriskInfo.cs" Link="ARI_1_0\Models\AsteriskInfo.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\Bridge.cs" Link="ARI_1_0\Models\Bridge.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\BuildInfo.cs" Link="ARI_1_0\Models\BuildInfo.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\CallerID.cs" Link="ARI_1_0\Models\CallerID.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\Channel.cs" Link="ARI_1_0\Models\Channel.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\ConfigInfo.cs" Link="ARI_1_0\Models\ConfigInfo.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\ConfigTuple.cs" Link="ARI_1_0\Models\ConfigTuple.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\ContactInfo.cs" Link="ARI_1_0\Models\ContactInfo.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\DeviceState.cs" Link="ARI_1_0\Models\DeviceState.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\Dialed.cs" Link="ARI_1_0\Models\Dialed.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\DialplanCEP.cs" Link="ARI_1_0\Models\DialplanCEP.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\Endpoint.cs" Link="ARI_1_0\Models\Endpoint.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\Event.cs" Link="ARI_1_0\Models\Event.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\FormatLangPair.cs" Link="ARI_1_0\Models\FormatLangPair.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\LiveRecording.cs" Link="ARI_1_0\Models\LiveRecording.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\LogChannel.cs" Link="ARI_1_0\Models\LogChannel.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\Mailbox.cs" Link="ARI_1_0\Models\Mailbox.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\Message.cs" Link="ARI_1_0\Models\Message.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\MissingParams.cs" Link="ARI_1_0\Models\MissingParams.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\Module.cs" Link="ARI_1_0\Models\Module.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\Peer.cs" Link="ARI_1_0\Models\Peer.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\Playback.cs" Link="ARI_1_0\Models\Playback.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\SetId.cs" Link="ARI_1_0\Models\SetId.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\Sound.cs" Link="ARI_1_0\Models\Sound.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\StatusInfo.cs" Link="ARI_1_0\Models\StatusInfo.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\StoredRecording.cs" Link="ARI_1_0\Models\StoredRecording.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\SystemInfo.cs" Link="ARI_1_0\Models\SystemInfo.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\TextMessage.cs" Link="ARI_1_0\Models\TextMessage.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\TextMessageVariable.cs" Link="ARI_1_0\Models\TextMessageVariable.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\Variable.cs" Link="ARI_1_0\Models\Variable.cs" />
+    <Compile Include="..\AsterNET.ARI\Dispatchers\AsyncDispatcher.cs" Link="Dispatchers\AsyncDispatcher.cs" />
+    <Compile Include="..\AsterNET.ARI\Dispatchers\DedicatedThreadDispatcher.cs" Link="Dispatchers\DedicatedThreadDispatcher.cs" />
+    <Compile Include="..\AsterNET.ARI\Dispatchers\ThreadPoolDispatcher.cs" Link="Dispatchers\ThreadPoolDispatcher.cs" />
+    <Compile Include="..\AsterNET.ARI\Helpers\SyncHelper.cs" Link="Helpers\SyncHelper.cs" />
+    <Compile Include="..\AsterNET.ARI\IAriActionClient.cs" Link="IAriActionClient.cs" />
+    <Compile Include="..\AsterNET.ARI\IAriClient.cs" Link="IAriClient.cs" />
+    <Compile Include="..\AsterNET.ARI\IAriDispatcher.cs" Link="IAriDispatcher.cs" />
+    <Compile Include="..\AsterNET.ARI\Middleware\Default\Command.cs" Link="Middleware\Default\Command.cs" />
+    <Compile Include="..\AsterNET.ARI\Middleware\Default\CommandResult.cs" Link="Middleware\Default\CommandResult.cs" />
+    <Compile Include="..\AsterNET.ARI\Middleware\Default\RESTActionConsumer.cs" Link="Middleware\Default\RESTActionConsumer.cs" />
+    <Compile Include="..\AsterNET.ARI\Middleware\Default\WebSocketEventProducer.cs" Link="Middleware\Default\WebSocketEventProducer.cs" />
+    <Compile Include="..\AsterNET.ARI\Middleware\IActionConsumer.cs" Link="Middleware\IActionConsumer.cs" />
+    <Compile Include="..\AsterNET.ARI\Middleware\IEventProducer.cs" Link="Middleware\IEventProducer.cs" />
+    <Compile Include="..\AsterNET.ARI\Middleware\IRESTCommand.cs" Link="Middleware\IRESTCommand.cs" />
+    <Compile Include="..\AsterNET.ARI\Middleware\IRestCommandResult.cs" Link="Middleware\IRestCommandResult.cs" />
+    <Compile Include="..\AsterNET.ARI\StasisEndpoint.cs" Link="StasisEndpoint.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ARI_1_0\Actions\" />
+    <Folder Include="ARI_1_0\Events\" />
+    <Folder Include="ARI_1_0\Models\" />
+    <Folder Include="Dispatchers\" />
+    <Folder Include="Helpers\" />
+    <Folder Include="Middleware\Default\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FubarCoder.RestSharp.Portable.Core" Version="4.0.8" />
+    <PackageReference Include="FubarCoder.RestSharp.Portable.HttpClient" Version="4.0.8" />
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+    <PackageReference Include="System.Threading.Thread" Version="4.3.0" />
+    <PackageReference Include="System.Threading.ThreadPool" Version="4.3.0" />
+    <PackageReference Include="WebSocket4Net" Version="0.15.0-beta6" />
+  </ItemGroup>
+
+</Project>

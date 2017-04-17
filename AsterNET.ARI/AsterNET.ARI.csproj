@@ -31,15 +31,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FubarCoder.RestSharp.Portable.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=be81bb0f53eab22f, processorArchitecture=MSIL">
-      <HintPath>..\packages\FubarCoder.RestSharp.Portable.Core.4.0.1\lib\net45\FubarCoder.RestSharp.Portable.Core.dll</HintPath>
+      <HintPath>..\packages\FubarCoder.RestSharp.Portable.Core.4.0.8\lib\net45\FubarCoder.RestSharp.Portable.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="FubarCoder.RestSharp.Portable.Encodings, Version=4.0.0.0, Culture=neutral, PublicKeyToken=be81bb0f53eab22f, processorArchitecture=MSIL">
-      <HintPath>..\packages\FubarCoder.RestSharp.Portable.Encodings.4.0.1\lib\net45\FubarCoder.RestSharp.Portable.Encodings.dll</HintPath>
+      <HintPath>..\packages\FubarCoder.RestSharp.Portable.Encodings.4.0.8\lib\net45\FubarCoder.RestSharp.Portable.Encodings.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="FubarCoder.RestSharp.Portable.HttpClient, Version=4.0.0.0, Culture=neutral, PublicKeyToken=be81bb0f53eab22f, processorArchitecture=MSIL">
-      <HintPath>..\packages\FubarCoder.RestSharp.Portable.HttpClient.4.0.1\lib\net45\FubarCoder.RestSharp.Portable.HttpClient.dll</HintPath>
+      <HintPath>..\packages\FubarCoder.RestSharp.Portable.HttpClient.4.0.8\lib\net45\FubarCoder.RestSharp.Portable.HttpClient.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -65,6 +65,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ARIClient.cs" />
+    <Compile Include="ARIException.cs" />
     <Compile Include="ARI_1_0\Actions\IMailboxesActions.cs" />
     <Compile Include="ARI_1_0\Actions\MailboxesActions.cs" />
     <Compile Include="ARI_1_0\Events\ChannelConnectedLineEvent.cs" />
@@ -115,8 +117,6 @@
     <Compile Include="Middleware\Default\Command.cs" />
     <Compile Include="Middleware\Default\CommandResult.cs" />
     <Compile Include="ARI_1_0\Actions\ARIBaseAction.cs" />
-    <Compile Include="ARIClient.cs" />
-    <Compile Include="ARIException.cs" />
     <Compile Include="ARI_1_0\Actions\IApplicationsActions.cs" />
     <Compile Include="ARI_1_0\Actions\IAsteriskActions.cs" />
     <Compile Include="ARI_1_0\Actions\IBridgesActions.cs" />

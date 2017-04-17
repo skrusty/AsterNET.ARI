@@ -3,14 +3,13 @@ sudo: required
 dist: trusty
 matrix:
     include:
-        - dotnet: 1.0.0-preview2-003121
+        - dotnet: 1.0.1
           mono: latest
           env: DOTNETCORE=1
           install:
-            - dotnet restore --configfile "nuget.config" AsterNET.ARI.NetCore1/project.json
-            - dotnet restore --configfile "nuget.config" AsterNET.ARI/project.json
+            - dotnet restore AsterNET.ARI.NetStandard/AsterNET.ARI.NetStandard.csproj
+            - nuget restore AsterNET.ARI.sln
           script:
-            - dotnet build AsterNET.ARI -c Release
-            - dotnet publish AsterNET.ARI -c Release
-            - dotnet build AsterNET.ARI.NetCore1 -c Release
-            - dotnet publish AsterNET.ARI.NetCore1 -c Release
+            - dotnet build AsterNET.ARI.NetStandard -c Release
+            - dotnet publish AsterNET.ARI.NetStandard -c Release
+            - xbuild /p:Configuration=Release AsterNET.ARI/AsterNET.ARI.csproj
