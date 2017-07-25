@@ -119,6 +119,7 @@ namespace AsterNET.ARI
 
         #region Private and Protected Methods
 
+
         private void _eventProducer_OnConnectionStateChanged(object sender, EventArgs e)
         {
             if (_eventProducer.State != ConnectionState.Open)
