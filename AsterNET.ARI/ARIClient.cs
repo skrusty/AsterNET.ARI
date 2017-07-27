@@ -157,7 +157,7 @@ namespace AsterNET.ARI
                     catch(Exception ex)
                     {
                         // Handle any exceptions that were thrown by the invoked event handler
-                        Console.WriteLine("An event listener exeption: " + ex.Message );
+                        Console.WriteLine("The event listener " + evnt.Type.ToString() + " cause an exeption: " + ex.Message );
                     }
                 });
             }
