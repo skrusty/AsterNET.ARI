@@ -119,6 +119,7 @@ namespace AsterNET.ARI
 
         #region Private and Protected Methods
 
+
         private void _eventProducer_OnConnectionStateChanged(object sender, EventArgs e)
         {
             if (_eventProducer.State != ConnectionState.Open)
@@ -153,10 +154,10 @@ namespace AsterNET.ARI
                     {
                         FireEvent(evnt.Type, evnt, this);
                     }
-                    catch
+                    catch(Exception ex)
                     {
                         // Handle any exceptions that were thrown by the invoked event handler
-                        Console.WriteLine("An event listener went kaboom!");
+                        Console.WriteLine("The event listener " + evnt.Type.ToString() + " cause an exeption: " + ex.Message );
                     }
                 });
             }

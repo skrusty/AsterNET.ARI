@@ -25,8 +25,8 @@ namespace AsterNET.ARI.Middleware.Default
         {
             var cmd = (Command) command;
             var result = cmd.Client.Execute<T>(cmd.Request);
-            result.RunSynchronously();
-
+            //result.RunSynchronously();
+            result.GetAwaiter().GetResult();
             var rtn = new CommandResult<T> {StatusCode = result.Result.StatusCode, Data = result.Result.Data};
 
             return rtn;
@@ -36,8 +36,8 @@ namespace AsterNET.ARI.Middleware.Default
         {
             var cmd = (Command) command;
             var result = cmd.Client.Execute(cmd.Request);
-            result.RunSynchronously();
-
+            //result.RunSynchronously();
+            result.GetAwaiter().GetResult();
             var rtn = new CommandResult {StatusCode = result.Result.StatusCode, RawData = result.Result.RawBytes};
 
             return rtn;
