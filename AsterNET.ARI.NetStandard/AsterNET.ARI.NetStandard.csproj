@@ -1,9 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.3</TargetFramework>
-    <AssemblyName>AsterNET.ARI.NetStandard</AssemblyName>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>AsterNET.ARI</AssemblyName>
     <RootNamespace>AsterNET.ARI</RootNamespace>
+    <Version>1.2.0</Version>
+    <PackageId>AsterNET.ARI</PackageId>
+    <Authors>Ben Merrills, Zachary Way</Authors>
+    <Company />
+    <Product>AsterNET.ARI</Product>
+    <Description>Asterisk ARI Api wrapper</Description>
   </PropertyGroup>
 
   <ItemGroup>
