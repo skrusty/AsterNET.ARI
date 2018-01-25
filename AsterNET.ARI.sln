@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.0
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsterNET.ARI", "AsterNET.ARI\AsterNET.ARI.csproj", "{F4C8C633-2207-4C25-89A8-4D23D9CFA964}"
 EndProject
@@ -13,6 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		changelog.txt = changelog.txt
 		nuget.config = nuget.config
+		Package-NetStandard.nuspec = Package-NetStandard.nuspec
 		Package.nuspec = Package.nuspec
 	EndProjectSection
 EndProject
@@ -38,7 +39,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleTestApplicationAsync"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecordingSample", "RecordingSample\RecordingSample.csproj", "{830E8CF5-E8DD-4E2E-82FA-6433E3BF174B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsterNET.ARI.NetStandard", "AsterNET.ARI.NetStandard\AsterNET.ARI.NetStandard.csproj", "{431A2DF3-F413-4FC4-A6E3-FEA97212FD9C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AsterNET.ARI.NetStandard", "AsterNET.ARI.NetStandard\AsterNET.ARI.NetStandard.csproj", "{431A2DF3-F413-4FC4-A6E3-FEA97212FD9C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -104,5 +105,8 @@ Global
 		{DEE23389-A37D-484F-BB35-E63CF7977C7E} = {31012840-0DA0-4F79-8C4E-952D1422DD0A}
 		{55979546-152E-4157-9AA3-839F6E3CE4E8} = {31012840-0DA0-4F79-8C4E-952D1422DD0A}
 		{830E8CF5-E8DD-4E2E-82FA-6433E3BF174B} = {FBB847F2-AC1C-47DD-B5F7-37C160743F53}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E3F439EE-D9DC-4A93-BE24-4B0D4299288D}
 	EndGlobalSection
 EndGlobal
