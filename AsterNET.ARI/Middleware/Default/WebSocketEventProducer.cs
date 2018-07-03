@@ -57,7 +57,7 @@ namespace AsterNET.ARI.Middleware.Default
                         _connectionInfo.Host, _application,
                         string.Format("{0}:{1}", _connectionInfo.Username, _connectionInfo.Password), _connectionInfo.Port, subscribeAll),
                         null, null, null, "", "", WebSocketVersion.None, null,
-                        System.Security.Authentication.SslProtocols.Tls12, 0);
+                        System.Security.Authentication.SslProtocols.None, 0);
                 }
 
                 _client.MessageReceived += _client_MessageReceived;
