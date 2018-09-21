@@ -28,6 +28,8 @@ namespace AsterNET.ARI.Middleware.Default
             //result.RunSynchronously();
             result.GetAwaiter().GetResult();
             var rtn = new CommandResult<T> {StatusCode = result.Result.StatusCode, Data = result.Result.Data};
+            
+            cmd.Client.Dispose();
 
             return rtn;
         }
@@ -39,6 +41,8 @@ namespace AsterNET.ARI.Middleware.Default
             //result.RunSynchronously();
             result.GetAwaiter().GetResult();
             var rtn = new CommandResult {StatusCode = result.Result.StatusCode, RawData = result.Result.RawBytes};
+            
+            cmd.Client.Dispose();
 
             return rtn;
         }
@@ -48,6 +52,9 @@ namespace AsterNET.ARI.Middleware.Default
             var cmd = (Command) command;
             var result = await cmd.Client.Execute<T>(cmd.Request);
             var rtn = new CommandResult<T> {StatusCode = result.StatusCode, Data = result.Data};
+            
+            cmd.Client.Dispose();
+            
             return rtn;
         }
 
@@ -56,6 +63,9 @@ namespace AsterNET.ARI.Middleware.Default
             var cmd = (Command) command;
             var result = await cmd.Client.Execute(cmd.Request);
             var rtn = new CommandResult {StatusCode = result.StatusCode, RawData = result.RawBytes};
+            
+            cmd.Client.Dispose();
+            
             return rtn;
         }
     }
