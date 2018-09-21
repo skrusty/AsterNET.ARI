@@ -45,7 +45,7 @@ namespace AsterNET.ARI
     public delegate void TextMessageReceivedEventHandler(IAriClient sender, TextMessageReceivedEvent e);
     public delegate void ChannelConnectedLineEventHandler(IAriClient sender, ChannelConnectedLineEvent e);
     public delegate void UnhandledEventHandler(object sender, AsterNET.ARI.Models.Event eventMessage);
-
+    public delegate void UnhandledExceptionEventHandler(object sender, Exception exception);
 
     public interface IAriEventClient
     {
@@ -86,6 +86,7 @@ namespace AsterNET.ARI
         event TextMessageReceivedEventHandler OnTextMessageReceivedEvent;
         event ChannelConnectedLineEventHandler OnChannelConnectedLineEvent;
         event UnhandledEventHandler OnUnhandledEvent;
+        event UnhandledExceptionEventHandler OnUnhandledException;
     }
 
 
@@ -133,7 +134,19 @@ namespace AsterNET.ARI
         public event TextMessageReceivedEventHandler OnTextMessageReceivedEvent;
         public event ChannelConnectedLineEventHandler OnChannelConnectedLineEvent;
         public event UnhandledEventHandler OnUnhandledEvent;
+        public event UnhandledExceptionEventHandler OnUnhandledException;
         #endregion
+
+        protected bool UnhandledException(object sender, Exception exception)
+        {
+            if (OnUnhandledException != null)
+            {
+                OnUnhandledException(sender, exception);
+                return true;
+            }
+
+            return false;
+        }
 
         protected void FireEvent(string eventName, object eventArgs, IAriClient sender)
         {
