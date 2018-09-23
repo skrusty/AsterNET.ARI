@@ -40,6 +40,7 @@ namespace AsterNET.ARI
 
         private readonly object _syncRoot = new object();
         private readonly bool _subscribeAllEvents;
+        private readonly bool _ssl;
         private bool _autoReconnect;
         private TimeSpan _autoReconnectDelay;
         private IAriDispatcher _dispatcher;
@@ -76,13 +77,23 @@ namespace AsterNET.ARI
         /// <param name="endPoint"></param>
         /// <param name="application"></param>
         /// <param name="subscribeAllEvents">Subscribe to all Asterisk events. If provided, the applications listed will be subscribed to all events, effectively disabling the application specific subscriptions.</param>
-        public AriClient(StasisEndpoint endPoint, string application, bool subscribeAllEvents = false)
+        /// <param name="ssl">Enable SSL/TLS support for ARI connection</param>
+        public AriClient(
+            StasisEndpoint endPoint,
+            string application,
+            bool subscribeAllEvents = false,
+            bool ssl = false)
             // Use Default Middleware
-            : this(new RestActionConsumer(endPoint), new WebSocketEventProducer(endPoint, application), application, subscribeAllEvents)
+            : this(new RestActionConsumer(endPoint), new WebSocketEventProducer(endPoint, application), application, subscribeAllEvents, ssl)
         {
         }
 
-        public AriClient(IActionConsumer actionConsumer, IEventProducer eventProducer, string application, bool subscribeAllEvents = false)
+        public AriClient(
+            IActionConsumer actionConsumer,
+            IEventProducer eventProducer,
+            string application,
+            bool subscribeAllEvents = false,
+            bool ssl = false)
         {
             _actionConsumer = actionConsumer;
             _eventProducer = eventProducer;
@@ -105,6 +116,7 @@ namespace AsterNET.ARI
             _eventProducer.OnConnectionStateChanged += _eventProducer_OnConnectionStateChanged;
 
             _subscribeAllEvents = subscribeAllEvents;
+            _ssl = ssl;
         }
 
         public void Dispose()
@@ -184,7 +196,7 @@ namespace AsterNET.ARI
 
             if (reconnectDelay != TimeSpan.Zero)
                 Thread.Sleep(reconnectDelay);
-            _eventProducer.Connect(_subscribeAllEvents);
+            _eventProducer.Connect(_subscribeAllEvents, _ssl);
         }
 
 
@@ -220,7 +232,7 @@ namespace AsterNET.ARI
                     _dispatcher = CreateDispatcher();
             }
 
-            _eventProducer.Connect(_subscribeAllEvents);
+            _eventProducer.Connect(_subscribeAllEvents, _ssl);
         }
 
         public void Disconnect()

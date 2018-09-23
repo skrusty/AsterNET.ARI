@@ -41,13 +41,24 @@ namespace AsterNET.ARI.Middleware.Default
             get { return _client != null && _client.State == WebSocketState.Open; }
         }
 
-        public void Connect(bool subscribeAll = false)
+        public void Connect(bool subscribeAll = false, bool ssl = false)
         {
             try
             {
-                _client = new WebSocket(string.Format("ws://{0}:{3}/ari/events?app={1}&subscribeAll={4}&api_key={2}",
-                    _connectionInfo.Host, _application,
-                    string.Format("{0}:{1}", _connectionInfo.Username, _connectionInfo.Password), _connectionInfo.Port, subscribeAll));
+                if (!ssl)
+                {
+                    _client = new WebSocket(string.Format("ws://{0}:{3}/ari/events?app={1}&subscribeAll={4}&api_key={2}",
+                        _connectionInfo.Host, _application,
+                        string.Format("{0}:{1}", _connectionInfo.Username, _connectionInfo.Password), _connectionInfo.Port, subscribeAll));
+                }
+                else
+                {
+                    _client = new WebSocket(string.Format("wss://{0}:{3}/ari/events?app={1}&subscribeAll={4}&api_key={2}",
+                        _connectionInfo.Host, _application,
+                        string.Format("{0}:{1}", _connectionInfo.Username, _connectionInfo.Password), _connectionInfo.Port, subscribeAll),
+                        null, null, null, "", "", WebSocketVersion.None, null,
+                        System.Security.Authentication.SslProtocols.None, 0);
+                }
 
                 _client.MessageReceived += _client_MessageReceived;
                 _client.Opened += _client_Opened;
