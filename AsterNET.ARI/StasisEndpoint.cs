@@ -8,6 +8,7 @@
         /// <param name="port"></param>
         /// <param name="username"></param>
         /// <param name="password"></param>
+        /// <param name="ssl">Use SSL/TLS for ARI connection</param>
         public StasisEndpoint(string host, int port, string username, string password, bool ssl = false)
         {
             Host = host;
