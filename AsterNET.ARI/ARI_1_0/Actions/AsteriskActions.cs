@@ -68,7 +68,9 @@ namespace AsterNET.ARI.Actions
                 request.AddUrlSegment("id", id);
             if (fields != null)
             {
-                request.AddParameter("application/json", new { fields = fields }, ParameterType.RequestBody);
+                request.AddParameter("application/json",
+                    new {fields = fields.Select(f => new ConfigTuple {Attribute = f.Key, Value = f.Value})},
+                    ParameterType.RequestBody);
             }
 
             var response = Execute<List<ConfigTuple>>(request);
@@ -437,7 +439,9 @@ namespace AsterNET.ARI.Actions
                 request.AddUrlSegment("id", id);
             if (fields != null)
             {
-                request.AddParameter("application/json", new { fields = fields }, ParameterType.RequestBody);
+                request.AddParameter("application/json",
+                    new {fields = fields.Select(f => new ConfigTuple {Attribute = f.Key, Value = f.Value})},
+                    ParameterType.RequestBody);
             }
 
             var response = await ExecuteTask<List<ConfigTuple>>(request);

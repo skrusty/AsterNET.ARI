@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using AsterNET.ARI.Actions;
+using Newtonsoft.Json;
 
 namespace AsterNET.ARI.Models
 {
@@ -13,16 +14,16 @@ namespace AsterNET.ARI.Models
     /// </summary>
     public class ConfigTuple
     {
-
-
         /// <summary>
         /// A configuration object attribute.
         /// </summary>
+        [JsonProperty("attribute")]
         public string Attribute { get; set; }
 
         /// <summary>
         /// The value for the attribute.
         /// </summary>
+        [JsonProperty("value")]
         public string Value { get; set; }
 
     }
