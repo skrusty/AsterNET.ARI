@@ -1,6 +1,6 @@
 ﻿/*
 	AsterNET ARI Framework
-	Automatically generated file @ 9/22/2016 4:43:49 PM
+	Automatically generated file @ 08.05.2019 12:52:49
 */
 using System.Collections.Generic;
 using System.Linq;
@@ -56,7 +56,7 @@ namespace AsterNET.ARI.Actions
         /// <param name="objectType">The type of configuration object to create or update.</param>
         /// <param name="id">The unique identifier of the object to create or update.</param>
         /// <param name="fields">The body object should have a value that is a list of ConfigTuples, which provide the fields to update. Ex. [ { "attribute": "directmedia", "value": "false" } ]</param>
-        public List<ConfigTuple> UpdateObject(string configClass, string objectType, string id, Dictionary<string, string> fields = null)
+        public List<ConfigTuple> UpdateObject(string configClass, string objectType, string id, List<ConfigTuple> fields = null)
         {
             string path = "asterisk/config/dynamic/{configClass}/{objectType}/{id}";
             var request = GetNewRequest(path, HttpMethod.PUT);
@@ -425,7 +425,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Create or update a dynamic configuration object.. 
         /// </summary>
-        public async Task<List<ConfigTuple>> UpdateObjectAsync(string configClass, string objectType, string id, Dictionary<string, string> fields = null)
+        public async Task<List<ConfigTuple>> UpdateObjectAsync(string configClass, string objectType, string id, List<ConfigTuple> fields = null)
         {
             string path = "asterisk/config/dynamic/{configClass}/{objectType}/{id}";
             var request = GetNewRequest(path, HttpMethod.PUT);

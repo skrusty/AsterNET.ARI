@@ -183,7 +183,7 @@ namespace AsterNET.ARI.Actions
 				var description = string.Format("{0}. {1}", op.SelectToken("summary").Value<string>(), op.SelectToken("notes") == null ? "" : op.SelectToken("notes").Value<string>());
 				var httpMethod = op.SelectToken("httpMethod").Value<string>();
 			
-				var responseType = ARICodeGen.SwaggerHelper.TypeConvert(op.SelectToken("responseClass").Value<string>());
+				var responseType = ARICodeGen.SwaggerHelper.TypeConvert(op.SelectToken("responseClass").Value<string>(), methodName);
 
 				var parameters = string.Empty;
 			
@@ -195,7 +195,7 @@ namespace AsterNET.ARI.Actions
 
 					foreach(var param in allParams) {
 						// Get Param Type
-						var paramType = ARICodeGen.SwaggerHelper.TypeConvert(param.SelectToken("dataType").Value<string>());
+						var paramType = ARICodeGen.SwaggerHelper.TypeConvert(param.SelectToken("dataType").Value<string>(), methodName);
 						// string defaultValue = param.SelectToken("defalutValue").Value<string>()
 						var optionalString = "";
 						if(param.SelectToken("required") != null && !param.SelectToken("required").Value<bool>()){
@@ -242,11 +242,11 @@ namespace AsterNET.ARI.Actions
 			foreach(var op in operations) 
 			{
 				
-				var methodName = op.SelectToken("nickname").Value<string>() + "Async";
+				var methodName = op.SelectToken("nickname").Value<string>();
 				var description = string.Format("{0}. {1}", op.SelectToken("summary").Value<string>(), op.SelectToken("notes") == null ? "" : op.SelectToken("notes").Value<string>());
 				var httpMethod = op.SelectToken("httpMethod").Value<string>();
 			
-				var responseType = ARICodeGen.SwaggerHelper.TypeConvertTask(op.SelectToken("responseClass").Value<string>());
+				var responseType = ARICodeGen.SwaggerHelper.TypeConvertTask(op.SelectToken("responseClass").Value<string>(), methodName);
 
 				var parameters = string.Empty;
 			
@@ -258,7 +258,7 @@ namespace AsterNET.ARI.Actions
 
 					foreach(var param in allParams) {
 						// Get Param Type
-						var paramType = ARICodeGen.SwaggerHelper.TypeConvert(param.SelectToken("dataType").Value<string>());
+						var paramType = ARICodeGen.SwaggerHelper.TypeConvert(param.SelectToken("dataType").Value<string>(), methodName);
 						// string defaultValue = param.SelectToken("defalutValue").Value<string>()
 						var optionalString = "";
 						if(param.SelectToken("required") != null && !param.SelectToken("required").Value<bool>()){
@@ -294,7 +294,7 @@ namespace AsterNET.ARI.Actions
 					}
                 }catch{}
 #>
-		<#= responseType #> <#= ARICodeGen.SwaggerHelper.GetSafeName(methodName) #>(<#= parameters #>);
+		<#= responseType #> <#= ARICodeGen.SwaggerHelper.GetSafeName(methodName + "Async") #>(<#= parameters #>);
 <#			}
 		}
 #>
@@ -343,7 +343,7 @@ namespace AsterNET.ARI.Actions
 				var description = string.Format("{0}. {1}", op.SelectToken("summary").Value<string>(), op.SelectToken("notes") == null ? "" : op.SelectToken("notes").Value<string>());
 				var httpMethod = op.SelectToken("httpMethod").Value<string>();
 			
-				var responseType = ARICodeGen.SwaggerHelper.TypeConvert(op.SelectToken("responseClass").Value<string>());
+				var responseType = ARICodeGen.SwaggerHelper.TypeConvert(op.SelectToken("responseClass").Value<string>(), methodName);
 
 				var parameters = string.Empty;
 			
@@ -355,7 +355,7 @@ namespace AsterNET.ARI.Actions
 
 					foreach(var param in allParams) {
 						// Get Param Type
-						var paramType = ARICodeGen.SwaggerHelper.TypeConvert(param.SelectToken("dataType").Value<string>());
+						var paramType = ARICodeGen.SwaggerHelper.TypeConvert(param.SelectToken("dataType").Value<string>(), methodName);
 						// string defaultValue = param.SelectToken("defalutValue").Value<string>()
 						var optionalString = "";
 						if(param.SelectToken("required") != null && !param.SelectToken("required").Value<bool>()){
@@ -400,7 +400,7 @@ namespace AsterNET.ARI.Actions
 <# 
 			try {
 				foreach(var param in op.SelectToken("parameters")) {
-					var paramType = ARICodeGen.SwaggerHelper.TypeConvert(param.SelectToken("dataType").Value<string>());
+					var paramType = ARICodeGen.SwaggerHelper.TypeConvert(param.SelectToken("dataType").Value<string>(), methodName);
 					// Perform null check in code
 #>
 			if(<#= param.SelectToken("name").Value<string>() #> != null)
@@ -492,8 +492,8 @@ namespace AsterNET.ARI.Actions
 				var description = string.Format("{0}. {1}", op.SelectToken("summary").Value<string>(), op.SelectToken("notes") == null ? "" : op.SelectToken("notes").Value<string>());
 				var httpMethod = op.SelectToken("httpMethod").Value<string>();
 			
-				var responseType = ARICodeGen.SwaggerHelper.TypeConvert(op.SelectToken("responseClass").Value<string>());
-				var taskType = ARICodeGen.SwaggerHelper.TypeConvertTask(op.SelectToken("responseClass").Value<string>());
+				var responseType = ARICodeGen.SwaggerHelper.TypeConvert(op.SelectToken("responseClass").Value<string>(), methodName);
+				var taskType = ARICodeGen.SwaggerHelper.TypeConvertTask(op.SelectToken("responseClass").Value<string>(), methodName);
 
 				var parameters = string.Empty;
 			
@@ -505,7 +505,7 @@ namespace AsterNET.ARI.Actions
 
 					foreach(var param in allParams) {
 						// Get Param Type
-						var paramType = ARICodeGen.SwaggerHelper.TypeConvert(param.SelectToken("dataType").Value<string>());
+						var paramType = ARICodeGen.SwaggerHelper.TypeConvert(param.SelectToken("dataType").Value<string>(), methodName);
 						// string defaultValue = param.SelectToken("defalutValue").Value<string>()
 						var optionalString = "";
 						if(param.SelectToken("required") != null && !param.SelectToken("required").Value<bool>()){
@@ -545,7 +545,7 @@ namespace AsterNET.ARI.Actions
 <# 
 			try {
 				foreach(var param in op.SelectToken("parameters")) {
-					var paramType = ARICodeGen.SwaggerHelper.TypeConvert(param.SelectToken("dataType").Value<string>());
+					var paramType = ARICodeGen.SwaggerHelper.TypeConvert(param.SelectToken("dataType").Value<string>(), methodName);
 					// Perform null check in code
 #>
 			if(<#= param.SelectToken("name").Value<string>() #> != null)
@@ -649,7 +649,7 @@ namespace AsterNET.ARI
     }
 #>
 	public delegate void UnhandledEventHandler(object sender, AsterNET.ARI.Models.Event eventMessage);
-
+	public delegate void UnhandledExceptionEventHandler(object sender, Exception exception);
 
 	public interface IAriEventClient
 	{
@@ -663,6 +663,7 @@ namespace AsterNET.ARI
     }
 #>
 		event UnhandledEventHandler OnUnhandledEvent;
+		event UnhandledExceptionEventHandler OnUnhandledException;
 	}
 
 
@@ -682,8 +683,20 @@ namespace AsterNET.ARI
 			}
 
 		#>
-			public event UnhandledEventHandler OnUnhandledEvent; 
+			public event UnhandledEventHandler OnUnhandledEvent;
+			public event UnhandledExceptionEventHandler OnUnhandledException;
 		#endregion
+
+		protected bool UnhandledException(object sender, Exception exception)
+		{
+			if (OnUnhandledException != null)
+			{
+				OnUnhandledException(sender, exception);
+				return true;
+			}
+
+			return false;
+		}
 		
 		protected void FireEvent(string eventName, object eventArgs, IAriClient sender)
 		{

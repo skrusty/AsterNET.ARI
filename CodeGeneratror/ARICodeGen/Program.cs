@@ -18,7 +18,7 @@ namespace ARICodeGen
 
     public class SwaggerHelper
     {
-        public static string TypeConvert(string inputType)
+        public static string TypeConvert(string inputType, string methodName = null)
         {
             if (inputType.Contains("["))
                 return inputType.Replace("[", "<").Replace("]", ">");
@@ -27,13 +27,13 @@ namespace ARICodeGen
             if (inputType.ToLower() == "boolean")
                 return "bool";
             if (inputType.ToLower() == "containers")
-                return "Dictionary<string, string>";
+                return methodName == "updateObject" ? "List<ConfigTuple>" : "Dictionary<string, string>";
             if (inputType.ToLower() == "binary")
                 return "byte[]";
             return inputType;
         }
 
-        public static string TypeConvertTask(string inputType)
+        public static string TypeConvertTask(string inputType, string methodName = null)
         {
             if (inputType.ToLower() == "void")
                 return "Task";
@@ -44,7 +44,7 @@ namespace ARICodeGen
             if (inputType.ToLower() == "boolean")
                 return "Task<bool>";
             if (inputType.ToLower() == "containers")
-                return "Task<Dictionary<string, string>>";
+                return methodName == "updateObject" ? "List<ConfigTuple>" : "Dictionary<string, string>";
             if (inputType.ToLower() == "binary")
                 return "Task<byte[]>";
             return $"Task<{inputType}>";
