@@ -411,12 +411,12 @@ namespace AsterNET.ARI.Actions
 <# 
 					}else if(param.SelectToken("paramType").Value<string>() == "query"){
 #>
-				request.AddParameter("<#= param.SelectToken("name").Value<string>() #>", <#= param.SelectToken("name").Value<string>() #>, ParameterType.QueryString);
+				request.AddParameter("<#= param.SelectToken("name").Value<string>() #>", <#= param.SelectToken("name").Value<string>() #>);
 <#
 					}else if(param.SelectToken("paramType").Value<string>() == "body"){
 #>
 			{
-				request.AddParameter("application/json", new { <#= param.SelectToken("name").Value<string>() #> = <#= param.SelectToken("name").Value<string>() #> }, ParameterType.RequestBody);
+				request.AddBody(new { <#= param.SelectToken("name").Value<string>() #> = <#= param.SelectToken("name").Value<string>() #> });
 			}
 <#
 					}else if(param.SelectToken("paramType").Value<string>() == "header"){
@@ -556,12 +556,12 @@ namespace AsterNET.ARI.Actions
 <# 
 					}else if(param.SelectToken("paramType").Value<string>() == "query"){
 #>
-				request.AddParameter("<#= param.SelectToken("name").Value<string>() #>", <#= param.SelectToken("name").Value<string>() #>, ParameterType.QueryString);
+				request.AddParameter("<#= param.SelectToken("name").Value<string>() #>", <#= param.SelectToken("name").Value<string>() #>);
 <#
 					}else if(param.SelectToken("paramType").Value<string>() == "body"){
 #>
 			{
-				request.AddParameter("application/json", new { <#= param.SelectToken("name").Value<string>() #> = <#= param.SelectToken("name").Value<string>() #> }, ParameterType.RequestBody);
+				request.AddBody(new { <#= param.SelectToken("name").Value<string>() #> = <#= param.SelectToken("name").Value<string>() #> });
 			}
 <#
 					}else if(param.SelectToken("paramType").Value<string>() == "header"){
