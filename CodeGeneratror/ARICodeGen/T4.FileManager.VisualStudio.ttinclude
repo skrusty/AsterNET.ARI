@@ -1,0 +1,805 @@
+﻿<#@ template debug="false" hostspecific="true" #>
+<#@ assembly name="EnvDTE" #>
+<#@ assembly name="Newtonsoft.Json" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Reflection" #>
+<#@ assembly name="System.Linq" #>
+<#@ import namespace="EnvDTE" #>
+<#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
+<#@ import namespace="Newtonsoft.Json" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Reflection" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Threading.Tasks" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".json" #>
+<#+
+   public class T4FileManager
+    {
+        /// <summary>
+        /// The interface for the host that transforms text template.
+        /// </summary>
+        private readonly ITextTemplatingEngineHost _host;
+        /// <summary>
+        /// Object for Visual Studio core automation.
+        /// </summary>
+        private readonly DTE _dte;
+        /// <summary>
+        /// Code to generate as <see cref="StringBuilder"/>.
+        /// </summary>
+        private readonly StringBuilder _textTransformation;
+        /// <summary>
+        /// Files to be generated.
+        /// </summary>
+        private readonly List<FileToGenerate> _filesToGenerate;
+        /// <summary>
+        /// Information about the generated files.
+        /// </summary>
+        private readonly GeneratedInfo _generatedInfo;
+
+        /// <summary>
+        /// Uniform header block for generating the files.
+        /// </summary>
+        private string _headerBlock;
+        /// <summary>
+        /// Information about the current file to be generated.
+        /// </summary>
+        private FileToGenerate _currentFileToGenerate;
+        /// <summary>
+        /// Information about the generated files step before.
+        /// </summary>
+        private GeneratedInfo _oldGeneratedInfo;
+
+        /// <summary>
+        /// Allow overwriting of files if it has already been generated.
+        /// </summary>
+        /// <value>Default value is true.</value>
+        public bool CanOverwriteExistingFile { get; set; } = true;
+        /// <summary>
+        /// Automatic indentation of the code.
+        /// </summary>
+        /// <value>Default value is false.</value>
+        public bool IsAutoIndentEnabled = false;
+        /// <summary>
+        /// Automatic indentation of the code with ReSharper.
+        /// </summary>
+        /// <value>Default value is false.</value>
+        public bool IsAutoCleanUpWithResharperEnabled = false;
+
+        /// <summary>
+        /// Constructor for the instantiation of the FileManager.
+        /// </summary>
+        /// <param name="textTransformation">Code to generate as <see cref="StringBuilder"/>.</param>
+        /// <param name="host">The interface for the host that transforms text template.</param>
+        public T4FileManager(StringBuilder textTransformation, ITextTemplatingEngineHost host)
+        {
+            this._textTransformation = textTransformation;
+            this._host = host;
+
+            this._filesToGenerate = new List<FileToGenerate>();
+            this._generatedInfo = new GeneratedInfo();
+            this._dte = GetHostServiceProvider();
+        }
+
+        /// <summary>
+        /// Create instance of the FileManager.
+        /// </summary>
+        /// <param name="textTransformation">Code to generate as <see cref="StringBuilder"/>.</param>
+        public static T4FileManager Create(GeneratedTextTransformation textTransformation)
+        {
+            return new T4FileManager(textTransformation.GenerationEnvironment, textTransformation.Host);
+        }
+
+        /// <summary>
+        /// Clear current code input for starting header block.
+        /// </summary>
+        public void StartHeader()
+        {
+            this._textTransformation.Clear();
+        }
+
+        /// <summary>
+        /// Set code as header block and empty code input.
+        /// </summary>
+        public void FinishHeader()
+        {
+            this._headerBlock = this._textTransformation.ToString();
+            this._textTransformation.Remove(0, this._textTransformation.Length);
+        }
+
+        /// <summary>
+        /// Alternative method to finish header block.
+        /// </summary>
+        public void EndBlock()
+        {
+            FinishHeader();
+        }
+
+        /// <summary>
+        /// Empty header block.
+        /// </summary>
+        public void ClearHeader()
+        {
+            this._headerBlock = null;
+        }
+
+        /// <summary>
+        /// A new file will be started. The generated code that was before this method is added to the last file.
+        /// </summary>
+        /// <param name="filename">The file name for the generated file.</param>
+        /// <param name="project">Project name where the file is generated.</param>
+        /// <param name="path">Subfolder within the project where the file is generated.</param>
+        public void StartNewFile(string filename, string project, string path)
+        {
+            StartNewFile(filename, project, path, null);
+        }
+
+
+        /// <summary>
+        /// A new file will be started. The generated code that was before this method is added to the last file.
+        /// </summary>
+        /// <param name="filename">The file name for the generated file.</param>
+        /// <param name="project">Project name where the file is generated.</param>
+        /// <param name="path">Subfolder within the project where the file is generated.</param>
+        /// <param name="properties">Settings that can be defined for the generated file.</param>
+        public void StartNewFile(string filename, string project, string path, FileProperties properties)
+        {
+            var propertyDictionary = new Dictionary<string, object>();
+
+            properties = properties ?? new FileProperties();
+
+            if (!string.IsNullOrEmpty(properties.CustomTool))
+            {
+                propertyDictionary.Add(Property.CustomTool, properties.CustomTool);
+            }
+
+            if (properties.BuildAction.HasValue)
+            {
+                propertyDictionary.Add(Property.BuildAction, properties.BuildAction);
+            }
+
+            foreach (var prop in properties.TemplateParameter)
+            {
+                propertyDictionary.Add(prop.Key, prop.Value);
+            }
+
+            CreateNewFile(filename, project, path, propertyDictionary);
+        }
+
+        /// <summary>
+        /// A new file will be started. The generated code that was before this method is added to the last file.
+        /// </summary>
+        /// <param name="filename">The file name for the generated file.</param>
+        /// <param name="project">Project name where the file is generated.</param>
+        /// <param name="path">Subfolder within the project where the file is generated.</param>
+        public void CreateNewFile(string filename, string project, string path)
+        {
+            CreateNewFile(filename, project, path, null);
+        }
+
+
+        /// <summary>
+        ///  A new file will be started. The generated code that was before this method is added to the last file.
+        /// </summary>
+        /// <param name="filename">The file name for the generated file.</param>
+        /// <param name="project">Project name where the file is generated.</param>
+        /// <param name="path">Subfolder within the project where the file is generated.</param>
+        /// <param name="properties">Settings that can be defined for the generated file.</param>
+        public void CreateNewFile(string filename, string project, string path, Dictionary<string, object> properties)
+        {
+            if (this._currentFileToGenerate != null && !string.IsNullOrEmpty(this._currentFileToGenerate.Filename))
+            {
+                FinishFile();
+            }
+
+            properties = properties ?? new Dictionary<string, object>();
+
+            var formattedPath = path?.Replace("/", @"\");
+
+            this._currentFileToGenerate = new FileToGenerate
+            {
+                Filename = filename,
+                Path = formattedPath,
+                Properties = properties,
+                Project = project
+            };
+
+            this._textTransformation.Clear();
+        }
+
+        /// <summary>
+        /// The generated file is finished.
+        /// </summary>
+        public void FinishFile()
+        {
+            string directory = null;
+
+            if (!string.IsNullOrEmpty(this._currentFileToGenerate.Project))
+            {
+                directory = this.GetProjectDirectoryPath(this._currentFileToGenerate.Project);
+            }
+
+            directory = directory ?? this.GetTemplateFileProjectDirectoryPath();
+
+            if (!string.IsNullOrEmpty(this._currentFileToGenerate.Path))
+            {
+                directory = Path.Combine(directory, this._currentFileToGenerate.Path);
+            }
+
+            this._currentFileToGenerate.AbsolutePath = directory;
+            this._currentFileToGenerate.Content = this._textTransformation.Insert(0, this._headerBlock).ToString();
+
+            _filesToGenerate.Add(this._currentFileToGenerate);
+
+            this._textTransformation.Remove(0, this._textTransformation.Length);
+
+            this._currentFileToGenerate = new FileToGenerate();
+        }
+
+        /// <summary>
+        /// <see cref="Generate"/>
+        /// </summary>
+        public void Process()
+        {
+            this.Generate();
+        }
+
+        /// <summary>
+        /// Files are generated. Old files are cleaned up. Info file is created.
+        /// </summary>
+        public void Generate()
+        {
+            if (this._currentFileToGenerate != null && !string.IsNullOrEmpty(this._currentFileToGenerate.Filename))
+            {
+                FinishFile();
+            }
+
+            var templateFile = this._host.TemplateFile.Replace(".tt", ".info.json");
+
+            if (File.Exists(templateFile))
+            {
+                var content = File.ReadAllText(templateFile);
+                this._oldGeneratedInfo = JsonConvert.DeserializeObject<GeneratedInfo>(content);
+            }
+
+            this._textTransformation.Clear();
+
+            foreach (var fileToGenerate in this._filesToGenerate)
+            {
+                this.GenerateNewFile(fileToGenerate);
+                this.GenerateNewFileForSolution(fileToGenerate);
+            }
+
+            this.DeleteExistingFiles();
+
+            this._generatedInfo.FilesToGenerate = this._filesToGenerate;
+
+            File.WriteAllText(templateFile, JsonConvert.SerializeObject(this._generatedInfo, Formatting.Indented));
+        }
+
+        /// <summary>
+        /// Automatic generation of the namespace for C#.
+        /// </summary>
+        /// <returns>The namespace as <see cref="string"/>.</returns>
+        public string GetNamespaceForCSharpCode()
+        {
+            var projectName = this._currentFileToGenerate.Project;
+
+            if (string.IsNullOrEmpty(projectName))
+            {
+                var projItem = _dte.Solution.FindProjectItem(this._host.TemplateFile);
+                var prj = projItem.ContainingProject;
+                projectName = prj.Name;
+            }
+
+            var path = projectName;
+
+            if (!string.IsNullOrEmpty(this._currentFileToGenerate.Path))
+            {
+                path = Path.Combine(projectName, this._currentFileToGenerate.Path);
+            }
+
+            var currentNamespace = path.Replace(@"\", ".");
+
+            return currentNamespace;
+        }
+
+        /// <summary>
+        /// Physical generation of the file.
+        /// </summary>
+        /// <param name="fileToGenerate">File information.</param>
+        private void GenerateNewFile(FileToGenerate fileToGenerate)
+        {
+            Directory.CreateDirectory(fileToGenerate.AbsolutePath);
+
+            var filePath = Path.Combine(fileToGenerate.AbsolutePath, fileToGenerate.Filename);
+
+            if (IsAutoIndentEnabled || IsAutoCleanUpWithResharperEnabled)
+            {
+                fileToGenerate.Content = fileToGenerate.Content.Insert(0, " ");
+            }
+
+            var canOverwriteExistingFile = CanOverwriteExistingFileByFile(fileToGenerate);
+
+            if ((canOverwriteExistingFile && this.CanOverwriteExistingFile) || !File.Exists(filePath))
+            {
+                File.WriteAllText(Path.Combine(fileToGenerate.AbsolutePath, fileToGenerate.Filename), fileToGenerate.Content);
+            }
+        }
+
+        /// <summary>
+        /// Check whether a file may be overwritten.
+        /// </summary>
+        /// <param name="fileToGenerate">File information.</param>
+        /// <returns>Overwriting allowed or not as <see cref="bool"/>.</returns>
+        private bool CanOverwriteExistingFileByFile(FileToGenerate fileToGenerate)
+        {
+            if (fileToGenerate.Properties.ContainsKey(Property.CanOverwriteExistingFile))
+            {
+                var value = fileToGenerate.Properties[Property.CanOverwriteExistingFile] as bool?;
+                if (value == false)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Add file to the solution and execute the shortcuts (example: Resharper Clean Up).
+        /// </summary>
+        /// <param name="fileToGenerate">File information.</param>
+        private void GenerateNewFileForSolution(FileToGenerate fileToGenerate)
+        {
+            var exists = this.HasProjectItem(fileToGenerate.AbsolutePath, fileToGenerate.Filename);
+
+            this.AddMissingFileToProject(fileToGenerate.Project, fileToGenerate.AbsolutePath, fileToGenerate.Filename);
+
+            var fileProjectItem = this.FindProjectItem(fileToGenerate.Project, fileToGenerate.Filename);
+
+            var canOverwriteExistingFile = CanOverwriteExistingFileByFile(fileToGenerate);
+
+            if (fileToGenerate.Properties != null && (canOverwriteExistingFile && this.CanOverwriteExistingFile) || !exists)
+            {
+                if (fileToGenerate.Properties != null)
+                    foreach (var property in fileToGenerate.Properties)
+                    {
+                        if (property.Key == Property.CanOverwriteExistingFile)
+                            continue;
+
+                        this.SetPropertyValue(fileProjectItem, property.Key, property.Value);
+                    }
+
+                if (IsAutoIndentEnabled)
+                {
+                    this.FormatProjectItem(fileProjectItem);
+                }
+
+                if (IsAutoCleanUpWithResharperEnabled)
+                {
+                    this.FormatProjectItemWithResharper(fileProjectItem);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Clean up the old files.
+        /// </summary>
+        private void DeleteExistingFiles()
+        {
+            if (_oldGeneratedInfo?.FilesToGenerate != null && this.CanOverwriteExistingFile)
+            {
+                foreach (var file in this._oldGeneratedInfo.FilesToGenerate)
+                {
+                    string directory = null;
+
+                    if (!string.IsNullOrEmpty(file.Project))
+                    {
+                        directory = this.GetProjectDirectoryPath(file.Project);
+                    }
+
+                    directory = directory ?? this.GetTemplateFileProjectDirectoryPath();
+
+                    if (!string.IsNullOrEmpty(file.Path))
+                    {
+                        directory = Path.Combine(directory, file.Path);
+                    }
+
+                    var filePath = Path.Combine(directory, file.Filename);
+
+                    if (!this._filesToGenerate.Any(x => x.Project == file.Project
+                                                        && x.Filename == file.Filename
+                                                        && x.Path == file.Path
+                                                        && CanOverwriteExistingFileByFile(x)))
+                    {
+                        File.Delete(filePath);
+                        this.RemoveFileFromProject(directory, file.Filename);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Execute Resharper cleanup task.
+        /// </summary>
+        /// <param name="item"><see cref="ProjectItem"/>.</param>
+        private void FormatProjectItemWithResharper(ProjectItem item)
+        {
+            this.ExecuteVsCommand(item, "ReSharper.ReSharper_SilentCleanupCode");
+        }
+
+        /// <summary>
+        /// Execute Visual Studio Format Document task.
+        /// </summary>
+        /// <param name="item"><see cref="ProjectItem"/>.</param>
+        private void FormatProjectItem(ProjectItem item)
+        {
+            this.ExecuteVsCommand(item, "Edit.FormatDocument");
+        }
+
+        /// <summary>
+        /// Execute Visual Studio commands.
+        /// </summary>
+        /// <param name="item"><see cref="ProjectItem"/>.</param>
+        /// <param name="command">Commands as <see cref="string"/>.</param>
+        private void ExecuteVsCommand(ProjectItem item, params string[] command)
+        {
+            if (item == null)
+            {
+                throw new ArgumentNullException("item");
+            }
+
+            Task.Factory.StartNew(() =>
+            {
+                if (item.IsOpen)
+                {
+                    item.Document.Close(vsSaveChanges.vsSaveChangesNo);
+                }
+
+                item.Open();
+
+                foreach (var cmd in command)
+                {
+                    if (string.IsNullOrWhiteSpace(cmd) == true)
+                    {
+                        continue;
+                    }
+
+                    TryToExecuteCommand(item, cmd, false, 1);
+                }
+
+                item.Document.Close(vsSaveChanges.vsSaveChangesYes);
+            });
+        }
+
+        /// <summary>
+        /// Recursive try to execute Visual Studio commands.
+        /// </summary>
+        /// <param name="item"><see cref="ProjectItem"/>.</param>
+        /// <param name="command">Command as <see cref="string"/>.</param>
+        /// <param name="finished">Evaluate whether command was executed.</param>
+        /// <param name="attempt">Number of attempts.</param>
+        private void TryToExecuteCommand(ProjectItem item, string command, bool finished, int attempt)
+        {
+            System.Threading.Thread.Sleep(250);
+
+            if (finished)
+            {
+                return;
+            }
+
+            try
+            {
+                item.Document.ActiveWindow.SetFocus();
+                _dte.ExecuteCommand(command, String.Empty);
+                finished = true;
+            }
+            catch (Exception exception)
+            {
+                if (exception.Message.Contains("Command") && exception.Message.Contains("is not valid"))
+                {
+                    return;
+                }
+
+                finished = false;
+            }
+
+            if (item.Document.Saved == true)
+            {
+                finished = false;
+            }
+
+            if (attempt == 25)
+            {
+                return;
+            }
+
+            attempt++;
+
+            TryToExecuteCommand(item, command, finished, attempt);
+        }
+
+
+        /// <summary>
+        /// Find the project item in the solution.
+        /// </summary>
+        /// <param name="projectName">Project name without extension.</param>
+        /// <param name="filename">Filename with extension.</param>
+        /// <returns></returns>
+        private ProjectItem FindProjectItem(string projectName, string filename)
+        {
+            if (string.IsNullOrEmpty(projectName))
+            {
+                var projItem = _dte.Solution.FindProjectItem(this._host.TemplateFile);
+                var prj = projItem.ContainingProject;
+                projectName = prj.Name;
+            }
+            
+            return _dte.Solution.FindProjectItem(filename);
+        }
+
+        /// <summary>
+        /// Make sure that the project item is searched everywhere and that it is a project.
+        /// </summary>
+        /// <param name="projectName">Project name without extension.</param>
+        /// <returns><see cref="Project"/>.</returns>
+        private Project FindProjectByName(string projectName)
+        {
+            Project foundProject = null;
+
+            var list = new List<Project>();
+            list.AddRange(this._dte.Solution.Projects.Cast<Project>());
+
+            for (int i = 0; i < list.Count; i++)
+                list.AddRange(collection: list[i].ProjectItems.Cast<ProjectItem>().Select(x => x.SubProject).OfType<Project>());
+
+            foreach (Project project in list)
+            {
+                if (project.Name == projectName)
+                {
+                    foundProject = project;
+                    break;
+                }
+            }
+
+            if (foundProject == null)
+            {
+                throw new InvalidOperationException($"Project {projectName} not exists in the solution.");
+            }
+
+            return foundProject;
+        }
+
+        /// <summary>
+        /// Get the path of the folder where the solution is located.
+        /// </summary>
+        /// <returns>Path as <see cref="string"/>.</returns>
+        private string GetSolutionDirectoryPath()
+        {
+            var fullName = this._dte.Solution.FullName;
+
+            var directory = Path.GetDirectoryName(fullName);
+
+            return directory;
+        }
+
+        /// <summary>
+        /// Get the path of the folder where this file is located.
+        /// </summary>
+        /// <returns>Path as <see cref="string"/>.</returns>
+        private string GetTemplateFileProjectDirectoryPath()
+        {
+            var currentProjectName = _dte.Solution.FindProjectItem(this._host.TemplateFile).ContainingProject.Name;
+
+            var project = this.FindProjectByName(currentProjectName);
+
+            var directory = Path.GetDirectoryName(project.FullName);
+
+            return directory;
+        }
+
+        /// <summary>
+        /// Get the full path of a project item.
+        /// </summary>
+        /// <param name="projectItem"><see cref="ProjectItem"/>.</param>
+        /// <returns>Path as <see cref="string"/>.</returns>
+        private string GetProjectItemPath(ProjectItem projectItem)
+        {
+            var path = projectItem
+                .Properties
+                .Item("FullPath")
+                .Value
+                .ToString();
+
+            return path;
+        }
+
+        /// <summary>
+        /// Get the path of the folder where project item is located.
+        /// </summary>
+        /// <param name="projectName">Project name without extension.</param>
+        /// <returns>Path as <see cref="string"/>.</returns>
+        private string GetProjectDirectoryPath(string projectName)
+        {
+            var project = this.FindProjectByName(projectName);
+
+            var directory = Path.GetDirectoryName(project.FullName);
+
+            return directory;
+        }
+
+        /// <summary>
+        /// Get interface for the host that transforms text template.
+        /// </summary>
+        /// <returns><see cref="_dte"/></returns>
+        private DTE GetHostServiceProvider()
+        {
+            var hostServiceProvider = this._host as IServiceProvider;
+
+            DTE dte = null;
+
+            if (hostServiceProvider != null)
+            {
+                dte = hostServiceProvider.GetCOMService(typeof(DTE)) as DTE;
+            }
+
+            return dte;
+        }
+
+        /// <summary>
+        /// Adding a file to the solution (.NET Full Framework stuff).
+        /// </summary>
+        /// <param name="projectName">Project name without extension.</param>
+        /// <param name="absolutePath">Absolute path of file.</param>
+        /// <param name="fileName">Filename with extension.</param>
+        private void AddMissingFileToProject(string projectName, string absolutePath, string fileName)
+        {
+            if (string.IsNullOrEmpty(projectName))
+            {
+                var projItem = _dte.Solution.FindProjectItem(this._host.TemplateFile);
+                var prj = projItem.ContainingProject;
+                projectName = prj.Name;
+            }
+
+            var projectItems = this.FindProjectByName(projectName).ProjectItems;
+
+            var exists = this.HasProjectItem(absolutePath, fileName);
+
+            var combinedPath = Path.Combine(absolutePath, fileName);
+
+            if (!exists)
+                projectItems.AddFromFile(combinedPath);
+        }
+
+        /// <summary>
+        /// Check if Project item exists.
+        /// </summary>
+        /// <param name="absolutePath">Absolute path of file.</param>
+        /// <param name="fileName">Filename with extension.</param>
+        /// <returns></returns>
+        private bool HasProjectItem(string absolutePath, string fileName)
+        {
+            var combinedPath = Path.Combine(absolutePath, fileName);
+            var exists = _dte.Solution.FindProjectItem(combinedPath) != null;
+            return exists;
+        }
+
+        /// <summary>
+        /// Remove Project item from the Solution.
+        /// </summary>
+        /// <param name="projectPath">Absolute path of project.</param>
+        /// <param name="fileName">Filename with extension.</param>
+        private void RemoveFileFromProject(string projectPath, string fileName)
+        {
+            var combinedPath = Path.Combine(projectPath, fileName);
+
+            var item = _dte.Solution.FindProjectItem(combinedPath);
+
+            item?.Remove();
+        }
+
+        /// <summary>
+        /// Set setting if available.
+        /// </summary>
+        /// <param name="projectItem"><see cref="ProjectItem"/>.</param>
+        /// <param name="propertyName">Property name as <see cref="string"/>.</param>
+        /// <param name="value">Value as <see cref="object"/>.</param>
+        private void SetPropertyValue(ProjectItem projectItem, string propertyName, object value)
+        {
+            var property = projectItem.Properties.Item(propertyName);
+
+            if (property != null)
+            {
+                property.Value = value;
+            }
+        }
+    }
+    
+    /// <summary>
+    /// Properties for project item
+    /// </summary>
+    public sealed class FileProperties
+    {
+        public FileProperties()
+        {
+            this.TemplateParameter = new Dictionary<string, object>();
+        }
+
+        public string CustomTool { get; set; }
+        public int? BuildAction { get; set; }
+        public Dictionary<string, object> TemplateParameter { get; set; }
+
+        internal string BuildActionString => this.BuildAction.ToString();
+    }
+
+    /// <summary>
+    /// Predefined properties.
+    /// </summary>
+    public abstract class Property
+    {
+        public const string CopyToOutputDirectory = "CopyToOutputDirectory";
+        public const string BuildAction = "BuildAction";
+        public const string CustomTool = "CustomTool";
+        public const string CanOverwriteExistingFile = "CanOverwriteExistingFile";
+    }
+
+    /// <summary>
+    /// Predefined property values (CopyToOutputDirectory).
+    /// </summary>
+    public abstract class CopyToOutputDirectory
+    {
+        public const uint DoNotCopy = 0;
+        public const uint CopyAlways = 1;
+        public const uint CopyIfNewer = 2;
+    }
+
+    /// <summary>
+    /// Predefined property values (CanOverwriteExistingFile).
+    /// </summary>
+    public abstract class CanOverwriteExistingFile
+    {
+        public const bool Yes = true;
+        public const bool No = false;
+    }
+
+    /// <summary>
+    /// Predefined property values (BuildAction).
+    /// </summary>
+    public abstract class BuildAction
+    {
+        public const int None = 0;
+        public const int Compile = 1;
+        public const int Content = 2;
+        public const int EmbeddedResource = 3;
+    }
+
+    /// <summary>
+    /// Info wrapper of the generated files.
+    /// </summary>
+    public class GeneratedInfo
+    {
+        public List<FileToGenerate> FilesToGenerate { get; set; }
+    }
+
+    /// <summary>
+    /// Info for a generated file.
+    /// </summary>
+    public class FileToGenerate
+    {
+        public string Filename { get; set; }
+
+        public string Project { get; set; }
+
+        public string Path { get; set; }
+
+        public Dictionary<string, object> Properties { get; set; }
+
+        [JsonIgnore]
+        public string Content { get; set; }
+
+        [JsonIgnore]
+        public string AbsolutePath { get; set; }
+    }
+#>

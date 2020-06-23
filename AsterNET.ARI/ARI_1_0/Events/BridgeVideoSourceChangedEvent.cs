@@ -9,21 +9,21 @@ using AsterNET.ARI.Actions;
 namespace AsterNET.ARI.Models
 {
     /// <summary>
-    /// Base type for asynchronous events from Asterisk.
+    /// Notification that the source of video in a bridge has changed.
     /// </summary>
-    public class Event : Message
+    public class BridgeVideoSourceChangedEvent : Event
     {
 
 
         /// <summary>
-        /// Name of the application receiving the event.
+        /// no description provided
         /// </summary>
-        public string Application { get; set; }
+        public Bridge Bridge { get; set; }
 
         /// <summary>
-        /// Time at which this event was created.
+        /// no description provided
         /// </summary>
-        public DateTime Timestamp { get; set; }
+        public string Old_video_source_id { get; set; }
 
     }
 }

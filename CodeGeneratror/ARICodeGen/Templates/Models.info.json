@@ -1,0 +1,562 @@
+{
+  "FilesToGenerate": [
+    {
+      "Filename": "Message.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Models",
+      "Properties": {}
+    },
+    {
+      "Filename": "MissingParams.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Models",
+      "Properties": {}
+    },
+    {
+      "Filename": "Event.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Models",
+      "Properties": {}
+    },
+    {
+      "Filename": "ContactInfo.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Models",
+      "Properties": {}
+    },
+    {
+      "Filename": "Peer.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Models",
+      "Properties": {}
+    },
+    {
+      "Filename": "DeviceStateChangedEvent.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Events",
+      "Properties": {}
+    },
+    {
+      "Filename": "PlaybackStartedEvent.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Events",
+      "Properties": {}
+    },
+    {
+      "Filename": "PlaybackContinuingEvent.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Events",
+      "Properties": {}
+    },
+    {
+      "Filename": "PlaybackFinishedEvent.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Events",
+      "Properties": {}
+    },
+    {
+      "Filename": "RecordingStartedEvent.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Events",
+      "Properties": {}
+    },
+    {
+      "Filename": "RecordingFinishedEvent.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Events",
+      "Properties": {}
+    },
+    {
+      "Filename": "RecordingFailedEvent.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Events",
+      "Properties": {}
+    },
+    {
+      "Filename": "ApplicationMoveFailedEvent.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Events",
+      "Properties": {}
+    },
+    {
+      "Filename": "ApplicationReplacedEvent.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Events",
+      "Properties": {}
+    },
+    {
+      "Filename": "BridgeCreatedEvent.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Events",
+      "Properties": {}
+    },
+    {
+      "Filename": "BridgeDestroyedEvent.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Events",
+      "Properties": {}
+    },
+    {
+      "Filename": "BridgeMergedEvent.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Events",
+      "Properties": {}
+    },
+    {
+      "Filename": "BridgeVideoSourceChangedEvent.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Events",
+      "Properties": {}
+    },
+    {
+      "Filename": "BridgeBlindTransferEvent.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Events",
+      "Properties": {}
+    },
+    {
+      "Filename": "BridgeAttendedTransferEvent.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Events",
+      "Properties": {}
+    },
+    {
+      "Filename": "ChannelCreatedEvent.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Events",
+      "Properties": {}
+    },
+    {
+      "Filename": "ChannelDestroyedEvent.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Events",
+      "Properties": {}
+    },
+    {
+      "Filename": "ChannelEnteredBridgeEvent.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Events",
+      "Properties": {}
+    },
+    {
+      "Filename": "ChannelLeftBridgeEvent.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Events",
+      "Properties": {}
+    },
+    {
+      "Filename": "ChannelStateChangeEvent.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Events",
+      "Properties": {}
+    },
+    {
+      "Filename": "ChannelDtmfReceivedEvent.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Events",
+      "Properties": {}
+    },
+    {
+      "Filename": "ChannelDialplanEvent.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Events",
+      "Properties": {}
+    },
+    {
+      "Filename": "ChannelCallerIdEvent.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Events",
+      "Properties": {}
+    },
+    {
+      "Filename": "ChannelUsereventEvent.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Events",
+      "Properties": {}
+    },
+    {
+      "Filename": "ChannelHangupRequestEvent.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Events",
+      "Properties": {}
+    },
+    {
+      "Filename": "ChannelVarsetEvent.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Events",
+      "Properties": {}
+    },
+    {
+      "Filename": "ChannelHoldEvent.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Events",
+      "Properties": {}
+    },
+    {
+      "Filename": "ChannelUnholdEvent.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Events",
+      "Properties": {}
+    },
+    {
+      "Filename": "ChannelTalkingStartedEvent.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Events",
+      "Properties": {}
+    },
+    {
+      "Filename": "ChannelTalkingFinishedEvent.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Events",
+      "Properties": {}
+    },
+    {
+      "Filename": "ContactStatusChangeEvent.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Events",
+      "Properties": {}
+    },
+    {
+      "Filename": "PeerStatusChangeEvent.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Events",
+      "Properties": {}
+    },
+    {
+      "Filename": "EndpointStateChangeEvent.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Events",
+      "Properties": {}
+    },
+    {
+      "Filename": "DialEvent.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Events",
+      "Properties": {}
+    },
+    {
+      "Filename": "StasisEndEvent.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Events",
+      "Properties": {}
+    },
+    {
+      "Filename": "StasisStartEvent.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Events",
+      "Properties": {}
+    },
+    {
+      "Filename": "TextMessageReceivedEvent.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Events",
+      "Properties": {}
+    },
+    {
+      "Filename": "ChannelConnectedLineEvent.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Events",
+      "Properties": {}
+    },
+    {
+      "Filename": "IEventsActions.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Actions",
+      "Properties": {}
+    },
+    {
+      "Filename": "EventsActions.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Actions",
+      "Properties": {}
+    },
+    {
+      "Filename": "Bridge.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Models",
+      "Properties": {}
+    },
+    {
+      "Filename": "IBridgesActions.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Actions",
+      "Properties": {}
+    },
+    {
+      "Filename": "BridgesActions.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Actions",
+      "Properties": {}
+    },
+    {
+      "Filename": "Dialed.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Models",
+      "Properties": {}
+    },
+    {
+      "Filename": "DialplanCEP.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Models",
+      "Properties": {}
+    },
+    {
+      "Filename": "CallerID.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Models",
+      "Properties": {}
+    },
+    {
+      "Filename": "RTPstat.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Models",
+      "Properties": {}
+    },
+    {
+      "Filename": "Channel.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Models",
+      "Properties": {}
+    },
+    {
+      "Filename": "IChannelsActions.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Actions",
+      "Properties": {}
+    },
+    {
+      "Filename": "ChannelsActions.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Actions",
+      "Properties": {}
+    },
+    {
+      "Filename": "BuildInfo.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Models",
+      "Properties": {}
+    },
+    {
+      "Filename": "SystemInfo.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Models",
+      "Properties": {}
+    },
+    {
+      "Filename": "SetId.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Models",
+      "Properties": {}
+    },
+    {
+      "Filename": "ConfigInfo.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Models",
+      "Properties": {}
+    },
+    {
+      "Filename": "StatusInfo.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Models",
+      "Properties": {}
+    },
+    {
+      "Filename": "AsteriskInfo.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Models",
+      "Properties": {}
+    },
+    {
+      "Filename": "AsteriskPing.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Models",
+      "Properties": {}
+    },
+    {
+      "Filename": "Module.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Models",
+      "Properties": {}
+    },
+    {
+      "Filename": "LogChannel.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Models",
+      "Properties": {}
+    },
+    {
+      "Filename": "Variable.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Models",
+      "Properties": {}
+    },
+    {
+      "Filename": "ConfigTuple.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Models",
+      "Properties": {}
+    },
+    {
+      "Filename": "IAsteriskActions.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Actions",
+      "Properties": {}
+    },
+    {
+      "Filename": "AsteriskActions.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Actions",
+      "Properties": {}
+    },
+    {
+      "Filename": "Application.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Models",
+      "Properties": {}
+    },
+    {
+      "Filename": "IApplicationsActions.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Actions",
+      "Properties": {}
+    },
+    {
+      "Filename": "ApplicationsActions.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Actions",
+      "Properties": {}
+    },
+    {
+      "Filename": "Endpoint.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Models",
+      "Properties": {}
+    },
+    {
+      "Filename": "TextMessage.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Models",
+      "Properties": {}
+    },
+    {
+      "Filename": "IEndpointsActions.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Actions",
+      "Properties": {}
+    },
+    {
+      "Filename": "EndpointsActions.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Actions",
+      "Properties": {}
+    },
+    {
+      "Filename": "DeviceState.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Models",
+      "Properties": {}
+    },
+    {
+      "Filename": "IDeviceStatesActions.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Actions",
+      "Properties": {}
+    },
+    {
+      "Filename": "DeviceStatesActions.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Actions",
+      "Properties": {}
+    },
+    {
+      "Filename": "Playback.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Models",
+      "Properties": {}
+    },
+    {
+      "Filename": "IPlaybacksActions.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Actions",
+      "Properties": {}
+    },
+    {
+      "Filename": "PlaybacksActions.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Actions",
+      "Properties": {}
+    },
+    {
+      "Filename": "FormatLangPair.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Models",
+      "Properties": {}
+    },
+    {
+      "Filename": "Sound.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Models",
+      "Properties": {}
+    },
+    {
+      "Filename": "ISoundsActions.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Actions",
+      "Properties": {}
+    },
+    {
+      "Filename": "SoundsActions.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Actions",
+      "Properties": {}
+    },
+    {
+      "Filename": "StoredRecording.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Models",
+      "Properties": {}
+    },
+    {
+      "Filename": "LiveRecording.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Models",
+      "Properties": {}
+    },
+    {
+      "Filename": "IRecordingsActions.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Actions",
+      "Properties": {}
+    },
+    {
+      "Filename": "RecordingsActions.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Actions",
+      "Properties": {}
+    },
+    {
+      "Filename": "Mailbox.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Models",
+      "Properties": {}
+    },
+    {
+      "Filename": "IMailboxesActions.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Actions",
+      "Properties": {}
+    },
+    {
+      "Filename": "MailboxesActions.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0\\Actions",
+      "Properties": {}
+    },
+    {
+      "Filename": "ARIClient.cs",
+      "Project": "AsterNET.ARI",
+      "Path": "ARI_1_0",
+      "Properties": {}
+    }
+  ]
+}

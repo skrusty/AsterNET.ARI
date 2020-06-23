@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>AsterNET.ARI</AssemblyName>
     <RootNamespace>AsterNET.ARI</RootNamespace>
-    <Version>1.2.0</Version>
+    <Version>1.3.0</Version>
     <PackageId>AsterNET.ARI</PackageId>
     <Authors>Ben Merrills, Zachary Way</Authors>
     <Company />
@@ -39,12 +39,14 @@
     <Compile Include="..\AsterNET.ARI\ARI_1_0\Actions\RecordingsActions.cs" Link="ARI_1_0\Actions\RecordingsActions.cs" />
     <Compile Include="..\AsterNET.ARI\ARI_1_0\Actions\SoundsActions.cs" Link="ARI_1_0\Actions\SoundsActions.cs" />
     <Compile Include="..\AsterNET.ARI\ARI_1_0\ARIClient.cs" Link="ARI_1_0\ARIClient.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\ApplicationMoveFailedEvent.cs" Link="ARI_1_0\Events\ApplicationMoveFailedEvent.cs" />
     <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\ApplicationReplacedEvent.cs" Link="ARI_1_0\Events\ApplicationReplacedEvent.cs" />
     <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\BridgeAttendedTransferEvent.cs" Link="ARI_1_0\Events\BridgeAttendedTransferEvent.cs" />
     <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\BridgeBlindTransferEvent.cs" Link="ARI_1_0\Events\BridgeBlindTransferEvent.cs" />
     <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\BridgeCreatedEvent.cs" Link="ARI_1_0\Events\BridgeCreatedEvent.cs" />
     <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\BridgeDestroyedEvent.cs" Link="ARI_1_0\Events\BridgeDestroyedEvent.cs" />
     <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\BridgeMergedEvent.cs" Link="ARI_1_0\Events\BridgeMergedEvent.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\BridgeVideoSourceChangedEvent.cs" Link="ARI_1_0\Events\BridgeVideoSourceChangedEvent.cs" />
     <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\ChannelCallerIdEvent.cs" Link="ARI_1_0\Events\ChannelCallerIdEvent.cs" />
     <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\ChannelConnectedLineEvent.cs" Link="ARI_1_0\Events\ChannelConnectedLineEvent.cs" />
     <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\ChannelCreatedEvent.cs" Link="ARI_1_0\Events\ChannelCreatedEvent.cs" />
@@ -77,6 +79,7 @@
     <Compile Include="..\AsterNET.ARI\ARI_1_0\Events\TextMessageReceivedEvent.cs" Link="ARI_1_0\Events\TextMessageReceivedEvent.cs" />
     <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\Application.cs" Link="ARI_1_0\Models\Application.cs" />
     <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\AsteriskInfo.cs" Link="ARI_1_0\Models\AsteriskInfo.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\AsteriskPing.cs" Link="ARI_1_0\Models\AsteriskPing.cs" />
     <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\Bridge.cs" Link="ARI_1_0\Models\Bridge.cs" />
     <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\BuildInfo.cs" Link="ARI_1_0\Models\BuildInfo.cs" />
     <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\CallerID.cs" Link="ARI_1_0\Models\CallerID.cs" />
@@ -98,6 +101,7 @@
     <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\Module.cs" Link="ARI_1_0\Models\Module.cs" />
     <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\Peer.cs" Link="ARI_1_0\Models\Peer.cs" />
     <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\Playback.cs" Link="ARI_1_0\Models\Playback.cs" />
+    <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\RTPstat.cs" Link="ARI_1_0\Models\RTPstat.cs" />
     <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\SetId.cs" Link="ARI_1_0\Models\SetId.cs" />
     <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\Sound.cs" Link="ARI_1_0\Models\Sound.cs" />
     <Compile Include="..\AsterNET.ARI\ARI_1_0\Models\StatusInfo.cs" Link="ARI_1_0\Models\StatusInfo.cs" />
@@ -134,9 +138,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FubarCoder.RestSharp.Portable.Core" Version="4.0.8" />
-    <PackageReference Include="FubarCoder.RestSharp.Portable.HttpClient" Version="4.0.8" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="RestSharp" Version="106.11.4" />
     <PackageReference Include="System.Threading.Thread" Version="4.3.0" />
     <PackageReference Include="System.Threading.ThreadPool" Version="4.3.0" />
     <PackageReference Include="WebSocket4Net" Version="0.15.2" />

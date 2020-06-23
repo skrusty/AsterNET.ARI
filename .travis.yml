@@ -3,7 +3,7 @@ sudo: required
 dist: trusty
 matrix:
     include:
-        - dotnet: 2.1.300
+        - dotnet: 3.1.301
           mono: latest
           env: DOTNETCORE=1
           install:

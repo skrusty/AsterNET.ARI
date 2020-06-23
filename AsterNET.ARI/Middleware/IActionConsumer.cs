@@ -21,7 +21,7 @@ namespace AsterNET.ARI.Middleware
         IRestCommandResult<T> ProcessRestCommand<T>(IRestCommand command) where T : new();
         IRestCommandResult ProcessRestCommand(IRestCommand command);
 
-        Task<IRestCommandResult<T>> ProcessRestTaskCommand<T>(IRestCommand command) where T : new();
-        Task<IRestCommandResult> ProcessRestTaskCommand(IRestCommand command);
+        Task<IRestCommandResult<T>> ProcessRestCommandAsync<T>(IRestCommand command) where T : new();
+        Task<IRestCommandResult> ProcessRestCommandAsync(IRestCommand command);
     }
 }

@@ -4,7 +4,7 @@
 <#@ assembly name="System.linq" #>
 <#@ assembly name="System.Data.Linq" #>
 <#@ assembly name="$(ProjectDir)bin\Debug\ARICodeGen.exe" #>
-<#@ assembly name="$(ProjectDir)bin\Debug\Newtonsoft.Json.dll" #>
+<#@ assembly name="Newtonsoft.Json" #>
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Data.Linq" #>
 <#@ import namespace="System.Text" #>
@@ -16,11 +16,12 @@
 <#@ import namespace="ARICodeGen" #>
 <#@ import namespace="System.Diagnostics" #>
 <#@ output extension=".cs" #>
-<#@ include file="$(SolutionDir)packages\T4.TemplateFileManager.2.2.1\tools\ttinc\TemplateFilemanager.CS.ttinclude" #>
+<#@ include file="$(ProjectDir)\T4.FileManager.VisualStudio.ttinclude" #>
+
 <#
 System.Diagnostics.Debugger.Launch();
-var manager = TemplateFileManager.Create(this);
-	manager.CanOverrideExistingFile = true;
+var manager = T4FileManager.Create(this);
+	manager.CanOverwriteExistingFile = true;
 	manager.IsAutoIndentEnabled = true;
 var filesPath = @"..\Data\";
 var files = new List<string>() { 
@@ -93,7 +94,7 @@ foreach (var file in files)
             }
 
 			// create new file
-			manager.StartNewFile(className + ".cs", projectName:"AsterNET.ARI", folderName:"ARI_1_0" + output, fileProperties:fileProperties);
+			manager.CreateNewFile(className + ".cs", "AsterNET.ARI", "ARI_1_0" + output, null);
 #>
 /*
 	AsterNET ARI Framework
@@ -628,7 +629,7 @@ namespace AsterNET.ARI.Actions
 <#
 	} 
 }
-	manager.StartNewFile("ARIClient.cs", projectName:"AsterNET.ARI", folderName:"ARI_1_0", fileProperties:fileProperties);
+	manager.CreateNewFile("ARIClient.cs", "AsterNET.ARI", "ARI_1_0", null);
 #>
 /*
 	AsterNET ARI Framework
@@ -683,7 +684,18 @@ namespace AsterNET.ARI
 
 		#>
 			public event UnhandledEventHandler OnUnhandledEvent; 
+			public event UnhandledExceptionEventHandler OnUnhandledException;
 		#endregion
+
+		protected bool UnhandledException(object sender, Exception exception)
+		{
+			if (OnUnhandledException != null)
+			{
+				OnUnhandledException(sender, new UnhandledExceptionEventArgs(exception, false));
+				return true;
+			}
+			return false;
+		}
 		
 		protected void FireEvent(string eventName, object eventArgs, IAriClient sender)
 		{
