@@ -1,7 +1,8 @@
 using System;
-using RestSharp.Portable;
-using RestSharp.Portable.Authenticators;
-using RestSharp.Portable.HttpClient;
+using Newtonsoft.Json;
+using RestSharp;
+using RestSharp.Authenticators;
+using RestSharp.Serializers;
 
 namespace AsterNET.ARI.Middleware.Default
 {
@@ -15,12 +16,9 @@ namespace AsterNET.ARI.Middleware.Default
             Client = new RestClient(info.AriEndPoint)
             {
                 Authenticator = new HttpBasicAuthenticator(info.Username, info.Password)
-#if NETSTANDARD
-                ,IgnoreResponseStatusCode = true
-#endif
             };
 
-            Request = new RestRequest(path) {Serializer = new RestSharp.Portable.Serializers.JsonSerializer()};
+            Request = new RestRequest(path) { JsonSerializer = new JsonSerializer() as ISerializer };
         }
 
 
@@ -30,7 +28,7 @@ namespace AsterNET.ARI.Middleware.Default
         public string Method
         {
             get { return Request.Method.ToString(); }
-            set { Request.Method = (RestSharp.Portable.Method) Enum.Parse(typeof (RestSharp.Portable.Method), value); }
+            set { Request.Method = (RestSharp.Method) Enum.Parse(typeof (RestSharp.Method), value); }
         }
 
 
@@ -43,7 +41,7 @@ namespace AsterNET.ARI.Middleware.Default
 
         public void AddParameter(string name, object value, Middleware.ParameterType type)
         {
-            Request.AddParameter(name, value, (RestSharp.Portable.ParameterType)Enum.Parse(typeof(RestSharp.Portable.ParameterType), type.ToString()));
+            Request.AddParameter(name, value, (RestSharp.ParameterType)Enum.Parse(typeof(RestSharp.ParameterType), type.ToString()));
         }
     }
 }

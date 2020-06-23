@@ -9,26 +9,26 @@ using AsterNET.ARI.Actions;
 namespace AsterNET.ARI.Models
 {
     /// <summary>
-    /// Notification that a channel has entered a Stasis application.
+    /// Asterisk ping information
     /// </summary>
-    public class StasisStartEvent : Event
+    public class AsteriskPing
     {
 
 
         /// <summary>
-        /// Arguments to the application
+        /// Asterisk id info
         /// </summary>
-        public List<string> Args { get; set; }
+        public string Asterisk_id { get; set; }
 
         /// <summary>
-        /// no description provided
+        /// Always string value is pong
         /// </summary>
-        public Channel Channel { get; set; }
+        public string Ping { get; set; }
 
         /// <summary>
-        /// no description provided
+        /// The timestamp string of request received time
         /// </summary>
-        public Channel Replace_channel { get; set; }
+        public string Timestamp { get; set; }
 
     }
 }

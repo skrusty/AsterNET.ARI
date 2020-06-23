@@ -1,6 +1,6 @@
-﻿/*
-	AsterNET ARI Framework
-	Automatically generated file @ 9/22/2016 4:43:50 PM
+/*
+   AsterNET ARI Framework
+   Automatically generated file @ 6/23/2020 3:09:38 PM
 */
 using System;
 using System.Collections.Generic;
@@ -39,6 +39,16 @@ namespace AsterNET.ARI.Models
         /// Names of the devices subscribed to.
         /// </summary>
         public List<string> Device_names { get; set; }
+
+        /// <summary>
+        /// Event types sent to the application.
+        /// </summary>
+        public List<object> Events_allowed { get; set; }
+
+        /// <summary>
+        /// Event types not sent to the application.
+        /// </summary>
+        public List<object> Events_disallowed { get; set; }
 
     }
 }

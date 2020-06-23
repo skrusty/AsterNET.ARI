@@ -1,6 +1,6 @@
-﻿/*
-	AsterNET ARI Framework
-	Automatically generated file @ 9/22/2016 4:43:49 PM
+/*
+   AsterNET ARI Framework
+   Automatically generated file @ 6/23/2020 3:09:38 PM
 */
 using System.Collections.Generic;
 using System.Linq;
@@ -98,6 +98,8 @@ namespace AsterNET.ARI.Actions
             {
                 case 400:
                     throw new AriException("Invalid parameters for originating a channel.", (int)response.StatusCode);
+                case 409:
+                    throw new AriException("Channel with given unique ID already exists.", (int)response.StatusCode);
                 default:
                     // Unknown server response
                     throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -113,7 +115,8 @@ namespace AsterNET.ARI.Actions
         /// <param name="otherChannelId">The unique id to assign the second channel when using local channels.</param>
         /// <param name="originator">Unique ID of the calling channel</param>
         /// <param name="formats">The format name capability list to use if originator is not specified. Ex. "ulaw,slin16".  Format names can be found with "core show codecs".</param>
-        public Channel Create(string endpoint, string app, string appArgs = null, string channelId = null, string otherChannelId = null, string originator = null, string formats = null)
+        /// <param name="variables">The "variables" key in the body object holds variable key/value pairs to set on the channel on creation. Other keys in the body object are interpreted as query parameters. Ex. { "endpoint": "SIP/Alice", "variables": { "CALLERID(name)": "Alice" } }</param>
+        public Channel Create(string endpoint, string app, string appArgs = null, string channelId = null, string otherChannelId = null, string originator = null, string formats = null, Dictionary<string, string> variables = null)
         {
             string path = "channels/create";
             var request = GetNewRequest(path, HttpMethod.POST);
@@ -131,6 +134,10 @@ namespace AsterNET.ARI.Actions
                 request.AddParameter("originator", originator, ParameterType.QueryString);
             if (formats != null)
                 request.AddParameter("formats", formats, ParameterType.QueryString);
+            if (variables != null)
+            {
+                request.AddParameter("application/json", new { variables = variables }, ParameterType.RequestBody);
+            }
 
             var response = Execute<Channel>(request);
 
@@ -138,6 +145,8 @@ namespace AsterNET.ARI.Actions
                 return response.Data;
             switch ((int)response.StatusCode)
             {
+                case 409:
+                    throw new AriException("Channel with given unique ID already exists.", (int)response.StatusCode);
                 default:
                     // Unknown server response
                     throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -227,6 +236,8 @@ namespace AsterNET.ARI.Actions
             {
                 case 400:
                     throw new AriException("Invalid parameters for originating a channel.", (int)response.StatusCode);
+                case 409:
+                    throw new AriException("Channel with given unique ID already exists.", (int)response.StatusCode);
                 default:
                     // Unknown server response
                     throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -236,13 +247,16 @@ namespace AsterNET.ARI.Actions
         /// Delete (i.e. hangup) a channel.. 
         /// </summary>
         /// <param name="channelId">Channel's id</param>
-        /// <param name="reason">Reason for hanging up the channel</param>
-        public void Hangup(string channelId, string reason = null)
+        /// <param name="reason_code">The reason code for hanging up the channel for detail use. Mutually exclusive with 'reason'. See detail hangup codes at here. https://wiki.asterisk.org/wiki/display/AST/Hangup+Cause+Mappings</param>
+        /// <param name="reason">Reason for hanging up the channel for simple use. Mutually exclusive with 'reason_code'.</param>
+        public void Hangup(string channelId, string reason_code = null, string reason = null)
         {
             string path = "channels/{channelId}";
             var request = GetNewRequest(path, HttpMethod.DELETE);
             if (channelId != null)
                 request.AddUrlSegment("channelId", channelId);
+            if (reason_code != null)
+                request.AddParameter("reason_code", reason_code, ParameterType.QueryString);
             if (reason != null)
                 request.AddParameter("reason", reason, ParameterType.QueryString);
             var response = Execute(request);
@@ -292,6 +306,36 @@ namespace AsterNET.ARI.Actions
                     throw new AriException("Channel not in a Stasis application", (int)response.StatusCode);
                 case 412:
                     throw new AriException("Channel in invalid state", (int)response.StatusCode);
+                default:
+                    // Unknown server response
+                    throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+        }
+        /// <summary>
+        /// Move the channel from one Stasis application to another.. 
+        /// </summary>
+        /// <param name="channelId">Channel's id</param>
+        /// <param name="app">The channel will be passed to this Stasis application.</param>
+        /// <param name="appArgs">The application arguments to pass to the Stasis application provided by 'app'.</param>
+        public void Move(string channelId, string app, string appArgs = null)
+        {
+            string path = "channels/{channelId}/move";
+            var request = GetNewRequest(path, HttpMethod.POST);
+            if (channelId != null)
+                request.AddUrlSegment("channelId", channelId);
+            if (app != null)
+                request.AddParameter("app", app, ParameterType.QueryString);
+            if (appArgs != null)
+                request.AddParameter("appArgs", appArgs, ParameterType.QueryString);
+            var response = Execute(request);
+            if ((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+                return;
+            switch ((int)response.StatusCode)
+            {
+                case 404:
+                    throw new AriException("Channel not found", (int)response.StatusCode);
+                case 409:
+                    throw new AriException("Channel not in a Stasis application", (int)response.StatusCode);
                 default:
                     // Unknown server response
                     throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -980,6 +1024,82 @@ namespace AsterNET.ARI.Actions
                     throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
             }
         }
+        /// <summary>
+        /// RTP stats on a channel.. 
+        /// </summary>
+        /// <param name="channelId">Channel's id</param>
+        public RTPstat Rtpstatistics(string channelId)
+        {
+            string path = "channels/{channelId}/rtp_statistics";
+            var request = GetNewRequest(path, HttpMethod.GET);
+            if (channelId != null)
+                request.AddUrlSegment("channelId", channelId);
+
+            var response = Execute<RTPstat>(request);
+
+            if ((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+                return response.Data;
+            switch ((int)response.StatusCode)
+            {
+                case 404:
+                    throw new AriException("Channel cannot be found.", (int)response.StatusCode);
+                default:
+                    // Unknown server response
+                    throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+        }
+        /// <summary>
+        /// Start an External Media session.. Create a channel to an External Media source/sink.
+        /// </summary>
+        /// <param name="channelId">The unique id to assign the channel on creation.</param>
+        /// <param name="app">Stasis Application to place channel into</param>
+        /// <param name="variables">The "variables" key in the body object holds variable key/value pairs to set on the channel on creation. Other keys in the body object are interpreted as query parameters. Ex. { "endpoint": "SIP/Alice", "variables": { "CALLERID(name)": "Alice" } }</param>
+        /// <param name="external_host">Hostname/ip:port of external host</param>
+        /// <param name="encapsulation">Payload encapsulation protocol</param>
+        /// <param name="transport">Transport protocol</param>
+        /// <param name="connection_type">Connection type (client/server)</param>
+        /// <param name="format">Format to encode audio in</param>
+        /// <param name="direction">External media direction</param>
+        public Channel ExternalMedia(string app, string external_host, string format, string channelId = null, Dictionary<string, string> variables = null, string encapsulation = null, string transport = null, string connection_type = null, string direction = null)
+        {
+            string path = "channels/externalMedia";
+            var request = GetNewRequest(path, HttpMethod.POST);
+            if (channelId != null)
+                request.AddParameter("channelId", channelId, ParameterType.QueryString);
+            if (app != null)
+                request.AddParameter("app", app, ParameterType.QueryString);
+            if (variables != null)
+            {
+                request.AddParameter("application/json", new { variables = variables }, ParameterType.RequestBody);
+            }
+            if (external_host != null)
+                request.AddParameter("external_host", external_host, ParameterType.QueryString);
+            if (encapsulation != null)
+                request.AddParameter("encapsulation", encapsulation, ParameterType.QueryString);
+            if (transport != null)
+                request.AddParameter("transport", transport, ParameterType.QueryString);
+            if (connection_type != null)
+                request.AddParameter("connection_type", connection_type, ParameterType.QueryString);
+            if (format != null)
+                request.AddParameter("format", format, ParameterType.QueryString);
+            if (direction != null)
+                request.AddParameter("direction", direction, ParameterType.QueryString);
+
+            var response = Execute<Channel>(request);
+
+            if ((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+                return response.Data;
+            switch ((int)response.StatusCode)
+            {
+                case 400:
+                    throw new AriException("Invalid parameters", (int)response.StatusCode);
+                case 409:
+                    throw new AriException("Channel is not in a Stasis application; Channel is already bridged", (int)response.StatusCode);
+                default:
+                    // Unknown server response
+                    throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+        }
 
         /// <summary>
         /// List all active channels in Asterisk.. 
@@ -1046,6 +1166,8 @@ namespace AsterNET.ARI.Actions
             {
                 case 400:
                     throw new AriException("Invalid parameters for originating a channel.", (int)response.StatusCode);
+                case 409:
+                    throw new AriException("Channel with given unique ID already exists.", (int)response.StatusCode);
                 default:
                     // Unknown server response
                     throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -1054,7 +1176,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Create channel.. 
         /// </summary>
-        public async Task<Channel> CreateAsync(string endpoint, string app, string appArgs = null, string channelId = null, string otherChannelId = null, string originator = null, string formats = null)
+        public async Task<Channel> CreateAsync(string endpoint, string app, string appArgs = null, string channelId = null, string otherChannelId = null, string originator = null, string formats = null, Dictionary<string, string> variables = null)
         {
             string path = "channels/create";
             var request = GetNewRequest(path, HttpMethod.POST);
@@ -1072,6 +1194,10 @@ namespace AsterNET.ARI.Actions
                 request.AddParameter("originator", originator, ParameterType.QueryString);
             if (formats != null)
                 request.AddParameter("formats", formats, ParameterType.QueryString);
+            if (variables != null)
+            {
+                request.AddParameter("application/json", new { variables = variables }, ParameterType.RequestBody);
+            }
 
             var response = await ExecuteTask<Channel>(request);
 
@@ -1079,6 +1205,8 @@ namespace AsterNET.ARI.Actions
                 return response.Data;
             switch ((int)response.StatusCode)
             {
+                case 409:
+                    throw new AriException("Channel with given unique ID already exists.", (int)response.StatusCode);
                 default:
                     // Unknown server response
                     throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -1153,6 +1281,8 @@ namespace AsterNET.ARI.Actions
             {
                 case 400:
                     throw new AriException("Invalid parameters for originating a channel.", (int)response.StatusCode);
+                case 409:
+                    throw new AriException("Channel with given unique ID already exists.", (int)response.StatusCode);
                 default:
                     // Unknown server response
                     throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -1161,12 +1291,14 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Delete (i.e. hangup) a channel.. 
         /// </summary>
-        public async Task HangupAsync(string channelId, string reason = null)
+        public async Task HangupAsync(string channelId, string reason_code = null, string reason = null)
         {
             string path = "channels/{channelId}";
             var request = GetNewRequest(path, HttpMethod.DELETE);
             if (channelId != null)
                 request.AddUrlSegment("channelId", channelId);
+            if (reason_code != null)
+                request.AddParameter("reason_code", reason_code, ParameterType.QueryString);
             if (reason != null)
                 request.AddParameter("reason", reason, ParameterType.QueryString);
             var response = await ExecuteTask(request);
@@ -1211,6 +1343,33 @@ namespace AsterNET.ARI.Actions
                     throw new AriException("Channel not in a Stasis application", (int)response.StatusCode);
                 case 412:
                     throw new AriException("Channel in invalid state", (int)response.StatusCode);
+                default:
+                    // Unknown server response
+                    throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+        }
+        /// <summary>
+        /// Move the channel from one Stasis application to another.. 
+        /// </summary>
+        public async Task MoveAsync(string channelId, string app, string appArgs = null)
+        {
+            string path = "channels/{channelId}/move";
+            var request = GetNewRequest(path, HttpMethod.POST);
+            if (channelId != null)
+                request.AddUrlSegment("channelId", channelId);
+            if (app != null)
+                request.AddParameter("app", app, ParameterType.QueryString);
+            if (appArgs != null)
+                request.AddParameter("appArgs", appArgs, ParameterType.QueryString);
+            var response = await ExecuteTask(request);
+            if ((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+                return;
+            switch ((int)response.StatusCode)
+            {
+                case 404:
+                    throw new AriException("Channel not found", (int)response.StatusCode);
+                case 409:
+                    throw new AriException("Channel not in a Stasis application", (int)response.StatusCode);
                 default:
                     // Unknown server response
                     throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -1832,6 +1991,72 @@ namespace AsterNET.ARI.Actions
                     throw new AriException("Channel cannot be found.", (int)response.StatusCode);
                 case 409:
                     throw new AriException("Channel cannot be dialed.", (int)response.StatusCode);
+                default:
+                    // Unknown server response
+                    throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+        }
+        /// <summary>
+        /// RTP stats on a channel.. 
+        /// </summary>
+        public async Task<RTPstat> RtpstatisticsAsync(string channelId)
+        {
+            string path = "channels/{channelId}/rtp_statistics";
+            var request = GetNewRequest(path, HttpMethod.GET);
+            if (channelId != null)
+                request.AddUrlSegment("channelId", channelId);
+
+            var response = await ExecuteTask<RTPstat>(request);
+
+            if ((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+                return response.Data;
+            switch ((int)response.StatusCode)
+            {
+                case 404:
+                    throw new AriException("Channel cannot be found.", (int)response.StatusCode);
+                default:
+                    // Unknown server response
+                    throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+        }
+        /// <summary>
+        /// Start an External Media session.. Create a channel to an External Media source/sink.
+        /// </summary>
+        public async Task<Channel> ExternalMediaAsync(string app, string external_host, string format, string channelId = null, Dictionary<string, string> variables = null, string encapsulation = null, string transport = null, string connection_type = null, string direction = null)
+        {
+            string path = "channels/externalMedia";
+            var request = GetNewRequest(path, HttpMethod.POST);
+            if (channelId != null)
+                request.AddParameter("channelId", channelId, ParameterType.QueryString);
+            if (app != null)
+                request.AddParameter("app", app, ParameterType.QueryString);
+            if (variables != null)
+            {
+                request.AddParameter("application/json", new { variables = variables }, ParameterType.RequestBody);
+            }
+            if (external_host != null)
+                request.AddParameter("external_host", external_host, ParameterType.QueryString);
+            if (encapsulation != null)
+                request.AddParameter("encapsulation", encapsulation, ParameterType.QueryString);
+            if (transport != null)
+                request.AddParameter("transport", transport, ParameterType.QueryString);
+            if (connection_type != null)
+                request.AddParameter("connection_type", connection_type, ParameterType.QueryString);
+            if (format != null)
+                request.AddParameter("format", format, ParameterType.QueryString);
+            if (direction != null)
+                request.AddParameter("direction", direction, ParameterType.QueryString);
+
+            var response = await ExecuteTask<Channel>(request);
+
+            if ((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+                return response.Data;
+            switch ((int)response.StatusCode)
+            {
+                case 400:
+                    throw new AriException("Invalid parameters", (int)response.StatusCode);
+                case 409:
+                    throw new AriException("Channel is not in a Stasis application; Channel is already bridged", (int)response.StatusCode);
                 default:
                     // Unknown server response
                     throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);

@@ -1,6 +1,6 @@
-﻿/*
-	AsterNET ARI Framework
-	Automatically generated file @ 9/22/2016 4:43:49 PM
+/*
+   AsterNET ARI Framework
+   Automatically generated file @ 6/23/2020 3:09:38 PM
 */
 using System;
 using System.Collections.Generic;
@@ -45,7 +45,8 @@ namespace AsterNET.ARI.Actions
         /// <param name="otherChannelId">The unique id to assign the second channel when using local channels.</param>
         /// <param name="originator">Unique ID of the calling channel</param>
         /// <param name="formats">The format name capability list to use if originator is not specified. Ex. "ulaw,slin16".  Format names can be found with "core show codecs".</param>
-        Channel Create(string endpoint, string app, string appArgs = null, string channelId = null, string otherChannelId = null, string originator = null, string formats = null);
+        /// <param name="variables">The "variables" key in the body object holds variable key/value pairs to set on the channel on creation. Other keys in the body object are interpreted as query parameters. Ex. { "endpoint": "SIP/Alice", "variables": { "CALLERID(name)": "Alice" } }</param>
+        Channel Create(string endpoint, string app, string appArgs = null, string channelId = null, string otherChannelId = null, string originator = null, string formats = null, Dictionary<string, string> variables = null);
         /// <summary>
         /// Channel details.. 
         /// </summary>
@@ -73,8 +74,9 @@ namespace AsterNET.ARI.Actions
         /// Delete (i.e. hangup) a channel.. 
         /// </summary>
         /// <param name="channelId">Channel's id</param>
-        /// <param name="reason">Reason for hanging up the channel</param>
-        void Hangup(string channelId, string reason = null);
+        /// <param name="reason_code">The reason code for hanging up the channel for detail use. Mutually exclusive with 'reason'. See detail hangup codes at here. https://wiki.asterisk.org/wiki/display/AST/Hangup+Cause+Mappings</param>
+        /// <param name="reason">Reason for hanging up the channel for simple use. Mutually exclusive with 'reason_code'.</param>
+        void Hangup(string channelId, string reason_code = null, string reason = null);
         /// <summary>
         /// Exit application; continue execution in the dialplan.. 
         /// </summary>
@@ -84,6 +86,13 @@ namespace AsterNET.ARI.Actions
         /// <param name="priority">The priority to continue to.</param>
         /// <param name="label">The label to continue to - will supersede 'priority' if both are provided.</param>
         void ContinueInDialplan(string channelId, string context = null, string extension = null, int? priority = null, string label = null);
+        /// <summary>
+        /// Move the channel from one Stasis application to another.. 
+        /// </summary>
+        /// <param name="channelId">Channel's id</param>
+        /// <param name="app">The channel will be passed to this Stasis application.</param>
+        /// <param name="appArgs">The application arguments to pass to the Stasis application provided by 'app'.</param>
+        void Move(string channelId, string app, string appArgs = null);
         /// <summary>
         /// Redirect the channel to a different location.. 
         /// </summary>
@@ -230,6 +239,24 @@ namespace AsterNET.ARI.Actions
         /// <param name="caller">Channel ID of caller</param>
         /// <param name="timeout">Dial timeout</param>
         void Dial(string channelId, string caller = null, int? timeout = null);
+        /// <summary>
+        /// RTP stats on a channel.. 
+        /// </summary>
+        /// <param name="channelId">Channel's id</param>
+        RTPstat Rtpstatistics(string channelId);
+        /// <summary>
+        /// Start an External Media session.. Create a channel to an External Media source/sink.
+        /// </summary>
+        /// <param name="channelId">The unique id to assign the channel on creation.</param>
+        /// <param name="app">Stasis Application to place channel into</param>
+        /// <param name="variables">The "variables" key in the body object holds variable key/value pairs to set on the channel on creation. Other keys in the body object are interpreted as query parameters. Ex. { "endpoint": "SIP/Alice", "variables": { "CALLERID(name)": "Alice" } }</param>
+        /// <param name="external_host">Hostname/ip:port of external host</param>
+        /// <param name="encapsulation">Payload encapsulation protocol</param>
+        /// <param name="transport">Transport protocol</param>
+        /// <param name="connection_type">Connection type (client/server)</param>
+        /// <param name="format">Format to encode audio in</param>
+        /// <param name="direction">External media direction</param>
+        Channel ExternalMedia(string app, string external_host, string format, string channelId = null, Dictionary<string, string> variables = null, string encapsulation = null, string transport = null, string connection_type = null, string direction = null);
 
         /// <summary>
         /// List all active channels in Asterisk.. 
@@ -263,7 +290,8 @@ namespace AsterNET.ARI.Actions
         /// <param name="otherChannelId">The unique id to assign the second channel when using local channels.</param>
         /// <param name="originator">Unique ID of the calling channel</param>
         /// <param name="formats">The format name capability list to use if originator is not specified. Ex. "ulaw,slin16".  Format names can be found with "core show codecs".</param>
-        Task<Channel> CreateAsync(string endpoint, string app, string appArgs = null, string channelId = null, string otherChannelId = null, string originator = null, string formats = null);
+        /// <param name="variables">The "variables" key in the body object holds variable key/value pairs to set on the channel on creation. Other keys in the body object are interpreted as query parameters. Ex. { "endpoint": "SIP/Alice", "variables": { "CALLERID(name)": "Alice" } }</param>
+        Task<Channel> CreateAsync(string endpoint, string app, string appArgs = null, string channelId = null, string otherChannelId = null, string originator = null, string formats = null, Dictionary<string, string> variables = null);
         /// <summary>
         /// Channel details.. 
         /// </summary>
@@ -291,8 +319,9 @@ namespace AsterNET.ARI.Actions
         /// Delete (i.e. hangup) a channel.. 
         /// </summary>
         /// <param name="channelId">Channel's id</param>
-        /// <param name="reason">Reason for hanging up the channel</param>
-        Task HangupAsync(string channelId, string reason = null);
+        /// <param name="reason_code">The reason code for hanging up the channel for detail use. Mutually exclusive with 'reason'. See detail hangup codes at here. https://wiki.asterisk.org/wiki/display/AST/Hangup+Cause+Mappings</param>
+        /// <param name="reason">Reason for hanging up the channel for simple use. Mutually exclusive with 'reason_code'.</param>
+        Task HangupAsync(string channelId, string reason_code = null, string reason = null);
         /// <summary>
         /// Exit application; continue execution in the dialplan.. 
         /// </summary>
@@ -302,6 +331,13 @@ namespace AsterNET.ARI.Actions
         /// <param name="priority">The priority to continue to.</param>
         /// <param name="label">The label to continue to - will supersede 'priority' if both are provided.</param>
         Task ContinueInDialplanAsync(string channelId, string context = null, string extension = null, int? priority = null, string label = null);
+        /// <summary>
+        /// Move the channel from one Stasis application to another.. 
+        /// </summary>
+        /// <param name="channelId">Channel's id</param>
+        /// <param name="app">The channel will be passed to this Stasis application.</param>
+        /// <param name="appArgs">The application arguments to pass to the Stasis application provided by 'app'.</param>
+        Task MoveAsync(string channelId, string app, string appArgs = null);
         /// <summary>
         /// Redirect the channel to a different location.. 
         /// </summary>
@@ -448,5 +484,23 @@ namespace AsterNET.ARI.Actions
         /// <param name="caller">Channel ID of caller</param>
         /// <param name="timeout">Dial timeout</param>
         Task DialAsync(string channelId, string caller = null, int? timeout = null);
+        /// <summary>
+        /// RTP stats on a channel.. 
+        /// </summary>
+        /// <param name="channelId">Channel's id</param>
+        Task<RTPstat> RtpstatisticsAsync(string channelId);
+        /// <summary>
+        /// Start an External Media session.. Create a channel to an External Media source/sink.
+        /// </summary>
+        /// <param name="channelId">The unique id to assign the channel on creation.</param>
+        /// <param name="app">Stasis Application to place channel into</param>
+        /// <param name="variables">The "variables" key in the body object holds variable key/value pairs to set on the channel on creation. Other keys in the body object are interpreted as query parameters. Ex. { "endpoint": "SIP/Alice", "variables": { "CALLERID(name)": "Alice" } }</param>
+        /// <param name="external_host">Hostname/ip:port of external host</param>
+        /// <param name="encapsulation">Payload encapsulation protocol</param>
+        /// <param name="transport">Transport protocol</param>
+        /// <param name="connection_type">Connection type (client/server)</param>
+        /// <param name="format">Format to encode audio in</param>
+        /// <param name="direction">External media direction</param>
+        Task<Channel> ExternalMediaAsync(string app, string external_host, string format, string channelId = null, Dictionary<string, string> variables = null, string encapsulation = null, string transport = null, string connection_type = null, string direction = null);
     }
 }

@@ -1,6 +1,6 @@
-﻿/*
-	AsterNET ARI Framework
-	Automatically generated file @ 9/22/2016 4:43:49 PM
+/*
+   AsterNET ARI Framework
+   Automatically generated file @ 6/23/2020 3:09:38 PM
 */
 using System;
 using System.Collections.Generic;
@@ -40,6 +40,10 @@ namespace AsterNET.ARI.Actions
         /// </summary>
         /// <param name="only">Filter information returned</param>
         AsteriskInfo GetInfo(string only = null);
+        /// <summary>
+        /// Response pong message.. 
+        /// </summary>
+        AsteriskPing Ping();
         /// <summary>
         /// List Asterisk modules.. 
         /// </summary>
@@ -123,6 +127,10 @@ namespace AsterNET.ARI.Actions
         /// </summary>
         /// <param name="only">Filter information returned</param>
         Task<AsteriskInfo> GetInfoAsync(string only = null);
+        /// <summary>
+        /// Response pong message.. 
+        /// </summary>
+        Task<AsteriskPing> PingAsync();
         /// <summary>
         /// List Asterisk modules.. 
         /// </summary>

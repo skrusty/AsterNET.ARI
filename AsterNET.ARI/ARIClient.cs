@@ -166,7 +166,7 @@ namespace AsterNET.ARI
                     {
                         FireEvent(evnt.Type, evnt, this);
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         // Handle any exceptions that were thrown by the invoked event handler
                         if (!UnhandledException(this, ex))

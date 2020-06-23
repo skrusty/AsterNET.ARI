@@ -1,6 +1,6 @@
-﻿/*
-	AsterNET ARI Framework
-	Automatically generated file @ 9/22/2016 4:43:49 PM
+/*
+   AsterNET ARI Framework
+   Automatically generated file @ 6/23/2020 3:09:38 PM
 */
 using System.Collections.Generic;
 using System.Linq;
@@ -41,7 +41,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Create a new bridge.. This bridge persists until it has been shut down, or Asterisk has been shut down.
         /// </summary>
-        /// <param name="type">Comma separated list of bridge type attributes (mixing, holding, dtmf_events, proxy_media).</param>
+        /// <param name="type">Comma separated list of bridge type attributes (mixing, holding, dtmf_events, proxy_media, video_sfu).</param>
         /// <param name="bridgeId">Unique ID to give to the bridge being created.</param>
         /// <param name="name">Name to give to the bridge being created.</param>
         public Bridge Create(string type = null, string bridgeId = null, string name = null)
@@ -69,7 +69,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Create a new bridge or updates an existing one.. This bridge persists until it has been shut down, or Asterisk has been shut down.
         /// </summary>
-        /// <param name="type">Comma separated list of bridge type attributes (mixing, holding, dtmf_events, proxy_media) to set.</param>
+        /// <param name="type">Comma separated list of bridge type attributes (mixing, holding, dtmf_events, proxy_media, video_sfu) to set.</param>
         /// <param name="bridgeId">Unique ID to give to the bridge being created.</param>
         /// <param name="name">Set the name of the bridge.</param>
         public Bridge CreateWithId(string bridgeId, string type = null, string name = null)
@@ -146,7 +146,9 @@ namespace AsterNET.ARI.Actions
         /// <param name="bridgeId">Bridge's id</param>
         /// <param name="channel">Ids of channels to add to bridge</param>
         /// <param name="role">Channel's role in the bridge</param>
-        public void AddChannel(string bridgeId, string channel, string role = null)
+        /// <param name="absorbDTMF">Absorb DTMF coming from this channel, preventing it to pass through to the bridge</param>
+        /// <param name="mute">Mute audio from this channel, preventing it to pass through to the bridge</param>
+        public void AddChannel(string bridgeId, string channel, string role = null, bool? absorbDTMF = null, bool? mute = null)
         {
             string path = "bridges/{bridgeId}/addChannel";
             var request = GetNewRequest(path, HttpMethod.POST);
@@ -156,6 +158,10 @@ namespace AsterNET.ARI.Actions
                 request.AddParameter("channel", channel, ParameterType.QueryString);
             if (role != null)
                 request.AddParameter("role", role, ParameterType.QueryString);
+            if (absorbDTMF != null)
+                request.AddParameter("absorbDTMF", absorbDTMF, ParameterType.QueryString);
+            if (mute != null)
+                request.AddParameter("mute", mute, ParameterType.QueryString);
             var response = Execute(request);
             if ((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
                 return;
@@ -200,6 +206,57 @@ namespace AsterNET.ARI.Actions
                     throw new AriException("Bridge not in Stasis application", (int)response.StatusCode);
                 case 422:
                     throw new AriException("Channel not in this bridge", (int)response.StatusCode);
+                default:
+                    // Unknown server response
+                    throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+        }
+        /// <summary>
+        /// Set a channel as the video source in a multi-party mixing bridge. This operation has no effect on bridges with two or fewer participants.. 
+        /// </summary>
+        /// <param name="bridgeId">Bridge's id</param>
+        /// <param name="channelId">Channel's id</param>
+        public void SetVideoSource(string bridgeId, string channelId)
+        {
+            string path = "bridges/{bridgeId}/videoSource/{channelId}";
+            var request = GetNewRequest(path, HttpMethod.POST);
+            if (bridgeId != null)
+                request.AddUrlSegment("bridgeId", bridgeId);
+            if (channelId != null)
+                request.AddUrlSegment("channelId", channelId);
+            var response = Execute(request);
+            if ((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+                return;
+            switch ((int)response.StatusCode)
+            {
+                case 404:
+                    throw new AriException("Bridge or Channel not found", (int)response.StatusCode);
+                case 409:
+                    throw new AriException("Channel not in Stasis application", (int)response.StatusCode);
+                case 422:
+                    throw new AriException("Channel not in this Bridge", (int)response.StatusCode);
+                default:
+                    // Unknown server response
+                    throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+        }
+        /// <summary>
+        /// Removes any explicit video source in a multi-party mixing bridge. This operation has no effect on bridges with two or fewer participants. When no explicit video source is set, talk detection will be used to determine the active video stream.. 
+        /// </summary>
+        /// <param name="bridgeId">Bridge's id</param>
+        public void ClearVideoSource(string bridgeId)
+        {
+            string path = "bridges/{bridgeId}/videoSource";
+            var request = GetNewRequest(path, HttpMethod.DELETE);
+            if (bridgeId != null)
+                request.AddUrlSegment("bridgeId", bridgeId);
+            var response = Execute(request);
+            if ((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+                return;
+            switch ((int)response.StatusCode)
+            {
+                case 404:
+                    throw new AriException("Bridge not found", (int)response.StatusCode);
                 default:
                     // Unknown server response
                     throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
@@ -506,7 +563,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Add a channel to a bridge.. 
         /// </summary>
-        public async Task AddChannelAsync(string bridgeId, string channel, string role = null)
+        public async Task AddChannelAsync(string bridgeId, string channel, string role = null, bool? absorbDTMF = null, bool? mute = null)
         {
             string path = "bridges/{bridgeId}/addChannel";
             var request = GetNewRequest(path, HttpMethod.POST);
@@ -516,6 +573,10 @@ namespace AsterNET.ARI.Actions
                 request.AddParameter("channel", channel, ParameterType.QueryString);
             if (role != null)
                 request.AddParameter("role", role, ParameterType.QueryString);
+            if (absorbDTMF != null)
+                request.AddParameter("absorbDTMF", absorbDTMF, ParameterType.QueryString);
+            if (mute != null)
+                request.AddParameter("mute", mute, ParameterType.QueryString);
             var response = await ExecuteTask(request);
             if ((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
                 return;
@@ -558,6 +619,54 @@ namespace AsterNET.ARI.Actions
                     throw new AriException("Bridge not in Stasis application", (int)response.StatusCode);
                 case 422:
                     throw new AriException("Channel not in this bridge", (int)response.StatusCode);
+                default:
+                    // Unknown server response
+                    throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+        }
+        /// <summary>
+        /// Set a channel as the video source in a multi-party mixing bridge. This operation has no effect on bridges with two or fewer participants.. 
+        /// </summary>
+        public async Task SetVideoSourceAsync(string bridgeId, string channelId)
+        {
+            string path = "bridges/{bridgeId}/videoSource/{channelId}";
+            var request = GetNewRequest(path, HttpMethod.POST);
+            if (bridgeId != null)
+                request.AddUrlSegment("bridgeId", bridgeId);
+            if (channelId != null)
+                request.AddUrlSegment("channelId", channelId);
+            var response = await ExecuteTask(request);
+            if ((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+                return;
+            switch ((int)response.StatusCode)
+            {
+                case 404:
+                    throw new AriException("Bridge or Channel not found", (int)response.StatusCode);
+                case 409:
+                    throw new AriException("Channel not in Stasis application", (int)response.StatusCode);
+                case 422:
+                    throw new AriException("Channel not in this Bridge", (int)response.StatusCode);
+                default:
+                    // Unknown server response
+                    throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+        }
+        /// <summary>
+        /// Removes any explicit video source in a multi-party mixing bridge. This operation has no effect on bridges with two or fewer participants. When no explicit video source is set, talk detection will be used to determine the active video stream.. 
+        /// </summary>
+        public async Task ClearVideoSourceAsync(string bridgeId)
+        {
+            string path = "bridges/{bridgeId}/videoSource";
+            var request = GetNewRequest(path, HttpMethod.DELETE);
+            if (bridgeId != null)
+                request.AddUrlSegment("bridgeId", bridgeId);
+            var response = await ExecuteTask(request);
+            if ((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+                return;
+            switch ((int)response.StatusCode)
+            {
+                case 404:
+                    throw new AriException("Bridge not found", (int)response.StatusCode);
                 default:
                     // Unknown server response
                     throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);

@@ -9,21 +9,26 @@ using AsterNET.ARI.Actions;
 namespace AsterNET.ARI.Models
 {
     /// <summary>
-    /// A text message was received from an endpoint.
+    /// Notification that trying to move a channel to another Stasis application failed.
     /// </summary>
-    public class TextMessageReceivedEvent : Event
+    public class ApplicationMoveFailedEvent : Event
     {
 
 
         /// <summary>
         /// no description provided
         /// </summary>
-        public TextMessage Message { get; set; }
+        public Channel Channel { get; set; }
 
         /// <summary>
         /// no description provided
         /// </summary>
-        public Endpoint Endpoint { get; set; }
+        public string Destination { get; set; }
+
+        /// <summary>
+        /// Arguments to the application
+        /// </summary>
+        public List<string> Args { get; set; }
 
     }
 }

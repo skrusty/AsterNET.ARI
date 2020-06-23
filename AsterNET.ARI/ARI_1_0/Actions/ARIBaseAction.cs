@@ -32,12 +32,12 @@ namespace AsterNET.ARI
 
         protected  async Task<IRestCommandResult<T>> ExecuteTask<T>(IRestCommand command) where T : new()
         {
-            return await _consumer.ProcessRestTaskCommand<T>(command);
+            return await _consumer.ProcessRestCommandAsync<T>(command);
         }
 
         protected async Task<IRestCommandResult> ExecuteTask(IRestCommand command)
         {
-            return await _consumer.ProcessRestTaskCommand(command);
+            return await _consumer.ProcessRestCommandAsync(command);
         }
 	}
 }

@@ -1,6 +1,6 @@
-﻿/*
-	AsterNET ARI Framework
-	Automatically generated file @ 9/22/2016 4:43:49 PM
+/*
+   AsterNET ARI Framework
+   Automatically generated file @ 6/23/2020 3:09:38 PM
 */
 using System.Collections.Generic;
 using System.Linq;
@@ -130,6 +130,25 @@ namespace AsterNET.ARI.Actions
                 request.AddParameter("only", only, ParameterType.QueryString);
 
             var response = Execute<AsteriskInfo>(request);
+
+            if ((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+                return response.Data;
+            switch ((int)response.StatusCode)
+            {
+                default:
+                    // Unknown server response
+                    throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+        }
+        /// <summary>
+        /// Response pong message.. 
+        /// </summary>
+        public AsteriskPing Ping()
+        {
+            string path = "asterisk/ping";
+            var request = GetNewRequest(path, HttpMethod.GET);
+
+            var response = Execute<AsteriskPing>(request);
 
             if ((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
                 return response.Data;
@@ -495,6 +514,25 @@ namespace AsterNET.ARI.Actions
                 request.AddParameter("only", only, ParameterType.QueryString);
 
             var response = await ExecuteTask<AsteriskInfo>(request);
+
+            if ((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+                return response.Data;
+            switch ((int)response.StatusCode)
+            {
+                default:
+                    // Unknown server response
+                    throw new AriException(string.Format("Unknown response code {0} from ARI.", response.StatusCode), (int)response.StatusCode);
+            }
+        }
+        /// <summary>
+        /// Response pong message.. 
+        /// </summary>
+        public async Task<AsteriskPing> PingAsync()
+        {
+            string path = "asterisk/ping";
+            var request = GetNewRequest(path, HttpMethod.GET);
+
+            var response = await ExecuteTask<AsteriskPing>(request);
 
             if ((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
                 return response.Data;

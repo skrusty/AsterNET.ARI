@@ -1,6 +1,6 @@
-﻿/*
-	AsterNET ARI Framework
-	Automatically generated file @ 9/22/2016 4:43:50 PM
+/*
+   AsterNET ARI Framework
+   Automatically generated file @ 6/23/2020 3:09:38 PM
 */
 using System;
 using System.Collections.Generic;
@@ -31,9 +31,9 @@ namespace AsterNET.ARI.Models
         public string Body { get; set; }
 
         /// <summary>
-        /// Technology specific key/value pairs associated with the message.
+        /// Technology specific key/value pairs (JSON object) associated with the message.
         /// </summary>
-        public List<TextMessageVariable> Variables { get; set; }
+        public object Variables { get; set; }
 
     }
 }
