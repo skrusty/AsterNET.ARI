@@ -9,26 +9,26 @@ using AsterNET.ARI.Actions;
 namespace AsterNET.ARI.Models
 {
 	/// <summary>
-	/// Represents the state of a mailbox.
+	/// Asterisk ping information
 	/// </summary>
-	public class Mailbox 
+	public class AsteriskPing 
 	{
 
 
 		/// <summary>
-		/// Name of the mailbox.
+		/// Asterisk id info
 		/// </summary>
-		public string Name { get; set; }
+		public string Asterisk_id { get; set; }
 
 		/// <summary>
-		/// Count of old messages in the mailbox.
+		/// Always string value is pong
 		/// </summary>
-		public int Old_messages { get; set; }
+		public string Ping { get; set; }
 
 		/// <summary>
-		/// Count of new messages in the mailbox.
+		/// The timestamp string of request received time
 		/// </summary>
-		public int New_messages { get; set; }
+		public string Timestamp { get; set; }
 
 	}
 }

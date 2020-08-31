@@ -64,6 +64,72 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\AsterNET.ARI\ARI_1_0\Actions\ApplicationsActions.cs">
+      <Link>Templates\ApplicationsActions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\AsterNET.ARI\ARI_1_0\Actions\AsteriskActions.cs">
+      <Link>Templates\AsteriskActions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\AsterNET.ARI\ARI_1_0\Actions\BridgesActions.cs">
+      <Link>Templates\BridgesActions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\AsterNET.ARI\ARI_1_0\Actions\ChannelsActions.cs">
+      <Link>Templates\ChannelsActions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\AsterNET.ARI\ARI_1_0\Actions\DeviceStatesActions.cs">
+      <Link>Templates\DeviceStatesActions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\AsterNET.ARI\ARI_1_0\Actions\EndpointsActions.cs">
+      <Link>Templates\EndpointsActions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\AsterNET.ARI\ARI_1_0\Actions\EventsActions.cs">
+      <Link>Templates\EventsActions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\AsterNET.ARI\ARI_1_0\Actions\IApplicationsActions.cs">
+      <Link>Templates\IApplicationsActions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\AsterNET.ARI\ARI_1_0\Actions\IAsteriskActions.cs">
+      <Link>Templates\IAsteriskActions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\AsterNET.ARI\ARI_1_0\Actions\IBridgesActions.cs">
+      <Link>Templates\IBridgesActions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\AsterNET.ARI\ARI_1_0\Actions\IChannelsActions.cs">
+      <Link>Templates\IChannelsActions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\AsterNET.ARI\ARI_1_0\Actions\IDeviceStatesActions.cs">
+      <Link>Templates\IDeviceStatesActions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\AsterNET.ARI\ARI_1_0\Actions\IEndpointsActions.cs">
+      <Link>Templates\IEndpointsActions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\AsterNET.ARI\ARI_1_0\Actions\IEventsActions.cs">
+      <Link>Templates\IEventsActions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\AsterNET.ARI\ARI_1_0\Actions\IMailboxesActions.cs">
+      <Link>Templates\IMailboxesActions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\AsterNET.ARI\ARI_1_0\Actions\IPlaybacksActions.cs">
+      <Link>Templates\IPlaybacksActions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\AsterNET.ARI\ARI_1_0\Actions\IRecordingsActions.cs">
+      <Link>Templates\IRecordingsActions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\AsterNET.ARI\ARI_1_0\Actions\ISoundsActions.cs">
+      <Link>Templates\ISoundsActions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\AsterNET.ARI\ARI_1_0\Actions\MailboxesActions.cs">
+      <Link>Templates\MailboxesActions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\AsterNET.ARI\ARI_1_0\Actions\PlaybacksActions.cs">
+      <Link>Templates\PlaybacksActions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\AsterNET.ARI\ARI_1_0\Actions\RecordingsActions.cs">
+      <Link>Templates\RecordingsActions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\AsterNET.ARI\ARI_1_0\Actions\SoundsActions.cs">
+      <Link>Templates\SoundsActions.cs</Link>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Templates\Models.cs">

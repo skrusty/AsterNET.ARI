@@ -9,21 +9,26 @@ using AsterNET.ARI.Actions;
 namespace AsterNET.ARI.Models
 {
 	/// <summary>
-	/// Notification that one bridge has merged into another.
+	/// Notification that trying to move a channel to another Stasis application failed.
 	/// </summary>
-	public class BridgeMergedEvent  : Event
+	public class ApplicationMoveFailedEvent  : Event
 	{
 
 
 		/// <summary>
 		/// no description provided
 		/// </summary>
-		public Bridge Bridge { get; set; }
+		public Channel Channel { get; set; }
 
 		/// <summary>
 		/// no description provided
 		/// </summary>
-		public Bridge Bridge_from { get; set; }
+		public string Destination { get; set; }
+
+		/// <summary>
+		/// Arguments to the application
+		/// </summary>
+		public List<string> Args { get; set; }
 
 	}
 }

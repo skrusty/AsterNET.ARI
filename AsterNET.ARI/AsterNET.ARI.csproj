@@ -67,6 +67,11 @@
     <Compile Include="ARIException.cs" />
     <Compile Include="ARI_1_0\Actions\IMailboxesActions.cs" />
     <Compile Include="ARI_1_0\Actions\MailboxesActions.cs" />
+    <Compile Include="ARI_1_0\ARIClient.cs">
+      <DependentUpon>Models.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="ARI_1_0\Events\ApplicationMoveFailedEvent.cs" />
+    <Compile Include="ARI_1_0\Events\BridgeVideoSourceChangedEvent.cs" />
     <Compile Include="ARI_1_0\Events\ChannelConnectedLineEvent.cs" />
     <Compile Include="ARI_1_0\Events\ChannelHoldEvent.cs" />
     <Compile Include="ARI_1_0\Events\ChannelUnholdEvent.cs" />
@@ -76,6 +81,7 @@
     <Compile Include="ARI_1_0\Events\TextMessageReceivedEvent.cs" />
     <Compile Include="ARI_1_0\Models\Application.cs" />
     <Compile Include="ARI_1_0\Models\AsteriskInfo.cs" />
+    <Compile Include="ARI_1_0\Models\AsteriskPing.cs" />
     <Compile Include="ARI_1_0\Models\Bridge.cs" />
     <Compile Include="ARI_1_0\Models\BuildInfo.cs" />
     <Compile Include="ARI_1_0\Models\CallerID.cs" />
@@ -97,6 +103,7 @@
     <Compile Include="ARI_1_0\Models\Module.cs" />
     <Compile Include="ARI_1_0\Models\Peer.cs" />
     <Compile Include="ARI_1_0\Models\Playback.cs" />
+    <Compile Include="ARI_1_0\Models\RTPstat.cs" />
     <Compile Include="ARI_1_0\Models\SetId.cs" />
     <Compile Include="ARI_1_0\Models\Sound.cs" />
     <Compile Include="ARI_1_0\Models\StatusInfo.cs" />
@@ -127,9 +134,6 @@
     <Compile Include="ARI_1_0\Actions\ISoundsActions.cs" />
     <Compile Include="ARI_1_0\Events\ApplicationReplacedEvent.cs" />
     <Compile Include="ARI_1_0\Actions\ApplicationsActions.cs" />
-    <Compile Include="ARI_1_0\ARIClient.cs">
-      <DependentUpon>Models.txt4</DependentUpon>
-    </Compile>
     <Compile Include="ARI_1_0\Actions\AsteriskActions.cs" />
     <Compile Include="ARI_1_0\Events\BridgeAttendedTransferEvent.cs" />
     <Compile Include="ARI_1_0\Events\BridgeBlindTransferEvent.cs" />
