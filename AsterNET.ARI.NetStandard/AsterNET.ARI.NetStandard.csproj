@@ -5,11 +5,12 @@
     <AssemblyName>AsterNET.ARI</AssemblyName>
     <RootNamespace>AsterNET.ARI</RootNamespace>
     <Version>1.3.0</Version>
-    <PackageId>AsterNET.ARI</PackageId>
+    <PackageId>Arke.ARI</PackageId>
     <Authors>Ben Merrills, Zachary Way</Authors>
     <Company />
-    <Product>AsterNET.ARI</Product>
-    <Description>Asterisk ARI Api wrapper</Description>
+    <Product>Arke.ARI</Product>
+    <Description>Asterisk ARI Api wrapper - forked from AsterNET.ARI</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
