@@ -1,6 +1,6 @@
 /*
    AsterNET ARI Framework
-   Automatically generated file @ 6/23/2020 3:09:38 PM
+   Automatically generated file @ 6/21/2023 1:51:39 PM
 */
 using System.Collections.Generic;
 using System.Linq;
@@ -41,7 +41,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Create a new bridge.. This bridge persists until it has been shut down, or Asterisk has been shut down.
         /// </summary>
-        /// <param name="type">Comma separated list of bridge type attributes (mixing, holding, dtmf_events, proxy_media, video_sfu).</param>
+        /// <param name="type">Comma separated list of bridge type attributes (mixing, holding, dtmf_events, proxy_media, video_sfu, video_single).</param>
         /// <param name="bridgeId">Unique ID to give to the bridge being created.</param>
         /// <param name="name">Name to give to the bridge being created.</param>
         public Bridge Create(string type = null, string bridgeId = null, string name = null)
@@ -69,7 +69,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Create a new bridge or updates an existing one.. This bridge persists until it has been shut down, or Asterisk has been shut down.
         /// </summary>
-        /// <param name="type">Comma separated list of bridge type attributes (mixing, holding, dtmf_events, proxy_media, video_sfu) to set.</param>
+        /// <param name="type">Comma separated list of bridge type attributes (mixing, holding, dtmf_events, proxy_media, video_sfu, video_single) to set.</param>
         /// <param name="bridgeId">Unique ID to give to the bridge being created.</param>
         /// <param name="name">Set the name of the bridge.</param>
         public Bridge CreateWithId(string bridgeId, string type = null, string name = null)
@@ -148,7 +148,8 @@ namespace AsterNET.ARI.Actions
         /// <param name="role">Channel's role in the bridge</param>
         /// <param name="absorbDTMF">Absorb DTMF coming from this channel, preventing it to pass through to the bridge</param>
         /// <param name="mute">Mute audio from this channel, preventing it to pass through to the bridge</param>
-        public void AddChannel(string bridgeId, string channel, string role = null, bool? absorbDTMF = null, bool? mute = null)
+        /// <param name="inhibitConnectedLineUpdates">Do not present the identity of the newly connected channel to other bridge members</param>
+        public void AddChannel(string bridgeId, string channel, string role = null, bool? absorbDTMF = null, bool? mute = null, bool? inhibitConnectedLineUpdates = null)
         {
             string path = "bridges/{bridgeId}/addChannel";
             var request = GetNewRequest(path, HttpMethod.POST);
@@ -162,6 +163,8 @@ namespace AsterNET.ARI.Actions
                 request.AddParameter("absorbDTMF", absorbDTMF, ParameterType.QueryString);
             if (mute != null)
                 request.AddParameter("mute", mute, ParameterType.QueryString);
+            if (inhibitConnectedLineUpdates != null)
+                request.AddParameter("inhibitConnectedLineUpdates", inhibitConnectedLineUpdates, ParameterType.QueryString);
             var response = Execute(request);
             if ((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
                 return;
@@ -563,7 +566,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Add a channel to a bridge.. 
         /// </summary>
-        public async Task AddChannelAsync(string bridgeId, string channel, string role = null, bool? absorbDTMF = null, bool? mute = null)
+        public async Task AddChannelAsync(string bridgeId, string channel, string role = null, bool? absorbDTMF = null, bool? mute = null, bool? inhibitConnectedLineUpdates = null)
         {
             string path = "bridges/{bridgeId}/addChannel";
             var request = GetNewRequest(path, HttpMethod.POST);
@@ -577,6 +580,8 @@ namespace AsterNET.ARI.Actions
                 request.AddParameter("absorbDTMF", absorbDTMF, ParameterType.QueryString);
             if (mute != null)
                 request.AddParameter("mute", mute, ParameterType.QueryString);
+            if (inhibitConnectedLineUpdates != null)
+                request.AddParameter("inhibitConnectedLineUpdates", inhibitConnectedLineUpdates, ParameterType.QueryString);
             var response = await ExecuteTask(request);
             if ((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
                 return;

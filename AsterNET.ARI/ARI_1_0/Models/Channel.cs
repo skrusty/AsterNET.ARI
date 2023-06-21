@@ -1,6 +1,6 @@
 /*
    AsterNET ARI Framework
-   Automatically generated file @ 6/23/2020 3:09:38 PM
+   Automatically generated file @ 6/21/2023 1:51:41 PM
 */
 using System;
 using System.Collections.Generic;
@@ -19,6 +19,11 @@ namespace AsterNET.ARI.Models
         /// Unique identifier of the channel.  This is the same as the Uniqueid field in AMI.
         /// </summary>
         public string Id { get; set; }
+
+        /// <summary>
+        /// Protocol id from underlying channel driver (i.e. Call-ID for chan_sip/chan_pjsip; will be empty if not applicable or not implemented by driver).
+        /// </summary>
+        public string Protocol_id { get; set; }
 
         /// <summary>
         /// Name of the channel (i.e. SIP/foo-0000a7e3)

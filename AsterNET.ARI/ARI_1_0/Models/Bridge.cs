@@ -1,6 +1,6 @@
 /*
    AsterNET ARI Framework
-   Automatically generated file @ 6/23/2020 3:09:38 PM
+   Automatically generated file @ 6/21/2023 1:51:38 PM
 */
 using System;
 using System.Collections.Generic;
@@ -51,7 +51,7 @@ namespace AsterNET.ARI.Models
         public List<string> Channels { get; set; }
 
         /// <summary>
-        /// The video mode the bridge is using. One of 'none', 'talker', or 'single'.
+        /// The video mode the bridge is using. One of 'none', 'talker', 'sfu', or 'single'.
         /// </summary>
         public string Video_mode { get; set; }
 

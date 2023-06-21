@@ -1,6 +1,6 @@
 /*
    AsterNET ARI Framework
-   Automatically generated file @ 6/23/2020 3:09:38 PM
+   Automatically generated file @ 6/21/2023 1:51:42 PM
 */
 using System.Collections.Generic;
 using System.Linq;
@@ -1060,7 +1060,8 @@ namespace AsterNET.ARI.Actions
         /// <param name="connection_type">Connection type (client/server)</param>
         /// <param name="format">Format to encode audio in</param>
         /// <param name="direction">External media direction</param>
-        public Channel ExternalMedia(string app, string external_host, string format, string channelId = null, Dictionary<string, string> variables = null, string encapsulation = null, string transport = null, string connection_type = null, string direction = null)
+        /// <param name="data">An arbitrary data field</param>
+        public Channel ExternalMedia(string app, string external_host, string format, string channelId = null, Dictionary<string, string> variables = null, string encapsulation = null, string transport = null, string connection_type = null, string direction = null, string data = null)
         {
             string path = "channels/externalMedia";
             var request = GetNewRequest(path, HttpMethod.POST);
@@ -1084,6 +1085,8 @@ namespace AsterNET.ARI.Actions
                 request.AddParameter("format", format, ParameterType.QueryString);
             if (direction != null)
                 request.AddParameter("direction", direction, ParameterType.QueryString);
+            if (data != null)
+                request.AddParameter("data", data, ParameterType.QueryString);
 
             var response = Execute<Channel>(request);
 
@@ -2022,7 +2025,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Start an External Media session.. Create a channel to an External Media source/sink.
         /// </summary>
-        public async Task<Channel> ExternalMediaAsync(string app, string external_host, string format, string channelId = null, Dictionary<string, string> variables = null, string encapsulation = null, string transport = null, string connection_type = null, string direction = null)
+        public async Task<Channel> ExternalMediaAsync(string app, string external_host, string format, string channelId = null, Dictionary<string, string> variables = null, string encapsulation = null, string transport = null, string connection_type = null, string direction = null, string data = null)
         {
             string path = "channels/externalMedia";
             var request = GetNewRequest(path, HttpMethod.POST);
@@ -2046,6 +2049,8 @@ namespace AsterNET.ARI.Actions
                 request.AddParameter("format", format, ParameterType.QueryString);
             if (direction != null)
                 request.AddParameter("direction", direction, ParameterType.QueryString);
+            if (data != null)
+                request.AddParameter("data", data, ParameterType.QueryString);
 
             var response = await ExecuteTask<Channel>(request);
 

@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
     <metadata>
-        <id>AsterNET.ARI</id>
-        <version>1.3.0</version>
+        <id>Arke.ARI</id>
+        <version>1.4.0</version>
         <authors>Ben Merrills, Zachary Way</authors>
-        <owners>Ben Merrills</owners>
-        <licenseUrl>https://github.com/skrusty/AsterNET.ARI/blob/master/LICENSE.txt</licenseUrl>
-        <projectUrl>https://github.com/skrusty/AsterNET.ARI</projectUrl>
+        <owners>Zachary Way</owners>
+        <licenseUrl>https://raw.githubusercontent.com/seiggy/AsterNET.ARI/master/LICENSE.txt</licenseUrl>
+        <projectUrl>https://github.com/seiggy/AsterNET.ARI</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>AsterNET.ARI Asterisk ARI/Stasis framework for .NET</description>
-        <releaseNotes>Please see: https://github.com/skrusty/AsterNET.ARI/commits/master</releaseNotes>
-        <copyright>Copyright 2015</copyright>
+        <releaseNotes>Please see: https://github.com/seiggy/AsterNET.ARI/commits/master</releaseNotes>
+        <copyright>Copyright 2023</copyright>
         <tags>Asterisk AsterNET Asterisk.NET ARI Stasis</tags>
         <dependencies>
             <dependency id="Newtonsoft.Json" version="12.0.3" />

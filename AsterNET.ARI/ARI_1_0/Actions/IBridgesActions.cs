@@ -1,6 +1,6 @@
 /*
    AsterNET ARI Framework
-   Automatically generated file @ 6/23/2020 3:09:38 PM
+   Automatically generated file @ 6/21/2023 1:51:38 PM
 */
 using System;
 using System.Collections.Generic;
@@ -20,14 +20,14 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Create a new bridge.. This bridge persists until it has been shut down, or Asterisk has been shut down.
         /// </summary>
-        /// <param name="type">Comma separated list of bridge type attributes (mixing, holding, dtmf_events, proxy_media, video_sfu).</param>
+        /// <param name="type">Comma separated list of bridge type attributes (mixing, holding, dtmf_events, proxy_media, video_sfu, video_single).</param>
         /// <param name="bridgeId">Unique ID to give to the bridge being created.</param>
         /// <param name="name">Name to give to the bridge being created.</param>
         Bridge Create(string type = null, string bridgeId = null, string name = null);
         /// <summary>
         /// Create a new bridge or updates an existing one.. This bridge persists until it has been shut down, or Asterisk has been shut down.
         /// </summary>
-        /// <param name="type">Comma separated list of bridge type attributes (mixing, holding, dtmf_events, proxy_media, video_sfu) to set.</param>
+        /// <param name="type">Comma separated list of bridge type attributes (mixing, holding, dtmf_events, proxy_media, video_sfu, video_single) to set.</param>
         /// <param name="bridgeId">Unique ID to give to the bridge being created.</param>
         /// <param name="name">Set the name of the bridge.</param>
         Bridge CreateWithId(string bridgeId, string type = null, string name = null);
@@ -49,7 +49,8 @@ namespace AsterNET.ARI.Actions
         /// <param name="role">Channel's role in the bridge</param>
         /// <param name="absorbDTMF">Absorb DTMF coming from this channel, preventing it to pass through to the bridge</param>
         /// <param name="mute">Mute audio from this channel, preventing it to pass through to the bridge</param>
-        void AddChannel(string bridgeId, string channel, string role = null, bool? absorbDTMF = null, bool? mute = null);
+        /// <param name="inhibitConnectedLineUpdates">Do not present the identity of the newly connected channel to other bridge members</param>
+        void AddChannel(string bridgeId, string channel, string role = null, bool? absorbDTMF = null, bool? mute = null, bool? inhibitConnectedLineUpdates = null);
         /// <summary>
         /// Remove a channel from a bridge.. 
         /// </summary>
@@ -118,14 +119,14 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Create a new bridge.. This bridge persists until it has been shut down, or Asterisk has been shut down.
         /// </summary>
-        /// <param name="type">Comma separated list of bridge type attributes (mixing, holding, dtmf_events, proxy_media, video_sfu).</param>
+        /// <param name="type">Comma separated list of bridge type attributes (mixing, holding, dtmf_events, proxy_media, video_sfu, video_single).</param>
         /// <param name="bridgeId">Unique ID to give to the bridge being created.</param>
         /// <param name="name">Name to give to the bridge being created.</param>
         Task<Bridge> CreateAsync(string type = null, string bridgeId = null, string name = null);
         /// <summary>
         /// Create a new bridge or updates an existing one.. This bridge persists until it has been shut down, or Asterisk has been shut down.
         /// </summary>
-        /// <param name="type">Comma separated list of bridge type attributes (mixing, holding, dtmf_events, proxy_media, video_sfu) to set.</param>
+        /// <param name="type">Comma separated list of bridge type attributes (mixing, holding, dtmf_events, proxy_media, video_sfu, video_single) to set.</param>
         /// <param name="bridgeId">Unique ID to give to the bridge being created.</param>
         /// <param name="name">Set the name of the bridge.</param>
         Task<Bridge> CreateWithIdAsync(string bridgeId, string type = null, string name = null);
@@ -147,7 +148,8 @@ namespace AsterNET.ARI.Actions
         /// <param name="role">Channel's role in the bridge</param>
         /// <param name="absorbDTMF">Absorb DTMF coming from this channel, preventing it to pass through to the bridge</param>
         /// <param name="mute">Mute audio from this channel, preventing it to pass through to the bridge</param>
-        Task AddChannelAsync(string bridgeId, string channel, string role = null, bool? absorbDTMF = null, bool? mute = null);
+        /// <param name="inhibitConnectedLineUpdates">Do not present the identity of the newly connected channel to other bridge members</param>
+        Task AddChannelAsync(string bridgeId, string channel, string role = null, bool? absorbDTMF = null, bool? mute = null, bool? inhibitConnectedLineUpdates = null);
         /// <summary>
         /// Remove a channel from a bridge.. 
         /// </summary>

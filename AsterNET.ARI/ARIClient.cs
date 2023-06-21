@@ -222,7 +222,7 @@ namespace AsterNET.ARI
             get { return _eventProducer.State == ConnectionState.Open; }
         }
 
-        public void Connect(bool autoReconnect = true, int autoReconnectDelay = 5)
+        public virtual void Connect(bool autoReconnect = true, int autoReconnectDelay = 5)
         {
             lock (_syncRoot)
             {
@@ -235,7 +235,7 @@ namespace AsterNET.ARI
             _eventProducer.Connect(_subscribeAllEvents, _ssl);
         }
 
-        public void Disconnect()
+        public virtual void Disconnect()
         {
             lock (_syncRoot)
             {

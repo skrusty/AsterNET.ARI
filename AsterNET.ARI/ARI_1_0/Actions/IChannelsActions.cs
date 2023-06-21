@@ -1,6 +1,6 @@
 /*
    AsterNET ARI Framework
-   Automatically generated file @ 6/23/2020 3:09:38 PM
+   Automatically generated file @ 6/21/2023 1:51:42 PM
 */
 using System;
 using System.Collections.Generic;
@@ -256,7 +256,8 @@ namespace AsterNET.ARI.Actions
         /// <param name="connection_type">Connection type (client/server)</param>
         /// <param name="format">Format to encode audio in</param>
         /// <param name="direction">External media direction</param>
-        Channel ExternalMedia(string app, string external_host, string format, string channelId = null, Dictionary<string, string> variables = null, string encapsulation = null, string transport = null, string connection_type = null, string direction = null);
+        /// <param name="data">An arbitrary data field</param>
+        Channel ExternalMedia(string app, string external_host, string format, string channelId = null, Dictionary<string, string> variables = null, string encapsulation = null, string transport = null, string connection_type = null, string direction = null, string data = null);
 
         /// <summary>
         /// List all active channels in Asterisk.. 
@@ -501,6 +502,7 @@ namespace AsterNET.ARI.Actions
         /// <param name="connection_type">Connection type (client/server)</param>
         /// <param name="format">Format to encode audio in</param>
         /// <param name="direction">External media direction</param>
-        Task<Channel> ExternalMediaAsync(string app, string external_host, string format, string channelId = null, Dictionary<string, string> variables = null, string encapsulation = null, string transport = null, string connection_type = null, string direction = null);
+        /// <param name="data">An arbitrary data field</param>
+        Task<Channel> ExternalMediaAsync(string app, string external_host, string format, string channelId = null, Dictionary<string, string> variables = null, string encapsulation = null, string transport = null, string connection_type = null, string direction = null, string data = null);
     }
 }
