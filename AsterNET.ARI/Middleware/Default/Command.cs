@@ -2,7 +2,6 @@ using System;
 using Newtonsoft.Json;
 using RestSharp;
 using RestSharp.Authenticators;
-using RestSharp.Serializers;
 
 namespace AsterNET.ARI.Middleware.Default
 {
@@ -13,12 +12,13 @@ namespace AsterNET.ARI.Middleware.Default
 
         public Command(StasisEndpoint info, string path)
         {
-            Client = new RestClient(info.AriEndPoint)
+            var options = new RestClientOptions(info.AriEndPoint)
             {
                 Authenticator = new HttpBasicAuthenticator(info.Username, info.Password)
             };
+            Client = new RestClient(options);
 
-            Request = new RestRequest(path) { JsonSerializer = new JsonSerializer() as ISerializer };
+            Request = new RestRequest(path);
         }
 
 
