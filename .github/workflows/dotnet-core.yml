@@ -23,9 +23,9 @@ jobs:
       run: dotnet build --configuration Release --no-restore
     - name: Test
       run: dotnet test --no-restore --verbosity normal
-    - name: GitHub Package Auth
-      run: dotnet nuget add source --username seiggy --password ${{ secrets.GHTOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/seiggy/index.json"
     - name: Create NuGet Packages
       run: dotnet pack --configuration Release --include-symbols --include-source
     - name: Publish NuGet Packages
-      run: dotnet nuget push "Arke.ARI/**/*.nupkg" --source "github" --skip-duplicate
+      run: |
+        dotnet nuget add source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json --username ${{ github.repository_owner }} --password ${{ github.token }} --store-password-in-clear-text --name github 
+        dotnet nuget push "Arke.ARI/**/*.nupkg" --source github --skip-duplicate
