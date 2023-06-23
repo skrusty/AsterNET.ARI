@@ -24,7 +24,7 @@ jobs:
     - name: Test
       run: dotnet test --no-restore --verbosity normal
     - name: GitHub Package Auth
-      run: dotnet nuget add source --username USERNAME --password ${{ secrets.GHTOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/OWNER/index.json"
+      run: dotnet nuget add source --username seiggy --password ${{ secrets.GHTOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/seiggy/index.json"
     - name: Create NuGet Packages
       run: dotnet pack --configuration Release --include-symbols --include-source
     - name: Publish NuGet Packages
