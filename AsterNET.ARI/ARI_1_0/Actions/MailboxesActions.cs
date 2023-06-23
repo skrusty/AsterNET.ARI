@@ -1,6 +1,6 @@
 /*
    AsterNET ARI Framework
-   Automatically generated file @ 6/21/2023 1:52:00 PM
+   Automatically generated file @ 6/21/2023 2:39:18 PM
 */
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +22,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// List all mailboxes.. 
         /// </summary>
-        public List<Mailbox> List()
+        public virtual List<Mailbox> List()
         {
             string path = "mailboxes";
             var request = GetNewRequest(path, HttpMethod.GET);
@@ -42,7 +42,7 @@ namespace AsterNET.ARI.Actions
         /// Retrieve the current state of a mailbox.. 
         /// </summary>
         /// <param name="mailboxName">Name of the mailbox</param>
-        public Mailbox Get(string mailboxName)
+        public virtual Mailbox Get(string mailboxName)
         {
             string path = "mailboxes/{mailboxName}";
             var request = GetNewRequest(path, HttpMethod.GET);
@@ -68,7 +68,7 @@ namespace AsterNET.ARI.Actions
         /// <param name="mailboxName">Name of the mailbox</param>
         /// <param name="oldMessages">Count of old messages in the mailbox</param>
         /// <param name="newMessages">Count of new messages in the mailbox</param>
-        public void Update(string mailboxName, int oldMessages, int newMessages)
+        public virtual void Update(string mailboxName, int oldMessages, int newMessages)
         {
             string path = "mailboxes/{mailboxName}";
             var request = GetNewRequest(path, HttpMethod.PUT);
@@ -94,7 +94,7 @@ namespace AsterNET.ARI.Actions
         /// Destroy a mailbox.. 
         /// </summary>
         /// <param name="mailboxName">Name of the mailbox</param>
-        public void Delete(string mailboxName)
+        public virtual void Delete(string mailboxName)
         {
             string path = "mailboxes/{mailboxName}";
             var request = GetNewRequest(path, HttpMethod.DELETE);
@@ -116,7 +116,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// List all mailboxes.. 
         /// </summary>
-        public async Task<List<Mailbox>> ListAsync()
+        public virtual async Task<List<Mailbox>> ListAsync()
         {
             string path = "mailboxes";
             var request = GetNewRequest(path, HttpMethod.GET);
@@ -135,7 +135,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Retrieve the current state of a mailbox.. 
         /// </summary>
-        public async Task<Mailbox> GetAsync(string mailboxName)
+        public virtual async Task<Mailbox> GetAsync(string mailboxName)
         {
             string path = "mailboxes/{mailboxName}";
             var request = GetNewRequest(path, HttpMethod.GET);
@@ -158,7 +158,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Change the state of a mailbox. (Note - implicitly creates the mailbox).. 
         /// </summary>
-        public async Task UpdateAsync(string mailboxName, int oldMessages, int newMessages)
+        public virtual async Task UpdateAsync(string mailboxName, int oldMessages, int newMessages)
         {
             string path = "mailboxes/{mailboxName}";
             var request = GetNewRequest(path, HttpMethod.PUT);
@@ -183,7 +183,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Destroy a mailbox.. 
         /// </summary>
-        public async Task DeleteAsync(string mailboxName)
+        public virtual async Task DeleteAsync(string mailboxName)
         {
             string path = "mailboxes/{mailboxName}";
             var request = GetNewRequest(path, HttpMethod.DELETE);

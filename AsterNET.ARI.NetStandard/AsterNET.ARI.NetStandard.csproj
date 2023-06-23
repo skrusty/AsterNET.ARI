@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>AsterNET.ARI</AssemblyName>
     <RootNamespace>AsterNET.ARI</RootNamespace>
-    <Version>1.4.0</Version>
+    <Version>1.4.1</Version>
     <PackageId>Arke.ARI</PackageId>
     <Authors>Ben Merrills, Zachary Way</Authors>
     <Company />

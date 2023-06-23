@@ -1,6 +1,6 @@
 /*
    AsterNET ARI Framework
-   Automatically generated file @ 6/21/2023 1:51:54 PM
+   Automatically generated file @ 6/21/2023 2:39:16 PM
 */
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +22,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// List all ARI controlled device states.. 
         /// </summary>
-        public List<DeviceState> List()
+        public virtual List<DeviceState> List()
         {
             string path = "deviceStates";
             var request = GetNewRequest(path, HttpMethod.GET);
@@ -42,7 +42,7 @@ namespace AsterNET.ARI.Actions
         /// Retrieve the current state of a device.. 
         /// </summary>
         /// <param name="deviceName">Name of the device</param>
-        public DeviceState Get(string deviceName)
+        public virtual DeviceState Get(string deviceName)
         {
             string path = "deviceStates/{deviceName}";
             var request = GetNewRequest(path, HttpMethod.GET);
@@ -65,7 +65,7 @@ namespace AsterNET.ARI.Actions
         /// </summary>
         /// <param name="deviceName">Name of the device</param>
         /// <param name="deviceState">Device state value</param>
-        public void Update(string deviceName, string deviceState)
+        public virtual void Update(string deviceName, string deviceState)
         {
             string path = "deviceStates/{deviceName}";
             var request = GetNewRequest(path, HttpMethod.PUT);
@@ -91,7 +91,7 @@ namespace AsterNET.ARI.Actions
         /// Destroy a device-state controlled by ARI.. 
         /// </summary>
         /// <param name="deviceName">Name of the device</param>
-        public void Delete(string deviceName)
+        public virtual void Delete(string deviceName)
         {
             string path = "deviceStates/{deviceName}";
             var request = GetNewRequest(path, HttpMethod.DELETE);
@@ -115,7 +115,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// List all ARI controlled device states.. 
         /// </summary>
-        public async Task<List<DeviceState>> ListAsync()
+        public virtual async Task<List<DeviceState>> ListAsync()
         {
             string path = "deviceStates";
             var request = GetNewRequest(path, HttpMethod.GET);
@@ -134,7 +134,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Retrieve the current state of a device.. 
         /// </summary>
-        public async Task<DeviceState> GetAsync(string deviceName)
+        public virtual async Task<DeviceState> GetAsync(string deviceName)
         {
             string path = "deviceStates/{deviceName}";
             var request = GetNewRequest(path, HttpMethod.GET);
@@ -155,7 +155,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Change the state of a device controlled by ARI. (Note - implicitly creates the device state).. 
         /// </summary>
-        public async Task UpdateAsync(string deviceName, string deviceState)
+        public virtual async Task UpdateAsync(string deviceName, string deviceState)
         {
             string path = "deviceStates/{deviceName}";
             var request = GetNewRequest(path, HttpMethod.PUT);
@@ -180,7 +180,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Destroy a device-state controlled by ARI.. 
         /// </summary>
-        public async Task DeleteAsync(string deviceName)
+        public virtual async Task DeleteAsync(string deviceName)
         {
             string path = "deviceStates/{deviceName}";
             var request = GetNewRequest(path, HttpMethod.DELETE);

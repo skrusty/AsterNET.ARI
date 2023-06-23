@@ -1,6 +1,6 @@
 /*
    AsterNET ARI Framework
-   Automatically generated file @ 6/21/2023 1:51:55 PM
+   Automatically generated file @ 6/21/2023 2:39:17 PM
 */
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +23,7 @@ namespace AsterNET.ARI.Actions
         /// Get a playback's details.. 
         /// </summary>
         /// <param name="playbackId">Playback's id</param>
-        public Playback Get(string playbackId)
+        public virtual Playback Get(string playbackId)
         {
             string path = "playbacks/{playbackId}";
             var request = GetNewRequest(path, HttpMethod.GET);
@@ -47,7 +47,7 @@ namespace AsterNET.ARI.Actions
         /// Stop a playback.. 
         /// </summary>
         /// <param name="playbackId">Playback's id</param>
-        public void Stop(string playbackId)
+        public virtual void Stop(string playbackId)
         {
             string path = "playbacks/{playbackId}";
             var request = GetNewRequest(path, HttpMethod.DELETE);
@@ -70,7 +70,7 @@ namespace AsterNET.ARI.Actions
         /// </summary>
         /// <param name="playbackId">Playback's id</param>
         /// <param name="operation">Operation to perform on the playback.</param>
-        public void Control(string playbackId, string operation)
+        public virtual void Control(string playbackId, string operation)
         {
             string path = "playbacks/{playbackId}/control";
             var request = GetNewRequest(path, HttpMethod.POST);
@@ -98,7 +98,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Get a playback's details.. 
         /// </summary>
-        public async Task<Playback> GetAsync(string playbackId)
+        public virtual async Task<Playback> GetAsync(string playbackId)
         {
             string path = "playbacks/{playbackId}";
             var request = GetNewRequest(path, HttpMethod.GET);
@@ -121,7 +121,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Stop a playback.. 
         /// </summary>
-        public async Task StopAsync(string playbackId)
+        public virtual async Task StopAsync(string playbackId)
         {
             string path = "playbacks/{playbackId}";
             var request = GetNewRequest(path, HttpMethod.DELETE);
@@ -142,7 +142,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Control a playback.. 
         /// </summary>
-        public async Task ControlAsync(string playbackId, string operation)
+        public virtual async Task ControlAsync(string playbackId, string operation)
         {
             string path = "playbacks/{playbackId}/control";
             var request = GetNewRequest(path, HttpMethod.POST);

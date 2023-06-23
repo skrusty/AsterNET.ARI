@@ -1,6 +1,6 @@
 /*
    AsterNET ARI Framework
-   Automatically generated file @ 6/21/2023 1:51:52 PM
+   Automatically generated file @ 6/21/2023 2:39:15 PM
 */
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +22,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// List all endpoints.. 
         /// </summary>
-        public List<Endpoint> List()
+        public virtual List<Endpoint> List()
         {
             string path = "endpoints";
             var request = GetNewRequest(path, HttpMethod.GET);
@@ -44,7 +44,7 @@ namespace AsterNET.ARI.Actions
         /// <param name="to">The endpoint resource or technology specific URI to send the message to. Valid resources are sip, pjsip, and xmpp.</param>
         /// <param name="from">The endpoint resource or technology specific identity to send this message from. Valid resources are sip, pjsip, and xmpp.</param>
         /// <param name="body">The body of the message</param>
-        public void SendMessage(string to, string from, string body = null, Dictionary<string, string> variables = null)
+        public virtual void SendMessage(string to, string from, string body = null, Dictionary<string, string> variables = null)
         {
             string path = "endpoints/sendMessage";
             var request = GetNewRequest(path, HttpMethod.PUT);
@@ -76,7 +76,7 @@ namespace AsterNET.ARI.Actions
         /// List available endoints for a given endpoint technology.. 
         /// </summary>
         /// <param name="tech">Technology of the endpoints (sip,iax2,...)</param>
-        public List<Endpoint> ListByTech(string tech)
+        public virtual List<Endpoint> ListByTech(string tech)
         {
             string path = "endpoints/{tech}";
             var request = GetNewRequest(path, HttpMethod.GET);
@@ -101,7 +101,7 @@ namespace AsterNET.ARI.Actions
         /// </summary>
         /// <param name="tech">Technology of the endpoint</param>
         /// <param name="resource">ID of the endpoint</param>
-        public Endpoint Get(string tech, string resource)
+        public virtual Endpoint Get(string tech, string resource)
         {
             string path = "endpoints/{tech}/{resource}";
             var request = GetNewRequest(path, HttpMethod.GET);
@@ -132,7 +132,7 @@ namespace AsterNET.ARI.Actions
         /// <param name="resource">ID of the endpoint</param>
         /// <param name="from">The endpoint resource or technology specific identity to send this message from. Valid resources are sip, pjsip, and xmpp.</param>
         /// <param name="body">The body of the message</param>
-        public void SendMessageToEndpoint(string tech, string resource, string from, string body = null, Dictionary<string, string> variables = null)
+        public virtual void SendMessageToEndpoint(string tech, string resource, string from, string body = null, Dictionary<string, string> variables = null)
         {
             string path = "endpoints/{tech}/{resource}/sendMessage";
             var request = GetNewRequest(path, HttpMethod.PUT);
@@ -166,7 +166,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// List all endpoints.. 
         /// </summary>
-        public async Task<List<Endpoint>> ListAsync()
+        public virtual async Task<List<Endpoint>> ListAsync()
         {
             string path = "endpoints";
             var request = GetNewRequest(path, HttpMethod.GET);
@@ -185,7 +185,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Send a message to some technology URI or endpoint.. 
         /// </summary>
-        public async Task SendMessageAsync(string to, string from, string body = null, Dictionary<string, string> variables = null)
+        public virtual async Task SendMessageAsync(string to, string from, string body = null, Dictionary<string, string> variables = null)
         {
             string path = "endpoints/sendMessage";
             var request = GetNewRequest(path, HttpMethod.PUT);
@@ -216,7 +216,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// List available endoints for a given endpoint technology.. 
         /// </summary>
-        public async Task<List<Endpoint>> ListByTechAsync(string tech)
+        public virtual async Task<List<Endpoint>> ListByTechAsync(string tech)
         {
             string path = "endpoints/{tech}";
             var request = GetNewRequest(path, HttpMethod.GET);
@@ -239,7 +239,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Details for an endpoint.. 
         /// </summary>
-        public async Task<Endpoint> GetAsync(string tech, string resource)
+        public virtual async Task<Endpoint> GetAsync(string tech, string resource)
         {
             string path = "endpoints/{tech}/{resource}";
             var request = GetNewRequest(path, HttpMethod.GET);
@@ -266,7 +266,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Send a message to some endpoint in a technology.. 
         /// </summary>
-        public async Task SendMessageToEndpointAsync(string tech, string resource, string from, string body = null, Dictionary<string, string> variables = null)
+        public virtual async Task SendMessageToEndpointAsync(string tech, string resource, string from, string body = null, Dictionary<string, string> variables = null)
         {
             string path = "endpoints/{tech}/{resource}/sendMessage";
             var request = GetNewRequest(path, HttpMethod.PUT);

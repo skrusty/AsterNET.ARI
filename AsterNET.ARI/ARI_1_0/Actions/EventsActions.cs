@@ -1,6 +1,6 @@
 /*
    AsterNET ARI Framework
-   Automatically generated file @ 6/21/2023 1:51:37 PM
+   Automatically generated file @ 6/21/2023 2:39:09 PM
 */
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +24,7 @@ namespace AsterNET.ARI.Actions
         /// </summary>
         /// <param name="app">Applications to subscribe to.</param>
         /// <param name="subscribeAll">Subscribe to all Asterisk events. If provided, the applications listed will be subscribed to all events, effectively disabling the application specific subscriptions. Default is 'false'.</param>
-        public Message EventWebsocket(string app, bool? subscribeAll = null)
+        public virtual Message EventWebsocket(string app, bool? subscribeAll = null)
         {
             string path = "events";
             var request = GetNewRequest(path, HttpMethod.GET);
@@ -51,7 +51,7 @@ namespace AsterNET.ARI.Actions
         /// <param name="application">The name of the application that will receive this event</param>
         /// <param name="source">URI for event source (channel:{channelId}, bridge:{bridgeId}, endpoint:{tech}/{resource}, deviceState:{deviceName}</param>
         /// <param name="variables">The "variables" key in the body object holds custom key/value pairs to add to the user event. Ex. { "variables": { "key": "value" } }</param>
-        public void UserEvent(string eventName, string application, string source = null, Dictionary<string, string> variables = null)
+        public virtual void UserEvent(string eventName, string application, string source = null, Dictionary<string, string> variables = null)
         {
             string path = "events/user/{eventName}";
             var request = GetNewRequest(path, HttpMethod.POST);
@@ -85,7 +85,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// WebSocket connection for events.. 
         /// </summary>
-        public async Task<Message> EventWebsocketAsync(string app, bool? subscribeAll = null)
+        public virtual async Task<Message> EventWebsocketAsync(string app, bool? subscribeAll = null)
         {
             string path = "events";
             var request = GetNewRequest(path, HttpMethod.GET);
@@ -108,7 +108,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Generate a user event.. 
         /// </summary>
-        public async Task UserEventAsync(string eventName, string application, string source = null, Dictionary<string, string> variables = null)
+        public virtual async Task UserEventAsync(string eventName, string application, string source = null, Dictionary<string, string> variables = null)
         {
             string path = "events/user/{eventName}";
             var request = GetNewRequest(path, HttpMethod.POST);

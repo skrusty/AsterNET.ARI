@@ -1,6 +1,6 @@
  /*
 	AsterNET ARI Framework
-	Automatically generated file @ 6/21/2023 1:52:00 PM
+	Automatically generated file @ 6/21/2023 2:39:18 PM
 */
 using System;
 using System.Collections.Generic;
@@ -100,46 +100,46 @@ namespace AsterNET.ARI
 	{
 
 		#region Events
-					public event DeviceStateChangedEventHandler OnDeviceStateChangedEvent;
-			public event PlaybackStartedEventHandler OnPlaybackStartedEvent;
-			public event PlaybackContinuingEventHandler OnPlaybackContinuingEvent;
-			public event PlaybackFinishedEventHandler OnPlaybackFinishedEvent;
-			public event RecordingStartedEventHandler OnRecordingStartedEvent;
-			public event RecordingFinishedEventHandler OnRecordingFinishedEvent;
-			public event RecordingFailedEventHandler OnRecordingFailedEvent;
-			public event ApplicationMoveFailedEventHandler OnApplicationMoveFailedEvent;
-			public event ApplicationReplacedEventHandler OnApplicationReplacedEvent;
-			public event BridgeCreatedEventHandler OnBridgeCreatedEvent;
-			public event BridgeDestroyedEventHandler OnBridgeDestroyedEvent;
-			public event BridgeMergedEventHandler OnBridgeMergedEvent;
-			public event BridgeVideoSourceChangedEventHandler OnBridgeVideoSourceChangedEvent;
-			public event BridgeBlindTransferEventHandler OnBridgeBlindTransferEvent;
-			public event BridgeAttendedTransferEventHandler OnBridgeAttendedTransferEvent;
-			public event ChannelCreatedEventHandler OnChannelCreatedEvent;
-			public event ChannelDestroyedEventHandler OnChannelDestroyedEvent;
-			public event ChannelEnteredBridgeEventHandler OnChannelEnteredBridgeEvent;
-			public event ChannelLeftBridgeEventHandler OnChannelLeftBridgeEvent;
-			public event ChannelStateChangeEventHandler OnChannelStateChangeEvent;
-			public event ChannelDtmfReceivedEventHandler OnChannelDtmfReceivedEvent;
-			public event ChannelDialplanEventHandler OnChannelDialplanEvent;
-			public event ChannelCallerIdEventHandler OnChannelCallerIdEvent;
-			public event ChannelUsereventEventHandler OnChannelUsereventEvent;
-			public event ChannelHangupRequestEventHandler OnChannelHangupRequestEvent;
-			public event ChannelVarsetEventHandler OnChannelVarsetEvent;
-			public event ChannelHoldEventHandler OnChannelHoldEvent;
-			public event ChannelUnholdEventHandler OnChannelUnholdEvent;
-			public event ChannelTalkingStartedEventHandler OnChannelTalkingStartedEvent;
-			public event ChannelTalkingFinishedEventHandler OnChannelTalkingFinishedEvent;
-			public event ContactStatusChangeEventHandler OnContactStatusChangeEvent;
-			public event PeerStatusChangeEventHandler OnPeerStatusChangeEvent;
-			public event EndpointStateChangeEventHandler OnEndpointStateChangeEvent;
-			public event DialEventHandler OnDialEvent;
-			public event StasisEndEventHandler OnStasisEndEvent;
-			public event StasisStartEventHandler OnStasisStartEvent;
-			public event TextMessageReceivedEventHandler OnTextMessageReceivedEvent;
-			public event ChannelConnectedLineEventHandler OnChannelConnectedLineEvent;
-			public event UnhandledEventHandler OnUnhandledEvent; 
-			public event UnhandledExceptionEventHandler OnUnhandledException;
+					public virtual event DeviceStateChangedEventHandler OnDeviceStateChangedEvent;
+			public virtual event PlaybackStartedEventHandler OnPlaybackStartedEvent;
+			public virtual event PlaybackContinuingEventHandler OnPlaybackContinuingEvent;
+			public virtual event PlaybackFinishedEventHandler OnPlaybackFinishedEvent;
+			public virtual event RecordingStartedEventHandler OnRecordingStartedEvent;
+			public virtual event RecordingFinishedEventHandler OnRecordingFinishedEvent;
+			public virtual event RecordingFailedEventHandler OnRecordingFailedEvent;
+			public virtual event ApplicationMoveFailedEventHandler OnApplicationMoveFailedEvent;
+			public virtual event ApplicationReplacedEventHandler OnApplicationReplacedEvent;
+			public virtual event BridgeCreatedEventHandler OnBridgeCreatedEvent;
+			public virtual event BridgeDestroyedEventHandler OnBridgeDestroyedEvent;
+			public virtual event BridgeMergedEventHandler OnBridgeMergedEvent;
+			public virtual event BridgeVideoSourceChangedEventHandler OnBridgeVideoSourceChangedEvent;
+			public virtual event BridgeBlindTransferEventHandler OnBridgeBlindTransferEvent;
+			public virtual event BridgeAttendedTransferEventHandler OnBridgeAttendedTransferEvent;
+			public virtual event ChannelCreatedEventHandler OnChannelCreatedEvent;
+			public virtual event ChannelDestroyedEventHandler OnChannelDestroyedEvent;
+			public virtual event ChannelEnteredBridgeEventHandler OnChannelEnteredBridgeEvent;
+			public virtual event ChannelLeftBridgeEventHandler OnChannelLeftBridgeEvent;
+			public virtual event ChannelStateChangeEventHandler OnChannelStateChangeEvent;
+			public virtual event ChannelDtmfReceivedEventHandler OnChannelDtmfReceivedEvent;
+			public virtual event ChannelDialplanEventHandler OnChannelDialplanEvent;
+			public virtual event ChannelCallerIdEventHandler OnChannelCallerIdEvent;
+			public virtual event ChannelUsereventEventHandler OnChannelUsereventEvent;
+			public virtual event ChannelHangupRequestEventHandler OnChannelHangupRequestEvent;
+			public virtual event ChannelVarsetEventHandler OnChannelVarsetEvent;
+			public virtual event ChannelHoldEventHandler OnChannelHoldEvent;
+			public virtual event ChannelUnholdEventHandler OnChannelUnholdEvent;
+			public virtual event ChannelTalkingStartedEventHandler OnChannelTalkingStartedEvent;
+			public virtual event ChannelTalkingFinishedEventHandler OnChannelTalkingFinishedEvent;
+			public virtual event ContactStatusChangeEventHandler OnContactStatusChangeEvent;
+			public virtual event PeerStatusChangeEventHandler OnPeerStatusChangeEvent;
+			public virtual event EndpointStateChangeEventHandler OnEndpointStateChangeEvent;
+			public virtual event DialEventHandler OnDialEvent;
+			public virtual event StasisEndEventHandler OnStasisEndEvent;
+			public virtual event StasisStartEventHandler OnStasisStartEvent;
+			public virtual event TextMessageReceivedEventHandler OnTextMessageReceivedEvent;
+			public virtual event ChannelConnectedLineEventHandler OnChannelConnectedLineEvent;
+			public virtual event UnhandledEventHandler OnUnhandledEvent; 
+			public virtual event UnhandledExceptionEventHandler OnUnhandledException;
 		#endregion
 
 		protected bool UnhandledException(object sender, Exception exception)

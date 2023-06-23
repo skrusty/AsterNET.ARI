@@ -394,7 +394,7 @@ namespace AsterNET.ARI.Actions
 					}
                 }catch{}
 #>
-		public <#= responseType #> <#= ARICodeGen.SwaggerHelper.GetSafeName(methodName) #>(<#= parameters #>)
+		public virtual <#= responseType #> <#= ARICodeGen.SwaggerHelper.GetSafeName(methodName) #>(<#= parameters #>)
 		{
 			string path = "<#= path #>";
 			var request = GetNewRequest(path, HttpMethod.<#= httpMethod.ToUpper() #>);
@@ -539,7 +539,7 @@ namespace AsterNET.ARI.Actions
 					}
                 }catch (Exception e){}
 #>
-		public async <#= taskType #> <#= ARICodeGen.SwaggerHelper.GetSafeName(methodName) + "Async" #>(<#= parameters #>)
+		public virtual async <#= taskType #> <#= ARICodeGen.SwaggerHelper.GetSafeName(methodName) + "Async" #>(<#= parameters #>)
 		{
 			string path = "<#= path #>";
 			var request = GetNewRequest(path, HttpMethod.<#= httpMethod.ToUpper() #>);
@@ -678,13 +678,13 @@ namespace AsterNET.ARI
 
 			foreach (var evt in events) {
 #>
-			public event <#= evt + "Handler"#> On<#= evt #>;
+			public virtual event <#= evt + "Handler"#> On<#= evt #>;
 <#
 			}
 
 		#>
-			public event UnhandledEventHandler OnUnhandledEvent; 
-			public event UnhandledExceptionEventHandler OnUnhandledException;
+			public virtual event UnhandledEventHandler OnUnhandledEvent; 
+			public virtual event UnhandledExceptionEventHandler OnUnhandledException;
 		#endregion
 
 		protected bool UnhandledException(object sender, Exception exception)

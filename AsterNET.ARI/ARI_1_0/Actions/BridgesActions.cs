@@ -1,6 +1,6 @@
 /*
    AsterNET ARI Framework
-   Automatically generated file @ 6/21/2023 1:51:39 PM
+   Automatically generated file @ 6/21/2023 2:39:09 PM
 */
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +22,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// List all active bridges in Asterisk.. 
         /// </summary>
-        public List<Bridge> List()
+        public virtual List<Bridge> List()
         {
             string path = "bridges";
             var request = GetNewRequest(path, HttpMethod.GET);
@@ -44,7 +44,7 @@ namespace AsterNET.ARI.Actions
         /// <param name="type">Comma separated list of bridge type attributes (mixing, holding, dtmf_events, proxy_media, video_sfu, video_single).</param>
         /// <param name="bridgeId">Unique ID to give to the bridge being created.</param>
         /// <param name="name">Name to give to the bridge being created.</param>
-        public Bridge Create(string type = null, string bridgeId = null, string name = null)
+        public virtual Bridge Create(string type = null, string bridgeId = null, string name = null)
         {
             string path = "bridges";
             var request = GetNewRequest(path, HttpMethod.POST);
@@ -72,7 +72,7 @@ namespace AsterNET.ARI.Actions
         /// <param name="type">Comma separated list of bridge type attributes (mixing, holding, dtmf_events, proxy_media, video_sfu, video_single) to set.</param>
         /// <param name="bridgeId">Unique ID to give to the bridge being created.</param>
         /// <param name="name">Set the name of the bridge.</param>
-        public Bridge CreateWithId(string bridgeId, string type = null, string name = null)
+        public virtual Bridge CreateWithId(string bridgeId, string type = null, string name = null)
         {
             string path = "bridges/{bridgeId}";
             var request = GetNewRequest(path, HttpMethod.POST);
@@ -98,7 +98,7 @@ namespace AsterNET.ARI.Actions
         /// Get bridge details.. 
         /// </summary>
         /// <param name="bridgeId">Bridge's id</param>
-        public Bridge Get(string bridgeId)
+        public virtual Bridge Get(string bridgeId)
         {
             string path = "bridges/{bridgeId}";
             var request = GetNewRequest(path, HttpMethod.GET);
@@ -122,7 +122,7 @@ namespace AsterNET.ARI.Actions
         /// Shut down a bridge.. If any channels are in this bridge, they will be removed and resume whatever they were doing beforehand.
         /// </summary>
         /// <param name="bridgeId">Bridge's id</param>
-        public void Destroy(string bridgeId)
+        public virtual void Destroy(string bridgeId)
         {
             string path = "bridges/{bridgeId}";
             var request = GetNewRequest(path, HttpMethod.DELETE);
@@ -149,7 +149,7 @@ namespace AsterNET.ARI.Actions
         /// <param name="absorbDTMF">Absorb DTMF coming from this channel, preventing it to pass through to the bridge</param>
         /// <param name="mute">Mute audio from this channel, preventing it to pass through to the bridge</param>
         /// <param name="inhibitConnectedLineUpdates">Do not present the identity of the newly connected channel to other bridge members</param>
-        public void AddChannel(string bridgeId, string channel, string role = null, bool? absorbDTMF = null, bool? mute = null, bool? inhibitConnectedLineUpdates = null)
+        public virtual void AddChannel(string bridgeId, string channel, string role = null, bool? absorbDTMF = null, bool? mute = null, bool? inhibitConnectedLineUpdates = null)
         {
             string path = "bridges/{bridgeId}/addChannel";
             var request = GetNewRequest(path, HttpMethod.POST);
@@ -188,7 +188,7 @@ namespace AsterNET.ARI.Actions
         /// </summary>
         /// <param name="bridgeId">Bridge's id</param>
         /// <param name="channel">Ids of channels to remove from bridge</param>
-        public void RemoveChannel(string bridgeId, string channel)
+        public virtual void RemoveChannel(string bridgeId, string channel)
         {
             string path = "bridges/{bridgeId}/removeChannel";
             var request = GetNewRequest(path, HttpMethod.POST);
@@ -219,7 +219,7 @@ namespace AsterNET.ARI.Actions
         /// </summary>
         /// <param name="bridgeId">Bridge's id</param>
         /// <param name="channelId">Channel's id</param>
-        public void SetVideoSource(string bridgeId, string channelId)
+        public virtual void SetVideoSource(string bridgeId, string channelId)
         {
             string path = "bridges/{bridgeId}/videoSource/{channelId}";
             var request = GetNewRequest(path, HttpMethod.POST);
@@ -247,7 +247,7 @@ namespace AsterNET.ARI.Actions
         /// Removes any explicit video source in a multi-party mixing bridge. This operation has no effect on bridges with two or fewer participants. When no explicit video source is set, talk detection will be used to determine the active video stream.. 
         /// </summary>
         /// <param name="bridgeId">Bridge's id</param>
-        public void ClearVideoSource(string bridgeId)
+        public virtual void ClearVideoSource(string bridgeId)
         {
             string path = "bridges/{bridgeId}/videoSource";
             var request = GetNewRequest(path, HttpMethod.DELETE);
@@ -270,7 +270,7 @@ namespace AsterNET.ARI.Actions
         /// </summary>
         /// <param name="bridgeId">Bridge's id</param>
         /// <param name="mohClass">Channel's id</param>
-        public void StartMoh(string bridgeId, string mohClass = null)
+        public virtual void StartMoh(string bridgeId, string mohClass = null)
         {
             string path = "bridges/{bridgeId}/moh";
             var request = GetNewRequest(path, HttpMethod.POST);
@@ -296,7 +296,7 @@ namespace AsterNET.ARI.Actions
         /// Stop playing music on hold to a bridge.. This will only stop music on hold being played via POST bridges/{bridgeId}/moh.
         /// </summary>
         /// <param name="bridgeId">Bridge's id</param>
-        public void StopMoh(string bridgeId)
+        public virtual void StopMoh(string bridgeId)
         {
             string path = "bridges/{bridgeId}/moh";
             var request = GetNewRequest(path, HttpMethod.DELETE);
@@ -325,7 +325,7 @@ namespace AsterNET.ARI.Actions
         /// <param name="offsetms">Number of milliseconds to skip before playing. Only applies to the first URI if multiple media URIs are specified.</param>
         /// <param name="skipms">Number of milliseconds to skip for forward/reverse operations.</param>
         /// <param name="playbackId">Playback Id.</param>
-        public Playback Play(string bridgeId, string media, string lang = null, int? offsetms = null, int? skipms = null, string playbackId = null)
+        public virtual Playback Play(string bridgeId, string media, string lang = null, int? offsetms = null, int? skipms = null, string playbackId = null)
         {
             string path = "bridges/{bridgeId}/play";
             var request = GetNewRequest(path, HttpMethod.POST);
@@ -366,7 +366,7 @@ namespace AsterNET.ARI.Actions
         /// <param name="lang">For sounds, selects language for sound.</param>
         /// <param name="offsetms">Number of milliseconds to skip before playing. Only applies to the first URI if multiple media URIs are specified.</param>
         /// <param name="skipms">Number of milliseconds to skip for forward/reverse operations.</param>
-        public Playback PlayWithId(string bridgeId, string playbackId, string media, string lang = null, int? offsetms = null, int? skipms = null)
+        public virtual Playback PlayWithId(string bridgeId, string playbackId, string media, string lang = null, int? offsetms = null, int? skipms = null)
         {
             string path = "bridges/{bridgeId}/play/{playbackId}";
             var request = GetNewRequest(path, HttpMethod.POST);
@@ -409,7 +409,7 @@ namespace AsterNET.ARI.Actions
         /// <param name="ifExists">Action to take if a recording with the same name already exists.</param>
         /// <param name="beep">Play beep when recording begins</param>
         /// <param name="terminateOn">DTMF input to terminate recording.</param>
-        public LiveRecording Record(string bridgeId, string name, string format, int? maxDurationSeconds = null, int? maxSilenceSeconds = null, string ifExists = null, bool? beep = null, string terminateOn = null)
+        public virtual LiveRecording Record(string bridgeId, string name, string format, int? maxDurationSeconds = null, int? maxSilenceSeconds = null, string ifExists = null, bool? beep = null, string terminateOn = null)
         {
             string path = "bridges/{bridgeId}/record";
             var request = GetNewRequest(path, HttpMethod.POST);
@@ -453,7 +453,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// List all active bridges in Asterisk.. 
         /// </summary>
-        public async Task<List<Bridge>> ListAsync()
+        public virtual async Task<List<Bridge>> ListAsync()
         {
             string path = "bridges";
             var request = GetNewRequest(path, HttpMethod.GET);
@@ -472,7 +472,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Create a new bridge.. This bridge persists until it has been shut down, or Asterisk has been shut down.
         /// </summary>
-        public async Task<Bridge> CreateAsync(string type = null, string bridgeId = null, string name = null)
+        public virtual async Task<Bridge> CreateAsync(string type = null, string bridgeId = null, string name = null)
         {
             string path = "bridges";
             var request = GetNewRequest(path, HttpMethod.POST);
@@ -497,7 +497,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Create a new bridge or updates an existing one.. This bridge persists until it has been shut down, or Asterisk has been shut down.
         /// </summary>
-        public async Task<Bridge> CreateWithIdAsync(string bridgeId, string type = null, string name = null)
+        public virtual async Task<Bridge> CreateWithIdAsync(string bridgeId, string type = null, string name = null)
         {
             string path = "bridges/{bridgeId}";
             var request = GetNewRequest(path, HttpMethod.POST);
@@ -522,7 +522,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Get bridge details.. 
         /// </summary>
-        public async Task<Bridge> GetAsync(string bridgeId)
+        public virtual async Task<Bridge> GetAsync(string bridgeId)
         {
             string path = "bridges/{bridgeId}";
             var request = GetNewRequest(path, HttpMethod.GET);
@@ -545,7 +545,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Shut down a bridge.. If any channels are in this bridge, they will be removed and resume whatever they were doing beforehand.
         /// </summary>
-        public async Task DestroyAsync(string bridgeId)
+        public virtual async Task DestroyAsync(string bridgeId)
         {
             string path = "bridges/{bridgeId}";
             var request = GetNewRequest(path, HttpMethod.DELETE);
@@ -566,7 +566,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Add a channel to a bridge.. 
         /// </summary>
-        public async Task AddChannelAsync(string bridgeId, string channel, string role = null, bool? absorbDTMF = null, bool? mute = null, bool? inhibitConnectedLineUpdates = null)
+        public virtual async Task AddChannelAsync(string bridgeId, string channel, string role = null, bool? absorbDTMF = null, bool? mute = null, bool? inhibitConnectedLineUpdates = null)
         {
             string path = "bridges/{bridgeId}/addChannel";
             var request = GetNewRequest(path, HttpMethod.POST);
@@ -603,7 +603,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Remove a channel from a bridge.. 
         /// </summary>
-        public async Task RemoveChannelAsync(string bridgeId, string channel)
+        public virtual async Task RemoveChannelAsync(string bridgeId, string channel)
         {
             string path = "bridges/{bridgeId}/removeChannel";
             var request = GetNewRequest(path, HttpMethod.POST);
@@ -632,7 +632,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Set a channel as the video source in a multi-party mixing bridge. This operation has no effect on bridges with two or fewer participants.. 
         /// </summary>
-        public async Task SetVideoSourceAsync(string bridgeId, string channelId)
+        public virtual async Task SetVideoSourceAsync(string bridgeId, string channelId)
         {
             string path = "bridges/{bridgeId}/videoSource/{channelId}";
             var request = GetNewRequest(path, HttpMethod.POST);
@@ -659,7 +659,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Removes any explicit video source in a multi-party mixing bridge. This operation has no effect on bridges with two or fewer participants. When no explicit video source is set, talk detection will be used to determine the active video stream.. 
         /// </summary>
-        public async Task ClearVideoSourceAsync(string bridgeId)
+        public virtual async Task ClearVideoSourceAsync(string bridgeId)
         {
             string path = "bridges/{bridgeId}/videoSource";
             var request = GetNewRequest(path, HttpMethod.DELETE);
@@ -680,7 +680,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Play music on hold to a bridge or change the MOH class that is playing.. 
         /// </summary>
-        public async Task StartMohAsync(string bridgeId, string mohClass = null)
+        public virtual async Task StartMohAsync(string bridgeId, string mohClass = null)
         {
             string path = "bridges/{bridgeId}/moh";
             var request = GetNewRequest(path, HttpMethod.POST);
@@ -705,7 +705,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Stop playing music on hold to a bridge.. This will only stop music on hold being played via POST bridges/{bridgeId}/moh.
         /// </summary>
-        public async Task StopMohAsync(string bridgeId)
+        public virtual async Task StopMohAsync(string bridgeId)
         {
             string path = "bridges/{bridgeId}/moh";
             var request = GetNewRequest(path, HttpMethod.DELETE);
@@ -728,7 +728,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Start playback of media on a bridge.. The media URI may be any of a number of URI's. Currently sound:, recording:, number:, digits:, characters:, and tone: URI's are supported. This operation creates a playback resource that can be used to control the playback of media (pause, rewind, fast forward, etc.)
         /// </summary>
-        public async Task<Playback> PlayAsync(string bridgeId, string media, string lang = null, int? offsetms = null, int? skipms = null, string playbackId = null)
+        public virtual async Task<Playback> PlayAsync(string bridgeId, string media, string lang = null, int? offsetms = null, int? skipms = null, string playbackId = null)
         {
             string path = "bridges/{bridgeId}/play";
             var request = GetNewRequest(path, HttpMethod.POST);
@@ -763,7 +763,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Start playback of media on a bridge.. The media URI may be any of a number of URI's. Currently sound:, recording:, number:, digits:, characters:, and tone: URI's are supported. This operation creates a playback resource that can be used to control the playback of media (pause, rewind, fast forward, etc.)
         /// </summary>
-        public async Task<Playback> PlayWithIdAsync(string bridgeId, string playbackId, string media, string lang = null, int? offsetms = null, int? skipms = null)
+        public virtual async Task<Playback> PlayWithIdAsync(string bridgeId, string playbackId, string media, string lang = null, int? offsetms = null, int? skipms = null)
         {
             string path = "bridges/{bridgeId}/play/{playbackId}";
             var request = GetNewRequest(path, HttpMethod.POST);
@@ -798,7 +798,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Start a recording.. This records the mixed audio from all channels participating in this bridge.
         /// </summary>
-        public async Task<LiveRecording> RecordAsync(string bridgeId, string name, string format, int? maxDurationSeconds = null, int? maxSilenceSeconds = null, string ifExists = null, bool? beep = null, string terminateOn = null)
+        public virtual async Task<LiveRecording> RecordAsync(string bridgeId, string name, string format, int? maxDurationSeconds = null, int? maxSilenceSeconds = null, string ifExists = null, bool? beep = null, string terminateOn = null)
         {
             string path = "bridges/{bridgeId}/record";
             var request = GetNewRequest(path, HttpMethod.POST);

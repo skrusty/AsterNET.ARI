@@ -1,6 +1,6 @@
 /*
    AsterNET ARI Framework
-   Automatically generated file @ 6/21/2023 1:51:58 PM
+   Automatically generated file @ 6/21/2023 2:39:17 PM
 */
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +22,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// List recordings that are complete.. 
         /// </summary>
-        public List<StoredRecording> ListStored()
+        public virtual List<StoredRecording> ListStored()
         {
             string path = "recordings/stored";
             var request = GetNewRequest(path, HttpMethod.GET);
@@ -42,7 +42,7 @@ namespace AsterNET.ARI.Actions
         /// Get a stored recording's details.. 
         /// </summary>
         /// <param name="recordingName">The name of the recording</param>
-        public StoredRecording GetStored(string recordingName)
+        public virtual StoredRecording GetStored(string recordingName)
         {
             string path = "recordings/stored/{recordingName}";
             var request = GetNewRequest(path, HttpMethod.GET);
@@ -66,7 +66,7 @@ namespace AsterNET.ARI.Actions
         /// Delete a stored recording.. 
         /// </summary>
         /// <param name="recordingName">The name of the recording</param>
-        public void DeleteStored(string recordingName)
+        public virtual void DeleteStored(string recordingName)
         {
             string path = "recordings/stored/{recordingName}";
             var request = GetNewRequest(path, HttpMethod.DELETE);
@@ -88,7 +88,7 @@ namespace AsterNET.ARI.Actions
         /// Get the file associated with the stored recording.. 
         /// </summary>
         /// <param name="recordingName">The name of the recording</param>
-        public byte[] GetStoredFile(string recordingName)
+        public virtual byte[] GetStoredFile(string recordingName)
         {
             string path = "recordings/stored/{recordingName}/file";
             var request = GetNewRequest(path, HttpMethod.GET);
@@ -113,7 +113,7 @@ namespace AsterNET.ARI.Actions
         /// </summary>
         /// <param name="recordingName">The name of the recording to copy</param>
         /// <param name="destinationRecordingName">The destination name of the recording</param>
-        public StoredRecording CopyStored(string recordingName, string destinationRecordingName)
+        public virtual StoredRecording CopyStored(string recordingName, string destinationRecordingName)
         {
             string path = "recordings/stored/{recordingName}/copy";
             var request = GetNewRequest(path, HttpMethod.POST);
@@ -141,7 +141,7 @@ namespace AsterNET.ARI.Actions
         /// List live recordings.. 
         /// </summary>
         /// <param name="recordingName">The name of the recording</param>
-        public LiveRecording GetLive(string recordingName)
+        public virtual LiveRecording GetLive(string recordingName)
         {
             string path = "recordings/live/{recordingName}";
             var request = GetNewRequest(path, HttpMethod.GET);
@@ -165,7 +165,7 @@ namespace AsterNET.ARI.Actions
         /// Stop a live recording and discard it.. 
         /// </summary>
         /// <param name="recordingName">The name of the recording</param>
-        public void Cancel(string recordingName)
+        public virtual void Cancel(string recordingName)
         {
             string path = "recordings/live/{recordingName}";
             var request = GetNewRequest(path, HttpMethod.DELETE);
@@ -187,7 +187,7 @@ namespace AsterNET.ARI.Actions
         /// Stop a live recording and store it.. 
         /// </summary>
         /// <param name="recordingName">The name of the recording</param>
-        public void Stop(string recordingName)
+        public virtual void Stop(string recordingName)
         {
             string path = "recordings/live/{recordingName}/stop";
             var request = GetNewRequest(path, HttpMethod.POST);
@@ -209,7 +209,7 @@ namespace AsterNET.ARI.Actions
         /// Pause a live recording.. Pausing a recording suspends silence detection, which will be restarted when the recording is unpaused. Paused time is not included in the accounting for maxDurationSeconds.
         /// </summary>
         /// <param name="recordingName">The name of the recording</param>
-        public void Pause(string recordingName)
+        public virtual void Pause(string recordingName)
         {
             string path = "recordings/live/{recordingName}/pause";
             var request = GetNewRequest(path, HttpMethod.POST);
@@ -233,7 +233,7 @@ namespace AsterNET.ARI.Actions
         /// Unpause a live recording.. 
         /// </summary>
         /// <param name="recordingName">The name of the recording</param>
-        public void Unpause(string recordingName)
+        public virtual void Unpause(string recordingName)
         {
             string path = "recordings/live/{recordingName}/pause";
             var request = GetNewRequest(path, HttpMethod.DELETE);
@@ -257,7 +257,7 @@ namespace AsterNET.ARI.Actions
         /// Mute a live recording.. Muting a recording suspends silence detection, which will be restarted when the recording is unmuted.
         /// </summary>
         /// <param name="recordingName">The name of the recording</param>
-        public void Mute(string recordingName)
+        public virtual void Mute(string recordingName)
         {
             string path = "recordings/live/{recordingName}/mute";
             var request = GetNewRequest(path, HttpMethod.POST);
@@ -281,7 +281,7 @@ namespace AsterNET.ARI.Actions
         /// Unmute a live recording.. 
         /// </summary>
         /// <param name="recordingName">The name of the recording</param>
-        public void Unmute(string recordingName)
+        public virtual void Unmute(string recordingName)
         {
             string path = "recordings/live/{recordingName}/mute";
             var request = GetNewRequest(path, HttpMethod.DELETE);
@@ -305,7 +305,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// List recordings that are complete.. 
         /// </summary>
-        public async Task<List<StoredRecording>> ListStoredAsync()
+        public virtual async Task<List<StoredRecording>> ListStoredAsync()
         {
             string path = "recordings/stored";
             var request = GetNewRequest(path, HttpMethod.GET);
@@ -324,7 +324,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Get a stored recording's details.. 
         /// </summary>
-        public async Task<StoredRecording> GetStoredAsync(string recordingName)
+        public virtual async Task<StoredRecording> GetStoredAsync(string recordingName)
         {
             string path = "recordings/stored/{recordingName}";
             var request = GetNewRequest(path, HttpMethod.GET);
@@ -347,7 +347,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Delete a stored recording.. 
         /// </summary>
-        public async Task DeleteStoredAsync(string recordingName)
+        public virtual async Task DeleteStoredAsync(string recordingName)
         {
             string path = "recordings/stored/{recordingName}";
             var request = GetNewRequest(path, HttpMethod.DELETE);
@@ -368,7 +368,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Get the file associated with the stored recording.. 
         /// </summary>
-        public async Task<byte[]> GetStoredFileAsync(string recordingName)
+        public virtual async Task<byte[]> GetStoredFileAsync(string recordingName)
         {
             string path = "recordings/stored/{recordingName}/file";
             var request = GetNewRequest(path, HttpMethod.GET);
@@ -391,7 +391,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Copy a stored recording.. 
         /// </summary>
-        public async Task<StoredRecording> CopyStoredAsync(string recordingName, string destinationRecordingName)
+        public virtual async Task<StoredRecording> CopyStoredAsync(string recordingName, string destinationRecordingName)
         {
             string path = "recordings/stored/{recordingName}/copy";
             var request = GetNewRequest(path, HttpMethod.POST);
@@ -418,7 +418,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// List live recordings.. 
         /// </summary>
-        public async Task<LiveRecording> GetLiveAsync(string recordingName)
+        public virtual async Task<LiveRecording> GetLiveAsync(string recordingName)
         {
             string path = "recordings/live/{recordingName}";
             var request = GetNewRequest(path, HttpMethod.GET);
@@ -441,7 +441,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Stop a live recording and discard it.. 
         /// </summary>
-        public async Task CancelAsync(string recordingName)
+        public virtual async Task CancelAsync(string recordingName)
         {
             string path = "recordings/live/{recordingName}";
             var request = GetNewRequest(path, HttpMethod.DELETE);
@@ -462,7 +462,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Stop a live recording and store it.. 
         /// </summary>
-        public async Task StopAsync(string recordingName)
+        public virtual async Task StopAsync(string recordingName)
         {
             string path = "recordings/live/{recordingName}/stop";
             var request = GetNewRequest(path, HttpMethod.POST);
@@ -483,7 +483,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Pause a live recording.. Pausing a recording suspends silence detection, which will be restarted when the recording is unpaused. Paused time is not included in the accounting for maxDurationSeconds.
         /// </summary>
-        public async Task PauseAsync(string recordingName)
+        public virtual async Task PauseAsync(string recordingName)
         {
             string path = "recordings/live/{recordingName}/pause";
             var request = GetNewRequest(path, HttpMethod.POST);
@@ -506,7 +506,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Unpause a live recording.. 
         /// </summary>
-        public async Task UnpauseAsync(string recordingName)
+        public virtual async Task UnpauseAsync(string recordingName)
         {
             string path = "recordings/live/{recordingName}/pause";
             var request = GetNewRequest(path, HttpMethod.DELETE);
@@ -529,7 +529,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Mute a live recording.. Muting a recording suspends silence detection, which will be restarted when the recording is unmuted.
         /// </summary>
-        public async Task MuteAsync(string recordingName)
+        public virtual async Task MuteAsync(string recordingName)
         {
             string path = "recordings/live/{recordingName}/mute";
             var request = GetNewRequest(path, HttpMethod.POST);
@@ -552,7 +552,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Unmute a live recording.. 
         /// </summary>
-        public async Task UnmuteAsync(string recordingName)
+        public virtual async Task UnmuteAsync(string recordingName)
         {
             string path = "recordings/live/{recordingName}/mute";
             var request = GetNewRequest(path, HttpMethod.DELETE);

@@ -1,6 +1,6 @@
 /*
    AsterNET ARI Framework
-   Automatically generated file @ 6/21/2023 1:51:57 PM
+   Automatically generated file @ 6/21/2023 2:39:17 PM
 */
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +24,7 @@ namespace AsterNET.ARI.Actions
         /// </summary>
         /// <param name="lang">Lookup sound for a specific language.</param>
         /// <param name="format">Lookup sound in a specific format.</param>
-        public List<Sound> List(string lang = null, string format = null)
+        public virtual List<Sound> List(string lang = null, string format = null)
         {
             string path = "sounds";
             var request = GetNewRequest(path, HttpMethod.GET);
@@ -48,7 +48,7 @@ namespace AsterNET.ARI.Actions
         /// Get a sound's details.. 
         /// </summary>
         /// <param name="soundId">Sound's id</param>
-        public Sound Get(string soundId)
+        public virtual Sound Get(string soundId)
         {
             string path = "sounds/{soundId}";
             var request = GetNewRequest(path, HttpMethod.GET);
@@ -70,7 +70,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// List all sounds.. 
         /// </summary>
-        public async Task<List<Sound>> ListAsync(string lang = null, string format = null)
+        public virtual async Task<List<Sound>> ListAsync(string lang = null, string format = null)
         {
             string path = "sounds";
             var request = GetNewRequest(path, HttpMethod.GET);
@@ -93,7 +93,7 @@ namespace AsterNET.ARI.Actions
         /// <summary>
         /// Get a sound's details.. 
         /// </summary>
-        public async Task<Sound> GetAsync(string soundId)
+        public virtual async Task<Sound> GetAsync(string soundId)
         {
             string path = "sounds/{soundId}";
             var request = GetNewRequest(path, HttpMethod.GET);
