@@ -1,6 +1,6 @@
-﻿using AsterNET.ARI.Models;
+﻿using Arke.ARI.Models;
 using System.Threading;
-using AsterNET.ARI;
+using Arke.ARI;
 
 namespace SimpleConfAsync.Helpers
 {

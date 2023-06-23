@@ -1,8 +1,8 @@
 ﻿using System;
-using AsterNET.ARI.Models;
+using Arke.ARI.Models;
 
 
-namespace AsterNET.ARI.SimpleTestApplicationAsync
+namespace Arke.ARI.SimpleTestApplicationAsync
 {
     internal class Program
     {

@@ -1,7 +1,7 @@
 ﻿using System;
-using AsterNET.ARI.Models;
+using Arke.ARI.Models;
 
-namespace AsterNET.ARI.TestApplication
+namespace Arke.ARI.TestApplication
 {
     internal class Program
     {

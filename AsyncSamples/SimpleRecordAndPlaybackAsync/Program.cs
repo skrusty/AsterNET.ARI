@@ -1,6 +1,6 @@
 ﻿using System;
-using AsterNET.ARI;
-using AsterNET.ARI.Models;
+using Arke.ARI;
+using Arke.ARI.Models;
 
 namespace SimpleRecordAndPlaybackAsync
 {
@@ -81,7 +81,7 @@ namespace SimpleRecordAndPlaybackAsync
             var repeat = actionClient.Channels.Play(c.Id, "recording:temp-recording", "en", 0, 0, Guid.NewGuid().ToString()).Id;
         }
 
-        static void ActionClientOnRecordingFinishedEvent(object sender, AsterNET.ARI.Models.RecordingFinishedEvent e)
+        static void ActionClientOnRecordingFinishedEvent(object sender, Arke.ARI.Models.RecordingFinishedEvent e)
         {
             if (e.Recording.Name != recording.Recording.Name) return;
 
@@ -90,7 +90,7 @@ namespace SimpleRecordAndPlaybackAsync
             GetRecording(recording.Channel);
         }
 
-        static void c_OnStasisEndEvent(object sender, AsterNET.ARI.Models.StasisEndEvent e)
+        static void c_OnStasisEndEvent(object sender, Arke.ARI.Models.StasisEndEvent e)
         {
             // Delete recording
             actionClient.Recordings.DeleteStored("temp-recording");
@@ -99,7 +99,7 @@ namespace SimpleRecordAndPlaybackAsync
             actionClient.Channels.Hangup(e.Channel.Id, "normal");
         }
 
-        static void c_OnStasisStartEvent(object sender, AsterNET.ARI.Models.StasisStartEvent e)
+        static void c_OnStasisStartEvent(object sender, Arke.ARI.Models.StasisStartEvent e)
         {
             // answer channel
             actionClient.Channels.Answer(e.Channel.Id);

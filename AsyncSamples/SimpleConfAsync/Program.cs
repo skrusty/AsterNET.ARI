@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Security.Cryptography.X509Certificates;
-using System.Security.Policy;
-using System.Threading.Tasks;
-using AsterNET.ARI;
-using AsterNET.ARI.Models;
-using Microsoft.Owin.Hosting;
+using Arke.ARI;
+using Arke.ARI.Models;
 using SimpleConfAsync.REST;
 using System.Linq;
+using Microsoft.Owin.Hosting;
 
 namespace SimpleConfAsync
 {

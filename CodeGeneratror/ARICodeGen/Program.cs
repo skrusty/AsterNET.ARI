@@ -6,7 +6,7 @@ namespace ARICodeGen
 
     /*
      *  This project is simply here for testing the output of the codegen. 
-     *  Any sample or demo application code will be moved into the AsterNET.ARI.TestApplication project.
+     *  Any sample or demo application code will be moved into the Arke.ARI.TestApplication project.
      */
     class Program
     {

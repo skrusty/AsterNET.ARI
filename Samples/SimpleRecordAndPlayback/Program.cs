@@ -1,8 +1,8 @@
 ﻿/*
- * RecordPlayback AsterNET.ARI Audio Sample
+ * RecordPlayback Arke.ARI Audio Sample
  * Copyright Ben Merrills (ben at mersontech co uk), all rights reserved.
- * https://asternetari.codeplex.com/
- * https://asternetari.codeplex.com/license
+ * https://Arkeari.codeplex.com/
+ * https://Arkeari.codeplex.com/license
  * 
  * No Warranty. The Software is provided "as is" without warranty of any kind, either express or implied, 
  * including without limitation any implied warranties of condition, uninterrupted use, merchantability, 
@@ -14,8 +14,8 @@
  *   same => n,hangup()
  */
 
-using AsterNET.ARI;
-using AsterNET.ARI.Models;
+using Arke.ARI;
+using Arke.ARI.Models;
 using System;
 
 namespace Sample_RecordAndPlayback
@@ -98,7 +98,7 @@ namespace Sample_RecordAndPlayback
             var repeat = actionClient.Channels.Play(c.Id, "recording:temp-recording", "en", 0, 0, Guid.NewGuid().ToString()).Id;
         }
 
-        static void ActionClientOnRecordingFinishedEvent(object sender, AsterNET.ARI.Models.RecordingFinishedEvent e)
+        static void ActionClientOnRecordingFinishedEvent(object sender, Arke.ARI.Models.RecordingFinishedEvent e)
         {
             if (e.Recording.Name != recording.Recording.Name) return;
 
@@ -107,7 +107,7 @@ namespace Sample_RecordAndPlayback
             GetRecording(recording.Channel);
         }
 
-        static void c_OnStasisEndEvent(object sender, AsterNET.ARI.Models.StasisEndEvent e)
+        static void c_OnStasisEndEvent(object sender, Arke.ARI.Models.StasisEndEvent e)
         {
             // Delete recording
             actionClient.Recordings.DeleteStored("temp-recording");
@@ -116,7 +116,7 @@ namespace Sample_RecordAndPlayback
             actionClient.Channels.Hangup(e.Channel.Id, "normal");
         }
 
-        static void c_OnStasisStartEvent(object sender, AsterNET.ARI.Models.StasisStartEvent e)
+        static void c_OnStasisStartEvent(object sender, Arke.ARI.Models.StasisStartEvent e)
         {
             // answer channel
             actionClient.Channels.Answer(e.Channel.Id);

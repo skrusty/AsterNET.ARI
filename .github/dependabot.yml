@@ -6,7 +6,4 @@ updates:
     interval: daily
     time: "10:00"
   open-pull-requests-limit: 10
-  ignore:
-  - dependency-name: T4.FileManager.VisualStudio
-    versions:
-    - 1.3.4
+

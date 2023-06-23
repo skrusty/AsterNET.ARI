@@ -1,8 +1,8 @@
 ﻿/*
- * SimpleBridge AsterNET.ARI Bridge Sample
+ * SimpleBridge Arke.ARI Bridge Sample
  * Copyright Ben Merrills (ben at mersontech co uk), all rights reserved.
- * https://asternetari.codeplex.com/
- * https://asternetari.codeplex.com/license
+ * https://Arkeari.codeplex.com/
+ * https://Arkeari.codeplex.com/license
  * 
  * No Warranty. The Software is provided "as is" without warranty of any kind, either express or implied, 
  * including without limitation any implied warranties of condition, uninterrupted use, merchantability, 
@@ -15,10 +15,10 @@
  *
  */
 
-using AsterNET.ARI.Models;
+using Arke.ARI.Models;
 using System;
 
-namespace AsterNET.ARI.SimpleBridge
+namespace Arke.ARI.SimpleBridge
 {
     class Program
     {
@@ -88,7 +88,7 @@ namespace AsterNET.ARI.SimpleBridge
             }
         }
 
-        static void c_OnStasisEndEvent(object sender, AsterNET.ARI.Models.StasisEndEvent e)
+        static void c_OnStasisEndEvent(object sender, Arke.ARI.Models.StasisEndEvent e)
         {
             // remove from bridge
             ActionClient.Bridges.RemoveChannel(SimpleBridge.Id, e.Channel.Id);
@@ -97,7 +97,7 @@ namespace AsterNET.ARI.SimpleBridge
             ActionClient.Channels.Hangup(e.Channel.Id, "normal");
         }
 
-        static void c_OnStasisStartEvent(object sender, AsterNET.ARI.Models.StasisStartEvent e)
+        static void c_OnStasisStartEvent(object sender, Arke.ARI.Models.StasisStartEvent e)
         {
             // answer channel
             ActionClient.Channels.Answer(e.Channel.Id);

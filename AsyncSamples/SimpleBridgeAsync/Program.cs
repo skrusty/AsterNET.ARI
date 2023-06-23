@@ -1,8 +1,8 @@
 ﻿/*
- * SimpleBridge AsterNET.ARI Bridge Sample
+ * SimpleBridge Arke.ARI Bridge Sample
  * Copyright Ben Merrills (ben at mersontech co uk), all rights reserved.
- * https://asternetari.codeplex.com/
- * https://asternetari.codeplex.com/license
+ * https://Arkeari.codeplex.com/
+ * https://Arkeari.codeplex.com/license
  * 
  * No Warranty. The Software is provided "as is" without warranty of any kind, either express or implied, 
  * including without limitation any implied warranties of condition, uninterrupted use, merchantability, 
@@ -15,11 +15,11 @@
  *
  */
  
-using AsterNET.ARI.Models;
+using Arke.ARI.Models;
 using System;
 using System.Threading.Tasks;
 
-namespace AsterNET.ARI.SimpleBridgeAsync
+namespace Arke.ARI.SimpleBridgeAsync
 {
     class Program
     {
@@ -95,7 +95,7 @@ namespace AsterNET.ARI.SimpleBridgeAsync
             }
         }
 
-        static async void c_OnStasisEndEvent(object sender, AsterNET.ARI.Models.StasisEndEvent e)
+        static async void c_OnStasisEndEvent(object sender, Arke.ARI.Models.StasisEndEvent e)
         {
             // remove from bridge
             await ActionClient.Bridges.RemoveChannelAsync(SimpleBridge.Id, e.Channel.Id);
@@ -104,7 +104,7 @@ namespace AsterNET.ARI.SimpleBridgeAsync
             await ActionClient.Channels.HangupAsync(e.Channel.Id, "normal");
         }
 
-        static async void c_OnStasisStartEvent(object sender, AsterNET.ARI.Models.StasisStartEvent e)
+        static async void c_OnStasisStartEvent(object sender, Arke.ARI.Models.StasisStartEvent e)
         {
             // answer channel
             await ActionClient.Channels.AnswerAsync(e.Channel.Id);

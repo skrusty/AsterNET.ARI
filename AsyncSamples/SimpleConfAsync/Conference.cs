@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using AsterNET.ARI;
-using AsterNET.ARI.Models;
+using Arke.ARI;
+using Arke.ARI.Models;
 using System.Threading.Tasks;
 
 namespace SimpleConfAsync

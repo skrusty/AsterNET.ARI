@@ -94,17 +94,17 @@ foreach (var file in files)
             }
 
 			// create new file
-			manager.CreateNewFile(className + ".cs", "AsterNET.ARI", "ARI_1_0" + output, null);
+			manager.CreateNewFile(className + ".cs", "Arke.ARI", "ARI_1_0" + output, null);
 #>
 /*
-	AsterNET ARI Framework
+	Arke ARI Framework
 	Automatically generated file @ <#= DateTime.Now.ToString() #>
 */
 using System;
 using System.Collections.Generic;
-using AsterNET.ARI.Actions;
+using Arke.ARI.Actions;
 
-namespace AsterNET.ARI.Models
+namespace Arke.ARI.Models
 {
 	/// <summary>
 	/// <#= item.SelectToken("description", false) !=null ? item.SelectToken("description").Value<string>().Replace("\n", " ") : "no desciption" #>
@@ -152,20 +152,20 @@ namespace AsterNET.ARI.Models
 		// Generate Action Interface
 		//
 		
-		manager.StartNewFile("I" + actionClassName + ".cs", "AsterNET.ARI", "ARI_1_0/Actions");
+		manager.StartNewFile("I" + actionClassName + ".cs", "Arke.ARI", "ARI_1_0/Actions");
 
 #>
 /*
-	AsterNET ARI Framework
+	Arke ARI Framework
 	Automatically generated file @ <#= DateTime.Now.ToString() #>
 */
 using System;
 using System.Collections.Generic;
-using AsterNET.ARI.Models;
-using AsterNET.ARI;
+using Arke.ARI.Models;
+using Arke.ARI;
 using System.Threading.Tasks;
 
-namespace AsterNET.ARI.Actions
+namespace Arke.ARI.Actions
 {
 	
 	public interface I<#= actionClassName #>
@@ -307,20 +307,20 @@ namespace AsterNET.ARI.Actions
 		// Start Actions Output
 		//
 
-		manager.StartNewFile(actionClassName + ".cs", "AsterNET.ARI", "ARI_1_0/Actions");
+		manager.StartNewFile(actionClassName + ".cs", "Arke.ARI", "ARI_1_0/Actions");
 #>
 /*
-	AsterNET ARI Framework
+	Arke ARI Framework
 	Automatically generated file @ <#= DateTime.Now.ToString() #>
 */
 using System.Collections.Generic;
 using System.Linq;
-using AsterNET.ARI.Middleware;
-using AsterNET.ARI.Models;
+using Arke.ARI.Middleware;
+using Arke.ARI.Models;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
 
-namespace AsterNET.ARI.Actions
+namespace Arke.ARI.Actions
 {
 	
 	public class <#= actionClassName #> : ARIBaseAction, I<#= actionClassName #>
@@ -629,17 +629,17 @@ namespace AsterNET.ARI.Actions
 <#
 	} 
 }
-	manager.CreateNewFile("ARIClient.cs", "AsterNET.ARI", "ARI_1_0", null);
+	manager.CreateNewFile("ARIClient.cs", "Arke.ARI", "ARI_1_0", null);
 #>
 /*
-	AsterNET ARI Framework
+	Arke ARI Framework
 	Automatically generated file @ <#= DateTime.Now.ToString() #>
 */
 using System;
 using System.Collections.Generic;
-using AsterNET.ARI.Models;
+using Arke.ARI.Models;
 
-namespace AsterNET.ARI
+namespace Arke.ARI
 {
 <#
 	foreach (var evt in events)
@@ -649,7 +649,7 @@ namespace AsterNET.ARI
 <#
     }
 #>
-	public delegate void UnhandledEventHandler(object sender, AsterNET.ARI.Models.Event eventMessage);
+	public delegate void UnhandledEventHandler(object sender, Arke.ARI.Models.Event eventMessage);
 
 
 	public interface IAriEventClient

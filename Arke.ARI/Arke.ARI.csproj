@@ -1,0 +1,59 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>Arke.ARI</AssemblyName>
+    <RootNamespace>Arke.ARI</RootNamespace>
+    <Version>2.0.0</Version>
+    <PackageId>Arke.ARI</PackageId>
+    <Authors>Ben Merrills, Zachary Way</Authors>
+    <Company />
+    <Product>Arke.ARI</Product>
+    <Description>Asterisk ARI Api wrapper - forked from AsterNET.ARI</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Title>Arke ARI</Title>
+    <Copyright>2003 - Zachary Way</Copyright>
+    <PackageProjectUrl>https://github.com/seiggy/arke.ari</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/seiggy/arke.ari</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>Asterisk;ARI;telephony;sip</PackageTags>
+    <PackageReleaseNotes>v2.0.0
+ Migrating project fully to .NET Standard 2.0 as Microsoft no longer supports .NET Framework 4.5
+ Refactoring all classes to be virtualized in order to support better unit testing practices
+ Upgraded all packages to latest versions
+ Upgraded ARI to Asterisk 20</PackageReleaseNotes>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <IncludeSymbols>True</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Middleware\Default\RESTActions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="RestSharp" Version="110.2.0" />
+    <PackageReference Include="System.Threading.Thread" Version="4.3.0" />
+    <PackageReference Include="System.Threading.ThreadPool" Version="4.3.0" />
+    <PackageReference Include="WebSocket4Net" Version="0.15.2" />
+  </ItemGroup>
+
+</Project>

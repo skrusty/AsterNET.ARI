@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
-using AsterNET.ARI;
-using AsterNET.ARI.Models;
+using Arke.ARI;
+using Arke.ARI.Models;
 using System.Threading.Tasks;
 
 namespace SimpleConfAsync

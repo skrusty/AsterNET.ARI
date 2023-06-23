@@ -2,27 +2,24 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
     <metadata>
         <id>Arke.ARI</id>
-        <version>1.4.0</version>
+        <version>1.4.1</version>
         <authors>Ben Merrills, Zachary Way</authors>
         <owners>Zachary Way</owners>
-        <licenseUrl>https://raw.githubusercontent.com/seiggy/AsterNET.ARI/master/LICENSE.txt</licenseUrl>
-        <projectUrl>https://github.com/seiggy/AsterNET.ARI</projectUrl>
+        <licenseUrl>https://raw.githubusercontent.com/seiggy/Arke.ARI/master/LICENSE.txt</licenseUrl>
+        <projectUrl>https://github.com/seiggy/Arke.ARI</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>AsterNET.ARI Asterisk ARI/Stasis framework for .NET</description>
-        <releaseNotes>Please see: https://github.com/seiggy/AsterNET.ARI/commits/master</releaseNotes>
+        <description>Arke.ARI Asterisk ARI/Stasis framework for .NET</description>
+        <releaseNotes>Please see: https://github.com/seiggy/Arke.ARI/commits/master</releaseNotes>
         <copyright>Copyright 2023</copyright>
-        <tags>Asterisk AsterNET Asterisk.NET ARI Stasis</tags>
+        <tags>Asterisk Arke Asterisk.NET ARI Stasis</tags>
         <dependencies>
-            <dependency id="Newtonsoft.Json" version="9.0.1" />
-            <dependency id="FubarCoder.RestSharp.Portable.Core" version="4.0.8" />
-            <dependency id="FubarCoder.RestSharp.Portable.HttpClient" version="4.0.8" />
-            <dependency id="FubarCoder.RestSharp.Portable.Encodings" version="4.0.8" />
+            <dependency id="Newtonsoft.Json" version="12.0.3" />
             <dependency id="WebSocket4Net" version="0.15.2" />
         </dependencies>
     </metadata>
     <files>
-        <file src="AsterNET.ARI\bin\Release\AsterNET.ARI.dll" target="lib\net45\AsterNET.ARI.dll" />
-        <file src="AsterNET.ARI\bin\Release\AsterNET.ARI.pdb" target="lib\net45\AsterNET.ARI.pdb" />
+        <file src="Arke.ARI\bin\Release\Arke.ARI.dll" target="lib\netstandard2.0\Arke.ARI.dll" />
+        <file src="Arke.ARI\bin\Release\Arke.ARI.pdb" target="lib\netstandard2.0\Arke.ARI.pdb" />
         <file src="changelog.txt" target="changelog.txt" />
         <file src="LICENSE.txt" target="LICENSE.txt" />
         <file src="README.md" target="README.md" />

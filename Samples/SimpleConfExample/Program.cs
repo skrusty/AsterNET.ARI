@@ -1,8 +1,8 @@
 ﻿/*
- * MiniConf AsterNET.ARI Conference Sample
+ * MiniConf Arke.ARI Conference Sample
  * Copyright Ben Merrills (ben at mersontech co uk), all rights reserved.
- * https://asternetari.codeplex.com/
- * https://asternetari.codeplex.com/license
+ * https://Arkeari.codeplex.com/
+ * https://Arkeari.codeplex.com/license
  * 
  * No Warranty. The Software is provided "as is" without warranty of any kind, either express or implied, 
  * including without limitation any implied warranties of condition, uninterrupted use, merchantability, 
@@ -16,14 +16,14 @@
  *   
  */
 
-using AsterNET.ARI.Models;
-using AsterNET.ARI.SimpleConfExample.REST;
+using Arke.ARI.Models;
+using Arke.ARI.SimpleConfExample.REST;
 using Microsoft.Owin.Hosting;
 using System;
 using System.Diagnostics;
 using System.Linq;
 
-namespace AsterNET.ARI.SimpleConfExample
+namespace Arke.ARI.SimpleConfExample
 {
     public class AppConfig
     {

@@ -1,3 +1,9 @@
+06.23.2023		seiggy
+	Migrating project fully to .NET Standard 2.0 as Microsoft no longer supports .NET Framework 4.5
+	Refactoring all classes to be virtualized in order to support better unit testing practices
+	Upgraded all packages to latest versions
+	Upgraded ARI to Asterisk 20
+
 05.12.2014		Skrusty
 	Added support for auto reconnecting to asterisk in the event of unexpected disconnection (Socket Exception) or asterisk closing our connection
 	Added event for connection state changed on ARIClient
@@ -18,7 +24,7 @@
 
 27.05.2014		Skrusty
 	New		Rebuilt class structure from CodeGen with 12.3.0-rc1 swagger definitions
-	Updated	Class layout for ARIClient, ARIClient is now root class for AsterNET.ARI structure
+	Updated	Class layout for ARIClient, ARIClient is now root class for Arke.ARI structure
 			and now takes an instance of StasisEndpoint for connection details only
 	Updated	ARIClient now contains properties for each ARI Rest Endpoint (Channels, Bridges etc)
 	Updated	SimpleConf updated for new class layout
@@ -43,7 +49,7 @@
 04.02.2014		Skrusty
 	Added	Sample-RecordAndPlayback example to demonstrate recoding and playback on ARI
 	Added	Simple caller mute to bridge sample (3 to mute, 4 to unmute all channels)
-	Added	New SimpleConf samples project. This is a rough implementation of a conference system written in AsterNET.ARI. There is currently
+	Added	New SimpleConf samples project. This is a rough implementation of a conference system written in Arke.ARI. There is currently
 			very little error checking and is only for demonstration and testing purposes. However please feel free to add to it and point out any
 			silly errors or mistakes.
 
@@ -60,6 +66,6 @@
 
 01.02.2014		Skrusty
 	Added	Changelog
-	Added	AsterNET.ARI classlib now contains the output of CodeGen
-	Added	New example to AsterNET.ARI.TestApplication, based on the example for ari-py (https://github.com/asterisk/ari-py/blob/master/examples/example.py)
-	Added	Started samples to show how to use AsterNET.ARI in real-world examples (yet to add anything of interest)
+	Added	Arke.ARI classlib now contains the output of CodeGen
+	Added	New example to Arke.ARI.TestApplication, based on the example for ari-py (https://github.com/asterisk/ari-py/blob/master/examples/example.py)
+	Added	Started samples to show how to use Arke.ARI in real-world examples (yet to add anything of interest)

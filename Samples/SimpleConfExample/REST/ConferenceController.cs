@@ -1,8 +1,8 @@
 ﻿/*
- * SimpleConf AsterNET.ARI Conference Sample
+ * SimpleConf Arke.ARI Conference Sample
  * Copyright Ben Merrills (ben at mersontech co uk), all rights reserved.
- * https://asternetari.codeplex.com/
- * https://asternetari.codeplex.com/license
+ * https://Arkeari.codeplex.com/
+ * https://Arkeari.codeplex.com/license
  * 
  * No Warranty. The Software is provided "as is" without warranty of any kind, either express or implied, 
  * including without limitation any implied warranties of condition, uninterrupted use, merchantability, 
@@ -15,11 +15,10 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using System.Web.Http.Cors;
+using Microsoft.AspNetCore.Cors;
 
-namespace AsterNET.ARI.SimpleConfExample.REST
+namespace Arke.ARI.SimpleConfExample.REST
 {
-    [EnableCors(origins: "http://localhost:9000", headers: "*", methods: "*")]
     public class ConferenceController : ApiController
     {
         [HttpGet]
