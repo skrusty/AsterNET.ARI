@@ -28,4 +28,4 @@ jobs:
     - name: Create NuGet Packages
       run: dotnet pack --configuration Release --include-symbols --include-source
     - name: Publish NuGet Packages
-      run: dotnet nuget push "Arke.ARI/**/*.nupkg" --api-key ${{ secrets.GHTOKEN }} --source "github" --skip-duplicate
+      run: dotnet nuget push "Arke.ARI/**/*.nupkg" --source "github" --skip-duplicate
