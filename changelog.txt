@@ -1,3 +1,5 @@
+07.19.2023		seiggy
+	Fixing case issue with RestSharp v107
 06.23.2023		seiggy
 	Migrating project fully to .NET Standard 2.0 as Microsoft no longer supports .NET Framework 4.5
 	Refactoring all classes to be virtualized in order to support better unit testing practices

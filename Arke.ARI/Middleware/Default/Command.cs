@@ -28,7 +28,7 @@ namespace Arke.ARI.Middleware.Default
         public string Method
         {
             get { return Request.Method.ToString(); }
-            set { Request.Method = (RestSharp.Method) Enum.Parse(typeof (RestSharp.Method), value); }
+            set { Request.Method = (RestSharp.Method) Enum.Parse(typeof (RestSharp.Method), value, true); }
         }
 
 
@@ -41,7 +41,7 @@ namespace Arke.ARI.Middleware.Default
 
         public void AddParameter(string name, object value, Middleware.ParameterType type)
         {
-            Request.AddParameter(name, value, (RestSharp.ParameterType)Enum.Parse(typeof(RestSharp.ParameterType), type.ToString()));
+            Request.AddParameter(name, value, (RestSharp.ParameterType)Enum.Parse(typeof(RestSharp.ParameterType), type.ToString(), true));
         }
     }
 }
