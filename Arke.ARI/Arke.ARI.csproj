@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Arke.ARI</AssemblyName>
     <RootNamespace>Arke.ARI</RootNamespace>
-    <Version>2.0.0</Version>
+    <Version>2.0.1</Version>
     <PackageId>Arke.ARI</PackageId>
     <Authors>Ben Merrills, Zachary Way</Authors>
     <Company />
@@ -18,7 +18,9 @@
     <RepositoryUrl>https://github.com/seiggy/arke.ari</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>Asterisk;ARI;telephony;sip</PackageTags>
-    <PackageReleaseNotes>v2.0.0
+    <PackageReleaseNotes>v2.0.1
+ Fixing RestSharp v107 case bug
+v2.0.0
  Migrating project fully to .NET Standard 2.0 as Microsoft no longer supports .NET Framework 4.5
  Refactoring all classes to be virtualized in order to support better unit testing practices
  Upgraded all packages to latest versions
