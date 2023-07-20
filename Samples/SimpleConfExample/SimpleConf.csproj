@@ -2,8 +2,8 @@
 	<PropertyGroup>
 		<TargetFramework>net7.0</TargetFramework>
 		<OutputType>Exe</OutputType>
-		<RootNamespace>AsterNET.ARI.SimpleConfExample</RootNamespace>
-		<AssemblyName>AsterNET.ARI.SimpleConfExample</AssemblyName>
+		<RootNamespace>Arke.ARI.SimpleConfExample</RootNamespace>
+		<AssemblyName>Arke.ARI.SimpleConfExample</AssemblyName>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<AssemblyTitle>Arke.ARI.SimpleConfExample</AssemblyTitle>
 		<Product>Arke.ARI.SimpleConfExample</Product>

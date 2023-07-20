@@ -2,8 +2,8 @@
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <OutputType>Exe</OutputType>
-    <RootNamespace>AsterNET.ARI.SimpleBridge</RootNamespace>
-    <AssemblyName>AsterNET.ARI.SimpleBridge</AssemblyName>
+    <RootNamespace>Arke.ARI.SimpleBridge</RootNamespace>
+    <AssemblyName>Arke.ARI.SimpleBridge</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AssemblyTitle>Arke.ARI.SimpleBridge</AssemblyTitle>
     <Product>Arke.ARI.SimpleBridge</Product>

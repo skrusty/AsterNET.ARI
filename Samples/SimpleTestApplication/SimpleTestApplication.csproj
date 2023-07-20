@@ -2,8 +2,8 @@
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <OutputType>Exe</OutputType>
-    <RootNamespace>AsterNET.ARI.TestApplication</RootNamespace>
-    <AssemblyName>AsterNET.ARI.TestApplication</AssemblyName>
+    <RootNamespace>Arke.ARI.TestApplication</RootNamespace>
+    <AssemblyName>Arke.ARI.TestApplication</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AssemblyTitle>Arke.ARI.TestApplication</AssemblyTitle>
     <Product>Arke.ARI.TestApplication</Product>
